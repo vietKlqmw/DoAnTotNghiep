@@ -83,7 +83,7 @@
                                         <role-combo name="roleFilter" [(ngModel)]="role"></role-combo>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <!-- <div class="col-md-6">
                                     <div class="kt-checkbox-list">
                                         <label for="UsersTable_OnlyLockedUsers" class="kt-checkbox">
                                             <input id="UsersTable_OnlyLockedUsers" type="checkbox"
@@ -92,7 +92,7 @@
                                             <span></span>
                                         </label>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
 
                             <div class="row mb-4" *ngIf="advancedFiltersAreShown">
@@ -146,10 +146,10 @@
                                             {{'EmailAddress' | localize}}
                                             <p-sortIcon field="emailAddress"></p-sortIcon>
                                         </th>
-                                        <th style="width: 200px" pSortableColumn="isEmailConfirmed">
+                                        <!-- <th style="width: 200px" pSortableColumn="isEmailConfirmed">
                                             {{'EmailConfirm' | localize}}
                                             <p-sortIcon field="isEmailConfirmed"></p-sortIcon>
-                                        </th>
+                                        </th> -->
                                         <th style="width: 100px" pSortableColumn="isActive">
                                             {{'Active' | localize}}
                                             <p-sortIcon field="isActive"></p-sortIcon>
@@ -185,16 +185,16 @@
                                                             *ngIf="'Pages.Administration.Users.ChangePermissions' | permission"
                                                             (click)="editUserPermissionsModal.show(record.id, record.userName)">{{'Permissions' | localize}}</a>
                                                     </li>
-                                                    <li>
+                                                    <!-- <li>
                                                         <a href="javascript:;"
                                                             *ngIf="'Pages.Administration.Users.Unlock' | permission"
                                                             (click)="unlockUser(record)">{{'Unlock' | localize}}</a>
-                                                    </li>
-                                                    <li>
+                                                    </li> -->
+                                                    <!-- <li>
                                                         <a href="javascript:;"
                                                             *ngIf="'Pages.Administration.EntityDynamicParameterValue.Edit' | permission"
                                                             (click)="dynamicParametersModal.show('tmss.Authorization.Users.User', record.id)">{{'DynamicParameters' | localize}}</a>
-                                                    </li>
+                                                    </li> -->
                                                     <li>
                                                         <a href="javascript:;"
                                                             *ngIf="'Pages.Administration.Users.Delete' | permission"
@@ -223,13 +223,13 @@
                                             <span class="ui-column-title"> {{'EmailAddress' | localize}}</span>
                                             {{record.emailAddress}}
                                         </td>
-                                        <td style="width: 200px">
+                                        <!-- <td style="width: 200px">
                                             <span class="ui-column-title"> {{'EmailConfirm' | localize}}</span>
                                             <span class="kt-badge kt-badge--success kt-badge--inline"
                                                 *ngIf="record.isEmailConfirmed">{{'Yes' | localize}}</span>
                                             <span class="kt-badge kt-badge--dark kt-badge--inline"
                                                 *ngIf="!record.isEmailConfirmed">{{'No' | localize}}</span>
-                                        </td>
+                                        </td> -->
                                         <td style="width: 100px">
                                             <span class="ui-column-title"> {{'Active' | localize}}</span>
                                             <span class="kt-badge kt-badge--success kt-badge--inline"

@@ -46,7 +46,7 @@
                             <div class="form-group">
                                 <label for="UserName">{{"UserName" | localize}} *</label>
                                 <input id="UserName" #userNameInput="ngModel" type="text" [disabled]="!canChangeUserName" name="UserName" class="form-control" [(ngModel)]="user.userName" required maxlength="256">
-                                <span class="help-block" *ngIf="!canChangeUserName">{{"CanNotChangeAdminUserName" | localize}}</span>
+                                <span class="help-block text-danger" *ngIf="!canChangeUserName">{{"CanNotChangeAdminUserName" | localize}}</span>
                                 <validation-messages [formCtrl]="userNameInput"></validation-messages>
                             </div>
 
@@ -99,11 +99,11 @@
                                 </ul>
                             </div>
                             <div class="kt-checkbox-list">
-                                <label for="EditUser_ShouldChangePasswordOnNextLogin" class="kt-checkbox">
+                                <!-- <label for="EditUser_ShouldChangePasswordOnNextLogin" class="kt-checkbox">
                                     <input id="EditUser_ShouldChangePasswordOnNextLogin" type="checkbox" name="ShouldChangePasswordOnNextLogin" [(ngModel)]="user.shouldChangePasswordOnNextLogin">
                                     {{"ShouldChangePasswordOnNextLogin" | localize}}
                                     <span></span>
-                                </label>
+                                </label> -->
 
                                 <label for="EditUser_SendActivationEmail" class="kt-checkbox">
                                     <input id="EditUser_SendActivationEmail" type="checkbox" name="SendActivationEmail" [(ngModel)]="sendActivationEmail">
@@ -111,23 +111,23 @@
                                     <span></span>
                                 </label>
 
-                                <label for="EditUser_IsActive" class="kt-checkbox">
+                                <!-- <label for="EditUser_IsActive" class="kt-checkbox">
                                     <input id="EditUser_IsActive" type="checkbox" name="IsActive" [(ngModel)]="user.isActive">
                                     {{"Active" | localize}}
                                     <span></span>
-                                </label>
+                                </label> -->
 
-                                <label *ngIf="isTwoFactorEnabled" for="EditUser_IsTwoFactorEnabled" class="kt-checkbox">
+                                <!-- <label *ngIf="isTwoFactorEnabled" for="EditUser_IsTwoFactorEnabled" class="kt-checkbox">
                                     <input id="EditUser_IsTwoFactorEnabled" type="checkbox" name="IsTwoFactorEnabled" [(ngModel)]="user.isTwoFactorEnabled">
                                     {{"IsTwoFactorEnabled" | localize}}
                                     <span></span>
-                                </label>
+                                </label> -->
 
-                                <label *ngIf="isLockoutEnabled" for="EditUser_IsLockoutEnabled" class="kt-checkbox">
+                                <!-- <label *ngIf="isLockoutEnabled" for="EditUser_IsLockoutEnabled" class="kt-checkbox">
                                     <input id="EditUser_IsLockoutEnabled" type="checkbox" name="IsLockoutEnabled" [(ngModel)]="user.isLockoutEnabled">
                                     {{"IsLockoutEnabled" | localize}}
                                     <span></span>
-                                </label>
+                                </label> -->
                             </div>
                         </tab>
                         <tab heading="{{'Roles' | localize}}">

@@ -23,6 +23,7 @@ export class TopBarComponent extends ThemesLayoutBaseComponent implements OnInit
     shownLoginName = '';
     tenancyName = '';
     userName = '';
+    _nameLogin = '';
     profilePicture = AppConsts.appBaseUrl + '/assets/common/images/default-profile-picture.png';
     defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/app-logo-on-' + this.currentTheme.baseSettings.menu.asideSkin + '.svg';
     recentlyLinkedUsers: LinkedUserDto[];
@@ -100,6 +101,7 @@ export class TopBarComponent extends ThemesLayoutBaseComponent implements OnInit
         this.shownLoginName = this.appSession.getShownLoginName();
         this.tenancyName = this.appSession.tenancyName;
         this.userName = this.appSession.user.userName;
+        this._nameLogin = this.appSession.user.name;
     }
 
     getShownUserName(linkedUser: LinkedUserDto): string {
