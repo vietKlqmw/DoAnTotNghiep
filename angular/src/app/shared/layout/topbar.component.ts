@@ -51,7 +51,8 @@ export class TopBarComponent extends ThemesLayoutBaseComponent implements OnInit
         this.isMultiTenancyEnabled = this._abpMultiTenancyService.isEnabled;
         this.languages = _.filter(this.localization.languages, l => (l).isDisabled === false);
         this.currentLanguage = this.localization.currentLanguage;
-        this.isImpersonatedLogin = this._abpSessionService.impersonatorUserId > 0;
+        //this.isImpersonatedLogin = this._abpSessionService.impersonatorUserId > 0;
+        this.isImpersonatedLogin = !(this.appSession.tenantId == null);
         this.setCurrentLoginInformations();
         this.getProfilePicture();
         this.getRecentlyLinkedUsers();
