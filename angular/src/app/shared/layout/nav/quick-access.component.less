@@ -1,0 +1,87 @@
+#quick-access ::-webkit-scrollbar { width: 5px; }
+#quick-access ::-webkit-scrollbar-thumb {
+         background: #c5c5c5;
+}
+#quick-access{
+    position: absolute;
+    margin-top: 10% !important;
+    width: 483px;
+    height: 100px;
+    background-color: red;
+    z-index: 9999;
+    display: none;
+
+    left: 33%;
+    transform: translateY(-50%);
+}
+.access-form{
+    flex-direction: column;
+}
+.access-form .input-group .form-control,.access-form .input-group .list-items-search{
+    width: 483px;
+}
+.access-form .input-group input:focus,.access-form .input-group input{
+     border: 1px solid #ffffff96 !important;
+     box-shadow: none;
+     border-bottom: none;
+     border-bottom-left-radius: 0px;
+}
+.list-items-search{
+    margin-left: 0;
+    border: 1px solid #ffffff96;
+    .default-search{
+        i{
+            margin-bottom: 15px;
+            font-size: 1.5rem; color: white;
+        }
+        p{
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 100;
+            text-shadow: none;
+        }
+    }
+    .list-item-filter{
+        max-height: 500px;
+        overflow-x: auto;
+    }
+}
+.quick-access-result-item ,
+.quick-access-result-item a.text-dark { color: white !important; }
+.access-form.input-group,
+.input-group-text ,
+.list-items-search,
+.access-form .input-group input{
+    background-color: #00407ddb;
+    color: white !important;
+    i { color: white; }
+}
+.access-form .input-group input{
+    font-size: 1.5rem;
+}
+.access-form .input-group input::placeholder{
+    color: white;
+}
+.quick-access-result-item {
+    padding: 0 15px 0 15px;
+    a{
+        height: 40px;
+        font-weight: 800;
+        text-shadow: none;
+        cursor: pointer;
+        i {
+            margin-right: 10px;
+        }
+        span{
+            text-shadow: none;
+            color: #ffffff;
+            float: right;
+        }
+    }
+}
+.quick-access-result-item:hover,.quick-access-result-item.selected{
+    background-color: #036ccec6 !important;
+}
+.input-group > :not(:first-child):not(.dropdown-menu):not(.form-floating):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback){
+    margin-left: 0;
+}

@@ -1,0 +1,26 @@
+<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-100vw py-4 position-fixed mt-20 bg-transparent align-items-center " id="quick-access"
+     data-kt-menu="true">
+     <div class="access-form h-100 w-100 rounded">
+        <div class="input-group mh-500px p-0 position-relative rounded w-100">
+              <input #searchInput  type="text" class="form-control rounded-top" placeholder="Search..." aria-describedby="basic-addon1" (keyup)="quickSearch($event)"  (keydown)="handleKeyDown($event)">
+              <div class = "list-items-search rounded-bottom h-auto w-100">
+                <div class="default-search d-flex flex-column justify-content-center align-items-center h-150px" *ngIf="default">
+                    <i class="fa fa-magnifying-glass" aria-hidden="true"></i>
+                    <p>What screen are you looking for ?</p>
+                </div>
+                 <ul class="list-item-filter top-100 rounded list-unstyled w-100 mh-500px overflow-auto" *ngIf="showList">
+                    <ng-container *ngFor="let item of filterSearchResult; let i = index">
+                        <li #listItems class="border-bottom-dark cursor-pointer quick-access-result-item"
+                         [class.selected]="i === selectedIndex" >
+                            <a class="p-2 d-block text-dark rounded" (click)="checkTabKey(item.route,item.name)">
+                              <i class="{{item.iconquickSearch}}"></i>
+                                {{item.name}}
+                                <span>{{item.icon}}</span>
+                            </a>
+                        </li>
+                    </ng-container>
+                  </ul>
+              </div>
+         </div>
+     </div>
+</div>
