@@ -11,6 +11,7 @@ import { DOCUMENT } from '@angular/common';
 export class DefaultBrandComponent extends AppComponentBase {
 
     defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/app-logo-on-' + this.currentTheme.baseSettings.menu.asideSkin + '.svg';
+    defaultLogobyme = AppConsts.appBaseUrl + '/assets/common/images/anhoto.jpg';
     remoteServiceBaseUrl: string = AppConsts.remoteServiceBaseUrl;
 
     constructor(
