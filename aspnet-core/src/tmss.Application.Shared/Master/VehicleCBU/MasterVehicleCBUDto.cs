@@ -19,4 +19,11 @@ namespace tmss.Master.VehicleCBU
 
         public virtual string Model { get; set; }
     }
+
+    public class GetMasterVehicleCBUExportInput
+    {
+        public virtual string VehicleType { get; set; }
+
+        public virtual string Model { get; set; }
+    }
 }

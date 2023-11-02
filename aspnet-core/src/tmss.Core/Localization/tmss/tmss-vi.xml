@@ -197,7 +197,7 @@
     <text name="Browser">Trình duyệt</text>
     <text name="Xms">{0} mili giây</text>
     <text name="Close">Đóng</text>
-    <text name="Refresh">Làm tươi</text>
+    <text name="Refresh">Làm mới</text>
     <text name="ErrorState">Trạng thái lỗi</text>
     <text name="All">Tất cả</text>
     <text name="HasError">Có lỗi</text>

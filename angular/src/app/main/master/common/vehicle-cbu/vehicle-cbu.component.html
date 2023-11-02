@@ -1,62 +1,126 @@
-<div id="container" style="overflow: hidden; padding-left: 0.5rem; padding-right: 0.5rem;" [busyIf]="isLoading">
-    <div class="ui-g-12">
-        <h6 class="card-header bg-card-header card-header-input"> {{ 'Vehicle CBU Master' }} </h6>
-        <div class="ui-g-12">
-            <div class="ui-g-12">
-                <div class="form-group m-form__group align-items-center">
-                    <div class="input-group">
-                        <div class="ui-g-12 ui-md-3 ph-0">
-                            <div class="ui-g-12 ">
-                                <input [(ngModel)]="vehicleType" name="vehicleType" class="form-control"
+<!-- ==================================================Header================================================== -->
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" [busyIf]="isLoading">
+    <div class="kt-subheader kt-grid__item">
+        <div [class]="containerClass">
+            <div class="kt-subheader__main">
+                <h3 class="kt-subheader__title">
+                    <span>{{"Users" | localize}}</span>
+                </h3>
+                <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                <span class="kt-subheader__desc">
+                    {{"UsersHeaderInfo" | localize}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <!-- ==================================================Search================================================== -->
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form">
+                    <div class="row align-items-center mb-2">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input [(ngModel)]="vehicleType" name="vehicleType" class="form-control m-input"
                                     [placeholder]="l('Vehicle Type')" type="text" (keyup.enter)="searchDatas()">
                             </div>
                         </div>
-                        <div class="ui-g-12 ui-md-3 ph-0">
-                            <div class="ui-g-12 ">
-                                <input [(ngModel)]="model" name="model" class="form-control" [placeholder]="l('Model')"
-                                    type="text" (keyup.enter)="searchDatas()">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input [(ngModel)]="model" name="model" class="form-control m-input"
+                                    [placeholder]="l('Model')" type="text" (keyup.enter)="searchDatas()">
                             </div>
                         </div>
-                        <div class="btn-search">
-                            <button (click)="searchDatas()" class="btn btn-primary">
-                                <i class="fas fa-search"></i>
-                            </button>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
+                                    class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
+                                <button class="btn btn-primary" (click)="clearTextSearch()">
+                                    <i class="fa fa-sync"></i></button>
+                            </div>
                         </div>
-                        <div class="btn-search">
-                            <button (click)="clearTextSearch()" class="btn btn-primary">
-                                <i class="fas fa-backspace"></i>
-                            </button>
+                    </div>
+                </form>
+                <!-- ==================================================Table================================================== -->
+                <div class="row align-items-center">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                            (onLazyLoad)="searchDatas($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            ScrollWidth="100%"
+                            [responsive]="primengTableHelper.isResponsive"
+                            [resizableColumns]="primengTableHelper.resizableColumns"
+                            [globalFilterFields]="['vehicleType', 'model', 'marketingCode', 'productionCode']">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 200px" pSortableColumn="vehicleType">
+                                        {{'Vehicle Type'}}
+                                        <p-sortIcon field="vehicleType"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 200px" pSortableColumn="model">
+                                        {{'Model'}}
+                                        <p-sortIcon field="model"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 200px" pSortableColumn="marketingCode">
+                                        {{'Marketing Code'}}
+                                        <p-sortIcon field="marketingCode"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 200px" pSortableColumn="productionCode">
+                                        {{'Production Code'}}
+                                        <p-sortIcon field="productionCode"></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 200px">
+                                        <span class="ui-column-title"> {{'Vehicle Type'}}</span>
+                                        {{record.vehicleType}}
+                                    </td>
+                                    <td style="width: 200px">
+                                        <span class="ui-column-title"> {{'Model'}}</span>
+                                        {{record.model}}
+                                    </td>
+                                    <td style="width: 200px">
+                                        <span class="ui-column-title"> {{'Marketing Code'}}</span>
+                                        {{record.marketingCode}}
+                                    </td>
+                                    <td style="width: 200px">
+                                        <span class="ui-column-title"> {{'Production Code'}}</span>
+                                        {{record.productionCode}}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <!-- ==================================================Phân trang================================================== -->
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{'NoData' | localize}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                (onPageChange)="searchDatas($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                            </span>
                         </div>
                     </div>
                 </div>
-            </div>
-            <fieldset class="fieldset-border ui-g-12 grid-parent">
-                <span>
-                    <h6 class="card-header bg-card-header card-header-input"> {{ 'Vehicle CBU' }} </h6>
-                </span>
-                <div class="">
-                    <grid-table
-                        [columnDefs]="vehicleCBUColDefs"
-                        [paginationParams]="paginationParams"
-                        [showPagination]="true"
-                        [rowData]="rowData"
-                        [defaultColDef]="defaultColDef"
-                        (callBackEvent)="callBackDataGrid($event)"
-                        (changePaginationParams)="changePage($event)"
-                        (onChangeSelection)="onChangeRowSelection($event)"
-                        [frameworkComponents]="frameworkComponents"
-                        [height]="'58vh'"
-                        >
-                    </grid-table>
+                <hr>
+                <div class="row mb-2">
+                    <div class="col-sm-12 text-right">
+                        <button type="button" class="btn btn-success" (click)="exportToExcel()">
+                            <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>
+                    </div>
                 </div>
-            </fieldset>
-            <!-- <div class="text-center pr-1">
-                    <fieldset class="fieldset-border">
-                        <button class="tmss-btn tmss-footer-btn btn-outline-primary" (click)="exportToExcel()">
-                            <i class="fas fa-file-excel mr-1"></i>{{ l('Export Excel') }}
-                        </button>
-                    </fieldset>
-                </div> -->
+            </div>
         </div>
     </div>
 </div>
