@@ -41,6 +41,7 @@
   <ItemGroup>
     <PackageReference Include="Abp" Version="5.6.0" />
     <PackageReference Include="Abp.AutoMapper" Version="5.6.0" />
+    <PackageReference Include="Abp.Dapper" Version="5.6.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="7.1.0.440" />

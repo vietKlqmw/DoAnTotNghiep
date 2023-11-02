@@ -8,6 +8,7 @@ using tmss.Authorization.Users;
 using tmss.Chat;
 using tmss.Editions;
 using tmss.Friendships;
+using tmss.Master.VehicleCBU;
 using tmss.MultiTenancy;
 using tmss.MultiTenancy.Accounting;
 using tmss.MultiTenancy.Payments;
@@ -36,6 +37,10 @@ namespace tmss.EntityFrameworkCore
         public virtual DbSet<SubscriptionPaymentExtensionData> SubscriptionPaymentExtensionDatas { get; set; }
 
         public virtual DbSet<UserDelegation> UserDelegations { get; set; }
+
+        #region MASTER
+        public virtual DbSet<MasterVehicleCBU> MasterVehicleCBUs { get; set; }
+        #endregion
 
         public tmssDbContext(DbContextOptions<tmssDbContext> options)
             : base(options)
