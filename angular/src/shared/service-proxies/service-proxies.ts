@@ -5946,6 +5946,88 @@ export class LanguageServiceProxy {
 }
 
 @Injectable()
+export class MasterVehicleCBUServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param vehicleType (optional) 
+     * @param model (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getVehicleCBUSearch(vehicleType: string | null | undefined, model: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfMasterVehicleCBUDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterVehicleCBU/GetVehicleCBUSearch?";
+        if (vehicleType !== undefined)
+            url_ += "VehicleType=" + encodeURIComponent("" + vehicleType) + "&"; 
+        if (model !== undefined)
+            url_ += "Model=" + encodeURIComponent("" + model) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetVehicleCBUSearch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetVehicleCBUSearch(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfMasterVehicleCBUDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfMasterVehicleCBUDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetVehicleCBUSearch(response: HttpResponseBase): Observable<PagedResultDtoOfMasterVehicleCBUDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMasterVehicleCBUDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfMasterVehicleCBUDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class NotificationServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -19481,6 +19563,106 @@ export interface IUpdateLanguageTextInput {
     sourceName: string;
     key: string;
     value: string;
+}
+
+export class MasterVehicleCBUDto implements IMasterVehicleCBUDto {
+    vehicleType!: string | undefined;
+    model!: string | undefined;
+    marketingCode!: string | undefined;
+    productionCode!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IMasterVehicleCBUDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.vehicleType = _data["vehicleType"];
+            this.model = _data["model"];
+            this.marketingCode = _data["marketingCode"];
+            this.productionCode = _data["productionCode"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): MasterVehicleCBUDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MasterVehicleCBUDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["vehicleType"] = this.vehicleType;
+        data["model"] = this.model;
+        data["marketingCode"] = this.marketingCode;
+        data["productionCode"] = this.productionCode;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IMasterVehicleCBUDto {
+    vehicleType: string | undefined;
+    model: string | undefined;
+    marketingCode: string | undefined;
+    productionCode: string | undefined;
+    id: number | undefined;
+}
+
+export class PagedResultDtoOfMasterVehicleCBUDto implements IPagedResultDtoOfMasterVehicleCBUDto {
+    totalCount!: number;
+    items!: MasterVehicleCBUDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfMasterVehicleCBUDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MasterVehicleCBUDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMasterVehicleCBUDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMasterVehicleCBUDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfMasterVehicleCBUDto {
+    totalCount: number;
+    items: MasterVehicleCBUDto[] | undefined;
 }
 
 export enum UserNotificationState {
