@@ -211,3 +211,10 @@ tmss-text-input i.fa.fa-angle-down  { top: 6px !important; }
 }
 .form-group .input-group .input-search tmss-combobox > div.input-group > select { position: absolute; z-index: 2; background: transparent; width: 100%; }
 div#container .panelBtn.text-right { margin-bottom: 10px; }
+/*grid*/
+body .ag-theme-alpine .ag-ltr div[role="row"] div[role="gridcell"].ag-cell.text-center { text-align: center; justify-content: center; }
+body .ag-theme-alpine .ag-ltr div[role="row"] div[role="gridcell"].ag-cell.text-right { text-align: right; justify-content: right; }
+body .ag-theme-alpine .ag-ltr .ag-group-contracted { margin-right: 0px; }
+/*other*/
+.card-header:first-child{ color: #006190; background-color: #DBF3EF; border: 1px solid #7DDBBF; font-weight: 500; font-size: 1.1rem; padding: 0.3rem 1.25rem; }
+.card-header.card-grid-table { height: 18px; line-height: 18px; padding: 0 0.3rem; }
