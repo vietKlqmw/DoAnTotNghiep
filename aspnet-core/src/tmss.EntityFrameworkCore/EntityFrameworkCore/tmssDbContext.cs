@@ -8,6 +8,7 @@ using tmss.Authorization.Users;
 using tmss.Chat;
 using tmss.Editions;
 using tmss.Friendships;
+//using tmss.Master.Material;
 using tmss.Master.VehicleCBU;
 using tmss.MultiTenancy;
 using tmss.MultiTenancy.Accounting;
@@ -40,6 +41,8 @@ namespace tmss.EntityFrameworkCore
 
         #region MASTER
         public virtual DbSet<MasterVehicleCBU> MasterVehicleCBUs { get; set; }
+
+        //public virtual DbSet<MasterMaterial> MasterMaterials { get; set; }
         #endregion
 
         public tmssDbContext(DbContextOptions<tmssDbContext> options)
