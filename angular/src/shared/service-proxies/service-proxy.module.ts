@@ -53,6 +53,9 @@ import { ZeroTemplateHttpConfigurationService } from './zero-template-http-confi
         ApiServiceProxies.DynamicParameterValueServiceProxy,
         ApiServiceProxies.EntityDynamicParameterValueServiceProxy,
         ApiServiceProxies.MasterVehicleCBUServiceProxy,
+        ApiServiceProxies.MasterContainerStatusServiceProxy,
+        ApiServiceProxies.MasterCustomsStatusServiceProxy,
+        ApiServiceProxies.MasterInvoiceStatusServiceProxy,
 
         { provide: RefreshTokenService, useClass: ZeroRefreshTokenService },
         { provide: AbpHttpConfigurationService, useClass: ZeroTemplateHttpConfigurationService },

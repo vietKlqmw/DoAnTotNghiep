@@ -17,6 +17,21 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                         loadChildren: () => import('./master/common/vehicle-cbu/vehicle-cbu.module').then(m => m.VehicleCbuModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
+                    {
+                        path: 'master/common/container-status',
+                        loadChildren: () => import('./master/common/container-status/container-status.module').then(m => m.ContainerStatusModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
+                    {
+                        path: 'master/common/customs-status',
+                        loadChildren: () => import('./master/common/customs-status/customs-status.module').then(m => m.CustomsStatusModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
+                    {
+                        path: 'master/common/invoice-status',
+                        loadChildren: () => import('./master/common/invoice-status/invoice-status.module').then(m => m.InvoiceStatusModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
                     { path: '**', redirectTo: 'dashboard' }
                 ]
             }

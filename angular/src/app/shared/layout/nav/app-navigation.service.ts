@@ -22,6 +22,9 @@ export class AppNavigationService {
 
 //MASTER
             new AppMenuItem('MASTER', '', 'flaticon-user-settings', '',[],[
+                new AppMenuItem('Container Status', '', 'flaticon-car', '/app/main/master/common/container-status'),
+                new AppMenuItem('Customs Status', '', 'flaticon-car', '/app/main/master/common/customs-status'),
+                new AppMenuItem('Invoice Status', '', 'flaticon-car', '/app/main/master/common/invoice-status'),
                 new AppMenuItem('Vehicle CBU', '', 'flaticon-car', '/app/main/master/common/vehicle-cbu'),
             ]),
 
