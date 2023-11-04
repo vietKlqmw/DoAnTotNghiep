@@ -1,0 +1,27 @@
+Master Model //Mẫu (xe)
+Master Shop(?)
+Master Customs Status //Trạng thái hải quan
+Master Invoice Status //Trạng thái hóa đơn
+Master Container Status //Trạng thái container
+Master Customs Port //Cảng hải quan
+Master Customs Leadtime //Thời gian dẫn hải quan
+Master Supplier List //Danh sách nhà cung cấp
+Master Material Group //Nhóm nguyên vật liệu
+Master Plant(?)
+Master Storage Location //Nơi lưu trữ (~kho(?))
+Master Fuel Type //Nhiên liệu
+Master Product Type //Loại sản phẩm
+Master Unit of Measure //Đơn vị đo lường
+Master Valuation Type(?)
+Master Material Type //Loại vật liệu
+Master Product Group //Nhóm sản phẩm
+Master Engine Model //Mẫu động cơ
+Master Engine Type //Loại động cơ
+Master Material //Nguyên-vật liệu
+Master Engine //Động cơ
+Master Vehicle CBU //Xe nhập nguyên chiếc từ nước ngoài
+Master Vehicle CKD //Xe lắp ráp
+Master CPS Suppliers(?)
+Master CPS Inventory Group(?)
+Master CPS Inventory Items(?)
+Invoice-Purchase Order-Receive Shipment
