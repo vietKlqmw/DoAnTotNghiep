@@ -11,9 +11,11 @@ namespace tmss.Master.Material
         public virtual string Description { get; set; }//Sự mô tả
         public virtual string MaterialGroup { get; set; }//Nhóm vật liệu
         public virtual string BaseUnitOfMeasure { get; set; }//Đơn Vị Đo Cơ Bản
+        public virtual string Plant { get; set; }//~Factory Code
         public virtual string StorageLocation { get; set; }//Địa điểm lưu trữ
         public virtual string ProductionGroup { get; set; }//Nhóm sản xuất
         public virtual string ProductionPurpose { get; set; }//Mục đích sản xuất
+        public virtual string ReservedStock { get; set; }
         public virtual string LotCode { get; set; }//Số lô
         public virtual string ProductionStorageLocation { get; set; }//Vị trí lưu trữ sản xuất
         public virtual decimal? CostingLotSize { get; set; }//Kích thước lô chi phí

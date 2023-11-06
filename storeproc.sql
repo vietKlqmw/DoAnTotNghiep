@@ -1,4 +1,33 @@
-﻿------------------------------------------------MaterialGroup------------------------------------------------
+﻿------------------------------------------------Material------------------------------------------------
+--Search
+CREATE PROCEDURE INV_MASTER_MATERIAL_SEARCH
+    @p_MaterialCode NVARCHAR(40),
+    @p_MaterialGroup NVARCHAR(9)
+AS
+BEGIN
+    SELECT mm.Id, mm.MaterialType, mm.MaterialCode, mm.Description, mm.MaterialGroup, 
+           mm.BaseUnitOfMeasure, mm.Plant, mm.StorageLocation, mm.ProductionGroup, 
+           mm.ProductionPurpose, mm.ReservedStock, mm.LotCode, mm.ProductionStorageLocation, 
+           mm.CostingLotSize, mm.ProductionVersion, mm.StandardPrice, mm.MovingPrice, 
+           mm.MaterialOrigin, mm.OriginGroup, mm.EffectiveDateFrom, mm.EffectiveDateTo
+      FROM MasterMaterial mm
+     WHERE (@p_MaterialCode IS NULL OR mm.MaterialCode LIKE CONCAT('%', @p_MaterialCode, '%'))
+       AND (@p_MaterialGroup IS NULL OR mm.MaterialGroup LIKE CONCAT('%', @p_MaterialGroup, '%'))
+END
+--Get data by Id:
+CREATE PROCEDURE INV_MASTER_MATERIAL_BY_ID
+    @p_MaterialId BIGINT
+AS
+BEGIN
+    SELECT mm.Id, mm.MaterialType, mm.MaterialCode, mm.Description, mm.MaterialGroup, 
+           mm.BaseUnitOfMeasure, mm.Plant, mm.StorageLocation, mm.ProductionGroup, 
+           mm.ProductionPurpose, mm.ReservedStock, mm.LotCode, mm.ProductionStorageLocation, 
+           mm.CostingLotSize, mm.ProductionVersion, mm.StandardPrice, mm.MovingPrice, 
+           mm.MaterialOrigin, mm.OriginGroup, mm.EffectiveDateFrom, mm.EffectiveDateTo
+      FROM MasterMaterial mm
+     WHERE mm.Id = @p_MaterialId
+END
+------------------------------------------------MaterialGroup------------------------------------------------
 INSERT INTO MasterMaterialGroup 
 (CreationTime, CreatorUserId, IsDeleted, Code, Name)
 VALUES 
