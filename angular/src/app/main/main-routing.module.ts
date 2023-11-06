@@ -47,6 +47,21 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                         loadChildren: () => import('./master/common/material-group/material-group.module').then(m => m.MaterialGroupModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
+                    {
+                        path: 'master/common/material-type',
+                        loadChildren: () => import('./master/common/material-type/material-type.module').then(m => m.MaterialTypeModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
+                    {
+                        path: 'master/common/product-group',
+                        loadChildren: () => import('./master/common/product-group/product-group.module').then(m => m.ProductGroupModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
+                    {
+                        path: 'master/common/product-type',
+                        loadChildren: () => import('./master/common/product-type/product-type.module').then(m => m.ProductTypeModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
                     { path: '**', redirectTo: 'dashboard' }
                 ]
             }

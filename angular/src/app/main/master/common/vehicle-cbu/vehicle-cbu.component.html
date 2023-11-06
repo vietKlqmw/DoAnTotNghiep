@@ -19,19 +19,19 @@
             <div class="kt-portlet__body">
                 <form class="kt-form">
                     <div class="row align-items-center mb-2">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <input [(ngModel)]="vehicleType" name="vehicleType" class="form-control m-input"
                                     [placeholder]="l('Vehicle Type')" type="text" (keyup.enter)="searchDatas()">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <input [(ngModel)]="model" name="model" class="form-control m-input"
                                     [placeholder]="l('Model')" type="text" (keyup.enter)="searchDatas()">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
                                     class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
