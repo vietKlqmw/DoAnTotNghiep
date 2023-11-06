@@ -32,6 +32,21 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                         loadChildren: () => import('./master/common/invoice-status/invoice-status.module').then(m => m.InvoiceStatusModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
+                    {
+                        path: 'master/common/storage-location',
+                        loadChildren: () => import('./master/common/storage-location/storage-location.module').then(m => m.StorageLocationModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
+                    {
+                        path: 'master/common/factory',
+                        loadChildren: () => import('./master/common/factory/factory.module').then(m => m.FactoryModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
+                    {
+                        path: 'master/common/material-group',
+                        loadChildren: () => import('./master/common/material-group/material-group.module').then(m => m.MaterialGroupModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
                     { path: '**', redirectTo: 'dashboard' }
                 ]
             }

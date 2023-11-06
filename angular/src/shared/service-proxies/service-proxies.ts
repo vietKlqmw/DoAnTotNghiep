@@ -6107,6 +6107,91 @@ export class MasterCustomsStatusServiceProxy {
 }
 
 @Injectable()
+export class MasterFactoryServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param plantName (optional) 
+     * @param branchNo (optional) 
+     * @param addressLanguageEn (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getFactorySearch(plantName: string | null | undefined, branchNo: string | null | undefined, addressLanguageEn: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfMasterFactoryDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterFactory/GetFactorySearch?";
+        if (plantName !== undefined)
+            url_ += "PlantName=" + encodeURIComponent("" + plantName) + "&"; 
+        if (branchNo !== undefined)
+            url_ += "BranchNo=" + encodeURIComponent("" + branchNo) + "&"; 
+        if (addressLanguageEn !== undefined)
+            url_ += "AddressLanguageEn=" + encodeURIComponent("" + addressLanguageEn) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFactorySearch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFactorySearch(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfMasterFactoryDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfMasterFactoryDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetFactorySearch(response: HttpResponseBase): Observable<PagedResultDtoOfMasterFactoryDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMasterFactoryDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfMasterFactoryDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class MasterInvoiceStatusServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -6182,6 +6267,304 @@ export class MasterInvoiceStatusServiceProxy {
             }));
         }
         return _observableOf<PagedResultDtoOfMasterInvoiceStatusDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class MasterMaterialGroupServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param code (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getMaterialGroupSearch(code: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfMasterMaterialGroupDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterMaterialGroup/GetMaterialGroupSearch?";
+        if (code !== undefined)
+            url_ += "Code=" + encodeURIComponent("" + code) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMaterialGroupSearch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMaterialGroupSearch(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfMasterMaterialGroupDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfMasterMaterialGroupDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetMaterialGroupSearch(response: HttpResponseBase): Observable<PagedResultDtoOfMasterMaterialGroupDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMasterMaterialGroupDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfMasterMaterialGroupDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class MasterStorageLocationServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param plantName (optional) 
+     * @param storageLocationName (optional) 
+     * @param addressLanguageEn (optional) 
+     * @param category (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getStorageLocationSearch(plantName: string | null | undefined, storageLocationName: string | null | undefined, addressLanguageEn: string | null | undefined, category: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfMasterStorageLocationDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterStorageLocation/GetStorageLocationSearch?";
+        if (plantName !== undefined)
+            url_ += "PlantName=" + encodeURIComponent("" + plantName) + "&"; 
+        if (storageLocationName !== undefined)
+            url_ += "StorageLocationName=" + encodeURIComponent("" + storageLocationName) + "&"; 
+        if (addressLanguageEn !== undefined)
+            url_ += "AddressLanguageEn=" + encodeURIComponent("" + addressLanguageEn) + "&"; 
+        if (category !== undefined)
+            url_ += "Category=" + encodeURIComponent("" + category) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStorageLocationSearch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStorageLocationSearch(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfMasterStorageLocationDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfMasterStorageLocationDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetStorageLocationSearch(response: HttpResponseBase): Observable<PagedResultDtoOfMasterStorageLocationDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMasterStorageLocationDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfMasterStorageLocationDto>(<any>null);
+    }
+
+    /**
+     * @param plantName (optional) 
+     * @param storageLocationName (optional) 
+     * @param addressLanguageEn (optional) 
+     * @param category (optional) 
+     * @return Success
+     */
+    getStorageLocationToExcel(plantName: string | null | undefined, storageLocationName: string | null | undefined, addressLanguageEn: string | null | undefined, category: string | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterStorageLocation/GetStorageLocationToExcel?";
+        if (plantName !== undefined)
+            url_ += "PlantName=" + encodeURIComponent("" + plantName) + "&"; 
+        if (storageLocationName !== undefined)
+            url_ += "StorageLocationName=" + encodeURIComponent("" + storageLocationName) + "&"; 
+        if (addressLanguageEn !== undefined)
+            url_ += "AddressLanguageEn=" + encodeURIComponent("" + addressLanguageEn) + "&"; 
+        if (category !== undefined)
+            url_ += "Category=" + encodeURIComponent("" + category) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStorageLocationToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStorageLocationToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetStorageLocationToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class MasterStorageLocationExcelExporterServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    exportToFile(body: MasterStorageLocationDto[] | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterStorageLocationExcelExporter/ExportToFile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToFile(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processExportToFile(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
     }
 }
 
@@ -20118,6 +20501,110 @@ export interface IPagedResultDtoOfMasterCustomsStatusDto {
     items: MasterCustomsStatusDto[] | undefined;
 }
 
+export class MasterFactoryDto implements IMasterFactoryDto {
+    plantCode!: string | undefined;
+    plantName!: string | undefined;
+    branchNo!: string | undefined;
+    addressLanguageEn!: string | undefined;
+    addressLanguageVn!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IMasterFactoryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.plantCode = _data["plantCode"];
+            this.plantName = _data["plantName"];
+            this.branchNo = _data["branchNo"];
+            this.addressLanguageEn = _data["addressLanguageEn"];
+            this.addressLanguageVn = _data["addressLanguageVn"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): MasterFactoryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MasterFactoryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["plantCode"] = this.plantCode;
+        data["plantName"] = this.plantName;
+        data["branchNo"] = this.branchNo;
+        data["addressLanguageEn"] = this.addressLanguageEn;
+        data["addressLanguageVn"] = this.addressLanguageVn;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IMasterFactoryDto {
+    plantCode: string | undefined;
+    plantName: string | undefined;
+    branchNo: string | undefined;
+    addressLanguageEn: string | undefined;
+    addressLanguageVn: string | undefined;
+    id: number | undefined;
+}
+
+export class PagedResultDtoOfMasterFactoryDto implements IPagedResultDtoOfMasterFactoryDto {
+    totalCount!: number;
+    items!: MasterFactoryDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfMasterFactoryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MasterFactoryDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMasterFactoryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMasterFactoryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfMasterFactoryDto {
+    totalCount: number;
+    items: MasterFactoryDto[] | undefined;
+}
+
 export class MasterInvoiceStatusDto implements IMasterInvoiceStatusDto {
     code!: string | undefined;
     description!: string | undefined;
@@ -20208,6 +20695,210 @@ export class PagedResultDtoOfMasterInvoiceStatusDto implements IPagedResultDtoOf
 export interface IPagedResultDtoOfMasterInvoiceStatusDto {
     totalCount: number;
     items: MasterInvoiceStatusDto[] | undefined;
+}
+
+export class MasterMaterialGroupDto implements IMasterMaterialGroupDto {
+    code!: string | undefined;
+    name!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IMasterMaterialGroupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.name = _data["name"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): MasterMaterialGroupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MasterMaterialGroupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["name"] = this.name;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IMasterMaterialGroupDto {
+    code: string | undefined;
+    name: string | undefined;
+    id: number | undefined;
+}
+
+export class PagedResultDtoOfMasterMaterialGroupDto implements IPagedResultDtoOfMasterMaterialGroupDto {
+    totalCount!: number;
+    items!: MasterMaterialGroupDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfMasterMaterialGroupDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MasterMaterialGroupDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMasterMaterialGroupDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMasterMaterialGroupDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfMasterMaterialGroupDto {
+    totalCount: number;
+    items: MasterMaterialGroupDto[] | undefined;
+}
+
+export class MasterStorageLocationDto implements IMasterStorageLocationDto {
+    plantCode!: string | undefined;
+    plantName!: string | undefined;
+    storageLocation!: string | undefined;
+    storageLocationName!: string | undefined;
+    addressLanguageEn!: string | undefined;
+    addressLanguageVn!: string | undefined;
+    category!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IMasterStorageLocationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.plantCode = _data["plantCode"];
+            this.plantName = _data["plantName"];
+            this.storageLocation = _data["storageLocation"];
+            this.storageLocationName = _data["storageLocationName"];
+            this.addressLanguageEn = _data["addressLanguageEn"];
+            this.addressLanguageVn = _data["addressLanguageVn"];
+            this.category = _data["category"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): MasterStorageLocationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MasterStorageLocationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["plantCode"] = this.plantCode;
+        data["plantName"] = this.plantName;
+        data["storageLocation"] = this.storageLocation;
+        data["storageLocationName"] = this.storageLocationName;
+        data["addressLanguageEn"] = this.addressLanguageEn;
+        data["addressLanguageVn"] = this.addressLanguageVn;
+        data["category"] = this.category;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IMasterStorageLocationDto {
+    plantCode: string | undefined;
+    plantName: string | undefined;
+    storageLocation: string | undefined;
+    storageLocationName: string | undefined;
+    addressLanguageEn: string | undefined;
+    addressLanguageVn: string | undefined;
+    category: string | undefined;
+    id: number | undefined;
+}
+
+export class PagedResultDtoOfMasterStorageLocationDto implements IPagedResultDtoOfMasterStorageLocationDto {
+    totalCount!: number;
+    items!: MasterStorageLocationDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfMasterStorageLocationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MasterStorageLocationDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMasterStorageLocationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMasterStorageLocationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfMasterStorageLocationDto {
+    totalCount: number;
+    items: MasterStorageLocationDto[] | undefined;
 }
 
 export class MasterVehicleCBUDto implements IMasterVehicleCBUDto {
