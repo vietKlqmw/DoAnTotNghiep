@@ -11,7 +11,7 @@ using tmss.Friendships;
 using tmss.Master;
 using tmss.Master.CustomsStatus;
 using tmss.Master.InvoiceStatus;
-//using tmss.Master.Material;
+using tmss.Master.Material;
 using tmss.Master.VehicleCBU;
 using tmss.MultiTenancy;
 using tmss.MultiTenancy.Accounting;
@@ -63,7 +63,7 @@ namespace tmss.EntityFrameworkCore
 
         public virtual DbSet<MasterMaterialType> MasterMaterialTypes { get; set; }
 
-        //public virtual DbSet<MasterMaterial> MasterMaterials { get; set; }
+        public virtual DbSet<MasterMaterial> MasterMaterials { get; set; }
         #endregion
 
         public tmssDbContext(DbContextOptions<tmssDbContext> options)
