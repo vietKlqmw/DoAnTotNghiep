@@ -51,6 +51,11 @@ namespace tmss.EntityFrameworkCore
 
         public virtual DbSet<MasterContainerStatus> MasterContainerStatuss { get; set; }
 
+        public virtual DbSet<MasterFactory> MasterFactorys { get; set; }
+
+        public virtual DbSet<MasterStorageLocation> MasterStorageLocations { get; set; }
+
+        public virtual DbSet<MasterMaterialGroup> MasterMaterialGroups { get; set; }
 
         //public virtual DbSet<MasterMaterial> MasterMaterials { get; set; }
         #endregion

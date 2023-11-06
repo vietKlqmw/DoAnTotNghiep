@@ -4,7 +4,6 @@ Master Customs Status //Trạng thái hải quan
 Master Invoice Status //Trạng thái hóa đơn
 Master Container Status //Trạng thái container
 Master Customs Port //Cảng hải quan
-Master Customs Leadtime //Thời gian dẫn hải quan
 Master Supplier List //Danh sách nhà cung cấp
 Master Material Group //Nhóm nguyên vật liệu
 Master Plant(?)
