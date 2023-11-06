@@ -9,6 +9,29 @@ VALUES
 (GETDATE(), 1, 0, N'UNT0004', N'Propeller Shaft'),
 (GETDATE(), 1, 0, N'PAR0001', N'Part'),
 (GETDATE(), 1, 0, N'DRM0001', N'Direct Material');
+------------------------------------------------MaterialType------------------------------------------------
+INSERT INTO MasterMaterialType 
+(CreationTime, CreatorUserId, IsDeleted, Code, Name)
+VALUES 
+(GETDATE(), 1, 0, N'ZDRM', N'Direct Material'),
+(GETDATE(), 1, 0, N'ZPAR', N'EG,T/M,Axles,Shaft,Part'),
+(GETDATE(), 1, 0, N'ZVEH', N'Vehicle');
+------------------------------------------------ProductGroup------------------------------------------------
+INSERT INTO MasterProductGroup 
+(CreationTime, CreatorUserId, IsDeleted, Code, Name)
+VALUES 
+(GETDATE(), 1, 0, N'PC', N'PC'),
+(GETDATE(), 1, 0, N'CV', N'CV');
+------------------------------------------------ProductType------------------------------------------------
+INSERT INTO MasterProductType 
+(CreationTime, CreatorUserId, IsDeleted, Code, Name)
+VALUES 
+(GETDATE(), 1, 0, N'VEH', N'Vehicle'),
+(GETDATE(), 1, 0, N'UNT', N'Unit ( Engine, T/M, Axles, Propeller Shaft)'),
+(GETDATE(), 1, 0, N'PAR', N'Part'),
+(GETDATE(), 1, 0, N'DRM', N'Direct'),
+(GETDATE(), 1, 0, N'SUP', N'Supplies'),
+(GETDATE(), 1, 0, N'NSM', N'Non-stock Material');
 ------------------------------------------------Factory------------------------------------------------
 INSERT INTO MasterFactory 
 (CreationTime, CreatorUserId, IsDeleted, 
