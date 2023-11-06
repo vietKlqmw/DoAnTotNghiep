@@ -1,4 +1,70 @@
-﻿------------------------------------------------InvoiceStatus------------------------------------------------
+﻿------------------------------------------------MaterialGroup------------------------------------------------
+INSERT INTO MasterMaterialGroup 
+(CreationTime, CreatorUserId, IsDeleted, Code, Name)
+VALUES 
+(GETDATE(), 1, 0, N'VEH0001', N'Vehicle'),
+(GETDATE(), 1, 0, N'UNT0001', N'Engine'),
+(GETDATE(), 1, 0, N'UNT0002', N'Transmission'),
+(GETDATE(), 1, 0, N'UNT0003', N'Axles'),
+(GETDATE(), 1, 0, N'UNT0004', N'Propeller Shaft'),
+(GETDATE(), 1, 0, N'PAR0001', N'Part'),
+(GETDATE(), 1, 0, N'DRM0001', N'Direct Material');
+------------------------------------------------Factory------------------------------------------------
+INSERT INTO MasterFactory 
+(CreationTime, CreatorUserId, IsDeleted, 
+PlantCode, PlantName, BranchNo, AddressLanguageEn, AddressLanguageVn)
+VALUES 
+(GETDATE(), 1, 0, 
+N'451', N'VMV HQ', N'', 
+N'Phuc Thang ward – Phuc Yen city – Vinh Phuc province', 
+N'Viet Nam / Phường Phúc Thắng – Thành phố Phúc Yên – Tỉnh Vĩnh Phúc – Việt Nam'),
+(GETDATE(), 1, 0, 
+N'452', N'VMV Trading Plant', N'', 
+N'Phuc Thang ward – Phuc Yen city – Vinh Phuc province', 
+N'Viet Nam / Phường Phúc Thắng – Thành phố Phúc Yên – Tỉnh Vĩnh Phúc – Việt Nam');
+------------------------------------------------StorageLocation------------------------------------------------
+INSERT INTO MasterStorageLocation 
+(CreationTime, CreatorUserId, IsDeleted, 
+PlantCode, PlantName, StorageLocation, StorageLocationName, 
+AddressLanguageEn, AddressLanguageVn, Category)
+VALUES 
+(GETDATE(), 1, 0, 
+N'451', N'VMV', N'101', N'GWH (CKD part)', 
+N'Phuc Thang ward - Phuc Yen city - Vinh Phuc province - Viet Nam', 
+N'Phường Phúc Thắng - Thành phố Phúc Yên - Tỉnh Vĩnh Phúc - Việt Nam', 
+N'Raw Material'),
+(GETDATE(), 1, 0, 
+N'451', N'VMV', N'102', N'ACC for CBU', 
+N'Phuc Thang ward - Phuc Yen city - Vinh Phuc province - Viet Nam', 
+N'Phường Phúc Thắng - Thành phố Phúc Yên - Tỉnh Vĩnh Phúc - Việt Nam', 
+N'Raw Material'),
+(GETDATE(), 1, 0, 
+N'451', N'VMV', N'301', N'Production Area', 
+N'Phuc Thang ward - Phuc Yen city - Vinh Phuc province - Viet Nam', 
+N'Phường Phúc Thắng - Thành phố Phúc Yên - Tỉnh Vĩnh Phúc - Việt Nam', 
+N'Production Area'),
+(GETDATE(), 1, 0, 
+N'451', N'VMV', N'401', N'Vehicle Yard', 
+N'Phuc Thang ward - Phuc Yen city - Vinh Phuc province - Viet Nam', 
+N'Phường Phúc Thắng - Thành phố Phúc Yên - Tỉnh Vĩnh Phúc - Việt Nam', 
+N'Finished Goods');
+--Search
+CREATE PROCEDURE INV_MASTER_STORAGE_LOCATION_SEARCH
+    @p_PlantName NVARCHAR(30),
+    @p_StorageLocationName NVARCHAR(MAX),
+    @p_AddressLanguageEn NVARCHAR(MAX),
+    @p_Category NVARCHAR(50)
+AS 
+BEGIN
+    SELECT msl.Id, msl.PlantCode, msl.PlantName, msl.StorageLocation, msl.StorageLocationName, 
+           msl.AddressLanguageEn, msl.AddressLanguageVn, msl.Category
+      FROM MasterStorageLocation msl
+     WHERE (@p_PlantName IS NULL OR msl.PlantName LIKE CONCAT('%', @p_PlantName, '%'))
+       AND (@p_StorageLocationName IS NULL OR msl.StorageLocationName LIKE CONCAT('%', @p_StorageLocationName, '%'))
+       AND (@p_AddressLanguageEn IS NULL OR msl.AddressLanguageEn LIKE CONCAT('%', @p_AddressLanguageEn, '%'))
+       AND (@p_Category IS NULL OR msl.Category LIKE CONCAT('%', @p_Category, '%'))
+END
+------------------------------------------------InvoiceStatus------------------------------------------------
 INSERT INTO MasterInvoiceStatus 
 (CreationTime, CreatorUserId, IsDeleted, Code, Description)
 VALUES 

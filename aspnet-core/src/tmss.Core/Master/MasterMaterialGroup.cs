@@ -8,7 +8,7 @@ namespace tmss.Master
     [Table("MasterMaterialGroup")]
     public class MasterMaterialGroup : FullAuditedEntity<long>, IEntity<long>
     {
-        public const int MaxCodeLength = 3;
+        public const int MaxCodeLength = 10;
 
         public const int MaxNameLength = 50;
 
