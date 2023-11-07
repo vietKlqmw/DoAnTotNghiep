@@ -15,6 +15,7 @@ namespace tmss.Master.Material
         public virtual string StorageLocation { get; set; }//Địa điểm lưu trữ
         public virtual string ProductionGroup { get; set; }//Nhóm sản xuất
         public virtual string ProductionPurpose { get; set; }//Mục đích sản xuất
+        public virtual string ProductionType { get; set; }
         public virtual string ReservedStock { get; set; }
         public virtual string LotCode { get; set; }//Số lô
         public virtual string ProductionStorageLocation { get; set; }//Vị trí lưu trữ sản xuất

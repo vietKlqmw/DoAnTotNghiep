@@ -27,6 +27,8 @@ namespace tmss.Master.Material
 
         public const int MaxProductionPurposeLength = 2;
 
+        public const int MaxProductionTypeLength = 10;
+
         public const int MaxReservedStockLength = 2;
 
         public const int MaxLotCodeLength = 10;
@@ -65,6 +67,9 @@ namespace tmss.Master.Material
 
         [StringLength(MaxProductionPurposeLength)]
         public virtual string ProductionPurpose { get; set; }//Mục đích sản xuất
+
+        [StringLength(MaxProductionTypeLength)]
+        public virtual string ProductionType { get; set; }
 
         [StringLength(MaxReservedStockLength)]
         public virtual string ReservedStock { get; set; }

@@ -21214,6 +21214,7 @@ export class MasterMaterialDto implements IMasterMaterialDto {
     storageLocation!: string | undefined;
     productionGroup!: string | undefined;
     productionPurpose!: string | undefined;
+    productionType!: string | undefined;
     reservedStock!: string | undefined;
     lotCode!: string | undefined;
     productionStorageLocation!: string | undefined;
@@ -21247,6 +21248,7 @@ export class MasterMaterialDto implements IMasterMaterialDto {
             this.storageLocation = _data["storageLocation"];
             this.productionGroup = _data["productionGroup"];
             this.productionPurpose = _data["productionPurpose"];
+            this.productionType = _data["productionType"];
             this.reservedStock = _data["reservedStock"];
             this.lotCode = _data["lotCode"];
             this.productionStorageLocation = _data["productionStorageLocation"];
@@ -21280,6 +21282,7 @@ export class MasterMaterialDto implements IMasterMaterialDto {
         data["storageLocation"] = this.storageLocation;
         data["productionGroup"] = this.productionGroup;
         data["productionPurpose"] = this.productionPurpose;
+        data["productionType"] = this.productionType;
         data["reservedStock"] = this.reservedStock;
         data["lotCode"] = this.lotCode;
         data["productionStorageLocation"] = this.productionStorageLocation;
@@ -21306,6 +21309,7 @@ export interface IMasterMaterialDto {
     storageLocation: string | undefined;
     productionGroup: string | undefined;
     productionPurpose: string | undefined;
+    productionType: string | undefined;
     reservedStock: string | undefined;
     lotCode: string | undefined;
     productionStorageLocation: string | undefined;

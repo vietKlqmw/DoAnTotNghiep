@@ -65,7 +65,7 @@ namespace tmss.Master.Material.Exporting
                         _ => _.EffectiveDateTo
                     );
 
-                    for (var i = 0; i < 9; i++)
+                    for (var i = 0; i < 20; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

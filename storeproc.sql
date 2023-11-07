@@ -6,7 +6,7 @@ CREATE PROCEDURE INV_MASTER_MATERIAL_SEARCH
 AS
 BEGIN
     SELECT mm.Id, mm.MaterialType, mm.MaterialCode, mm.Description, mm.MaterialGroup, 
-           mm.BaseUnitOfMeasure, mm.Plant, mm.StorageLocation, mm.ProductionGroup, 
+           mm.BaseUnitOfMeasure, mm.Plant, mm.StorageLocation, mm.ProductionGroup, mm.ProductionType, 
            mm.ProductionPurpose, mm.ReservedStock, mm.LotCode, mm.ProductionStorageLocation, 
            mm.CostingLotSize, mm.ProductionVersion, mm.StandardPrice, mm.MovingPrice, 
            mm.MaterialOrigin, mm.OriginGroup, mm.EffectiveDateFrom, mm.EffectiveDateTo
@@ -20,7 +20,7 @@ CREATE PROCEDURE INV_MASTER_MATERIAL_BY_ID
 AS
 BEGIN
     SELECT mm.Id, mm.MaterialType, mm.MaterialCode, mm.Description, mm.MaterialGroup, 
-           mm.BaseUnitOfMeasure, mm.Plant, mm.StorageLocation, mm.ProductionGroup, 
+           mm.BaseUnitOfMeasure, mm.Plant, mm.StorageLocation, mm.ProductionGroup, mm.ProductionType, 
            mm.ProductionPurpose, mm.ReservedStock, mm.LotCode, mm.ProductionStorageLocation, 
            mm.CostingLotSize, mm.ProductionVersion, mm.StandardPrice, mm.MovingPrice, 
            mm.MaterialOrigin, mm.OriginGroup, mm.EffectiveDateFrom, mm.EffectiveDateTo

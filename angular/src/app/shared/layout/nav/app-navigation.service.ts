@@ -33,6 +33,8 @@ export class AppNavigationService {
                     new AppMenuItem('Product Group', '', 'flaticon-car', '/app/main/master/common/product-group'),
                     new AppMenuItem('Product Type', '', 'flaticon-car', '/app/main/master/common/product-type'),
                 ]),
+
+                new AppMenuItem('Material', '', 'flaticon-car', '/app/main/master/common/material'),
                 new AppMenuItem('Vehicle CBU', '', 'flaticon-car', '/app/main/master/common/vehicle-cbu'),
             ]),
 
