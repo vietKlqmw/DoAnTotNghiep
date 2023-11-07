@@ -6,18 +6,19 @@ import { CustomColDef, FrameworkComponent, GridParams, PaginationParamsModel } f
 import { GridTableService } from '@app/shared/common/services/grid-table.service';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { MasterProductTypeDto, MasterProductTypeServiceProxy } from '@shared/service-proxies/service-proxies';
+import { MasterUnitOfMeasureDto, MasterUnitOfMeasureServiceProxy } from '@shared/service-proxies/service-proxies';
+import { FileDownloadService } from '@shared/utils/file-download.service';
 import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-product-type',
-    templateUrl: './product-type.component.html',
+    selector: 'app-uom',
+    templateUrl: './uom.component.html',
     styleUrls: ['../../../screen-modal.less'],
     encapsulation: ViewEncapsulation.None,
     animations: [appModuleAnimation()]
 })
-export class ProductTypeComponent extends AppComponentBase implements OnInit {
+export class UomComponent extends AppComponentBase implements OnInit {
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
     paginationParams: PaginationParamsModel = {
@@ -28,8 +29,8 @@ export class ProductTypeComponent extends AppComponentBase implements OnInit {
         sorting: '',
         totalPage: 1,
     };
-    selectedRow: MasterProductTypeDto = new MasterProductTypeDto();
-    datas: MasterProductTypeDto = new MasterProductTypeDto();
+    selectedRow: MasterUnitOfMeasureDto = new MasterUnitOfMeasureDto();
+    datas: MasterUnitOfMeasureDto = new MasterUnitOfMeasureDto();
     dataParams: GridParams | undefined;
     dataParamsColor: GridParams | undefined;
     rowData: any[] = [];
@@ -60,8 +61,9 @@ export class ProductTypeComponent extends AppComponentBase implements OnInit {
 
     constructor(
         injector: Injector,
-        private _service: MasterProductTypeServiceProxy,
-        private gridTableService: GridTableService
+        private _service: MasterUnitOfMeasureServiceProxy,
+        private gridTableService: GridTableService,
+        private _fileDownloadService: FileDownloadService
     ) {
         super(injector);
 
@@ -82,7 +84,7 @@ export class ProductTypeComponent extends AppComponentBase implements OnInit {
 
     searchDatas(): void {
         this.isLoading = true;
-        this._service.getProductTypeSearch(
+        this._service.getUoMSearch(
             this.code,
             this.name,
             '',
@@ -105,7 +107,7 @@ export class ProductTypeComponent extends AppComponentBase implements OnInit {
     }
 
     getDatas(paginationParams?: PaginationParamsModel) {
-        return this._service.getProductTypeSearch(
+        return this._service.getUoMSearch(
             this.code,
             this.name,
             '',
@@ -142,5 +144,18 @@ export class ProductTypeComponent extends AppComponentBase implements OnInit {
                 this.isLoading = false;
             });
     }
+
+    exportToExcel(): void {
+        this.isLoading = true;
+        this._service.getUnitOfMeasureToExcel(
+            this.code,
+            this.name)
+            .pipe(finalize(() => this.isLoading = false))
+            .subscribe(result => {
+                this._fileDownloadService.downloadTempFile(result);
+                this.notify.success(this.l('Download Excel Successfully'));
+            });
+    }
+
 }
 

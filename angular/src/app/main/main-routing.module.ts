@@ -67,6 +67,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                         loadChildren: () => import('./master/common/material/material.module').then(m => m.MaterialModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
+                    {
+                        path: 'master/common/uom',
+                        loadChildren: () => import('./master/common/uom/uom.module').then(m => m.UomModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
                     { path: '**', redirectTo: 'dashboard' }
                 ]
             }

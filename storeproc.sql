@@ -152,6 +152,40 @@ VALUES
 (GETDATE(), 1, 0, N'CS09', N'EXPORT', N'XUẤT KHẨU'),
 (GETDATE(), 1, 0, N'CS10', N'NEW', N'MỚI')
 ;
+------------------------------------------------UnitOfMeasure------------------------------------------------
+INSERT INTO MasterUnitOfMeasure 
+(CreationTime, CreatorUserId, IsDeleted, Code, Name)
+VALUES 
+(GETDATE(), 1, 0, N'PC', N'Pieces'),
+(GETDATE(), 1, 0, N'EA', N'Each'),
+(GETDATE(), 1, 0, N'RM', N'Ream'),
+(GETDATE(), 1, 0, N'CAN', N'Can'),
+(GETDATE(), 1, 0, N'L', N'Liter'),
+(GETDATE(), 1, 0, N'ML', N'Milliliter'),
+(GETDATE(), 1, 0, N'ROL', N'Roll'),
+(GETDATE(), 1, 0, N'BT', N'Bottle'),
+(GETDATE(), 1, 0, N'DR', N'Drum'),
+(GETDATE(), 1, 0, N'GAL', N'Gallon'),
+(GETDATE(), 1, 0, N'TB', N'Tube'),
+(GETDATE(), 1, 0, N'TN', N'Tin'),
+(GETDATE(), 1, 0, N'PAA', N'Pair'),
+(GETDATE(), 1, 0, N'PAL', N'Pallet'),
+(GETDATE(), 1, 0, N'PL', N'Pail'),
+(GETDATE(), 1, 0, N'AU', N'Activ.unit'),
+(GETDATE(), 1, 0, N'BAG', N'Bag'),
+(GETDATE(), 1, 0, N'DZ', N'Dozen'),
+(GETDATE(), 1, 0, N'SH', N'Sheet'),
+(GETDATE(), 1, 0, N'CYL', N'Cylinder'),
+(GETDATE(), 1, 0, N'MON', N'Months'),
+(GETDATE(), 1, 0, N'D', N'Days'),
+(GETDATE(), 1, 0, N'H', N'Hour'),
+(GETDATE(), 1, 0, N'MIN', N'min.'),
+(GETDATE(), 1, 0, N'MON', N'Months'),
+(GETDATE(), 1, 0, N'PDA', N'Consultant Days'),
+(GETDATE(), 1, 0, N'S', N'Second'),
+(GETDATE(), 1, 0, N'UNT', N'Unit'),
+(GETDATE(), 1, 0, N'LOT', N'Lot'),
+(GETDATE(), 1, 0, N'CV', N'Case');
 ------------------------------------------------VehicleCBU------------------------------------------------
 CREATE PROCEDURE INV_MASTER_VEHICLE_CBU_SEARCH
     @p_VehicleType NVARCHAR(10),

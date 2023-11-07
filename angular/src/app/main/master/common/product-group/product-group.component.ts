@@ -100,6 +100,7 @@ export class ProductGroupComponent extends AppComponentBase implements OnInit {
 
     clearTextSearch() {
         this.code = '';
+        this.name = '';
         this.searchDatas();
     }
 
