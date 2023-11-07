@@ -10,7 +10,7 @@ import { ModalDirective } from "ngx-bootstrap/modal";
 export class ViewMaterialModalComponent extends AppComponentBase {
     @ViewChild('viewMaterialModal', {static: true}) modal: ModalDirective;
 
-    rowData: any;
+    rowData: MasterMaterialDto = new MasterMaterialDto();
 
     constructor(
         injector: Injector

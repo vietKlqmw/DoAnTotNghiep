@@ -28,6 +28,7 @@ namespace tmss.Master.Material.Exporting
                         ("Storage Location"),
                         ("Production Group"),
                         ("Production Purpose"),
+                        ("Production Type"),
                         ("Reserved Stock"),
                         ("Lot Code"),
                         ("Production Storage Location"),
@@ -52,6 +53,7 @@ namespace tmss.Master.Material.Exporting
                         _ => _.StorageLocation,
                         _ => _.ProductionGroup,
                         _ => _.ProductionPurpose,
+                        _ => _.ProductionType,
                         _ => _.ReservedStock,
                         _ => _.LotCode,
                         _ => _.ProductionStorageLocation,
@@ -65,7 +67,7 @@ namespace tmss.Master.Material.Exporting
                         _ => _.EffectiveDateTo
                     );
 
-                    for (var i = 0; i < 20; i++)
+                    for (var i = 0; i < 21; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }
