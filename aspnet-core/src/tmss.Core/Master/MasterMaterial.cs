@@ -68,9 +68,6 @@ namespace tmss.Master.Material
         [StringLength(MaxProductionPurposeLength)]
         public virtual string ProductionPurpose { get; set; }//Mục đích sản xuất
 
-        [StringLength(MaxProductionTypeLength)]
-        public virtual string ProductionType { get; set; }
-
         [StringLength(MaxReservedStockLength)]
         public virtual string ReservedStock { get; set; }
 
@@ -98,6 +95,9 @@ namespace tmss.Master.Material
         public virtual DateTime? EffectiveDateFrom { get; set; }
 
         public virtual DateTime? EffectiveDateTo { get; set; }
+
+        [StringLength(MaxProductionTypeLength)]
+        public virtual string ProductionType { get; set; }
     }
 
 }

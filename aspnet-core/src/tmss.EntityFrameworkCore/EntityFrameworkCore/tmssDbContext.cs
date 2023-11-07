@@ -64,6 +64,9 @@ namespace tmss.EntityFrameworkCore
         public virtual DbSet<MasterMaterialType> MasterMaterialTypes { get; set; }
 
         public virtual DbSet<MasterMaterial> MasterMaterials { get; set; }
+
+        public virtual DbSet<MasterUnitOfMeasure> MasterUnitOfMeasures { get; set; }
+
         #endregion
 
         public tmssDbContext(DbContextOptions<tmssDbContext> options)
