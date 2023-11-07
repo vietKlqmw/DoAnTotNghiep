@@ -62,7 +62,7 @@
                 <hr>
                 <div class="row mb-2">
                     <div class="col-sm-12 text-right">
-                        <button type="button" class="btn btn-view">
+                        <button type="button" class="btn btn-view" (click)="viewMaterial()" >
                             <i class="far fa-regular fa-eye"></i> {{"View" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
                             <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>
@@ -72,3 +72,4 @@
         </div>
     </div>
 </div>
+<viewMaterialModal #viewMaterialModal></viewMaterialModal>

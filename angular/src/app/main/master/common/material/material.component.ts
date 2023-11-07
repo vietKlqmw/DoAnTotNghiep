@@ -1,6 +1,6 @@
 import { GridApi } from '@ag-grid-enterprise/all-modules';
 import { DatePipe } from '@angular/common';
-import { Component, Injector, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AgCellButtonRendererComponent } from '@app/shared/common/grid/ag-cell-button-renderer/ag-cell-button-renderer.component';
 import { CustomColDef, FrameworkComponent, GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
 import { GridTableService } from '@app/shared/common/services/grid-table.service';
@@ -10,6 +10,7 @@ import { MasterMaterialDto, MasterMaterialServiceProxy } from '@shared/service-p
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
+import { ViewMaterialModalComponent } from './view-material-modal.component';
 
 @Component({
     selector: 'app-material',
@@ -19,6 +20,8 @@ import { finalize } from 'rxjs/operators';
     animations: [appModuleAnimation()]
 })
 export class MaterialComponent extends AppComponentBase implements OnInit {
+    @ViewChild('viewMaterialModal', { static: true }) viewMaterialModal: ViewMaterialModalComponent;
+
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
     paginationParams: PaginationParamsModel = {
@@ -314,6 +317,10 @@ export class MaterialComponent extends AppComponentBase implements OnInit {
                 this._fileDownloadService.downloadTempFile(result);
                 this.notify.success(this.l('Download Excel Successfully'));
             });
+    }
+
+    viewMaterial(): void {
+        this.viewMaterialModal.show(this.saveSelectedRow);
     }
 }
 
