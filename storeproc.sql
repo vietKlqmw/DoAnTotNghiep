@@ -27,6 +27,65 @@ BEGIN
       FROM MasterMaterial mm
      WHERE mm.Id = @p_MaterialId
 END
+--Edit data:
+CREATE PROCEDURE INV_MASTER_MATERIAL_EDIT
+@p_MaterialId INT, 
+@p_MaterialType NVARCHAR(4),
+@p_MaterialCode NVARCHAR(40), 
+@p_Description NVARCHAR(40), 
+@p_MaterialGroup NVARCHAR(9), 
+@p_BaseUnitOfMeasure NVARCHAR(3), 
+@p_Plant NVARCHAR(4), 
+@p_StorageLocation NVARCHAR(4), 
+@p_ProductionGroup NVARCHAR(3), 
+@p_ProductionPurpose NVARCHAR(2), 
+@p_ProductionType NVARCHAR(10), 
+@p_ReservedStock NVARCHAR(2), 
+@p_LotCode NVARCHAR(10), 
+@p_ProductionStorageLocation NVARCHAR(4), 
+@p_CostingLotSize DECIMAL, 
+@p_ProductionVersion NVARCHAR(4), 
+@p_StandardPrice DECIMAL, 
+@p_MovingPrice DECIMAL, 
+@p_MaterialOrigin NVARCHAR(1), 
+@p_OriginGroup NVARCHAR(4), 
+@p_EffectiveDateFrom DATE, 
+@p_EffectiveDateTo DATE, 
+@p_UserId BIGINT
+AS
+BEGIN
+    IF @p_MaterialId IS NULL
+    BEGIN
+        INSERT INTO MasterMaterial (CreationTime, CreatorUserId, IsDeleted, 
+                                    MaterialType, MaterialCode, Description, MaterialGroup, BaseUnitOfMeasure, 
+                                    Plant, StorageLocation, ProductionGroup, ProductionPurpose, ReservedStock, 
+                                    LotCode, ProductionStorageLocation, CostingLotSize, ProductionVersion, 
+                                    StandardPrice, MovingPrice, MaterialOrigin, OriginGroup, EffectiveDateFrom, 
+                                    EffectiveDateTo, ProductionType)
+                            VALUES (GETDATE(), @p_UserId, 0, 
+                                    @p_MaterialType, @p_MaterialCode, @p_Description, @p_MaterialGroup, @p_BaseUnitOfMeasure, 
+                                    @p_Plant, @p_StorageLocation, @p_ProductionGroup, @p_ProductionPurpose, @p_ReservedStock, 
+                                    @p_LotCode, @p_ProductionStorageLocation, @p_CostingLotSize, @p_ProductionVersion, 
+                                    @p_StandardPrice, @p_MovingPrice, @p_MaterialOrigin, @p_OriginGroup, @p_EffectiveDateFrom, 
+                                    @p_EffectiveDateTo, @p_ProductionType);
+    END
+    ELSE
+    BEGIN
+        UPDATE MasterMaterial
+           SET Description = @p_Description,
+               BaseUnitOfMeasure = @p_BaseUnitOfMeasure,
+               ReservedStock = @p_ReservedStock,
+               CostingLotSize = @p_CostingLotSize,
+               StandardPrice = @p_StandardPrice,
+               MovingPrice = @p_MovingPrice,
+               EffectiveDateFrom = @p_EffectiveDateFrom,
+               EffectiveDateTo = @p_EffectiveDateTo,
+               LastModificationTime = GETDATE(),
+               LastModifierUserId = @p_UserId
+         WHERE Id = @p_MaterialId
+    END
+
+END
 ------------------------------------------------MaterialGroup------------------------------------------------
 INSERT INTO MasterMaterialGroup 
 (CreationTime, CreatorUserId, IsDeleted, Code, Name)

@@ -11,6 +11,7 @@ import { FileDownloadService } from '@shared/utils/file-download.service';
 import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 import { ViewMaterialModalComponent } from './view-material-modal.component';
+import { EditMaterialModalComponent } from './edit-material-modal.component';
 
 @Component({
     selector: 'app-material',
@@ -21,6 +22,7 @@ import { ViewMaterialModalComponent } from './view-material-modal.component';
 })
 export class MaterialComponent extends AppComponentBase implements OnInit {
     @ViewChild('viewMaterialModal', { static: true }) viewMaterialModal: ViewMaterialModalComponent;
+    @ViewChild('editMaterialModal', { static: true }) editMaterialModal: EditMaterialModalComponent;
 
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
@@ -321,6 +323,10 @@ export class MaterialComponent extends AppComponentBase implements OnInit {
 
     viewMaterial(): void {
         this.viewMaterialModal.show(this.saveSelectedRow);
+    }
+
+    editMaterial(e): void {
+        this.editMaterialModal.show(e, this.saveSelectedRow);
     }
 }
 

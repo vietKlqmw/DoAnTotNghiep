@@ -1,0 +1,121 @@
+<div appBsModal #editMaterialModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="editMaterialModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{header + " Material Master"}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="ui-g-12 p-0">
+                    <fieldset class="fieldset-border ui-g-12 pl-0 pr-0  mt-2" style="height: auto;">
+                        <div class="ui-g-12 ph-0">
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Material Type'" [(ngModel)]="rowData.materialType"
+                                    name='materialType' [isReadonly]="!isEdit"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Material Code'" [(ngModel)]="rowData.materialCode"
+                                    name='materialCode' [isReadonly]="!isEdit"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Description'" [(ngModel)]="rowData.description"
+                                    name='description'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Material Group'" [(ngModel)]="rowData.materialGroup"
+                                    name='materialGroup' [isReadonly]="!isEdit"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Base Unit Of Measure'" [(ngModel)]="rowData.baseUnitOfMeasure"
+                                    name='baseUnitOfMeasure'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Factory'" [(ngModel)]="rowData.plant"
+                                    name='plant' [isReadonly]="!isEdit"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Storage Location'" [(ngModel)]="rowData.storageLocation"
+                                    name='storageLocation' [isReadonly]="!isEdit"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Production Group'" [(ngModel)]="rowData.productionGroup"
+                                    name='productionGroup' [isReadonly]="!isEdit"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Production Purpose'" [(ngModel)]="rowData.productionPurpose"
+                                    name='productionPurpose' [isReadonly]="!isEdit"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Production Type'" [(ngModel)]="rowData.productionType"
+                                    name='productionType' [isReadonly]="!isEdit"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Reserved Stock'" [(ngModel)]="rowData.reservedStock"
+                                    name='reservedStock'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Lot Code'" [(ngModel)]="rowData.lotCode"
+                                    name='lotCode' [isReadonly]="!isEdit"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Prod Storage Location'" [(ngModel)]="rowData.productionStorageLocation"
+                                    name='productionStorageLocation' [isReadonly]="!isEdit"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Costing Lot Size'" [(ngModel)]="rowData.costingLotSize"
+                                    name='costingLotSize'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Production Version'" [(ngModel)]="rowData.productionVersion"
+                                    name='productionVersion' [isReadonly]="!isEdit"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Standard Price'" [(ngModel)]="rowData.standardPrice"
+                                    name='standardPrice'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Moving Price'" [(ngModel)]="rowData.movingPrice"
+                                    name='movingPrice'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Material Origin'" [(ngModel)]="rowData.materialOrigin"
+                                    name='materialOrigin' [isReadonly]="!isEdit"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Origin Group'" [(ngModel)]="rowData.originGroup"
+                                    name='originGroup' [isReadonly]="!isEdit"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text left-text">Effective Date From</span>
+                                    <input type='text' class="form-control tmss-form-control" name='effectiveDateFrom'
+						                #datepicker='bsDatepicker' [(ngModel)]='rowData.effectiveDateFrom' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true, showClearButton: true, showTodayButton: true, todayPosition:'right'}">
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text left-text">Effective Date To</span>
+                                    <input type='text' class="form-control tmss-form-control" name='effectiveDateTo'
+						                #datepicker2='bsDatepicker' [(ngModel)]='rowData.effectiveDateTo' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true, showClearButton: true, showTodayButton: true, todayPosition:'right'}">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-primary" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
+                    <i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                <button type="button" class="btn btn-outline-danger" (click)="close()">
+                    <i class="fa tmss-fa fa-times mr-1"></i>{{"Cancel" | localize}}</button>
+            </div>
+        </div>
+    </div>
+</div>
