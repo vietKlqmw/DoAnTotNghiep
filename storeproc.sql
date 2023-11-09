@@ -186,6 +186,14 @@ VALUES
 (GETDATE(), 1, 0, N'UNT', N'Unit'),
 (GETDATE(), 1, 0, N'LOT', N'Lot'),
 (GETDATE(), 1, 0, N'CV', N'Case');
+------------------------------------------------FuelType------------------------------------------------
+INSERT INTO MasterFuelType 
+(CreationTime, CreatorUserId, IsDeleted, Code, Name)
+VALUES 
+(GETDATE(), 1, 0, N'F1', N'Diesel'),
+(GETDATE(), 1, 0, N'F2', N'Gasoline'),
+(GETDATE(), 1, 0, N'F3', N'Hybrid'),
+(GETDATE(), 1, 0, N'F4', N'Electronic');
 ------------------------------------------------VehicleCBU------------------------------------------------
 CREATE PROCEDURE INV_MASTER_VEHICLE_CBU_SEARCH
     @p_VehicleType NVARCHAR(10),

@@ -1,0 +1,65 @@
+<!-- ==================================================Header================================================== -->
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" [busyIf]="isLoading">
+    <div class="kt-subheader kt-grid__item">
+        <div [class]="containerClass">
+            <div class="kt-subheader__main">
+                <h3 class="kt-subheader__title">
+                    <span>{{"Users" | localize}}</span>
+                </h3>
+                <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                <span class="kt-subheader__desc">
+                    {{"UsersHeaderInfo" | localize}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <!-- ==================================================Search================================================== -->
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form">
+                    <div class="row align-items-center mb-2">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input [(ngModel)]="code" name="code" class="form-control m-input"
+                                    [placeholder]="l('Code')" type="text" (keyup.enter)="searchDatas()">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input [(ngModel)]="name" name="name" class="form-control m-input"
+                                    [placeholder]="l('Name')" type="text" (keyup.enter)="searchDatas()">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
+                                    class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
+                                <button class="btn btn-primary" (click)="clearTextSearch()">
+                                    <i class="fa fa-sync"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- ==================================================Table================================================== -->
+                <span>
+                    <h6 class="card-header"> {{ 'Fuel Type' }} </h6>
+                </span>
+                <div class="">
+                    <grid-table
+                        [columnDefs]="colDefs"
+                        [paginationParams]="paginationParams"
+                        [showPagination]="true"
+                        [rowData]="rowData"
+                        [defaultColDef]="defaultColDef"
+                        (callBackEvent)="callBackDataGrid($event)"
+                        (changePaginationParams)="changePage($event)"
+                        [frameworkComponents]="frameworkComponents"
+                        [height]="'51vh'"
+                        >
+                    </grid-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
