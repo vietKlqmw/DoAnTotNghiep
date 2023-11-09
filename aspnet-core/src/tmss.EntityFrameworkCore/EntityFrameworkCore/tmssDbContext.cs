@@ -67,6 +67,9 @@ namespace tmss.EntityFrameworkCore
 
         public virtual DbSet<MasterUnitOfMeasure> MasterUnitOfMeasures { get; set; }
 
+        public virtual DbSet<MasterFuelType> MasterFuelTypes { get; set; }
+
+
         #endregion
 
         public tmssDbContext(DbContextOptions<tmssDbContext> options)

@@ -64,6 +64,7 @@ import { ZeroTemplateHttpConfigurationService } from './zero-template-http-confi
         ApiServiceProxies.MasterProductTypeServiceProxy,
         ApiServiceProxies.MasterMaterialServiceProxy,
         ApiServiceProxies.MasterUnitOfMeasureServiceProxy,
+        ApiServiceProxies.MasterFuelTypeServiceProxy,
 
         { provide: RefreshTokenService, useClass: ZeroRefreshTokenService },
         { provide: AbpHttpConfigurationService, useClass: ZeroTemplateHttpConfigurationService },
