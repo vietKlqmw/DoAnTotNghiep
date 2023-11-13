@@ -24,3 +24,7 @@ Master CPS Suppliers(?)
 Master CPS Inventory Group(?)
 Master CPS Inventory Items(?)
 Invoice-Purchase Order-Receive Shipment
+Car-Farmily
+Vehicle CKD
+Engine Master
+CKD -> Intransit|Warehouse

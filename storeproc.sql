@@ -253,6 +253,40 @@ VALUES
 (GETDATE(), 1, 0, N'F2', N'Gasoline'),
 (GETDATE(), 1, 0, N'F3', N'Hybrid'),
 (GETDATE(), 1, 0, N'F4', N'Electronic');
+------------------------------------------------Carfamily------------------------------------------------
+INSERT INTO MasterCarfamily 
+(CreationTime, CreatorUserId, IsDeleted, Code, Name)
+VALUES 
+(GETDATE(), 1, 0, '565W', '565W'),
+(GETDATE(), 1, 0, '578W', '578W'),
+(GETDATE(), 1, 0, '665W', '665W'),
+(GETDATE(), 1, 0, '681W', '681W'),
+(GETDATE(), 1, 0, '694W', '694W'),
+(GETDATE(), 1, 0, '718W', '718W'),
+(GETDATE(), 1, 0, '728W', '728W'),
+(GETDATE(), 1, 0, '757W', '757W'),
+(GETDATE(), 1, 0, '764W', '764W'),
+(GETDATE(), 1, 0, '815W', '815W'),
+(GETDATE(), 1, 0, '824W', '824W'),
+(GETDATE(), 1, 0, 'N/A', 'Not Applicable'),
+(GETDATE(), 1, 0, '758W', '758W'),
+(GETDATE(), 1, 0, '785W', '785W'),
+(GETDATE(), 1, 0, 'D33H', 'D33H'),
+(GETDATE(), 1, 0, 'D30H', 'D30H'),
+(GETDATE(), 1, 0, '874W', '874W'),
+(GETDATE(), 1, 0, '889W', '889W'),
+(GETDATE(), 1, 0, 'D48H', 'D48H'),
+(GETDATE(), 1, 0, 'D55L', 'D55L'),
+(GETDATE(), 1, 0, 'D80N', 'D80N'),
+(GETDATE(), 1, 0, 'D14N', 'D14N'),
+(GETDATE(), 1, 0, 'D64G', 'D64G'),
+(GETDATE(), 1, 0, '579W', '579W'),
+(GETDATE(), 1, 0, '624W', '624W'),
+(GETDATE(), 1, 0, 'D46H', 'D46H'),
+(GETDATE(), 1, 0, 'D09H', 'D09H'),
+(GETDATE(), 1, 0, 'D23H', 'D23H'),
+(GETDATE(), 1, 0, 'D26H', 'D26H'),
+(GETDATE(), 1, 0, 'D31H', 'D31H');
 ------------------------------------------------VehicleCBU------------------------------------------------
 CREATE PROCEDURE INV_MASTER_VEHICLE_CBU_SEARCH
     @p_VehicleType NVARCHAR(10),
@@ -263,4 +297,34 @@ BEGIN
       FROM MasterVehicleCBU mvc
      WHERE (@p_VehicleType IS NULL OR mvc.VehicleType LIKE CONCAT('%',@p_VehicleType,'%'))
        AND (@p_Model IS NULL OR mvc.Model LIKE CONCAT('%',@p_Model,'%'))
+END
+------------------------------------------------VehicleCKD------------------------------------------------
+CREATE PROCEDURE INV_MASTER_VEHICLE_CKD_SEARCH
+    @p_Model NVARCHAR(1),
+    @p_Cfc NVARCHAR(4),
+    @p_ModelCode NVARCHAR(50)
+AS
+BEGIN
+    SELECT mvc.Id, mvc.Model, mvc.LotCode, mvc.Cfc, mvc.Grade, mvc.GradeName, mvc.ModelCode, 
+           mvc.VehicleId, mvc.TransmissionType, mvc.EngineType, mvc.FuelType
+      FROM MasterVehicleCKD mvc
+     WHERE (@p_Model IS NULL OR mvc.Model LIKE CONCAT('%', @p_Model, '%'))
+       AND (@p_Cfc IS NULL OR mvc.Cfc LIKE CONCAT('%', @p_Cfc, '%'))
+       AND (@p_ModelCode IS NULL OR mvc.ModelCode LIKE CONCAT('%', @p_ModelCode, '%'))
+END
+------------------------------------------------Engine------------------------------------------------
+CREATE PROCEDURE INV_MASTER_ENGINE_SEARCH
+    @p_MaterialCode NVARCHAR(40),
+    @p_TransmissionType NVARCHAR(5),
+    @p_EngineModel NVARCHAR(10),
+    @p_EngineType NVARCHAR(10)
+AS
+BEGIN
+    SELECT me.Id, me.MaterialCode, me.ClassType, me.ClassName, me.TransmissionType, 
+           me.EngineModel, me.EngineType
+      FROM MasterEngine me
+     WHERE (@p_MaterialCode IS NULL OR me.MaterialCode LIKE CONCAT('%', @p_MaterialCode, '%'))
+       AND (@p_TransmissionType IS NULL OR me.TransmissionType LIKE CONCAT('%', @p_TransmissionType, '%'))
+       AND (@p_EngineModel IS NULL OR me.EngineModel LIKE CONCAT('%', @p_EngineModel, '%'))
+       AND (@p_EngineType IS NULL OR me.EngineType LIKE CONCAT('%', @p_EngineType, '%'))
 END

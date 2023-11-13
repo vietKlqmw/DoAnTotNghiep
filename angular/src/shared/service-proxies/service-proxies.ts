@@ -5946,6 +5946,85 @@ export class LanguageServiceProxy {
 }
 
 @Injectable()
+export class MasterCarfamilyServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param code (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getCarfamilySearch(code: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfMasterCarfamilyDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterCarfamily/GetCarfamilySearch?";
+        if (code !== undefined)
+            url_ += "Code=" + encodeURIComponent("" + code) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCarfamilySearch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCarfamilySearch(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfMasterCarfamilyDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfMasterCarfamilyDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetCarfamilySearch(response: HttpResponseBase): Observable<PagedResultDtoOfMasterCarfamilyDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMasterCarfamilyDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfMasterCarfamilyDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class MasterContainerStatusServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -6103,6 +6182,225 @@ export class MasterCustomsStatusServiceProxy {
             }));
         }
         return _observableOf<PagedResultDtoOfMasterCustomsStatusDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class MasterEngineServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param materialCode (optional) 
+     * @param transmissionType (optional) 
+     * @param engineModel (optional) 
+     * @param engineType (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getEngineMasterSearch(materialCode: string | null | undefined, transmissionType: string | null | undefined, engineModel: string | null | undefined, engineType: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfMasterEngineDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterEngine/GetEngineMasterSearch?";
+        if (materialCode !== undefined)
+            url_ += "MaterialCode=" + encodeURIComponent("" + materialCode) + "&"; 
+        if (transmissionType !== undefined)
+            url_ += "TransmissionType=" + encodeURIComponent("" + transmissionType) + "&"; 
+        if (engineModel !== undefined)
+            url_ += "EngineModel=" + encodeURIComponent("" + engineModel) + "&"; 
+        if (engineType !== undefined)
+            url_ += "EngineType=" + encodeURIComponent("" + engineType) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEngineMasterSearch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEngineMasterSearch(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfMasterEngineDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfMasterEngineDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetEngineMasterSearch(response: HttpResponseBase): Observable<PagedResultDtoOfMasterEngineDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMasterEngineDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfMasterEngineDto>(<any>null);
+    }
+
+    /**
+     * @param materialCode (optional) 
+     * @param transmissionType (optional) 
+     * @param engineModel (optional) 
+     * @param engineType (optional) 
+     * @return Success
+     */
+    getEngineMasterToExcel(materialCode: string | null | undefined, transmissionType: string | null | undefined, engineModel: string | null | undefined, engineType: string | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterEngine/GetEngineMasterToExcel?";
+        if (materialCode !== undefined)
+            url_ += "MaterialCode=" + encodeURIComponent("" + materialCode) + "&"; 
+        if (transmissionType !== undefined)
+            url_ += "TransmissionType=" + encodeURIComponent("" + transmissionType) + "&"; 
+        if (engineModel !== undefined)
+            url_ += "EngineModel=" + encodeURIComponent("" + engineModel) + "&"; 
+        if (engineType !== undefined)
+            url_ += "EngineType=" + encodeURIComponent("" + engineType) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEngineMasterToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEngineMasterToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetEngineMasterToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class MasterEngineExcelExporterServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    exportToFile(body: MasterEngineDto[] | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterEngineExcelExporter/ExportToFile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToFile(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processExportToFile(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
     }
 }
 
@@ -7572,6 +7870,219 @@ export class MasterVehicleCBUExcelExporterServiceProxy {
      */
     exportToFile(body: MasterVehicleCBUDto[] | null | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/MasterVehicleCBUExcelExporter/ExportToFile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToFile(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processExportToFile(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class MasterVehicleCKDServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param model (optional) 
+     * @param cfc (optional) 
+     * @param modelCode (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getVehicleCKDSearch(model: string | null | undefined, cfc: string | null | undefined, modelCode: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfMasterVehicleCKDDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterVehicleCKD/GetVehicleCKDSearch?";
+        if (model !== undefined)
+            url_ += "Model=" + encodeURIComponent("" + model) + "&"; 
+        if (cfc !== undefined)
+            url_ += "Cfc=" + encodeURIComponent("" + cfc) + "&"; 
+        if (modelCode !== undefined)
+            url_ += "ModelCode=" + encodeURIComponent("" + modelCode) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetVehicleCKDSearch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetVehicleCKDSearch(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfMasterVehicleCKDDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfMasterVehicleCKDDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetVehicleCKDSearch(response: HttpResponseBase): Observable<PagedResultDtoOfMasterVehicleCKDDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMasterVehicleCKDDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfMasterVehicleCKDDto>(<any>null);
+    }
+
+    /**
+     * @param model (optional) 
+     * @param cfc (optional) 
+     * @param modelCode (optional) 
+     * @return Success
+     */
+    getVehicleCKDToExcel(model: string | null | undefined, cfc: string | null | undefined, modelCode: string | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterVehicleCKD/GetVehicleCKDToExcel?";
+        if (model !== undefined)
+            url_ += "Model=" + encodeURIComponent("" + model) + "&"; 
+        if (cfc !== undefined)
+            url_ += "Cfc=" + encodeURIComponent("" + cfc) + "&"; 
+        if (modelCode !== undefined)
+            url_ += "ModelCode=" + encodeURIComponent("" + modelCode) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetVehicleCKDToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetVehicleCKDToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetVehicleCKDToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class MasterVehicleCKDExcelExporterServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    exportToFile(body: MasterVehicleCKDDto[] | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterVehicleCKDExcelExporter/ExportToFile";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -21161,6 +21672,98 @@ export interface IUpdateLanguageTextInput {
     value: string;
 }
 
+export class MasterCarfamilyDto implements IMasterCarfamilyDto {
+    code!: string | undefined;
+    name!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IMasterCarfamilyDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.name = _data["name"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): MasterCarfamilyDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MasterCarfamilyDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["name"] = this.name;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IMasterCarfamilyDto {
+    code: string | undefined;
+    name: string | undefined;
+    id: number | undefined;
+}
+
+export class PagedResultDtoOfMasterCarfamilyDto implements IPagedResultDtoOfMasterCarfamilyDto {
+    totalCount!: number;
+    items!: MasterCarfamilyDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfMasterCarfamilyDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MasterCarfamilyDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMasterCarfamilyDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMasterCarfamilyDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfMasterCarfamilyDto {
+    totalCount: number;
+    items: MasterCarfamilyDto[] | undefined;
+}
+
 export class MasterContainerStatusDto implements IMasterContainerStatusDto {
     code!: string | undefined;
     description!: string | undefined;
@@ -21347,6 +21950,114 @@ export class PagedResultDtoOfMasterCustomsStatusDto implements IPagedResultDtoOf
 export interface IPagedResultDtoOfMasterCustomsStatusDto {
     totalCount: number;
     items: MasterCustomsStatusDto[] | undefined;
+}
+
+export class MasterEngineDto implements IMasterEngineDto {
+    materialCode!: string | undefined;
+    classType!: string | undefined;
+    className!: string | undefined;
+    transmissionType!: string | undefined;
+    engineModel!: string | undefined;
+    engineType!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IMasterEngineDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.materialCode = _data["materialCode"];
+            this.classType = _data["classType"];
+            this.className = _data["className"];
+            this.transmissionType = _data["transmissionType"];
+            this.engineModel = _data["engineModel"];
+            this.engineType = _data["engineType"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): MasterEngineDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MasterEngineDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["materialCode"] = this.materialCode;
+        data["classType"] = this.classType;
+        data["className"] = this.className;
+        data["transmissionType"] = this.transmissionType;
+        data["engineModel"] = this.engineModel;
+        data["engineType"] = this.engineType;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IMasterEngineDto {
+    materialCode: string | undefined;
+    classType: string | undefined;
+    className: string | undefined;
+    transmissionType: string | undefined;
+    engineModel: string | undefined;
+    engineType: string | undefined;
+    id: number | undefined;
+}
+
+export class PagedResultDtoOfMasterEngineDto implements IPagedResultDtoOfMasterEngineDto {
+    totalCount!: number;
+    items!: MasterEngineDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfMasterEngineDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MasterEngineDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMasterEngineDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMasterEngineDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfMasterEngineDto {
+    totalCount: number;
+    items: MasterEngineDto[] | undefined;
 }
 
 export class MasterFactoryDto implements IMasterFactoryDto {
@@ -22475,6 +23186,130 @@ export class PagedResultDtoOfMasterVehicleCBUDto implements IPagedResultDtoOfMas
 export interface IPagedResultDtoOfMasterVehicleCBUDto {
     totalCount: number;
     items: MasterVehicleCBUDto[] | undefined;
+}
+
+export class MasterVehicleCKDDto implements IMasterVehicleCKDDto {
+    model!: string | undefined;
+    lotCode!: string | undefined;
+    cfc!: string | undefined;
+    grade!: string | undefined;
+    gradeName!: string | undefined;
+    modelCode!: string | undefined;
+    vehicleId!: string | undefined;
+    transmissionType!: string | undefined;
+    engineType!: string | undefined;
+    fuelType!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IMasterVehicleCKDDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.model = _data["model"];
+            this.lotCode = _data["lotCode"];
+            this.cfc = _data["cfc"];
+            this.grade = _data["grade"];
+            this.gradeName = _data["gradeName"];
+            this.modelCode = _data["modelCode"];
+            this.vehicleId = _data["vehicleId"];
+            this.transmissionType = _data["transmissionType"];
+            this.engineType = _data["engineType"];
+            this.fuelType = _data["fuelType"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): MasterVehicleCKDDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MasterVehicleCKDDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["model"] = this.model;
+        data["lotCode"] = this.lotCode;
+        data["cfc"] = this.cfc;
+        data["grade"] = this.grade;
+        data["gradeName"] = this.gradeName;
+        data["modelCode"] = this.modelCode;
+        data["vehicleId"] = this.vehicleId;
+        data["transmissionType"] = this.transmissionType;
+        data["engineType"] = this.engineType;
+        data["fuelType"] = this.fuelType;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IMasterVehicleCKDDto {
+    model: string | undefined;
+    lotCode: string | undefined;
+    cfc: string | undefined;
+    grade: string | undefined;
+    gradeName: string | undefined;
+    modelCode: string | undefined;
+    vehicleId: string | undefined;
+    transmissionType: string | undefined;
+    engineType: string | undefined;
+    fuelType: string | undefined;
+    id: number | undefined;
+}
+
+export class PagedResultDtoOfMasterVehicleCKDDto implements IPagedResultDtoOfMasterVehicleCKDDto {
+    totalCount!: number;
+    items!: MasterVehicleCKDDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfMasterVehicleCKDDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MasterVehicleCKDDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMasterVehicleCKDDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMasterVehicleCKDDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfMasterVehicleCKDDto {
+    totalCount: number;
+    items: MasterVehicleCKDDto[] | undefined;
 }
 
 export enum UserNotificationState {

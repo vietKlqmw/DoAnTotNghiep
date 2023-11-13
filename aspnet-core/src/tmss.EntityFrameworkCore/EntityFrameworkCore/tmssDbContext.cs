@@ -69,6 +69,11 @@ namespace tmss.EntityFrameworkCore
 
         public virtual DbSet<MasterFuelType> MasterFuelTypes { get; set; }
 
+        public virtual DbSet<MasterCarfamily> MasterCarfamilys { get; set; }
+
+        public virtual DbSet<MasterVehicleCKD> MasterVehicleCKDs { get; set; }
+
+        public virtual DbSet<MasterEngine> MasterEngines { get; set; }
 
         #endregion
 
