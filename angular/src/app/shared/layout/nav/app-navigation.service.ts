@@ -34,6 +34,7 @@ export class AppNavigationService {
                     new AppMenuItem('Product Type', '', 'flaticon-car', '/app/main/master/common/product-type'),
                     new AppMenuItem('Unit Of Measure', '', 'flaticon-car', '/app/main/master/common/uom'),
                     new AppMenuItem('Fuel Type', '', 'flaticon-car', '/app/main/master/common/fuel-type'),
+                    new AppMenuItem('Carfamily', '', 'flaticon-car', '/app/main/master/common/carfamily'),
                 ]),
 
                 new AppMenuItem('Material', '', 'flaticon-car', '/app/main/master/common/material'),

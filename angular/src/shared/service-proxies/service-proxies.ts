@@ -23196,6 +23196,7 @@ export class MasterVehicleCKDDto implements IMasterVehicleCKDDto {
     gradeName!: string | undefined;
     modelCode!: string | undefined;
     vehicleId!: string | undefined;
+    carSeries!: string | undefined;
     transmissionType!: string | undefined;
     engineType!: string | undefined;
     fuelType!: string | undefined;
@@ -23219,6 +23220,7 @@ export class MasterVehicleCKDDto implements IMasterVehicleCKDDto {
             this.gradeName = _data["gradeName"];
             this.modelCode = _data["modelCode"];
             this.vehicleId = _data["vehicleId"];
+            this.carSeries = _data["carSeries"];
             this.transmissionType = _data["transmissionType"];
             this.engineType = _data["engineType"];
             this.fuelType = _data["fuelType"];
@@ -23242,6 +23244,7 @@ export class MasterVehicleCKDDto implements IMasterVehicleCKDDto {
         data["gradeName"] = this.gradeName;
         data["modelCode"] = this.modelCode;
         data["vehicleId"] = this.vehicleId;
+        data["carSeries"] = this.carSeries;
         data["transmissionType"] = this.transmissionType;
         data["engineType"] = this.engineType;
         data["fuelType"] = this.fuelType;
@@ -23258,6 +23261,7 @@ export interface IMasterVehicleCKDDto {
     gradeName: string | undefined;
     modelCode: string | undefined;
     vehicleId: string | undefined;
+    carSeries: string | undefined;
     transmissionType: string | undefined;
     engineType: string | undefined;
     fuelType: string | undefined;

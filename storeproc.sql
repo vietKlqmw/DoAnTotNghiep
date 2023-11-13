@@ -306,7 +306,7 @@ CREATE PROCEDURE INV_MASTER_VEHICLE_CKD_SEARCH
 AS
 BEGIN
     SELECT mvc.Id, mvc.Model, mvc.LotCode, mvc.Cfc, mvc.Grade, mvc.GradeName, mvc.ModelCode, 
-           mvc.VehicleId, mvc.TransmissionType, mvc.EngineType, mvc.FuelType
+           mvc.VehicleId, mvc.CarSeries, mvc.TransmissionType, mvc.EngineType, mvc.FuelType
       FROM MasterVehicleCKD mvc
      WHERE (@p_Model IS NULL OR mvc.Model LIKE CONCAT('%', @p_Model, '%'))
        AND (@p_Cfc IS NULL OR mvc.Cfc LIKE CONCAT('%', @p_Cfc, '%'))

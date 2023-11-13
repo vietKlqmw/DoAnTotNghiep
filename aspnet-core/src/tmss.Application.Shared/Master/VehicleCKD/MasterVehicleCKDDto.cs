@@ -18,6 +18,8 @@ namespace tmss.Master.VehicleCKD
 
         public virtual string VehicleId { get; set; }
 
+        public virtual string CarSeries { get; set; }
+
         public virtual string TransmissionType { get; set; }
 
         public virtual string EngineType { get; set; }

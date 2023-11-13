@@ -75,6 +75,8 @@ namespace tmss.EntityFrameworkCore
 
         public virtual DbSet<MasterEngine> MasterEngines { get; set; }
 
+        public virtual DbSet<MasterCarSeries> MasterCarSeriess { get; set; }
+
         #endregion
 
         public tmssDbContext(DbContextOptions<tmssDbContext> options)

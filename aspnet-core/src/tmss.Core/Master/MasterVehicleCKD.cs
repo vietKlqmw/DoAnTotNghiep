@@ -22,6 +22,8 @@ namespace tmss.Master
 
         public const int MaxVehicleIdLength = 2;
 
+        public const int MaxCarSeriesLength = 18;
+
         public const int MaxTransmissionTypeLength = 2;
 
         public const int MaxEngineTypeLength = 10;
@@ -48,6 +50,9 @@ namespace tmss.Master
 
         [StringLength(MaxVehicleIdLength)]
         public virtual string VehicleId { get; set; }
+
+        [StringLength(MaxCarSeriesLength)]
+        public virtual string CarSeries { get; set; }
 
         [StringLength(MaxTransmissionTypeLength)]
         public virtual string TransmissionType { get; set; }

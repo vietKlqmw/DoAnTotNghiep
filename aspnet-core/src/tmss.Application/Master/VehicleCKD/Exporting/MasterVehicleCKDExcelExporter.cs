@@ -24,6 +24,7 @@ namespace tmss.Master.VehicleCKD.Exporting
                         ("Grade"),
                         ("Grade Name"),
                         ("Model Code"),
+                        ("Car Series"),
                         ("Transmission Type"),
                         ("Engine Type"),
                         ("Fuel Type")
@@ -37,6 +38,7 @@ namespace tmss.Master.VehicleCKD.Exporting
                         _ => _.Grade,
                         _ => _.GradeName,
                         _ => _.ModelCode,
+                        _ => _.CarSeries,
                         _ => _.TransmissionType,
                         _ => _.EngineType,
                         _ => _.FuelType
