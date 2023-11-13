@@ -82,6 +82,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                         loadChildren: () => import('./master/common/carfamily/carfamily.module').then(m => m.CarfamilyModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
+                    {
+                        path: 'master/common/car-series',
+                        loadChildren: () => import('./master/common/car-series/car-series.module').then(m => m.CarSeriesModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
                     { path: '**', redirectTo: 'dashboard' }
                 ]
             }
