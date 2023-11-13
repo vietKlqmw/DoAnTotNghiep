@@ -31,7 +31,8 @@ export class EditMaterialModalComponent extends AppComponentBase {
         if(type == 'Edit') this.isEdit = true;
         else this.isEdit = false;
         this.header = type;
-        this.rowData = material;
+        if(material) this.rowData = material;
+        else this.rowData = new MasterMaterialDto();
         this.modal.show();
     }
 

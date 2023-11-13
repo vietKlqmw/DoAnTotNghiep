@@ -16,11 +16,11 @@
                         <div class="ui-g-12 ph-0">
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Material Type'" [(ngModel)]="rowData.materialType"
-                                    name='materialType' [isReadonly]="!isEdit"></tmss-text-input>
+                                    name='materialType' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Material Code'" [(ngModel)]="rowData.materialCode"
-                                    name='materialCode' [isReadonly]="!isEdit"></tmss-text-input>
+                                    name='materialCode' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Description'" [(ngModel)]="rowData.description"
@@ -28,7 +28,7 @@
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Material Group'" [(ngModel)]="rowData.materialGroup"
-                                    name='materialGroup' [isReadonly]="!isEdit"></tmss-text-input>
+                                    name='materialGroup' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Base Unit Of Measure'" [(ngModel)]="rowData.baseUnitOfMeasure"
@@ -36,23 +36,23 @@
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Factory'" [(ngModel)]="rowData.plant"
-                                    name='plant' [isReadonly]="!isEdit"></tmss-text-input>
+                                    name='plant' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Storage Location'" [(ngModel)]="rowData.storageLocation"
-                                    name='storageLocation' [isReadonly]="!isEdit"></tmss-text-input>
+                                    name='storageLocation' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Production Group'" [(ngModel)]="rowData.productionGroup"
-                                    name='productionGroup' [isReadonly]="!isEdit"></tmss-text-input>
+                                    name='productionGroup' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Production Purpose'" [(ngModel)]="rowData.productionPurpose"
-                                    name='productionPurpose' [isReadonly]="!isEdit"></tmss-text-input>
+                                    name='productionPurpose' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Production Type'" [(ngModel)]="rowData.productionType"
-                                    name='productionType' [isReadonly]="!isEdit"></tmss-text-input>
+                                    name='productionType' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Reserved Stock'" [(ngModel)]="rowData.reservedStock"
@@ -60,11 +60,11 @@
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Lot Code'" [(ngModel)]="rowData.lotCode"
-                                    name='lotCode' [isReadonly]="!isEdit"></tmss-text-input>
+                                    name='lotCode' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Prod Storage Location'" [(ngModel)]="rowData.productionStorageLocation"
-                                    name='productionStorageLocation' [isReadonly]="!isEdit"></tmss-text-input>
+                                    name='productionStorageLocation' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Costing Lot Size'" [(ngModel)]="rowData.costingLotSize"
@@ -72,7 +72,7 @@
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Production Version'" [(ngModel)]="rowData.productionVersion"
-                                    name='productionVersion' [isReadonly]="!isEdit"></tmss-text-input>
+                                    name='productionVersion' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Standard Price'" [(ngModel)]="rowData.standardPrice"
@@ -84,11 +84,11 @@
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Material Origin'" [(ngModel)]="rowData.materialOrigin"
-                                    name='materialOrigin' [isReadonly]="!isEdit"></tmss-text-input>
+                                    name='materialOrigin' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Origin Group'" [(ngModel)]="rowData.originGroup"
-                                    name='originGroup' [isReadonly]="!isEdit"></tmss-text-input>
+                                    name='originGroup' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <div class="input-group">
@@ -96,6 +96,9 @@
                                     <input type='text' class="form-control tmss-form-control" name='effectiveDateFrom'
 						                #datepicker='bsDatepicker' [(ngModel)]='rowData.effectiveDateFrom' bsDatepicker
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true, showClearButton: true, showTodayButton: true, todayPosition:'right'}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
+                                    </span>
                                 </div>
                             </div>
                             <div class="ui-g-12 ui-md-6">
@@ -104,6 +107,9 @@
                                     <input type='text' class="form-control tmss-form-control" name='effectiveDateTo'
 						                #datepicker2='bsDatepicker' [(ngModel)]='rowData.effectiveDateTo' bsDatepicker
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true, showClearButton: true, showTodayButton: true, todayPosition:'right'}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker2.toggle()"></i>
+                                    </span>
                                 </div>
                             </div>
                         </div>
