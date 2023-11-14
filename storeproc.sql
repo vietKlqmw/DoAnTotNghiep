@@ -287,6 +287,19 @@ VALUES
 (GETDATE(), 1, 0, 'D23H', 'D23H'),
 (GETDATE(), 1, 0, 'D26H', 'D26H'),
 (GETDATE(), 1, 0, 'D31H', 'D31H');
+------------------------------------------------CarSeries------------------------------------------------
+INSERT INTO MasterCarSeries 
+(CreationTime, CreatorUserId, IsDeleted, Code, Name)
+VALUES 
+(GETDATE(), 1, 0, 'P001', 'Camry'),
+(GETDATE(), 1, 0, 'P002', 'Corolla'),
+(GETDATE(), 1, 0, 'P003', 'Vios'),
+(GETDATE(), 1, 0, 'C001', 'Innova'),
+(GETDATE(), 1, 0, 'C002', 'Alphard'),
+(GETDATE(), 1, 0, 'C003', 'Lexus'),
+(GETDATE(), 1, 0, 'C004', 'Coaster'),
+(GETDATE(), 1, 0, 'C005', 'Ventury'),
+(GETDATE(), 1, 0, 'C006', 'Rush');
 ------------------------------------------------VehicleCBU------------------------------------------------
 CREATE PROCEDURE INV_MASTER_VEHICLE_CBU_SEARCH
     @p_VehicleType NVARCHAR(10),
