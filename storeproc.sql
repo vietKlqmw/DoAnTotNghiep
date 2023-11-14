@@ -1,5 +1,5 @@
 ﻿------------------------------------------------Material------------------------------------------------
---Search
+------------------------------------------------Search:
 CREATE PROCEDURE INV_MASTER_MATERIAL_SEARCH
     @p_MaterialCode NVARCHAR(40),
     @p_MaterialGroup NVARCHAR(9)
@@ -15,7 +15,7 @@ BEGIN
        AND (@p_MaterialGroup IS NULL OR mm.MaterialGroup LIKE CONCAT('%', @p_MaterialGroup, '%'))
        AND mm.IsDeleted = 0
 END
---Get data by Id:
+------------------------------------------------Get data by Id:
 CREATE PROCEDURE INV_MASTER_MATERIAL_BY_ID
     @p_MaterialId BIGINT
 AS
@@ -28,7 +28,7 @@ BEGIN
       FROM MasterMaterial mm
      WHERE mm.Id = @p_MaterialId
 END
---Edit data:
+------------------------------------------------Edit data:
 CREATE PROCEDURE INV_MASTER_MATERIAL_EDIT
 @p_MaterialId INT, 
 @p_MaterialType NVARCHAR(4),
@@ -87,7 +87,7 @@ BEGIN
     END
 
 END
---delete data:
+------------------------------------------------Delete data:
 CREATE PROCEDURE INV_MASTER_MATERIAL_DELETE
     @p_Id INT
 AS
@@ -96,6 +96,97 @@ BEGIN
        SET IsDeleted = 1
      WHERE Id = @p_Id 
 END
+------------------------------------------------Import data:
+CREATE PROCEDURE INV_MASTER_MATERIAL_MERGE
+    @Guid VARCHAR(MAX)
+AS
+BEGIN
+    BEGIN TRY 
+	  BEGIN TRANSACTION
+
+	  -- FOR BUG CHECK-
+		INSERT INTO ProcessLog(CATEGORY, PROCESS_NAME, ERROR_MESSAGE, CREATED_BY, CREATED_DATE)
+		VALUES ('MasterMaterial', 'MasterMaterial Import', 'START:', 'SYSTEM', GETDATE());
+
+		IF NOT EXISTS (SELECT 1 FROM MasterMaterial_T mmt WHERE Guid = @Guid AND ErrorDescription IS NOT NULL)
+		BEGIN					
+		    MERGE INTO MasterMaterial AS P
+		    USING (
+        	  SELECT DISTINCT t.MaterialType, t.MaterialCode, t.Description, t.MaterialGroup, t.BaseUnitOfMeasure, 
+                   t.Plant, t.StorageLocation, t.ProductionGroup, t.ProductionPurpose, t.ReservedStock, 
+                   t.LotCode, t.ProductionStorageLocation, t.CostingLotSize, t.ProductionVersion, 
+                   t.StandardPrice, t.MovingPrice, t.MaterialOrigin, t.OriginGroup, t.EffectiveDateFrom, 
+                   t.EffectiveDateTo, t.ProductionType, t.CreatorUserId
+        		  FROM MasterMaterial_T t
+        	   WHERE Guid = @Guid
+		    ) AS DT	ON (P.MaterialType = DT.MaterialType AND P.MaterialCode = DT.MaterialCode)				    
+		    WHEN MATCHED THEN
+		        UPDATE SET 
+					      P.Description = DT.Description,
+					      P.MaterialGroup = DT.MaterialGroup,
+					      P.BaseUnitOfMeasure = DT.BaseUnitOfMeasure,
+					      P.Plant = DT.Plant, 
+					      P.StorageLocation = DT.StorageLocation,
+					      P.ProductionGroup = DT.ProductionGroup,
+					      P.ProductionPurpose = DT.ProductionPurpose,
+					      P.ReservedStock = DT.ReservedStock,
+					      P.LotCode = DT.LotCode,
+					      P.ProductionStorageLocation = DT.ProductionStorageLocation,
+					      P.CostingLotSize = DT.CostingLotSize,
+					      P.ProductionVersion = DT.ProductionVersion,
+					      P.StandardPrice = DT.StandardPrice,
+                P.MovingPrice = DT.MovingPrice,
+                P.MaterialOrigin = DT.MaterialOrigin,
+                P.OriginGroup = DT.OriginGroup,
+                P.EffectiveDateFrom = DT.EffectiveDateFrom,
+                P.EffectiveDateTo = DT.EffectiveDateTo,
+                P.ProductionType = DT.ProductionType,
+                P.LastModifierUserId = DT.CreatorUserId,
+					      P.LastModificationTime = GETDATE()
+		    WHEN NOT MATCHED THEN
+		        INSERT (CreationTime, CreatorUserId, IsDeleted, 
+                    MaterialType, MaterialCode, Description, MaterialGroup, BaseUnitOfMeasure, 
+                    Plant, StorageLocation, ProductionGroup, ProductionPurpose, ReservedStock, 
+                    LotCode, ProductionStorageLocation, CostingLotSize, ProductionVersion, 
+                    StandardPrice, MovingPrice, MaterialOrigin, OriginGroup, EffectiveDateFrom, 
+                    EffectiveDateTo, ProductionType)				
+		  	    VALUES (GETDATE(), DT.CreatorUserId, 0, 
+                    DT.MaterialType, DT.MaterialCode, DT.Description, DT.MaterialGroup, DT.BaseUnitOfMeasure, 
+                    DT.Plant, DT.StorageLocation, DT.ProductionGroup, DT.ProductionPurpose, DT.ReservedStock, 
+                    DT.LotCode, DT.ProductionStorageLocation, DT.CostingLotSize, DT.ProductionVersion, 
+                    DT.StandardPrice, DT.MovingPrice, DT.MaterialOrigin, DT.OriginGroup, DT.EffectiveDateFrom, 
+                    DT.EffectiveDateTo, DT.ProductionType);
+
+		END
+
+		-- FOR BUG CHECK-
+		INSERT INTO ProcessLog (CATEGORY, PROCESS_NAME, ERROR_MESSAGE, CREATED_BY, CREATED_DATE)
+		VALUES ('MasterMaterial', 'MasterMaterial Import', 'END:', 'SYSTEM', GETDATE());
+
+		COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+		DECLARE @ErrorSeverity INT;
+		DECLARE @ErrorState INT;
+		DECLARE @ErrorMessage NVARCHAR(4000);
+  
+		SELECT @ErrorMessage = ERROR_MESSAGE(),
+			     @ErrorSeverity = ERROR_SEVERITY(), 
+			     @ErrorState = ERROR_STATE();
+
+		ROLLBACK TRANSACTION		
+		INSERT INTO ProCess_Log ([CATEGORY], [PROCESS_NAME], [ERROR_MESSAGE], [CREATED_DATE])
+		VALUES ('MasterMaterial', 'MasterMaterial Import', 'ERROR :' + @ErrorMessage + 
+															'//ERRORSTATE :' +  CAST(@ErrorState AS VARCHAR) + 
+															'//ERRORPROCEDURE :' + ERROR_PROCEDURE() + 
+															'//ERRORSEVERITY :' + CAST(@ErrorSeverity AS VARCHAR) + 
+															'//ERRORNUMBER :' + CAST(ERROR_NUMBER() AS VARCHAR) + 
+															'//ERRORLINE :' + CAST(ERROR_LINE() AS VARCHAR), GETDATE());
+	   
+	  RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+	  END CATCH;
+END
+GO
 ------------------------------------------------MaterialGroup------------------------------------------------
 INSERT INTO MasterMaterialGroup 
 (CreationTime, CreatorUserId, IsDeleted, Code, Name)
@@ -366,3 +457,13 @@ BEGIN
        AND (@p_EngineType IS NULL OR me.EngineType LIKE CONCAT('%', @p_EngineType, '%'))
        AND me.IsDeleted = 0
 END
+------------------------------------------------Other(s)------------------------------------------------
+CREATE TABLE ProcessLog (
+  ID BIGINT IDENTITY
+ ,CATEGORY VARCHAR(50) NULL
+ ,PROCESS_NAME VARCHAR(200) NULL
+ ,ERROR_MESSAGE VARCHAR(2048) NULL
+ ,CREATED_BY NVARCHAR(40) NULL
+ ,CREATED_DATE DATETIME NULL
+)
+GO

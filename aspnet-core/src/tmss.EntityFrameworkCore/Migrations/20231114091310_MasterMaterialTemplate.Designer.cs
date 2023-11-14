@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tmss.EntityFrameworkCore;
 
 namespace tmss.Migrations
 {
     [DbContext(typeof(tmssDbContext))]
-    partial class tmssDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231114091310_MasterMaterialTemplate")]
+    partial class MasterMaterialTemplate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2105,10 +2107,6 @@ namespace tmss.Migrations
                         .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
 
-                    b.Property<string>("ErrorDescription")
-                        .HasColumnType("nvarchar(max)")
-                        .HasMaxLength(5000);
-
                     b.Property<string>("Guid")
                         .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
@@ -2346,10 +2344,6 @@ namespace tmss.Migrations
 
                     b.Property<DateTime?>("EffectiveDateTo")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("ErrorDescription")
-                        .HasColumnType("nvarchar(max)")
-                        .HasMaxLength(5000);
 
                     b.Property<string>("Guid")
                         .HasColumnType("nvarchar(128)")
@@ -2763,10 +2757,6 @@ namespace tmss.Migrations
                     b.Property<string>("EngineType")
                         .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
-
-                    b.Property<string>("ErrorDescription")
-                        .HasColumnType("nvarchar(max)")
-                        .HasMaxLength(5000);
 
                     b.Property<string>("FuelType")
                         .HasColumnType("nvarchar(2)")

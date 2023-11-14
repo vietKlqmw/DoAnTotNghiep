@@ -83,6 +83,12 @@ namespace tmss.EntityFrameworkCore
 
         public virtual DbSet<MasterTransmissionType> MasterTransmissionTypes { get; set; }
 
+        public virtual DbSet<MasterMaterial_T> MasterMaterial_Ts { get; set; }
+
+        public virtual DbSet<MasterEngine_T> MasterEngine_Ts { get; set; }
+
+        public virtual DbSet<MasterVehicleCKD_T> MasterVehicleCKD_Ts { get; set; }
+
         #endregion
 
         public tmssDbContext(DbContextOptions<tmssDbContext> options)
