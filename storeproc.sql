@@ -13,6 +13,7 @@ BEGIN
       FROM MasterMaterial mm
      WHERE (@p_MaterialCode IS NULL OR mm.MaterialCode LIKE CONCAT('%', @p_MaterialCode, '%'))
        AND (@p_MaterialGroup IS NULL OR mm.MaterialGroup LIKE CONCAT('%', @p_MaterialGroup, '%'))
+       AND mm.IsDeleted = 0
 END
 --Get data by Id:
 CREATE PROCEDURE INV_MASTER_MATERIAL_BY_ID
@@ -85,6 +86,15 @@ BEGIN
          WHERE Id = @p_MaterialId
     END
 
+END
+--delete data:
+CREATE PROCEDURE INV_MASTER_MATERIAL_DELETE
+    @p_Id INT
+AS
+BEGIN
+    UPDATE MasterMaterial
+       SET IsDeleted = 1
+     WHERE Id = @p_Id 
 END
 ------------------------------------------------MaterialGroup------------------------------------------------
 INSERT INTO MasterMaterialGroup 
@@ -174,6 +184,7 @@ BEGIN
        AND (@p_StorageLocationName IS NULL OR msl.StorageLocationName LIKE CONCAT('%', @p_StorageLocationName, '%'))
        AND (@p_AddressLanguageEn IS NULL OR msl.AddressLanguageEn LIKE CONCAT('%', @p_AddressLanguageEn, '%'))
        AND (@p_Category IS NULL OR msl.Category LIKE CONCAT('%', @p_Category, '%'))
+       AND msl.IsDeleted = 0
 END
 ------------------------------------------------InvoiceStatus------------------------------------------------
 INSERT INTO MasterInvoiceStatus 
@@ -321,6 +332,7 @@ BEGIN
       FROM MasterVehicleCBU mvc
      WHERE (@p_VehicleType IS NULL OR mvc.VehicleType LIKE CONCAT('%',@p_VehicleType,'%'))
        AND (@p_Model IS NULL OR mvc.Model LIKE CONCAT('%',@p_Model,'%'))
+       AND mvc.IsDeleted = 0
 END
 ------------------------------------------------VehicleCKD------------------------------------------------
 CREATE PROCEDURE INV_MASTER_VEHICLE_CKD_SEARCH
@@ -335,6 +347,7 @@ BEGIN
      WHERE (@p_Model IS NULL OR mvc.Model LIKE CONCAT('%', @p_Model, '%'))
        AND (@p_Cfc IS NULL OR mvc.Cfc LIKE CONCAT('%', @p_Cfc, '%'))
        AND (@p_ModelCode IS NULL OR mvc.ModelCode LIKE CONCAT('%', @p_ModelCode, '%'))
+       AND mvc.IsDeleted = 0
 END
 ------------------------------------------------Engine------------------------------------------------
 CREATE PROCEDURE INV_MASTER_ENGINE_SEARCH
@@ -351,4 +364,5 @@ BEGIN
        AND (@p_TransmissionType IS NULL OR me.TransmissionType LIKE CONCAT('%', @p_TransmissionType, '%'))
        AND (@p_EngineModel IS NULL OR me.EngineModel LIKE CONCAT('%', @p_EngineModel, '%'))
        AND (@p_EngineType IS NULL OR me.EngineType LIKE CONCAT('%', @p_EngineType, '%'))
+       AND me.IsDeleted = 0
 END

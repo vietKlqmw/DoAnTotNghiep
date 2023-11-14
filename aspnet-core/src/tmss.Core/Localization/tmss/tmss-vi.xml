@@ -47,6 +47,7 @@
     <text name="UserInformations">Thông tin người dùng</text>
     <text name="PasswordRepeat">Mật khẩu (nhắc lại)</text>
     <text name="SuccessfullyDeleted">Đã xóa thành công.</text>
+	<text name="FailedDeleted">Xóa thất bại!</text>
     <text name="RoleDeleteWarningMessage">Vai trò {0} sẽ bị xóa và bỏ gán cho tất cả người dùng được chỉ định.</text>
     <text name="UserDeleteWarningMessage">Người dùng {0} sẽ bị xóa.</text>
     <text name="Active">Kích hoạt</text>

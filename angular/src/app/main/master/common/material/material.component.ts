@@ -50,6 +50,7 @@ export class MaterialComponent extends AppComponentBase implements OnInit {
 
     materialCode: string = '';
     materialGroup: string = '';
+    _selectrow;
 
     defaultColDef = {
         resizable: true,
@@ -232,7 +233,7 @@ export class MaterialComponent extends AppComponentBase implements OnInit {
         setTimeout(() => {
             this.dataParams.columnApi!.sizeColumnsToFit({
                 suppressColumnVirtualisation: true,
-           });
+            });
             this.autoSizeAll();
         })
     }
@@ -307,6 +308,7 @@ export class MaterialComponent extends AppComponentBase implements OnInit {
         this.saveSelectedRow = params.api.getSelectedRows()[0] ?? new MasterMaterialDto();
         this.selectedRow = Object.assign({}, this.saveSelectedRow);
 
+        this._selectrow = this.saveSelectedRow.id;
     }
 
     exportToExcel(): void {
@@ -321,12 +323,26 @@ export class MaterialComponent extends AppComponentBase implements OnInit {
             });
     }
 
+    deleteMaterial() {
+        this.message.confirm(this.l('Bạn có chắc chắn muốn xóa?'), 'Delete Material', (isConfirmed) => {
+            if (isConfirmed) {
+                this._service.deleteMaterial(this._selectrow).subscribe(() => {
+                    this.callBackDataGrid(this.dataParams!);
+                    this.notify.success(this.l('SuccessfullyDeleted'));
+                },error =>{
+                    this.notify.error(this.l('FailedDeleted'));
+                });
+            }
+        });
+    }
+
     viewMaterial(): void {
         this.viewMaterialModal.show(this.saveSelectedRow);
     }
 
     editMaterial(e): void {
-        this.editMaterialModal.show(e, this.saveSelectedRow);
+        if (e == 'Edit') this.editMaterialModal.show(e, this.saveSelectedRow);
+        else this.editMaterialModal.show(e);
     }
 }
 

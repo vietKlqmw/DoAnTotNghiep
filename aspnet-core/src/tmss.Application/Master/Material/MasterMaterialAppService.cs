@@ -114,5 +114,14 @@ namespace tmss.Master.Material
                 p_UserId = AbpSession.UserId
             });
         }
+
+        public async Task DeleteMaterial(int? MaterialId)
+        {
+            string _sql = "Exec INV_MASTER_MATERIAL_DELETE @p_Id";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_Id = MaterialId
+            });
+        }
     }
 }

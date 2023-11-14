@@ -94,7 +94,7 @@
                                 <div class="input-group">
                                     <span class="input-group-text left-text">Effective Date From</span>
                                     <input type='text' class="form-control tmss-form-control" name='effectiveDateFrom'
-						                #datepicker='bsDatepicker' [(ngModel)]='rowData.effectiveDateFrom' bsDatepicker
+						                #datepicker='bsDatepicker' [(ngModel)]='_effectiveDateFrom' bsDatepicker
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true, showClearButton: true, showTodayButton: true, todayPosition:'right'}">
                                     <span class="input-group-text right-text">
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
@@ -105,7 +105,7 @@
                                 <div class="input-group">
                                     <span class="input-group-text left-text">Effective Date To</span>
                                     <input type='text' class="form-control tmss-form-control" name='effectiveDateTo'
-						                #datepicker2='bsDatepicker' [(ngModel)]='rowData.effectiveDateTo' bsDatepicker
+						                #datepicker2='bsDatepicker' [(ngModel)]='_effectiveDateTo' bsDatepicker
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true, showClearButton: true, showTodayButton: true, todayPosition:'right'}">
                                     <span class="input-group-text right-text">
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker2.toggle()"></i>
@@ -117,7 +117,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-outline-primary" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
+                <button type="submit" class="btn btn-outline-primary" (click)="save()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
                     <i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
                 <button type="button" class="btn btn-outline-danger" (click)="close()">
                     <i class="fa tmss-fa fa-times mr-1"></i>{{"Cancel" | localize}}</button>
