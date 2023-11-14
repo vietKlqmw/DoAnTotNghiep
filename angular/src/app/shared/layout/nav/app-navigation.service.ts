@@ -42,9 +42,9 @@ export class AppNavigationService {
                 ]),
 
                 new AppMenuItem('Material', '', 'flaticon-car', '/app/main/master/common/material'),
+                new AppMenuItem('Engine', '', 'flaticon-car', '/app/main/master/common/'),
                 new AppMenuItem('Vehicle CKD', '', 'flaticon-car', '/app/main/master/common/vehicle-ckd'),
                 //new AppMenuItem('Vehicle CBU', '', 'flaticon-car', '/app/main/master/common/vehicle-cbu'),
-                new AppMenuItem('Engine', '', 'flaticon-car', '/app/main/master/common/'),
             ]),
 
             // new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),

@@ -300,6 +300,17 @@ VALUES
 (GETDATE(), 1, 0, 'C004', 'Coaster'),
 (GETDATE(), 1, 0, 'C005', 'Ventury'),
 (GETDATE(), 1, 0, 'C006', 'Rush');
+------------------------------------------------TransmissionType------------------------------------------------
+INSERT INTO MasterTransmissionType 
+(CreationTime, CreatorUserId, IsDeleted, Code, Name)
+VALUES 
+(GETDATE(), 1, 0, 'AT', 'Automatic'),
+(GETDATE(), 1, 0, 'MT', 'Manual'),
+(GETDATE(), 1, 0, 'HP', 'Hibrid');
+------------------------------------------------EngineType------------------------------------------------
+
+------------------------------------------------EngineModel------------------------------------------------
+
 ------------------------------------------------VehicleCBU------------------------------------------------
 CREATE PROCEDURE INV_MASTER_VEHICLE_CBU_SEARCH
     @p_VehicleType NVARCHAR(10),
