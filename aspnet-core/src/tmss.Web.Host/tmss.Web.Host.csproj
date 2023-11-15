@@ -44,6 +44,7 @@
     <PackageReference Include="Abp.Castle.Log4Net" Version="5.6.0" />
     <PackageReference Include="Abp.Dapper" Version="5.6.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI" Version="3.0.11" />
+    <PackageReference Include="FastMember" Version="1.5.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
   </ItemGroup>
   <ItemGroup>
@@ -51,5 +52,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\Plugins\" />
+  </ItemGroup>
+  <ItemGroup>
+	<Reference Include="GemBox.Spreadsheet">
+	  <HintPath>..\..\libs\GemBox.Spreadsheet.dll</HintPath>
+	</Reference>
   </ItemGroup>
 </Project>

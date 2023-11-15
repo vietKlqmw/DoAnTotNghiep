@@ -12,6 +12,7 @@ import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 import { ViewMaterialModalComponent } from './view-material-modal.component';
 import { EditMaterialModalComponent } from './edit-material-modal.component';
+import { ImportMaterialComponent } from './import-material-modal.component';
 
 @Component({
     selector: 'app-material',
@@ -23,6 +24,7 @@ import { EditMaterialModalComponent } from './edit-material-modal.component';
 export class MaterialComponent extends AppComponentBase implements OnInit {
     @ViewChild('viewMaterialModal', { static: true }) viewMaterialModal: ViewMaterialModalComponent;
     @ViewChild('editMaterialModal', { static: true }) editMaterialModal: EditMaterialModalComponent;
+    @ViewChild('importExcelModal', { static: true }) importExcelModal: ImportMaterialComponent;
 
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
@@ -343,6 +345,10 @@ export class MaterialComponent extends AppComponentBase implements OnInit {
     editMaterial(e): void {
         if (e == 'Edit') this.editMaterialModal.show(e, this.saveSelectedRow);
         else this.editMaterialModal.show(e);
+    }
+
+    importFromExcel(){
+        this.importExcelModal.show();
     }
 }
 

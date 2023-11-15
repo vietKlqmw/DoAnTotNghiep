@@ -7186,6 +7186,69 @@ export class MasterMaterialServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param fileName (optional) 
+     * @param body (optional) 
+     * @return Success
+     */
+    importMaterialFromExcel(fileName: string | null | undefined, body: string | null | undefined): Observable<MasterMaterialImportDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/MasterMaterial/ImportMaterialFromExcel?";
+        if (fileName !== undefined)
+            url_ += "fileName=" + encodeURIComponent("" + fileName) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processImportMaterialFromExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processImportMaterialFromExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<MasterMaterialImportDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MasterMaterialImportDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processImportMaterialFromExcel(response: HttpResponseBase): Observable<MasterMaterialImportDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(MasterMaterialImportDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MasterMaterialImportDto[]>(<any>null);
+    }
 }
 
 @Injectable()
@@ -23165,6 +23228,134 @@ export class PagedResultDtoOfMasterMaterialDto implements IPagedResultDtoOfMaste
 export interface IPagedResultDtoOfMasterMaterialDto {
     totalCount: number;
     items: MasterMaterialDto[] | undefined;
+}
+
+export class MasterMaterialImportDto implements IMasterMaterialImportDto {
+    guid!: string | undefined;
+    materialType!: string | undefined;
+    materialCode!: string | undefined;
+    description!: string | undefined;
+    materialGroup!: string | undefined;
+    baseUnitOfMeasure!: string | undefined;
+    plant!: string | undefined;
+    storageLocation!: string | undefined;
+    productionGroup!: string | undefined;
+    productionPurpose!: string | undefined;
+    productionType!: string | undefined;
+    reservedStock!: string | undefined;
+    lotCode!: string | undefined;
+    productionStorageLocation!: string | undefined;
+    costingLotSize!: number | undefined;
+    productionVersion!: string | undefined;
+    standardPrice!: number | undefined;
+    movingPrice!: number | undefined;
+    materialOrigin!: string | undefined;
+    originGroup!: string | undefined;
+    effectiveDateFrom!: moment.Moment | undefined;
+    effectiveDateTo!: moment.Moment | undefined;
+    errorDescription!: string | undefined;
+    creatorUserId!: number | undefined;
+
+    constructor(data?: IMasterMaterialImportDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.guid = _data["guid"];
+            this.materialType = _data["materialType"];
+            this.materialCode = _data["materialCode"];
+            this.description = _data["description"];
+            this.materialGroup = _data["materialGroup"];
+            this.baseUnitOfMeasure = _data["baseUnitOfMeasure"];
+            this.plant = _data["plant"];
+            this.storageLocation = _data["storageLocation"];
+            this.productionGroup = _data["productionGroup"];
+            this.productionPurpose = _data["productionPurpose"];
+            this.productionType = _data["productionType"];
+            this.reservedStock = _data["reservedStock"];
+            this.lotCode = _data["lotCode"];
+            this.productionStorageLocation = _data["productionStorageLocation"];
+            this.costingLotSize = _data["costingLotSize"];
+            this.productionVersion = _data["productionVersion"];
+            this.standardPrice = _data["standardPrice"];
+            this.movingPrice = _data["movingPrice"];
+            this.materialOrigin = _data["materialOrigin"];
+            this.originGroup = _data["originGroup"];
+            this.effectiveDateFrom = _data["effectiveDateFrom"] ? moment(_data["effectiveDateFrom"].toString()) : <any>undefined;
+            this.effectiveDateTo = _data["effectiveDateTo"] ? moment(_data["effectiveDateTo"].toString()) : <any>undefined;
+            this.errorDescription = _data["errorDescription"];
+            this.creatorUserId = _data["creatorUserId"];
+        }
+    }
+
+    static fromJS(data: any): MasterMaterialImportDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MasterMaterialImportDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["guid"] = this.guid;
+        data["materialType"] = this.materialType;
+        data["materialCode"] = this.materialCode;
+        data["description"] = this.description;
+        data["materialGroup"] = this.materialGroup;
+        data["baseUnitOfMeasure"] = this.baseUnitOfMeasure;
+        data["plant"] = this.plant;
+        data["storageLocation"] = this.storageLocation;
+        data["productionGroup"] = this.productionGroup;
+        data["productionPurpose"] = this.productionPurpose;
+        data["productionType"] = this.productionType;
+        data["reservedStock"] = this.reservedStock;
+        data["lotCode"] = this.lotCode;
+        data["productionStorageLocation"] = this.productionStorageLocation;
+        data["costingLotSize"] = this.costingLotSize;
+        data["productionVersion"] = this.productionVersion;
+        data["standardPrice"] = this.standardPrice;
+        data["movingPrice"] = this.movingPrice;
+        data["materialOrigin"] = this.materialOrigin;
+        data["originGroup"] = this.originGroup;
+        data["effectiveDateFrom"] = this.effectiveDateFrom ? this.effectiveDateFrom.toISOString() : <any>undefined;
+        data["effectiveDateTo"] = this.effectiveDateTo ? this.effectiveDateTo.toISOString() : <any>undefined;
+        data["errorDescription"] = this.errorDescription;
+        data["creatorUserId"] = this.creatorUserId;
+        return data; 
+    }
+}
+
+export interface IMasterMaterialImportDto {
+    guid: string | undefined;
+    materialType: string | undefined;
+    materialCode: string | undefined;
+    description: string | undefined;
+    materialGroup: string | undefined;
+    baseUnitOfMeasure: string | undefined;
+    plant: string | undefined;
+    storageLocation: string | undefined;
+    productionGroup: string | undefined;
+    productionPurpose: string | undefined;
+    productionType: string | undefined;
+    reservedStock: string | undefined;
+    lotCode: string | undefined;
+    productionStorageLocation: string | undefined;
+    costingLotSize: number | undefined;
+    productionVersion: string | undefined;
+    standardPrice: number | undefined;
+    movingPrice: number | undefined;
+    materialOrigin: string | undefined;
+    originGroup: string | undefined;
+    effectiveDateFrom: moment.Moment | undefined;
+    effectiveDateTo: moment.Moment | undefined;
+    errorDescription: string | undefined;
+    creatorUserId: number | undefined;
 }
 
 export class MasterMaterialGroupDto implements IMasterMaterialGroupDto {

@@ -15,11 +15,17 @@
   <ItemGroup>
     <PackageReference Include="Abp.Dapper" Version="5.6.0" />
     <PackageReference Include="Abp.EntityFrameworkCore.EFPlus" Version="5.6.0" />
+    <PackageReference Include="FastMember" Version="1.5.0" />
     <PackageReference Include="NPOI" Version="2.4.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\tmss.Application.Shared\tmss.Application.Shared.csproj" />
     <ProjectReference Include="..\tmss.Core\tmss.Core.csproj" />
     <ProjectReference Include="..\tmss.EntityFrameworkCore\tmss.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+	<Reference Include="GemBox.Spreadsheet">
+	  <HintPath>..\..\libs\GemBox.Spreadsheet.dll</HintPath>
+	</Reference>
   </ItemGroup>
 </Project>

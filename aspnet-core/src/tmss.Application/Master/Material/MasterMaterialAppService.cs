@@ -1,10 +1,17 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Dapper.Repositories;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using tmss.Dto;
 using tmss.Master.Material.Exporting;
+using GemBox.Spreadsheet;
+using FastMember;
+using System;
+using Abp.UI;
+using tmss.Common;
+using System.Data;
 
 namespace tmss.Master.Material
 {
@@ -122,6 +129,203 @@ namespace tmss.Master.Material
             {
                 p_Id = MaterialId
             });
+        }
+
+        public async Task<List<MasterMaterialImportDto>> ImportMaterialFromExcel(byte[] fileBytes, string fileName)
+        {
+            try
+            {
+                List<MasterMaterialImportDto> listImport = new List<MasterMaterialImportDto>();
+                using (var stream = new MemoryStream(fileBytes))
+                {
+                    SpreadsheetInfo.SetLicense("EF21-1FW1-HWZF-CLQH");
+                    var xlWorkBook = ExcelFile.Load(stream);
+                    var v_worksheet = xlWorkBook.Worksheets[0];
+
+                    string strGUID = Guid.NewGuid().ToString("N");
+
+                    for (int i = 1; i < v_worksheet.Rows.Count; i++)
+                    {
+                        string v_MaterialCode = (v_worksheet.Cells[i, 1]).Value?.ToString() ?? "";
+
+                        if (v_MaterialCode != "")
+                        {
+                            string v_MaterialType = (v_worksheet.Cells[i, 0]).Value?.ToString() ?? "";
+                            string v_Description = (v_worksheet.Cells[i, 2]).Value?.ToString() ?? "";
+                            string v_MaterialGroup = (v_worksheet.Cells[i, 3]).Value?.ToString() ?? "";
+                            string v_BaseUOM = (v_worksheet.Cells[i, 4]).Value?.ToString() ?? "";
+                            string v_Plant = (v_worksheet.Cells[i, 5]).Value?.ToString() ?? "";
+                            string v_StorageLocation = (v_worksheet.Cells[i, 6]).Value?.ToString() ?? "";
+                            string v_ProductionGroup = (v_worksheet.Cells[i, 7]).Value?.ToString() ?? "";
+                            string v_ProductionPurpose = (v_worksheet.Cells[i, 8]).Value?.ToString() ?? "";
+                            string v_ProductionType = (v_worksheet.Cells[i, 9]).Value?.ToString() ?? "";
+                            string v_ReservedStock = (v_worksheet.Cells[i, 10]).Value?.ToString() ?? "";
+                            string v_LotCode = (v_worksheet.Cells[i, 11]).Value?.ToString() ?? "";
+                            string v_ProdStorageLocation = (v_worksheet.Cells[i, 12]).Value?.ToString() ?? "";
+                            string v_CostingLotSize = (v_worksheet.Cells[i, 13]).Value?.ToString() ?? "";
+                            string v_ProductionVersion = (v_worksheet.Cells[i, 14]).Value?.ToString() ?? "";
+                            string v_StandardPrice = (v_worksheet.Cells[i, 15]).Value?.ToString() ?? "";
+                            string v_MovingPrice = (v_worksheet.Cells[i, 16]).Value?.ToString() ?? "";
+                            string v_MaterialOrigin = (v_worksheet.Cells[i, 17]).Value?.ToString() ?? "";
+                            string v_OriginGroup = (v_worksheet.Cells[i, 18]).Value?.ToString() ?? "";
+                            string v_EffectiveDateFrom = (v_worksheet.Cells[i, 19]).Value?.ToString() ?? "";
+                            string v_EffectiveDateTo = (v_worksheet.Cells[i, 20]).Value?.ToString() ?? "";
+
+                            var row = new MasterMaterialImportDto();
+                            row.Guid = strGUID;
+                            row.ErrorDescription = "";
+                            row.CreatorUserId = AbpSession.UserId;
+
+                            if (string.IsNullOrEmpty(v_MaterialType))
+                            {
+                                row.ErrorDescription += "Material Type không được để trống! ";
+                            }
+                            else
+                            {
+                                row.MaterialType = v_MaterialType;
+                            }
+
+                            if (string.IsNullOrEmpty(v_MaterialCode))
+                            {
+                                row.ErrorDescription += "Material Code không được để trống! ";
+                            }
+                            else
+                            {
+                                row.MaterialCode = v_MaterialCode;
+                            }
+
+                            row.Description = v_Description;
+                            row.MaterialGroup = v_MaterialGroup;
+                            row.BaseUnitOfMeasure = v_BaseUOM;
+                            row.Plant = v_Plant;
+                            row.StorageLocation = v_StorageLocation;
+                            row.ProductionGroup = v_ProductionGroup;
+                            row.ProductionPurpose = v_ProductionPurpose;
+                            row.ProductionType = v_ProductionType;
+                            row.ReservedStock = v_ReservedStock;
+                            row.LotCode = v_LotCode;
+                            row.ProductionStorageLocation = v_ProdStorageLocation;
+                            try
+                            {
+                                row.CostingLotSize = decimal.Parse(v_CostingLotSize);
+                                if(row.CostingLotSize < 0)
+                                {
+                                    row.ErrorDescription += "Costing Lot Size không được âm! ";
+                                }
+                            }
+                            catch(Exception ex)
+                            {
+                                row.ErrorDescription += "Costing Lot Size phải là số! ";
+                            }
+                            row.ProductionVersion = v_ProductionVersion;
+                            try
+                            {
+                                row.StandardPrice = decimal.Parse(v_StandardPrice);
+                                if (row.StandardPrice < 0)
+                                {
+                                    row.ErrorDescription += "Standard Price không được âm! ";
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                row.ErrorDescription += "Standard Price phải là số! ";
+                            }
+                            try
+                            {
+                                row.MovingPrice = decimal.Parse(v_MovingPrice);
+                                if (row.MovingPrice < 0)
+                                {
+                                    row.ErrorDescription += "Moving Price không được âm! ";
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                row.ErrorDescription += "Moving Price phải là số! ";
+                            }
+                            row.MaterialOrigin = v_MaterialOrigin;
+                            row.OriginGroup = v_OriginGroup;
+                            try
+                            {
+                                row.EffectiveDateFrom = DateTime.Parse(v_EffectiveDateFrom);
+                            }
+                            catch(Exception ex)
+                            {
+                                row.ErrorDescription += "Effective Date From không đúng định dạng! ";
+                            }
+                            try
+                            {
+                                row.EffectiveDateTo = DateTime.Parse(v_EffectiveDateTo);
+                                if(row.EffectiveDateFrom.HasValue && row.EffectiveDateTo < row.EffectiveDateFrom)
+                                {
+                                    row.ErrorDescription += "Effective Date To phải sau Effective Date From! ";
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                row.ErrorDescription += "Effective Date To không đúng định dạng! ";
+                            }
+
+                            listImport.Add(row);
+                        }
+                    }
+                    // import temp into db (bulkCopy)
+                    if (listImport.Count > 0)
+                    {
+                        IEnumerable<MasterMaterialImportDto> dataE = listImport.AsEnumerable();
+                        DataTable table = new DataTable();
+                        using (var reader = ObjectReader.Create(dataE))
+                        {
+                            table.Load(reader);
+                        }
+                        string connectionString = Commons.getConnectionString();
+                        using (Microsoft.Data.SqlClient.SqlConnection conn = new Microsoft.Data.SqlClient.SqlConnection(connectionString))
+                        {
+                            await conn.OpenAsync();
+
+                            using (Microsoft.Data.SqlClient.SqlTransaction tran = conn.BeginTransaction(IsolationLevel.ReadCommitted))
+                            {
+                                using (var bulkCopy = new Microsoft.Data.SqlClient.SqlBulkCopy(conn, Microsoft.Data.SqlClient.SqlBulkCopyOptions.Default, tran))
+                                {
+                                    bulkCopy.DestinationTableName = "MasterMaterial_T";
+                                    bulkCopy.ColumnMappings.Add("Guid", "Guid");
+                                    bulkCopy.ColumnMappings.Add("MaterialType", "MaterialType");
+                                    bulkCopy.ColumnMappings.Add("MaterialCode", "MaterialCode");
+                                    bulkCopy.ColumnMappings.Add("Description", "Description");
+                                    bulkCopy.ColumnMappings.Add("MaterialGroup", "MaterialGroup");
+                                    bulkCopy.ColumnMappings.Add("BaseUnitOfMeasure", "BaseUnitOfMeasure");
+                                    bulkCopy.ColumnMappings.Add("Plant", "Plant");
+                                    bulkCopy.ColumnMappings.Add("StorageLocation", "StorageLocation");
+                                    bulkCopy.ColumnMappings.Add("ProductionGroup", "ProductionGroup");
+                                    bulkCopy.ColumnMappings.Add("ProductionPurpose", "ProductionPurpose");
+                                    bulkCopy.ColumnMappings.Add("ProductionType", "ProductionType");
+                                    bulkCopy.ColumnMappings.Add("ReservedStock", "ReservedStock");
+                                    bulkCopy.ColumnMappings.Add("LotCode", "LotCode");
+                                    bulkCopy.ColumnMappings.Add("ProductionStorageLocation", "ProductionStorageLocation");
+                                    bulkCopy.ColumnMappings.Add("CostingLotSize", "CostingLotSize");
+                                    bulkCopy.ColumnMappings.Add("ProductionVersion", "ProductionVersion");
+                                    bulkCopy.ColumnMappings.Add("StandardPrice", "StandardPrice");
+                                    bulkCopy.ColumnMappings.Add("MovingPrice", "MovingPrice");
+                                    bulkCopy.ColumnMappings.Add("MaterialOrigin", "MaterialOrigin");
+                                    bulkCopy.ColumnMappings.Add("OriginGroup", "OriginGroup");
+                                    bulkCopy.ColumnMappings.Add("EffectiveDateFrom", "EffectiveDateFrom");
+                                    bulkCopy.ColumnMappings.Add("EffectiveDateTo", "EffectiveDateTo");
+                                    bulkCopy.ColumnMappings.Add("ErrorDescription", "ErrorDescription");
+                                    bulkCopy.ColumnMappings.Add("CreatorUserId", "CreatorUserId");
+
+                                    bulkCopy.WriteToServer(table);
+                                    tran.Commit();
+                                }
+                            }
+                            await conn.CloseAsync();
+                        }
+                    }
+                    return listImport;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new UserFriendlyException(400, ex.Message);
+            }
         }
     }
 }

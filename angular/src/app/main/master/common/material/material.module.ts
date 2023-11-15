@@ -4,6 +4,7 @@ import { AppSharedModule } from '@app/shared/app-shared.module';
 import { MaterialRoutingModule } from './material-routing.module';
 import { ViewMaterialModalComponent } from './view-material-modal.component';
 import { EditMaterialModalComponent } from './edit-material-modal.component';
+import { ImportMaterialComponent } from './import-material-modal.component';
 
 @NgModule({
     imports: [
@@ -13,7 +14,8 @@ import { EditMaterialModalComponent } from './edit-material-modal.component';
     declarations: [
         MaterialComponent,
         ViewMaterialModalComponent,
-        EditMaterialModalComponent
+        EditMaterialModalComponent,
+        ImportMaterialComponent
     ]
 })
 export class MaterialModule { }
