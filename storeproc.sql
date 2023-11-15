@@ -108,7 +108,7 @@ BEGIN
 		INSERT INTO ProcessLog(CATEGORY, PROCESS_NAME, ERROR_MESSAGE, CREATED_BY, CREATED_DATE)
 		VALUES ('MasterMaterial', 'MasterMaterial Import', 'START:', 'SYSTEM', GETDATE());
 
-		IF NOT EXISTS (SELECT 1 FROM MasterMaterial_T mmt WHERE Guid = @Guid AND ErrorDescription IS NOT NULL)
+		IF NOT EXISTS (SELECT 1 FROM MasterMaterial_T mmt WHERE mmt.Guid = @Guid AND mmt.ErrorDescription != '')
 		BEGIN					
 		    MERGE INTO MasterMaterial AS P
 		    USING (
@@ -187,6 +187,20 @@ BEGIN
 	  END CATCH;
 END
 GO
+------------------------------------------------Get List Import:
+CREATE PROCEDURE INV_MASTER_MATERIAL_GET_LIST_ERROR_IMPORT
+    @Guid NVARCHAR(max)
+AS 
+BEGIN
+    SELECT DISTINCT mmt.Guid, mmt.MaterialType, mmt.MaterialCode, mmt.Description, mmt.MaterialGroup, 
+           mmt.BaseUnitOfMeasure, mmt.Plant, mmt.StorageLocation, mmt.ProductionGroup, mmt.ProductionType, 
+           mmt.ProductionPurpose, mmt.ReservedStock, mmt.LotCode, mmt.ProductionStorageLocation, 
+           mmt.CostingLotSize, mmt.ProductionVersion, mmt.StandardPrice, mmt.MovingPrice, 
+           mmt.MaterialOrigin, mmt.OriginGroup, mmt.EffectiveDateFrom, mmt.EffectiveDateTo,
+           mmt.ErrorDescription
+      FROM MasterMaterial_T mmt
+     WHERE mmt.Guid = @Guid AND ISNULL(mmt.ErrorDescription, '') <> '' 
+END
 ------------------------------------------------MaterialGroup------------------------------------------------
 INSERT INTO MasterMaterialGroup 
 (CreationTime, CreatorUserId, IsDeleted, Code, Name)

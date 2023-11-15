@@ -5,6 +5,7 @@ import { MaterialRoutingModule } from './material-routing.module';
 import { ViewMaterialModalComponent } from './view-material-modal.component';
 import { EditMaterialModalComponent } from './edit-material-modal.component';
 import { ImportMaterialComponent } from './import-material-modal.component';
+import { ListErrorImportMaterialModalComponent } from './list-error-import-material-modal.component';
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import { ImportMaterialComponent } from './import-material-modal.component';
         MaterialComponent,
         ViewMaterialModalComponent,
         EditMaterialModalComponent,
-        ImportMaterialComponent
+        ImportMaterialComponent,
+        ListErrorImportMaterialModalComponent
     ]
 })
 export class MaterialModule { }

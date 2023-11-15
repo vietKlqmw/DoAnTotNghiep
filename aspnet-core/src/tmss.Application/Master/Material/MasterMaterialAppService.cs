@@ -1,17 +1,17 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Dapper.Repositories;
+using Abp.UI;
+using FastMember;
+using GemBox.Spreadsheet;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using tmss.Common;
 using tmss.Dto;
 using tmss.Master.Material.Exporting;
-using GemBox.Spreadsheet;
-using FastMember;
-using System;
-using Abp.UI;
-using tmss.Common;
-using System.Data;
 
 namespace tmss.Master.Material
 {
@@ -207,20 +207,22 @@ namespace tmss.Master.Material
                             row.ProductionStorageLocation = v_ProdStorageLocation;
                             try
                             {
-                                row.CostingLotSize = decimal.Parse(v_CostingLotSize);
-                                if(row.CostingLotSize < 0)
+                                if (string.IsNullOrEmpty(v_CostingLotSize)) row.CostingLotSize = null;
+                                else row.CostingLotSize = decimal.Parse(v_CostingLotSize);
+                                if (row.CostingLotSize < 0)
                                 {
                                     row.ErrorDescription += "Costing Lot Size không được âm! ";
                                 }
                             }
-                            catch(Exception ex)
+                            catch (Exception ex)
                             {
                                 row.ErrorDescription += "Costing Lot Size phải là số! ";
                             }
                             row.ProductionVersion = v_ProductionVersion;
                             try
                             {
-                                row.StandardPrice = decimal.Parse(v_StandardPrice);
+                                if (string.IsNullOrEmpty(v_StandardPrice)) row.StandardPrice = null;
+                                else row.StandardPrice = decimal.Parse(v_StandardPrice);
                                 if (row.StandardPrice < 0)
                                 {
                                     row.ErrorDescription += "Standard Price không được âm! ";
@@ -232,7 +234,8 @@ namespace tmss.Master.Material
                             }
                             try
                             {
-                                row.MovingPrice = decimal.Parse(v_MovingPrice);
+                                if (string.IsNullOrEmpty(v_MovingPrice)) row.MovingPrice = null;
+                                else row.MovingPrice = decimal.Parse(v_MovingPrice);
                                 if (row.MovingPrice < 0)
                                 {
                                     row.ErrorDescription += "Moving Price không được âm! ";
@@ -246,16 +249,18 @@ namespace tmss.Master.Material
                             row.OriginGroup = v_OriginGroup;
                             try
                             {
-                                row.EffectiveDateFrom = DateTime.Parse(v_EffectiveDateFrom);
+                                if (string.IsNullOrEmpty(v_EffectiveDateFrom)) row.EffectiveDateFrom = null;
+                                else row.EffectiveDateFrom = DateTime.Parse(v_EffectiveDateFrom);
                             }
-                            catch(Exception ex)
+                            catch (Exception ex)
                             {
                                 row.ErrorDescription += "Effective Date From không đúng định dạng! ";
                             }
                             try
                             {
-                                row.EffectiveDateTo = DateTime.Parse(v_EffectiveDateTo);
-                                if(row.EffectiveDateFrom.HasValue && row.EffectiveDateTo < row.EffectiveDateFrom)
+                                if (string.IsNullOrEmpty(v_EffectiveDateTo)) row.EffectiveDateTo = null;
+                                else row.EffectiveDateTo = DateTime.Parse(v_EffectiveDateTo);
+                                if (row.EffectiveDateFrom.HasValue && row.EffectiveDateTo < row.EffectiveDateFrom)
                                 {
                                     row.ErrorDescription += "Effective Date To phải sau Effective Date From! ";
                                 }
@@ -326,6 +331,27 @@ namespace tmss.Master.Material
             {
                 throw new UserFriendlyException(400, ex.Message);
             }
+        }
+
+        public async Task MergeDataMaterial(string v_Guid)
+        {
+            string _sql = "Exec INV_MASTER_MATERIAL_MERGE @Guid";
+            await _dapperRepo.QueryAsync<MasterMaterialImportDto>(_sql, new { Guid = v_Guid });
+        }
+
+        public async Task<PagedResultDto<MasterMaterialImportDto>> GetListErrorImport(string v_Guid)
+        {
+            string _sql = "Exec INV_MASTER_MATERIAL_GET_LIST_ERROR_IMPORT @Guid";
+
+            IEnumerable<MasterMaterialImportDto> result = await _dapperRepo.QueryAsync<MasterMaterialImportDto>(_sql, new
+            {
+                Guid = v_Guid
+            });
+
+            var listResult = result.ToList();
+            var totalCount = listResult.Count();
+
+            return new PagedResultDto<MasterMaterialImportDto>(totalCount, listResult);
         }
     }
 }

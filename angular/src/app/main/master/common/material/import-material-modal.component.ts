@@ -8,6 +8,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { FileUpload } from 'primeng/fileupload';
 import { finalize } from 'rxjs/operators';
 import { MaterialComponent } from './material.component';
+import { ListErrorImportMaterialModalComponent } from './list-error-import-material-modal.component';
 
 @Component({
 
@@ -19,6 +20,7 @@ export class ImportMaterialComponent extends AppComponentBase {
     @ViewChild('imgInput', { static: false }) InputVar: ElementRef;
     @ViewChild('ExcelFileUpload', { static: false }) excelFileUpload: FileUpload;
     @ViewChild('importExcelModal', { static: true }) modal: ModalDirective;
+    @ViewChild('listErrorImportMaterial', { static: true }) listErrorImportMaterial: ListErrorImportMaterialModalComponent;
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
     @Output() modalClose: EventEmitter<any> = new EventEmitter<any>();
 
@@ -100,8 +102,7 @@ export class ImportMaterialComponent extends AppComponentBase {
                             this.close();
                         }
                         else {
-                            this.notify.success('Vào check db đi babe!');
-                            //this.mergeData(response.result.material[0].guid);
+                            this.mergeData(response.result.material[0].guid);
                         }
                     }
                     else if (response.error) {
@@ -122,35 +123,35 @@ export class ImportMaterialComponent extends AppComponentBase {
     }
 
     mergeData(guid) {
-        // this.isLoading = true;
-        // this._service.mergeDataSmqdOrderNormal(guid)
-        //     .pipe(
-        //         finalize(() => {
-        //             this.isLoading = false;
-        //         })
-        //     )
-        //     .subscribe(() => {
-        //         this.showMessImport(guid);
-        //     });
+        this.isLoading = true;
+        this._service.mergeDataMaterial(guid)
+            .pipe(
+                finalize(() => {
+                    this.isLoading = false;
+                })
+            )
+            .subscribe(() => {
+                this.showMessImport(guid);
+            });
     }
 
     showMessImport(guid) {
-        // this._service.getMessageErrorImport(guid)
-        //     .subscribe((result) => {
-        //         if (result.items.length > 0) {
-        //             this.errorListModal.show(guid)
-        //         }
-        //         else {
-        //             this.notify.info('Lưu thành công');
-        //             this.modal.hide();
-        //             this.modalClose.emit(null);
-        //             this._component.searchDatas();
-        //             this.disabled = false;
-        //             this.close();
-        //         }
-        //     });
+        this._service.getListErrorImport(guid)
+            .subscribe((result) => {
+                if (result.items.length > 0) {
+                    this.listErrorImportMaterial.show(guid);
+                    this.InputVar.nativeElement.value = '';
+                    this.progressBarHidden();
+                    this.disabled = false;
+                }
+                else {
+                    this.notify.info(this.l('SavedSuccessfully'));
+                    this._component.searchDatas();
+                    this.disabled = false;
+                    this.close();
+                }
+            });
     }
-
 
     progressBarVisible() {
         this.vissbleInputName = 'vissible';
@@ -161,5 +162,4 @@ export class ImportMaterialComponent extends AppComponentBase {
         this.vissibleProgess = '';
         this.vissbleInputName = '';
     }
-
 }

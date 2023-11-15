@@ -479,3 +479,9 @@ body .ag-theme-alpine .ag-ltr .ag-group-contracted {
     text-align: left !important;
     padding-left: 8px !important;
 }
+
+.prod-modal-lg{
+    min-width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
