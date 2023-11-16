@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tmss.EntityFrameworkCore;
 
 namespace tmss.Migrations
 {
     [DbContext(typeof(tmssDbContext))]
-    partial class tmssDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231116043534_BillOfLading")]
+    partial class BillOfLading
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2979,7 +2981,7 @@ namespace tmss.Migrations
                     b.ToTable("MasterVehicleCBU");
                 });
 
-            modelBuilder.Entity("tmss.MaterialManagement.ProdBillOfLading", b =>
+            modelBuilder.Entity("tmss.MaterialManagement.BillOfLading", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -3023,10 +3025,10 @@ namespace tmss.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProdBillOfLading");
+                    b.ToTable("BillOfLading");
                 });
 
-            modelBuilder.Entity("tmss.MaterialManagement.ProdShipment", b =>
+            modelBuilder.Entity("tmss.MaterialManagement.Shipment", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -3104,7 +3106,7 @@ namespace tmss.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProdShipment");
+                    b.ToTable("Shipment");
                 });
 
             modelBuilder.Entity("tmss.MultiTenancy.Accounting.Invoice", b =>

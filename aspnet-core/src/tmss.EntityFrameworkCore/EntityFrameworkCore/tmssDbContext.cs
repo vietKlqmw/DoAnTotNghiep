@@ -13,6 +13,7 @@ using tmss.Master.CustomsStatus;
 using tmss.Master.InvoiceStatus;
 using tmss.Master.Material;
 using tmss.Master.VehicleCBU;
+using tmss.MaterialManagement;
 using tmss.MultiTenancy;
 using tmss.MultiTenancy.Accounting;
 using tmss.MultiTenancy.Payments;
@@ -88,6 +89,14 @@ namespace tmss.EntityFrameworkCore
         public virtual DbSet<MasterEngine_T> MasterEngine_Ts { get; set; }
 
         public virtual DbSet<MasterVehicleCKD_T> MasterVehicleCKD_Ts { get; set; }
+
+        #endregion
+
+        #region MaterialManagement
+
+        public virtual DbSet<ProdShipment> ProdShipments { get; set; }
+
+        public virtual DbSet<ProdBillOfLading> ProdBillOfLadings { get; set; }
 
         #endregion
 
