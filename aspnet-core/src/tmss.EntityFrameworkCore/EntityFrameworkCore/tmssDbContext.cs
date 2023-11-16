@@ -98,6 +98,12 @@ namespace tmss.EntityFrameworkCore
 
         public virtual DbSet<ProdBillOfLading> ProdBillOfLadings { get; set; }
 
+        public virtual DbSet<ProdInvoice> ProdInvoices { get; set; }
+
+        public virtual DbSet<ProdInvoiceDetails> ProdInvoiceDetailss { get; set; }
+
+        public virtual DbSet<ProdContainerInvoice> ProdContainerInvoices { get; set; }
+
         #endregion
 
         public tmssDbContext(DbContextOptions<tmssDbContext> options)
