@@ -42,11 +42,19 @@ export class AppNavigationService {
                 ]),
 
                 new AppMenuItem('Material', '', 'flaticon-car', '/app/main/master/common/material'),
-                new AppMenuItem('Engine', '', 'flaticon-car', '/app/main/master/common/'),
-                new AppMenuItem('Vehicle CKD', '', 'flaticon-car', '/app/main/master/common/vehicle-ckd'),
+                // new AppMenuItem('Engine', '', 'flaticon-car', '/app/main/master/common/'),
+                // new AppMenuItem('Vehicle CKD', '', 'flaticon-car', '/app/main/master/common/vehicle-ckd'),
                 //new AppMenuItem('Vehicle CBU', '', 'flaticon-car', '/app/main/master/common/vehicle-cbu'),
             ]),
-
+//MAIN
+            new AppMenuItem('MANAGEMENT', '', 'flaticon-user-settings', '',[],[
+                new AppMenuItem('INTRANSIT', '', 'flaticon-user-settings', '',[],[
+                    new AppMenuItem('Shipment', '', 'flaticon-car', '/app/main/master/'),
+                    new AppMenuItem('Bill Of Lading', '', 'flaticon-car', '/app/main/master/'),
+                ]),
+                new AppMenuItem('WAREHOUSE', '', 'flaticon-user-settings', '',[],[
+                ]),
+            ]),
             // new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
             // new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
             new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [], [

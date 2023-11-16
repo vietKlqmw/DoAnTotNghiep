@@ -471,6 +471,52 @@ BEGIN
        AND (@p_EngineType IS NULL OR me.EngineType LIKE CONCAT('%', @p_EngineType, '%'))
        AND me.IsDeleted = 0
 END
+------------------------------------------------Shipment------------------------------------------------
+CREATE PROCEDURE INV_PROD_SHIPMENT_SEARCH
+(
+    @p_ShipmentNo NVARCHAR(255),
+    @p_ShippingcompanyCode NVARCHAR(255),
+    @p_SupplierNo NVARCHAR(255),
+    @p_FromPort NVARCHAR(255),
+    @p_ToPort NVARCHAR(255),
+    @p_ShipmentDate NVARCHAR(255)
+)
+AS 
+   SELECT DISTINCT a.Id, a.ShipmentNo, a.ShippingcompanyCode, a.SupplierNo,
+          a.Buyer, a.FromPort, a.ToPort, a.ShipmentDate,
+          a.Etd, a.Eta, a.Ata, a.OceanVesselName, a.Atd, a.Status
+     FROM ProdShipment a
+--LEFT JOIN InvCkdBill b 
+--       on a.Id = b.ShipmentId
+--LEFT JOIN InvCkdInvoice c 
+--      ON c.BillId = b.Id
+    WHERE (@p_ShipmentNo IS NULL OR a.ShipmentNo LIKE CONCAT('%', @p_ShipmentNo, '%'))
+      AND (@p_ShippingcompanyCode IS NULL OR a.ShippingcompanyCode LIKE CONCAT('%', @p_ShippingcompanyCode, '%'))
+      AND (@p_SupplierNo IS NULL OR a.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
+      AND (@p_FromPort IS NULL OR a.FromPort LIKE CONCAT('%', @p_FromPort, '%'))
+      AND (@p_ToPort IS NULL OR a.ToPort LIKE CONCAT('%', @p_ToPort, '%'))
+      AND (@p_ShipmentDate IS NULL OR a.ShipmentDate LIKE CONCAT('%', @p_ShipmentDate, '%'))
+      AND a.IsDeleted = 0
+ ORDER BY a.Etd DESC, a.Eta DESC
+------------------------------------------------BillOfLading------------------------------------------------
+CREATE PROCEDURE INV_PROD_BILL_OF_LADING_SEARCH
+(
+    @p_BillofladingNo NVARCHAR(255),
+    @p_BillDateFrom DATE,
+    @p_BillDateTo DATE
+)
+AS 
+    SELECT DISTINCT b.Id, b.BillofladingNo, b.ShipmentId, b.BillDate, b.StatusCode
+      FROM ProdBillOfLading b 
+-- LEFT JOIN InvCkdInvoice c 
+--        ON c.BillId = b.Id
+     WHERE (@p_BillofladingNo IS NULL OR b.BillofladingNo LIKE CONCAT('%', @p_BillofladingNo, '%'))
+       AND (@p_BillDateFrom IS NULL OR b.BillDate >= @p_BillDateFrom)
+       AND (@p_BillDateTo IS NULL OR b.BillDate <= @p_BillDateTo)
+       AND b.IsDeleted = 0
+  ORDER BY b.BillDate DESC
+------------------------------------------------Invoice------------------------------------------------
+------------------------------------------------ContainerInvoice------------------------------------------------
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (
   ID BIGINT IDENTITY
