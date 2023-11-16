@@ -516,6 +516,73 @@ AS
        AND b.IsDeleted = 0
   ORDER BY b.BillDate DESC
 ------------------------------------------------Invoice------------------------------------------------
+CREATE PROCEDURE INV_PROD_INVOICE_SEARCH 
+(
+    @p_InvoiceNo NVARCHAR(255),
+    @p_InvoiceDateFrom DATE,
+    @p_InvoiceDateTo DATE,
+    @p_BillNo NVARCHAR(255),
+    @p_ShipmentNo NVARCHAR(255),
+    @p_ContainerNo NVARCHAR(255),
+    @p_BillDateFrom DATE,
+    @p_BillDateTo DATE,
+    @p_OrderTypeCode NVARCHAR(255),
+    @p_SupplierNo NVARCHAR(255)
+)
+AS
+BEGIN 
+    SELECT DISTINCT a.Id, a.InvoiceNo, a.BillId, a.OrderTypeCode, a.GoodsTypeCode, a.InvoiceDate, 
+           a.Freight, a.FreightTotal, a.Insurance, a.InsuranceTotal, a.Cif, a.ThcTotal, a.NetWeight, 
+           a.GrossWeight, a.Currency, a.SupplierNo, a.Quantity, a.FreightTotalVn, a.InsuranceTotalVn, 
+           a.CifVn, a.ThcTotalVn, a.PeriodId, b.BillofladingNo AS BillNo, c.ShipmentNo, 
+           e.Description AS Status, parent.InvoiceNo InvoiceParentId, b.BillDate
+      FROM ProdInvoice a
+ LEFT JOIN ProdBillOfLading b
+        ON a.BillId = b.Id
+ LEFT JOIN ProdShipment c
+        ON c.Id = b.ShipmentId
+ LEFT JOIN ProdContainerInvoice d
+        ON d.InvoiceId = a.Id
+ LEFT JOIN ProdInvoice parent
+        ON a.InvoiceParentId = parent.Id
+	LEFT JOIN MasterInvoiceStatus e
+        ON a.Status = e.Code
+     WHERE (@p_InvoiceNo IS NULL OR a.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
+       AND (@p_InvoiceDateFrom IS NULL OR a.InvoiceDate >= @p_InvoiceDateFrom)
+       AND (@p_InvoiceDateTo IS NULL OR a.InvoiceDate <= @p_InvoiceDateTo)
+       AND (@p_BillNo IS NULL OR b.BillofladingNo LIKE CONCAT('%', @p_BillNo, '%'))
+       AND (@p_ShipmentNo IS NULL OR c.ShipmentNo LIKE CONCAT('%', @p_ShipmentNo, '%'))
+       AND (@p_ContainerNo IS NULL OR d.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
+       AND (@p_BillDateFrom IS NULL OR b.BillDate >= @p_BillDateFrom)
+       AND (@p_BillDateTo IS NULL OR b.BillDate < DATEADD(DAY, 1, @p_BillDateTo))
+	     AND (@p_OrderTypeCode IS NULL OR a.OrdertypeCode = @p_OrderTypeCode)
+	     AND (@p_SupplierNo IS NULL OR a.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
+       AND a.IsDeleted = 0
+  ORDER BY a.InvoiceDate DESC, b.BillDate DESC, a.InvoiceNo, a.Id	
+END
+------------------------------------------------InvoiceDetails------------------------------------------------
+CREATE PROCEDURE INV_PROD_INVOICE_DETAILS_SEARCH
+(
+    @p_InvoiceId INT
+)
+AS 
+BEGIN
+    SELECT a.PartNo, a.LotNo, a.Fixlot, a.CaseNo, a.ModuleNo, a.Insurance, a.ContainerNo, a.InvoiceId, 
+           a.SupplierNo, a.Freight, a.Thc, a.Cif, a.Tax, a.TaxRate, a.Vat, a.VatRate, a.UsageQty, 
+           a.PartName, a.CarfamilyCode, a.PartNetWeight, a.OrderNo, a.PackagingDate, a.FreightVn, 
+           a.InsuranceVn, a.ThcVn, a.CifVn, a.TaxVn, a.VatVn, a.InvoiceParentId, a.PeriodDate, 
+           a.PeriodId, a.PartnameVn, a.CarName, a.PreCustomsId--, e.Description AS Status
+      FROM ProdInvoiceDetails a 
+ LEFT JOIN ProdInvoice inv 
+        ON inv.Id = CASE WHEN inv.Id = inv.InvoiceParentId THEN a.InvoiceParentId ELSE a.InvoiceId END
+ LEFT JOIN ProdContainerInvoice d 
+        ON d.InvoiceId = inv.InvoiceParentId AND d.ContainerNo = a.ContainerNo
+-- LEFT JOIN MasterInvoiceStatus e
+--        ON a.Status = e.Code
+     WHERE inv.Id = @p_InvoiceId
+       AND a.IsDeleted = 0
+  ORDER BY a.PartNo
+END
 ------------------------------------------------ContainerInvoice------------------------------------------------
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (
