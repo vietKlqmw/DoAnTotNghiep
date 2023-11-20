@@ -102,6 +102,23 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                         loadChildren: () => import('./master/common/transmission-type/transmission-type.module').then(m => m.TransmissionTypeModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
+//MANAGEMENT
+                    //Intransit
+                    {
+                        path: 'management/intransit/shipment',
+                        loadChildren: () => import('./management/intransit/shipment/shipment.module').then(m => m.ShipmentModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
+                    {
+                        path: 'management/intransit/billoflading',
+                        loadChildren: () => import('./management/intransit/billoflading/billoflading.module').then(m => m.BillofladingModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
+                    {
+                        path: 'management/intransit/container-invoice',
+                        loadChildren: () => import('./management/intransit/container-invoice/container-invoice.module').then(m => m.ContainerInvoiceModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
                     { path: '**', redirectTo: 'dashboard' }
                 ]
             }

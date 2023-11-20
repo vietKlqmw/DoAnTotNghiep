@@ -209,7 +209,17 @@ export class DataFormatService {
     return 0;
   }
 
-
+    /**
+     *
+     *
+     * @param {*} val : Giá trị value truyền vào.
+     * @param {number} [_decimalMax] : Max decimal hiển thị.
+     * @param {boolean} [_decimalFull] : ex: 123.45 -> 123.4500. default: true
+     * @param {boolean} [_decimalMath] : Làm tròn khi decimal của value vượt quá decimalMax. default: false
+     * @param {string} [_mathType] : Kiểu làm tròn ex: "round", "floor", "ceil". default = "round"
+     * @return {*}  {*}
+     * @memberof DataFormatService
+     */
   formatMoney_decimal(val: any, _decimalMax?:number, _decimalFull?:boolean, _decimalMath?:boolean, _mathType?: string): any {
 
     if(_decimalFull == undefined) _decimalFull = true;

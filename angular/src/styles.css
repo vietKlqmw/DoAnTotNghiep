@@ -276,6 +276,10 @@ ngx-spinner .loading-text {
     position: relative;
 }
 
+.fa-calendar-alt{
+    color: #21bd8f !important;
+}
+
 input[type="checkbox"].form-control {
     border: none;
 }

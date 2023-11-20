@@ -71,6 +71,7 @@ import { AgDatepickerRendererComponent } from './grid/ag-datepicker-renderer/ag-
 import { AgCheckboxRendererComponent } from './grid/ag-checkbox-renderer/ag-checkbox-renderer.component';
 import { AgFloatingFilterGridComponent } from './grid/ag-floating-filter-grid/ag-floating-filter-grid.component';
 import { DashboardComponent } from '@app/main/dashboard/dashboard.component';
+import { DataFormatService } from './services/data-format.service';
 
 @NgModule({
     imports: [
@@ -176,6 +177,7 @@ import { DashboardComponent } from '@app/main/dashboard/dashboard.component';
         AppLocalizationService,
         AppNavigationService,
         DashboardViewConfigurationService,
+        DataFormatService,
         { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
         { provide: BsDaterangepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDaterangepickerConfig },
         { provide: BsLocaleService, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerLocale },
