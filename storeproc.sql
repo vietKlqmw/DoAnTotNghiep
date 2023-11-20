@@ -486,10 +486,10 @@ AS
           a.Buyer, a.FromPort, a.ToPort, a.ShipmentDate,
           a.Etd, a.Eta, a.Ata, a.OceanVesselName, a.Atd, a.Status
      FROM ProdShipment a
---LEFT JOIN InvCkdBill b 
---       on a.Id = b.ShipmentId
---LEFT JOIN InvCkdInvoice c 
---      ON c.BillId = b.Id
+LEFT JOIN ProdBillOfLading b 
+       ON a.Id = b.ShipmentId
+LEFT JOIN ProdInvoice c 
+       ON c.BillId = b.Id
     WHERE (@p_ShipmentNo IS NULL OR a.ShipmentNo LIKE CONCAT('%', @p_ShipmentNo, '%'))
       AND (@p_ShippingcompanyCode IS NULL OR a.ShippingcompanyCode LIKE CONCAT('%', @p_ShippingcompanyCode, '%'))
       AND (@p_SupplierNo IS NULL OR a.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
@@ -508,8 +508,8 @@ CREATE PROCEDURE INV_PROD_BILL_OF_LADING_SEARCH
 AS 
     SELECT DISTINCT b.Id, b.BillofladingNo, b.ShipmentId, b.BillDate, b.StatusCode
       FROM ProdBillOfLading b 
--- LEFT JOIN InvCkdInvoice c 
---        ON c.BillId = b.Id
+ LEFT JOIN ProdInvoice c 
+        ON c.BillId = b.Id
      WHERE (@p_BillofladingNo IS NULL OR b.BillofladingNo LIKE CONCAT('%', @p_BillofladingNo, '%'))
        AND (@p_BillDateFrom IS NULL OR b.BillDate >= @p_BillDateFrom)
        AND (@p_BillDateTo IS NULL OR b.BillDate <= @p_BillDateTo)
@@ -584,6 +584,40 @@ BEGIN
   ORDER BY a.PartNo
 END
 ------------------------------------------------ContainerInvoice------------------------------------------------
+CREATE PROCEDURE INV_PROD_CONTAINER_INVOICE_SEARCH
+(
+    @p_BillNo NVARCHAR(50),
+    @p_ContainerNo NVARCHAR(255),
+    @p_InvoiceNo NVARCHAR(255),
+    @p_SealNo NVARCHAR(255),
+    @p_Status NVARCHAR(255),
+    @p_SupplierNo NVARCHAR(255),
+    @p_BillDateFrom DATE,
+    @p_BillDateTo DATE
+)
+AS 
+    SELECT a.Id, a.ContainerNo, a.InvoiceId, a.SupplierNo, a.SealNo, a.ContainerSize, 
+           a.PlanDevanningDate, a.ActualDevanningDate, a.Thc, b.Description Status, 
+           a.ThcVn, a.Freight, a.Insurance, a.Tax, a.Amount, a.TaxVnd, a.VatVnd, 
+           c.BillofladingNo, c.BillDate
+      FROM ProdContainerInvoice a
+INNER JOIN ProdInvoice d     
+        ON d.Id = a.InvoiceId
+INNER JOIN ProdBillOfLading c 
+        ON c.Id = d.BillId
+ LEFT JOIN MasterCustomsStatus b
+        ON a.Status = b.Code
+     WHERE (@p_BillNo IS NULL OR c.BillofladingNo LIKE CONCAT('%', @p_BillNo, '%'))
+	     AND (@p_ContainerNo IS NULL OR a.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
+       AND (@p_InvoiceNo IS NULL OR d.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
+       AND (@p_SealNo IS NULL OR a.SealNo LIKE CONCAT('%', @p_SealNo, '%'))
+       AND (@p_Status = '-1' OR a.Status = @p_Status)
+       AND (@p_SupplierNo IS NULL OR a.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
+       AND (@p_BillDateFrom IS NULL OR c.BillDate >= @p_BillDateFrom)
+       AND (@p_BillDateTo IS NULL OR c.BillDate <= @p_BillDateTo)
+  ORDER BY c.BillDate DESC, a.PlanDevanningDate DESC, b.Description
+
+GO
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (
   ID BIGINT IDENTITY

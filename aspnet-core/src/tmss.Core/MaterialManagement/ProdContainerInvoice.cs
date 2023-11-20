@@ -30,9 +30,9 @@ namespace tmss.MaterialManagement
 
         public virtual int? ContainerSize { get; set; } //kích thước container
 
-        public virtual DateTime? PlandedvanningDate { get; set; } //ngày dỡ container theo kế hoạch
+        public virtual DateTime? PlanDevanningDate { get; set; } //ngày dỡ container theo kế hoạch
 
-        public virtual DateTime? ActualvanningDate { get; set; } //ngày dỡ container thực tế
+        public virtual DateTime? ActualDevanningDate { get; set; } //ngày dỡ container thực tế
 
         public virtual decimal? Thc { get; set; }
 
@@ -41,8 +41,16 @@ namespace tmss.MaterialManagement
 
         public virtual decimal? ThcVn { get; set; }
 
-        public virtual DateTime? PeriodDate { get; set; }
+        public virtual decimal? Freight { get; set; } // Cước vẫn chuyển
 
-        public virtual long? PeriodId { get; set; }
+        public virtual decimal? Insurance { get; set; } //Bảo hiểm
+
+        public virtual decimal? Tax { get; set; } //thuế
+
+        public virtual decimal? Amount { get; set; } //số lượng
+
+        public virtual decimal? TaxVnd { get; set; }
+
+        public virtual decimal? VatVnd { get; set; }
     }
 }
