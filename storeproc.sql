@@ -474,12 +474,12 @@ END
 ------------------------------------------------Shipment------------------------------------------------
 CREATE PROCEDURE INV_PROD_SHIPMENT_SEARCH
 (
-    @p_ShipmentNo NVARCHAR(255),
-    @p_ShippingcompanyCode NVARCHAR(255),
-    @p_SupplierNo NVARCHAR(255),
-    @p_FromPort NVARCHAR(255),
-    @p_ToPort NVARCHAR(255),
-    @p_ShipmentDate NVARCHAR(255)
+    @p_ShipmentNo NVARCHAR(10),
+    @p_ShippingcompanyCode NVARCHAR(10),
+    @p_SupplierNo NVARCHAR(10),
+    @p_FromPort NVARCHAR(50),
+    @p_ToPort NVARCHAR(50),
+    @p_ShipmentDate NVARCHAR(10)
 )
 AS 
    SELECT DISTINCT a.Id, a.ShipmentNo, a.ShippingcompanyCode, a.SupplierNo,
@@ -501,7 +501,7 @@ LEFT JOIN ProdInvoice c
 ------------------------------------------------BillOfLading------------------------------------------------
 CREATE PROCEDURE INV_PROD_BILL_OF_LADING_SEARCH
 (
-    @p_BillofladingNo NVARCHAR(255),
+    @p_BillofladingNo NVARCHAR(20),
     @p_BillDateFrom DATE,
     @p_BillDateTo DATE
 )
@@ -518,16 +518,16 @@ AS
 ------------------------------------------------Invoice------------------------------------------------
 CREATE PROCEDURE INV_PROD_INVOICE_SEARCH 
 (
-    @p_InvoiceNo NVARCHAR(255),
+    @p_InvoiceNo NVARCHAR(20),
     @p_InvoiceDateFrom DATE,
     @p_InvoiceDateTo DATE,
-    @p_BillNo NVARCHAR(255),
-    @p_ShipmentNo NVARCHAR(255),
-    @p_ContainerNo NVARCHAR(255),
+    @p_BillNo NVARCHAR(20),
+    @p_ShipmentNo NVARCHAR(10),
+    @p_ContainerNo NVARCHAR(15),
     @p_BillDateFrom DATE,
     @p_BillDateTo DATE,
-    @p_OrderTypeCode NVARCHAR(255),
-    @p_SupplierNo NVARCHAR(255)
+    @p_OrderTypeCode NVARCHAR(4),
+    @p_SupplierNo NVARCHAR(10)
 )
 AS
 BEGIN 
@@ -586,12 +586,12 @@ END
 ------------------------------------------------ContainerInvoice------------------------------------------------
 CREATE PROCEDURE INV_PROD_CONTAINER_INVOICE_SEARCH
 (
-    @p_BillNo NVARCHAR(50),
-    @p_ContainerNo NVARCHAR(255),
-    @p_InvoiceNo NVARCHAR(255),
-    @p_SealNo NVARCHAR(255),
-    @p_Status NVARCHAR(255),
-    @p_SupplierNo NVARCHAR(255),
+    @p_BillNo NVARCHAR(20),
+    @p_ContainerNo NVARCHAR(15),
+    @p_InvoiceNo NVARCHAR(20),
+    @p_SealNo NVARCHAR(20),
+    @p_Status NVARCHAR(50),
+    @p_SupplierNo NVARCHAR(10),
     @p_BillDateFrom DATE,
     @p_BillDateTo DATE
 )
@@ -599,7 +599,7 @@ AS
     SELECT a.Id, a.ContainerNo, a.InvoiceId, a.SupplierNo, a.SealNo, a.ContainerSize, 
            a.PlanDevanningDate, a.ActualDevanningDate, a.Thc, b.Description Status, 
            a.ThcVn, a.Freight, a.Insurance, a.Tax, a.Amount, a.TaxVnd, a.VatVnd, 
-           c.BillofladingNo, c.BillDate
+           c.BillofladingNo, c.BillDate, d.InvoiceNo
       FROM ProdContainerInvoice a
 INNER JOIN ProdInvoice d     
         ON d.Id = a.InvoiceId

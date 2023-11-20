@@ -11036,6 +11036,249 @@ export class ProdBillOfLadingExcelExporterServiceProxy {
 }
 
 @Injectable()
+export class ProdContainerInvoiceServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param billNo (optional) 
+     * @param containerNo (optional) 
+     * @param invoiceNo (optional) 
+     * @param sealNo (optional) 
+     * @param status (optional) 
+     * @param supplierNo (optional) 
+     * @param billDateFrom (optional) 
+     * @param billDateTo (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getProdContainerInvoiceSearch(billNo: string | null | undefined, containerNo: string | null | undefined, invoiceNo: string | null | undefined, sealNo: string | null | undefined, status: string | null | undefined, supplierNo: string | null | undefined, billDateFrom: moment.Moment | null | undefined, billDateTo: moment.Moment | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdContainerInvoiceDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProdContainerInvoice/GetProdContainerInvoiceSearch?";
+        if (billNo !== undefined)
+            url_ += "BillNo=" + encodeURIComponent("" + billNo) + "&"; 
+        if (containerNo !== undefined)
+            url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
+        if (invoiceNo !== undefined)
+            url_ += "InvoiceNo=" + encodeURIComponent("" + invoiceNo) + "&"; 
+        if (sealNo !== undefined)
+            url_ += "SealNo=" + encodeURIComponent("" + sealNo) + "&"; 
+        if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&"; 
+        if (supplierNo !== undefined)
+            url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
+        if (billDateFrom !== undefined)
+            url_ += "BillDateFrom=" + encodeURIComponent(billDateFrom ? "" + billDateFrom.toJSON() : "") + "&"; 
+        if (billDateTo !== undefined)
+            url_ += "BillDateTo=" + encodeURIComponent(billDateTo ? "" + billDateTo.toJSON() : "") + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProdContainerInvoiceSearch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProdContainerInvoiceSearch(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfProdContainerInvoiceDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfProdContainerInvoiceDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetProdContainerInvoiceSearch(response: HttpResponseBase): Observable<PagedResultDtoOfProdContainerInvoiceDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfProdContainerInvoiceDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfProdContainerInvoiceDto>(<any>null);
+    }
+
+    /**
+     * @param billNo (optional) 
+     * @param containerNo (optional) 
+     * @param invoiceNo (optional) 
+     * @param sealNo (optional) 
+     * @param status (optional) 
+     * @param supplierNo (optional) 
+     * @param billDateFrom (optional) 
+     * @param billDateTo (optional) 
+     * @return Success
+     */
+    getProdContainerInvoiceToExcel(billNo: string | null | undefined, containerNo: string | null | undefined, invoiceNo: string | null | undefined, sealNo: string | null | undefined, status: string | null | undefined, supplierNo: string | null | undefined, billDateFrom: moment.Moment | null | undefined, billDateTo: moment.Moment | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProdContainerInvoice/GetProdContainerInvoiceToExcel?";
+        if (billNo !== undefined)
+            url_ += "BillNo=" + encodeURIComponent("" + billNo) + "&"; 
+        if (containerNo !== undefined)
+            url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
+        if (invoiceNo !== undefined)
+            url_ += "InvoiceNo=" + encodeURIComponent("" + invoiceNo) + "&"; 
+        if (sealNo !== undefined)
+            url_ += "SealNo=" + encodeURIComponent("" + sealNo) + "&"; 
+        if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&"; 
+        if (supplierNo !== undefined)
+            url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
+        if (billDateFrom !== undefined)
+            url_ += "BillDateFrom=" + encodeURIComponent(billDateFrom ? "" + billDateFrom.toJSON() : "") + "&"; 
+        if (billDateTo !== undefined)
+            url_ += "BillDateTo=" + encodeURIComponent(billDateTo ? "" + billDateTo.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProdContainerInvoiceToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProdContainerInvoiceToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetProdContainerInvoiceToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class ProdContainerInvoiceExcelExporterServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    exportToFile(body: ProdContainerInvoiceDto[] | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProdContainerInvoiceExcelExporter/ExportToFile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToFile(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processExportToFile(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class ProdInvoiceServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -27144,6 +27387,166 @@ export class PagedResultDtoOfProdBillOfLadingDto implements IPagedResultDtoOfPro
 export interface IPagedResultDtoOfProdBillOfLadingDto {
     totalCount: number;
     items: ProdBillOfLadingDto[] | undefined;
+}
+
+export class ProdContainerInvoiceDto implements IProdContainerInvoiceDto {
+    containerNo!: string | undefined;
+    invoiceId!: number | undefined;
+    supplierNo!: string | undefined;
+    sealNo!: string | undefined;
+    containerSize!: number | undefined;
+    planDevanningDate!: moment.Moment | undefined;
+    actualDevanningDate!: moment.Moment | undefined;
+    thc!: number | undefined;
+    status!: string | undefined;
+    thcVn!: number | undefined;
+    freight!: number | undefined;
+    insurance!: number | undefined;
+    tax!: number | undefined;
+    amount!: number | undefined;
+    taxVnd!: number | undefined;
+    vatVnd!: number | undefined;
+    billofladingNo!: string | undefined;
+    billDate!: moment.Moment | undefined;
+    invoiceNo!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IProdContainerInvoiceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.containerNo = _data["containerNo"];
+            this.invoiceId = _data["invoiceId"];
+            this.supplierNo = _data["supplierNo"];
+            this.sealNo = _data["sealNo"];
+            this.containerSize = _data["containerSize"];
+            this.planDevanningDate = _data["planDevanningDate"] ? moment(_data["planDevanningDate"].toString()) : <any>undefined;
+            this.actualDevanningDate = _data["actualDevanningDate"] ? moment(_data["actualDevanningDate"].toString()) : <any>undefined;
+            this.thc = _data["thc"];
+            this.status = _data["status"];
+            this.thcVn = _data["thcVn"];
+            this.freight = _data["freight"];
+            this.insurance = _data["insurance"];
+            this.tax = _data["tax"];
+            this.amount = _data["amount"];
+            this.taxVnd = _data["taxVnd"];
+            this.vatVnd = _data["vatVnd"];
+            this.billofladingNo = _data["billofladingNo"];
+            this.billDate = _data["billDate"] ? moment(_data["billDate"].toString()) : <any>undefined;
+            this.invoiceNo = _data["invoiceNo"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): ProdContainerInvoiceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProdContainerInvoiceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["containerNo"] = this.containerNo;
+        data["invoiceId"] = this.invoiceId;
+        data["supplierNo"] = this.supplierNo;
+        data["sealNo"] = this.sealNo;
+        data["containerSize"] = this.containerSize;
+        data["planDevanningDate"] = this.planDevanningDate ? this.planDevanningDate.toISOString() : <any>undefined;
+        data["actualDevanningDate"] = this.actualDevanningDate ? this.actualDevanningDate.toISOString() : <any>undefined;
+        data["thc"] = this.thc;
+        data["status"] = this.status;
+        data["thcVn"] = this.thcVn;
+        data["freight"] = this.freight;
+        data["insurance"] = this.insurance;
+        data["tax"] = this.tax;
+        data["amount"] = this.amount;
+        data["taxVnd"] = this.taxVnd;
+        data["vatVnd"] = this.vatVnd;
+        data["billofladingNo"] = this.billofladingNo;
+        data["billDate"] = this.billDate ? this.billDate.toISOString() : <any>undefined;
+        data["invoiceNo"] = this.invoiceNo;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IProdContainerInvoiceDto {
+    containerNo: string | undefined;
+    invoiceId: number | undefined;
+    supplierNo: string | undefined;
+    sealNo: string | undefined;
+    containerSize: number | undefined;
+    planDevanningDate: moment.Moment | undefined;
+    actualDevanningDate: moment.Moment | undefined;
+    thc: number | undefined;
+    status: string | undefined;
+    thcVn: number | undefined;
+    freight: number | undefined;
+    insurance: number | undefined;
+    tax: number | undefined;
+    amount: number | undefined;
+    taxVnd: number | undefined;
+    vatVnd: number | undefined;
+    billofladingNo: string | undefined;
+    billDate: moment.Moment | undefined;
+    invoiceNo: string | undefined;
+    id: number | undefined;
+}
+
+export class PagedResultDtoOfProdContainerInvoiceDto implements IPagedResultDtoOfProdContainerInvoiceDto {
+    totalCount!: number;
+    items!: ProdContainerInvoiceDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfProdContainerInvoiceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ProdContainerInvoiceDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfProdContainerInvoiceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfProdContainerInvoiceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfProdContainerInvoiceDto {
+    totalCount: number;
+    items: ProdContainerInvoiceDto[] | undefined;
 }
 
 export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
