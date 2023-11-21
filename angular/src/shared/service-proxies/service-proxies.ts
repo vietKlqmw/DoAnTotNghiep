@@ -11366,13 +11366,12 @@ export class ProdInvoiceServiceProxy {
      * @param billDateFrom (optional) 
      * @param billDateTo (optional) 
      * @param supplierNo (optional) 
-     * @param orderTypeCode (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getProdInvoiceSearch(invoiceNo: string | null | undefined, invoiceDateFrom: moment.Moment | null | undefined, invoiceDateTo: moment.Moment | null | undefined, billNo: string | null | undefined, shipmentNo: string | null | undefined, containerNo: string | null | undefined, billDateFrom: moment.Moment | null | undefined, billDateTo: moment.Moment | null | undefined, supplierNo: string | null | undefined, orderTypeCode: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdInvoiceDto> {
+    getProdInvoiceSearch(invoiceNo: string | null | undefined, invoiceDateFrom: moment.Moment | null | undefined, invoiceDateTo: moment.Moment | null | undefined, billNo: string | null | undefined, shipmentNo: string | null | undefined, containerNo: string | null | undefined, billDateFrom: moment.Moment | null | undefined, billDateTo: moment.Moment | null | undefined, supplierNo: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdInvoiceDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdInvoice/GetProdInvoiceSearch?";
         if (invoiceNo !== undefined)
             url_ += "InvoiceNo=" + encodeURIComponent("" + invoiceNo) + "&"; 
@@ -11392,8 +11391,6 @@ export class ProdInvoiceServiceProxy {
             url_ += "BillDateTo=" + encodeURIComponent(billDateTo ? "" + billDateTo.toJSON() : "") + "&"; 
         if (supplierNo !== undefined)
             url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
-        if (orderTypeCode !== undefined)
-            url_ += "OrderTypeCode=" + encodeURIComponent("" + orderTypeCode) + "&"; 
         if (sorting !== undefined)
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         if (skipCount === null)
@@ -11514,10 +11511,9 @@ export class ProdInvoiceServiceProxy {
      * @param billDateFrom (optional) 
      * @param billDateTo (optional) 
      * @param supplierNo (optional) 
-     * @param orderTypeCode (optional) 
      * @return Success
      */
-    getProdInvoiceToExcel(invoiceNo: string | null | undefined, invoiceDateFrom: moment.Moment | null | undefined, invoiceDateTo: moment.Moment | null | undefined, billNo: string | null | undefined, shipmentNo: string | null | undefined, containerNo: string | null | undefined, billDateFrom: moment.Moment | null | undefined, billDateTo: moment.Moment | null | undefined, supplierNo: string | null | undefined, orderTypeCode: string | null | undefined): Observable<FileDto> {
+    getProdInvoiceToExcel(invoiceNo: string | null | undefined, invoiceDateFrom: moment.Moment | null | undefined, invoiceDateTo: moment.Moment | null | undefined, billNo: string | null | undefined, shipmentNo: string | null | undefined, containerNo: string | null | undefined, billDateFrom: moment.Moment | null | undefined, billDateTo: moment.Moment | null | undefined, supplierNo: string | null | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdInvoice/GetProdInvoiceToExcel?";
         if (invoiceNo !== undefined)
             url_ += "InvoiceNo=" + encodeURIComponent("" + invoiceNo) + "&"; 
@@ -11537,8 +11533,6 @@ export class ProdInvoiceServiceProxy {
             url_ += "BillDateTo=" + encodeURIComponent(billDateTo ? "" + billDateTo.toJSON() : "") + "&"; 
         if (supplierNo !== undefined)
             url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
-        if (orderTypeCode !== undefined)
-            url_ += "OrderTypeCode=" + encodeURIComponent("" + orderTypeCode) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

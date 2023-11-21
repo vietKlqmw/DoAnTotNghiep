@@ -526,7 +526,6 @@ CREATE PROCEDURE INV_PROD_INVOICE_SEARCH
     @p_ContainerNo NVARCHAR(15),
     @p_BillDateFrom DATE,
     @p_BillDateTo DATE,
-    @p_OrderTypeCode NVARCHAR(4),
     @p_SupplierNo NVARCHAR(10)
 )
 AS
@@ -555,7 +554,6 @@ BEGIN
        AND (@p_ContainerNo IS NULL OR d.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
        AND (@p_BillDateFrom IS NULL OR b.BillDate >= @p_BillDateFrom)
        AND (@p_BillDateTo IS NULL OR b.BillDate < DATEADD(DAY, 1, @p_BillDateTo))
-	     AND (@p_OrderTypeCode IS NULL OR a.OrdertypeCode = @p_OrderTypeCode)
 	     AND (@p_SupplierNo IS NULL OR a.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
        AND a.IsDeleted = 0
   ORDER BY a.InvoiceDate DESC, b.BillDate DESC, a.InvoiceNo, a.Id	

@@ -1,19 +1,4 @@
-<!-- ==================================================Header================================================== -->
 <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" [busyIf]="isLoading">
-    <div class="kt-subheader kt-grid__item">
-        <div [class]="containerClass">
-            <div class="kt-subheader__main">
-                <h3 class="kt-subheader__title">
-                    <span>{{"Users" | localize}}</span>
-                </h3>
-                <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-                <span class="kt-subheader__desc">
-                    {{"UsersHeaderInfo" | localize}}
-                </span>
-            </div>
-        </div>
-    </div>
-    <!-- ==================================================Search================================================== -->
     <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
         <div class="kt-portlet kt-portlet--mobile">
             <div class="kt-portlet__body">
@@ -80,7 +65,7 @@
                         (changePaginationParams)="changePage($event)"
                         (onChangeSelection)="onChangeRowSelection($event)"
                         [frameworkComponents]="frameworkComponents"
-                        [height]="'51vh'"
+                        [height]="'59vh'"
                         >
                     </grid-table>
                 </div>

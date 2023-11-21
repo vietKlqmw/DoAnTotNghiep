@@ -45,7 +45,6 @@ namespace tmss.MaterialManagement.Invoice
         public virtual DateTime? BillDateFrom { get; set; }
         public virtual DateTime? BillDateTo { get; set; }
         public virtual string SupplierNo { get; set; }
-        public virtual string OrderTypeCode { get; set; }
 
     }
 
@@ -60,7 +59,6 @@ namespace tmss.MaterialManagement.Invoice
         public virtual DateTime? BillDateFrom { get; set; }
         public virtual DateTime? BillDateTo { get; set; }
         public virtual string SupplierNo { get; set; }
-        public virtual string OrderTypeCode { get; set; }
 
     }
 

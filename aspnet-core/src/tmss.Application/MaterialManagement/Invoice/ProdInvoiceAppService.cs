@@ -43,7 +43,7 @@ namespace tmss.MaterialManagement.Invoice
         public async Task<PagedResultDto<ProdInvoiceDto>> GetProdInvoiceSearch(GetProdInvoiceInput input)
         {
             string _sql = "Exec INV_PROD_INVOICE_SEARCH @p_InvoiceNo, @p_InvoiceDateFrom, @p_InvoiceDateTo, @p_BillNo, " +
-                "@p_ShipmentNo, @p_ContainerNo, @p_BillDateFrom, @p_BillDateTo, @p_OrderTypeCode, @p_SupplierNo";
+                "@p_ShipmentNo, @p_ContainerNo, @p_BillDateFrom, @p_BillDateTo, @p_SupplierNo";
 
             IEnumerable<ProdInvoiceDto> result = await _dapperRepo.QueryAsync<ProdInvoiceDto>(_sql, new
             {
@@ -55,7 +55,6 @@ namespace tmss.MaterialManagement.Invoice
                 p_ContainerNo = input.ContainerNo,
                 p_BillDateFrom = input.BillDateFrom,
                 p_BillDateTo = input.BillDateTo,
-                p_OrderTypeCode = input.OrderTypeCode,
                 p_SupplierNo = input.SupplierNo
             });
 
@@ -85,7 +84,7 @@ namespace tmss.MaterialManagement.Invoice
         public async Task<FileDto> GetProdInvoiceToExcel(GetProdInvoiceExportInput input)
         {
             string _sql = "Exec INV_PROD_INVOICE_SEARCH @p_InvoiceNo, @p_InvoiceDateFrom, @p_InvoiceDateTo, @p_BillNo, " +
-               "@p_ShipmentNo, @p_ContainerNo, @p_BillDateFrom, @p_BillDateTo, @p_OrderTypeCode, @p_SupplierNo";
+               "@p_ShipmentNo, @p_ContainerNo, @p_BillDateFrom, @p_BillDateTo, @p_SupplierNo";
 
             IEnumerable<ProdInvoiceDto> result = await _dapperRepo.QueryAsync<ProdInvoiceDto>(_sql, new
             {
@@ -97,7 +96,6 @@ namespace tmss.MaterialManagement.Invoice
                 p_ContainerNo = input.ContainerNo,
                 p_BillDateFrom = input.BillDateFrom,
                 p_BillDateTo = input.BillDateTo,
-                p_OrderTypeCode = input.OrderTypeCode,
                 p_SupplierNo = input.SupplierNo
             });
 
