@@ -37,6 +37,16 @@ namespace tmss.MaterialManagement.Invoice
 
             var totalCount = result.ToList().Count();
 
+            if (listResult.Count > 0)
+            {
+                listResult[0].GrandCif = listResult.Sum(e => e.Cif);
+                listResult[0].GrandFreight = listResult.Sum(e => e.Freight);
+                listResult[0].GrandInsurance = listResult.Sum(e => e.Insurance);
+                listResult[0].GrandTax = listResult.Sum(e => e.Tax);
+                listResult[0].GrandVat = listResult.Sum(e => e.Vat);
+                listResult[0].GrandQty = listResult.Sum(e => e.UsageQty);
+            }
+
             return new PagedResultDto<ProdInvoiceDetailsDto>(totalCount, pagedAndFiltered);
         }
 

@@ -27579,6 +27579,12 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
     partnameVn!: string | undefined;
     carName!: string | undefined;
     preCustomsId!: number | undefined;
+    grandQty!: number | undefined;
+    grandCif!: number | undefined;
+    grandFreight!: number | undefined;
+    grandInsurance!: number | undefined;
+    grandTax!: number | undefined;
+    grandVat!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdInvoiceDetailsDto) {
@@ -27627,6 +27633,12 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
             this.partnameVn = _data["partnameVn"];
             this.carName = _data["carName"];
             this.preCustomsId = _data["preCustomsId"];
+            this.grandQty = _data["grandQty"];
+            this.grandCif = _data["grandCif"];
+            this.grandFreight = _data["grandFreight"];
+            this.grandInsurance = _data["grandInsurance"];
+            this.grandTax = _data["grandTax"];
+            this.grandVat = _data["grandVat"];
             this.id = _data["id"];
         }
     }
@@ -27675,6 +27687,12 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
         data["partnameVn"] = this.partnameVn;
         data["carName"] = this.carName;
         data["preCustomsId"] = this.preCustomsId;
+        data["grandQty"] = this.grandQty;
+        data["grandCif"] = this.grandCif;
+        data["grandFreight"] = this.grandFreight;
+        data["grandInsurance"] = this.grandInsurance;
+        data["grandTax"] = this.grandTax;
+        data["grandVat"] = this.grandVat;
         data["id"] = this.id;
         return data; 
     }
@@ -27716,6 +27734,12 @@ export interface IProdInvoiceDetailsDto {
     partnameVn: string | undefined;
     carName: string | undefined;
     preCustomsId: number | undefined;
+    grandQty: number | undefined;
+    grandCif: number | undefined;
+    grandFreight: number | undefined;
+    grandInsurance: number | undefined;
+    grandTax: number | undefined;
+    grandVat: number | undefined;
     id: number | undefined;
 }
 

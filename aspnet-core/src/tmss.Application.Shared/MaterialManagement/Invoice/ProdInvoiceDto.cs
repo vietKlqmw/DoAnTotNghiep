@@ -99,6 +99,13 @@ namespace tmss.MaterialManagement.Invoice
         public virtual string PartnameVn { get; set; }
         public virtual string CarName { get; set; }
         public virtual long? PreCustomsId { get; set; }
+
+        public virtual double? GrandQty { get; set; }
+        public virtual decimal? GrandCif { get; set; }
+        public virtual decimal? GrandFreight { get; set; }
+        public virtual decimal? GrandInsurance { get; set; }
+        public virtual decimal? GrandTax { get; set; }
+        public virtual decimal? GrandVat { get; set; }
     }
 
     public class GetProdInvoiceDetailsInput : PagedAndSortedResultRequestDto
