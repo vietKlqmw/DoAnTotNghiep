@@ -361,7 +361,7 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
             this.dataParamsDetails.columnApi!.sizeColumnsToFit({
                 suppressColumnVirtualisation: true,
             });
-            this.autoSizeAll();
+            this.autoSizeAllDetails();
         })
     }
 
