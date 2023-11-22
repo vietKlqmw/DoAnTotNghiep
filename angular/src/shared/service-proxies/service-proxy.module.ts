@@ -76,6 +76,7 @@ import { ZeroTemplateHttpConfigurationService } from './zero-template-http-confi
         ApiServiceProxies.ProdShipmentServiceProxy,
         ApiServiceProxies.ProdContainerInvoiceServiceProxy,
         ApiServiceProxies.ProdInvoiceServiceProxy,
+        ApiServiceProxies.ProdContainerListServiceProxy,
 
         { provide: RefreshTokenService, useClass: ZeroRefreshTokenService },
         { provide: AbpHttpConfigurationService, useClass: ZeroTemplateHttpConfigurationService },
