@@ -368,7 +368,7 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
     searchDatasDetails(id): void {
         this.isLoading = true;
         this._service.getProdInvoiceDetailsSearch(
-            1,
+            id,
             '',
             this.paginationParamsDetails.skipCount,
             this.paginationParamsDetails.pageSize
