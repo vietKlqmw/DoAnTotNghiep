@@ -106,6 +106,8 @@ namespace tmss.EntityFrameworkCore
 
         public virtual DbSet<ProdContainerList> ProdContainerLists { get; set; }
 
+        public virtual DbSet<ProdContainerRentalWHPlan> ProdContainerRentalWHPlans { get; set; }
+
         public virtual DbSet<ProdContainerTransitPortPlan> ProdContainerTransitPortPlans { get; set; }
 
         public virtual DbSet<ProdContainerTransitPortPlan_T> ProdContainerTransitPortPlan_Ts { get; set; }

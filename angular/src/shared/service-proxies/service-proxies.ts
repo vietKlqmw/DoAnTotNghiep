@@ -11540,6 +11540,243 @@ export class ProdContainerListExcelExporterServiceProxy {
 }
 
 @Injectable()
+export class ProdContainerRentalWHPlanServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param containerNo (optional) 
+     * @param invoiceNo (optional) 
+     * @param billofladingNo (optional) 
+     * @param supplierNo (optional) 
+     * @param sealNo (optional) 
+     * @param requestDateFrom (optional) 
+     * @param requestDateTo (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getProdContainerRentalWHPlanSearch(containerNo: string | null | undefined, invoiceNo: string | null | undefined, billofladingNo: string | null | undefined, supplierNo: string | null | undefined, sealNo: string | null | undefined, requestDateFrom: moment.Moment | null | undefined, requestDateTo: moment.Moment | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdContainerRentalWHPlanDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProdContainerRentalWHPlan/GetProdContainerRentalWHPlanSearch?";
+        if (containerNo !== undefined)
+            url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
+        if (invoiceNo !== undefined)
+            url_ += "InvoiceNo=" + encodeURIComponent("" + invoiceNo) + "&"; 
+        if (billofladingNo !== undefined)
+            url_ += "BillofladingNo=" + encodeURIComponent("" + billofladingNo) + "&"; 
+        if (supplierNo !== undefined)
+            url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
+        if (sealNo !== undefined)
+            url_ += "SealNo=" + encodeURIComponent("" + sealNo) + "&"; 
+        if (requestDateFrom !== undefined)
+            url_ += "RequestDateFrom=" + encodeURIComponent(requestDateFrom ? "" + requestDateFrom.toJSON() : "") + "&"; 
+        if (requestDateTo !== undefined)
+            url_ += "RequestDateTo=" + encodeURIComponent(requestDateTo ? "" + requestDateTo.toJSON() : "") + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProdContainerRentalWHPlanSearch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProdContainerRentalWHPlanSearch(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfProdContainerRentalWHPlanDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfProdContainerRentalWHPlanDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetProdContainerRentalWHPlanSearch(response: HttpResponseBase): Observable<PagedResultDtoOfProdContainerRentalWHPlanDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfProdContainerRentalWHPlanDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfProdContainerRentalWHPlanDto>(<any>null);
+    }
+
+    /**
+     * @param containerNo (optional) 
+     * @param invoiceNo (optional) 
+     * @param billofladingNo (optional) 
+     * @param supplierNo (optional) 
+     * @param sealNo (optional) 
+     * @param requestDateFrom (optional) 
+     * @param requestDateTo (optional) 
+     * @return Success
+     */
+    getProdContainerRentalWHPlanToExcel(containerNo: string | null | undefined, invoiceNo: string | null | undefined, billofladingNo: string | null | undefined, supplierNo: string | null | undefined, sealNo: string | null | undefined, requestDateFrom: moment.Moment | null | undefined, requestDateTo: moment.Moment | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProdContainerRentalWHPlan/GetProdContainerRentalWHPlanToExcel?";
+        if (containerNo !== undefined)
+            url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
+        if (invoiceNo !== undefined)
+            url_ += "InvoiceNo=" + encodeURIComponent("" + invoiceNo) + "&"; 
+        if (billofladingNo !== undefined)
+            url_ += "BillofladingNo=" + encodeURIComponent("" + billofladingNo) + "&"; 
+        if (supplierNo !== undefined)
+            url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
+        if (sealNo !== undefined)
+            url_ += "SealNo=" + encodeURIComponent("" + sealNo) + "&"; 
+        if (requestDateFrom !== undefined)
+            url_ += "RequestDateFrom=" + encodeURIComponent(requestDateFrom ? "" + requestDateFrom.toJSON() : "") + "&"; 
+        if (requestDateTo !== undefined)
+            url_ += "RequestDateTo=" + encodeURIComponent(requestDateTo ? "" + requestDateTo.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProdContainerRentalWHPlanToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProdContainerRentalWHPlanToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetProdContainerRentalWHPlanToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class ProdContainerRentalWHPlanExcelExporterServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    exportToFile(body: ProdContainerRentalWHPlanDto[] | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProdContainerRentalWHPlanExcelExporter/ExportToFile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToFile(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processExportToFile(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class ProdInvoiceServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -28066,6 +28303,154 @@ export class PagedResultDtoOfProdContainerListDto implements IPagedResultDtoOfPr
 export interface IPagedResultDtoOfProdContainerListDto {
     totalCount: number;
     items: ProdContainerListDto[] | undefined;
+}
+
+export class ProdContainerRentalWHPlanDto implements IProdContainerRentalWHPlanDto {
+    containerNo!: string | undefined;
+    requestDate!: moment.Moment | undefined;
+    requestTime!: string | undefined;
+    invoiceNo!: string | undefined;
+    billofladingNo!: string | undefined;
+    supplierNo!: string | undefined;
+    sealNo!: string | undefined;
+    listcaseNo!: string | undefined;
+    listLotNo!: string | undefined;
+    devanningDate!: moment.Moment | undefined;
+    devanningTime!: string | undefined;
+    actualDevanningDate!: moment.Moment | undefined;
+    gateInPlanTime!: moment.Moment | undefined;
+    gateInActualDateTime!: moment.Moment | undefined;
+    transport!: string | undefined;
+    status!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IProdContainerRentalWHPlanDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.containerNo = _data["containerNo"];
+            this.requestDate = _data["requestDate"] ? moment(_data["requestDate"].toString()) : <any>undefined;
+            this.requestTime = _data["requestTime"];
+            this.invoiceNo = _data["invoiceNo"];
+            this.billofladingNo = _data["billofladingNo"];
+            this.supplierNo = _data["supplierNo"];
+            this.sealNo = _data["sealNo"];
+            this.listcaseNo = _data["listcaseNo"];
+            this.listLotNo = _data["listLotNo"];
+            this.devanningDate = _data["devanningDate"] ? moment(_data["devanningDate"].toString()) : <any>undefined;
+            this.devanningTime = _data["devanningTime"];
+            this.actualDevanningDate = _data["actualDevanningDate"] ? moment(_data["actualDevanningDate"].toString()) : <any>undefined;
+            this.gateInPlanTime = _data["gateInPlanTime"] ? moment(_data["gateInPlanTime"].toString()) : <any>undefined;
+            this.gateInActualDateTime = _data["gateInActualDateTime"] ? moment(_data["gateInActualDateTime"].toString()) : <any>undefined;
+            this.transport = _data["transport"];
+            this.status = _data["status"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): ProdContainerRentalWHPlanDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProdContainerRentalWHPlanDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["containerNo"] = this.containerNo;
+        data["requestDate"] = this.requestDate ? this.requestDate.toISOString() : <any>undefined;
+        data["requestTime"] = this.requestTime;
+        data["invoiceNo"] = this.invoiceNo;
+        data["billofladingNo"] = this.billofladingNo;
+        data["supplierNo"] = this.supplierNo;
+        data["sealNo"] = this.sealNo;
+        data["listcaseNo"] = this.listcaseNo;
+        data["listLotNo"] = this.listLotNo;
+        data["devanningDate"] = this.devanningDate ? this.devanningDate.toISOString() : <any>undefined;
+        data["devanningTime"] = this.devanningTime;
+        data["actualDevanningDate"] = this.actualDevanningDate ? this.actualDevanningDate.toISOString() : <any>undefined;
+        data["gateInPlanTime"] = this.gateInPlanTime ? this.gateInPlanTime.toISOString() : <any>undefined;
+        data["gateInActualDateTime"] = this.gateInActualDateTime ? this.gateInActualDateTime.toISOString() : <any>undefined;
+        data["transport"] = this.transport;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IProdContainerRentalWHPlanDto {
+    containerNo: string | undefined;
+    requestDate: moment.Moment | undefined;
+    requestTime: string | undefined;
+    invoiceNo: string | undefined;
+    billofladingNo: string | undefined;
+    supplierNo: string | undefined;
+    sealNo: string | undefined;
+    listcaseNo: string | undefined;
+    listLotNo: string | undefined;
+    devanningDate: moment.Moment | undefined;
+    devanningTime: string | undefined;
+    actualDevanningDate: moment.Moment | undefined;
+    gateInPlanTime: moment.Moment | undefined;
+    gateInActualDateTime: moment.Moment | undefined;
+    transport: string | undefined;
+    status: string | undefined;
+    id: number | undefined;
+}
+
+export class PagedResultDtoOfProdContainerRentalWHPlanDto implements IPagedResultDtoOfProdContainerRentalWHPlanDto {
+    totalCount!: number;
+    items!: ProdContainerRentalWHPlanDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfProdContainerRentalWHPlanDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ProdContainerRentalWHPlanDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfProdContainerRentalWHPlanDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfProdContainerRentalWHPlanDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfProdContainerRentalWHPlanDto {
+    totalCount: number;
+    items: ProdContainerRentalWHPlanDto[] | undefined;
 }
 
 export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {

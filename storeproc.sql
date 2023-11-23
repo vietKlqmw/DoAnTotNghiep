@@ -613,6 +613,7 @@ INNER JOIN ProdBillOfLading c
        AND (@p_SupplierNo IS NULL OR a.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
        AND (@p_BillDateFrom IS NULL OR c.BillDate >= @p_BillDateFrom)
        AND (@p_BillDateTo IS NULL OR c.BillDate <= @p_BillDateTo)
+       AND a.IsDeleted = 0
   ORDER BY c.BillDate DESC, a.PlanDevanningDate DESC, b.Description
 
 GO
@@ -686,7 +687,35 @@ BEGIN
     						     OR (@p_ContainerStatus = '3' AND a.ReceiveDate IS NOT NULL)
     						     OR (@p_ContainerStatus = '4' AND a.ReceiveDate IS NOT NULL AND a.RentalWhId IS NOT NULL)
     			          )
+                AND a.IsDeleted = 0
            ORDER BY a.ShippingDate DESC, a.PortDate DESC, a.ReceiveDate DESC
+END
+------------------------------------------------ContainerWarehouse------------------------------------------------
+CREATE PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_SEARCH
+(
+    @p_ContainerNo NVARCHAR(15),
+    @p_InvoiceNo NVARCHAR(20),
+    @p_BillOfLadingNo NVARCHAR(20),
+    @p_SupplierNo NVARCHAR(10),
+    @p_SealNo NVARCHAR(20),
+    @p_RequestDateFrom DATE,
+    @p_RequestDateTo DATE
+)
+AS
+BEGIN 
+    SELECT a.Id, a.ContainerNo, a.RequestDate, a.RequestTime, a.InvoiceNo, a.BillofladingNo, 
+           a.SupplierNo, a.SealNo, a.ListcaseNo, a.ListLotNo, a.DevanningDate, a.DevanningTime, 
+           a.ActualDevanningDate, a.GateInPlanTime, a.GateInActualDateTime, a.Transport, a.Status
+      FROM ProdContainerRentalWHPlan a
+     WHERE (@p_ContainerNo IS NULL OR a.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
+       AND (@p_InvoiceNo IS NULL OR a.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
+       AND (@p_BillOfLadingNo IS NULL OR a.BillofladingNo LIKE CONCAT('%', @p_BillOfLadingNo, '%'))
+       AND (@p_SupplierNo IS NULL OR a.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
+       AND (@p_SealNo IS NULL OR a.SealNo LIKE CONCAT('%', @p_SealNo, '%'))
+       AND (@p_RequestDateFrom IS NULL OR a.RequestDate >= @p_RequestDateFrom)
+       AND (@p_RequestDateTo IS NULL OR a.RequestDate <= @p_RequestDateTo)
+       AND a.IsDeleted = 0
+  ORDER BY a.RequestDate DESC
 END
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (
