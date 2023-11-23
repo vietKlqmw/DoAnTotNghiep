@@ -11,6 +11,7 @@ import { FileDownloadService } from '@shared/utils/file-download.service';
 import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
+import { AgDropdownRendererComponent } from '@app/shared/common/grid/ag-dropdown-renderer/ag-dropdown-renderer.component';
 
 @Component({
     selector: 'app-container-warehouse',
@@ -88,7 +89,7 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
                 headerCheckboxSelection: true,
                 headerCheckboxSelectionFilteredOnly: true
             },
-            { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 40, pinned: true },
+            { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 60, pinned: true },
             {
                 headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1, pinned: true,
                 cellRenderer: 'agSelectRendererComponent',
@@ -100,7 +101,7 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
                 headerName: this.l('Request Date'), headerTooltip: this.l('Request Date'), field: 'requestDate', flex: 1, pinned: true,
                 valueGetter: (params) => this.pipe.transform(params.data?.requestDate, 'dd/MM/yyyy')
             },
-            { headerName: this.l('Request Time'), headerTooltip: this.l('Request Time'), field: 'requestTime', flex: 1, pinned: true, },
+            { headerName: this.l('Request Time'), headerTooltip: this.l('Request Time'), field: 'requestTime', flex: 1 },
             { headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', flex: 1 },
             { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('Bill Of Lading No'), field: 'billofladingNo', flex: 1 },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
@@ -129,6 +130,7 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
 
         this.frameworkComponents = {
             agCellButtonComponent: AgCellButtonRendererComponent,
+            agSelectRendererComponent: AgDropdownRendererComponent
         };
     }
 
@@ -259,6 +261,22 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
                 this._fileDownloadService.downloadTempFile(result);
                 this.notify.success(this.l('Download Excel Successfully'));
             });
+    }
+
+
+    rowClickData: ProdContainerRentalWHPlanDto;
+    onRowClick(params) {
+
+        let _rows = document.querySelectorAll<HTMLElement>("body .ag-theme-alpine .ag-center-cols-container .ag-row.ag-row-level-0.ag-row-position-absolute");
+        for (let i = 0; _rows[i]; i++) { _rows[i].classList.remove("setcolor_background_rowclick"); }
+
+        if (this.rowClickData && this.rowClickData.id == params.data.id) this.rowClickData = undefined;
+        else {
+            this.rowClickData = params.data;
+            let _row = document.querySelector<HTMLElement>("body .ag-theme-alpine .ag-center-cols-container div[row-id='" + params.node.rowIndex + "'].ag-row.ag-row-level-0.ag-row-position-absolute");
+            if (_row) _row.classList.add("setcolor_background_rowclick");
+        }
+
     }
 }
 

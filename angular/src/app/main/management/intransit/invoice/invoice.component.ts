@@ -181,7 +181,7 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
             { headerName: this.l('Order No'), headerTooltip: this.l('Order No'), field: 'orderNo', flex: 1 },
             {
                 headerName: this.l('Packaging Date'), headerTooltip: this.l('Packaging Date'), field: 'packagingDate', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.firmpackingmonth, 'dd/MM/yyyy')
+                valueGetter: (params) => this.pipe.transform(params.data?.packagingDate, 'dd/MM/yyyy')
             },
             { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
             { headerName: this.l('Invoice Id'), headerTooltip: this.l('InvoiceId'), field: 'invoiceId', flex: 1 },

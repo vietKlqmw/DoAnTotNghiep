@@ -45,6 +45,16 @@ namespace tmss.MaterialManagement.ContainerInvoice
 
             var totalCount = result.ToList().Count();
 
+            if (listResult.Count > 0)
+            {
+                listResult[0].GrandFreight = listResult.Sum(e => e.Freight);
+                listResult[0].GrandInsurance = listResult.Sum(e => e.Insurance);
+                listResult[0].GrandTax = listResult.Sum(e => e.Tax);
+                listResult[0].GrandAmount = listResult.Sum(e => e.Amount);
+                listResult[0].GrandTaxVnd = (long)listResult.Sum(e => (decimal?)e.TaxVnd);
+                listResult[0].GrandVatVnd = (long)listResult.Sum(e => (decimal?)e.VatVnd);
+            }
+
             return new PagedResultDto<ProdContainerInvoiceDto>(totalCount, pagedAndFiltered);
         }
 

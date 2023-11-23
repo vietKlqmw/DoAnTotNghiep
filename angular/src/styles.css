@@ -454,7 +454,6 @@ body .ag-theme-alpine .ag-ltr .ag-group-contracted {
     font: 500 0.95rem/150% "SF Pro Display", "Roboto", sans-serif;
     border: 1px solid #7DDBBF;
     background-color: transparent;
-
 }
 
 .tmss-form-control {
@@ -498,7 +497,7 @@ body .ag-theme-alpine .ag-header-cell.ag-focus-managed.ag-header-cell-sortable .
 body .ag-theme-alpine .ag-header-cell.ag-focus-managed.ag-header-cell-sortable .ag-sort-ascending-icon,
 body .ag-theme-alpine .ag-header-cell.ag-focus-managed.ag-header-cell-sortable .ag-sort-descending-icon,
 body .ag-theme-alpine .ag-header-container .ag-header-row.ag-header-row-column,
-body .ag-theme-alpine .ag-header-row:not(:first-child):not(.ag-header-row-floating-filter) .ag-header-cell { background-color: whitesmoke!important;  color: #014E98; text-shadow: none; }
+body .ag-theme-alpine .ag-header-row:not(:first-child):not(.ag-header-row-floating-filter) .ag-header-cell { background-color: #7000cc!important;  color: white; text-shadow: none; }
 /*row total*/
 body ag-grid-angular.ag-theme-alpine .ag-floating-bottom { border-top:none }
 

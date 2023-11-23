@@ -27901,6 +27901,12 @@ export class ProdContainerInvoiceDto implements IProdContainerInvoiceDto {
     billofladingNo!: string | undefined;
     billDate!: moment.Moment | undefined;
     invoiceNo!: string | undefined;
+    grandFreight!: number | undefined;
+    grandInsurance!: number | undefined;
+    grandTax!: number | undefined;
+    grandAmount!: number | undefined;
+    grandTaxVnd!: number | undefined;
+    grandVatVnd!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdContainerInvoiceDto) {
@@ -27933,6 +27939,12 @@ export class ProdContainerInvoiceDto implements IProdContainerInvoiceDto {
             this.billofladingNo = _data["billofladingNo"];
             this.billDate = _data["billDate"] ? moment(_data["billDate"].toString()) : <any>undefined;
             this.invoiceNo = _data["invoiceNo"];
+            this.grandFreight = _data["grandFreight"];
+            this.grandInsurance = _data["grandInsurance"];
+            this.grandTax = _data["grandTax"];
+            this.grandAmount = _data["grandAmount"];
+            this.grandTaxVnd = _data["grandTaxVnd"];
+            this.grandVatVnd = _data["grandVatVnd"];
             this.id = _data["id"];
         }
     }
@@ -27965,6 +27977,12 @@ export class ProdContainerInvoiceDto implements IProdContainerInvoiceDto {
         data["billofladingNo"] = this.billofladingNo;
         data["billDate"] = this.billDate ? this.billDate.toISOString() : <any>undefined;
         data["invoiceNo"] = this.invoiceNo;
+        data["grandFreight"] = this.grandFreight;
+        data["grandInsurance"] = this.grandInsurance;
+        data["grandTax"] = this.grandTax;
+        data["grandAmount"] = this.grandAmount;
+        data["grandTaxVnd"] = this.grandTaxVnd;
+        data["grandVatVnd"] = this.grandVatVnd;
         data["id"] = this.id;
         return data; 
     }
@@ -27990,6 +28008,12 @@ export interface IProdContainerInvoiceDto {
     billofladingNo: string | undefined;
     billDate: moment.Moment | undefined;
     invoiceNo: string | undefined;
+    grandFreight: number | undefined;
+    grandInsurance: number | undefined;
+    grandTax: number | undefined;
+    grandAmount: number | undefined;
+    grandTaxVnd: number | undefined;
+    grandVatVnd: number | undefined;
     id: number | undefined;
 }
 

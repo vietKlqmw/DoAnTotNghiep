@@ -80,11 +80,11 @@ export class ContainerInvoiceComponent extends AppComponentBase implements OnIni
 
         this.colDefs = [
             { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 60 },
-            { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo' },
-            { headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', },
-            { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo' },
-            { headerName: this.l('Seal No'), headerTooltip: this.l('Seal No'), field: 'sealNo' },
-            { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('Bill Of Lading No'), field: 'billOfLadingNo' },
+            { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', flex: 1 },
+            { headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', flex: 1 },
+            { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
+            { headerName: this.l('Seal No'), headerTooltip: this.l('Seal No'), field: 'sealNo', flex: 1 },
+            { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('Bill Of Lading No'), field: 'billOfLadingNo', flex: 1 },
             {
                 headerName: this.l('Bill Date'), headerTooltip: this.l('Bill Date'), field: 'billDate', flex: 1,
                 valueFormatter: (params) => this.pipe.transform(params.data?.billDate, 'dd/MM/yyyy')
@@ -92,42 +92,42 @@ export class ContainerInvoiceComponent extends AppComponentBase implements OnIni
             { headerName: this.l('Container Size'), headerTooltip: this.l('Container Size'), field: 'containerSize', flex: 1 },
             {
                 headerName: this.l('Plan Devanning Date'), headerTooltip: this.l('Plan Devanning Date'), field: 'planDevanningDate', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.plandedvanningDate, 'dd/MM/yyyy')
+                valueGetter: (params) => this.pipe.transform(params.data?.planDevanningDate, 'dd/MM/yyyy')
             },
             {
                 headerName: this.l('Actual Devanning Date'), headerTooltip: this.l('Actual Devanning Date'), field: 'actualDevanningDate', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.actualvanningDate, 'dd/MM/yyyy')
+                valueGetter: (params) => this.pipe.transform(params.data?.actualDevanningDate, 'dd/MM/yyyy')
             },
-            { headerName: this.l('Status'), headerTooltip: this.l('Status'), flex: 1, field: 'status' },
+            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
             {
                 headerName: this.l('Freight'), headerTooltip: this.l('Freight'), field: 'freight', flex: 1,
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.freight, 4),
-                // aggFunc: this.SumA
+                type: 'rightAligned', aggFunc: this.calTotal
             },
             {
                 headerName: this.l('Insurance'), headerTooltip: this.l('Insurance'), field: 'insurance', flex: 1,
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.insurance, 4),
-                // aggFunc: this.SumA
+                type: 'rightAligned', aggFunc: this.calTotal
             },
             {
                 headerName: this.l('Tax'), headerTooltip: this.l('Tax'), field: 'tax', flex: 1,
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.tax, 4),
-                // aggFunc: this.SumA
+                type: 'rightAligned', aggFunc: this.calTotal
             },
             {
                 headerName: this.l('Amount'), headerTooltip: this.l('Amount'), field: 'amount', flex: 1,
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.amount, 4),
-                // aggFunc: this.SumA
+                type: 'rightAligned', aggFunc: this.calTotal
             },
             {
                 headerName: this.l('Tax VN'), headerTooltip: this.l('Tax VN'), field: 'taxVnd', flex: 1,
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.taxVnd, 0, false, true),
-                // aggFunc: this.SumA
+                type: 'rightAligned', aggFunc: this.calTotal
             },
             {
                 headerName: this.l('Vat VN'), headerTooltip: this.l('Vat VN'), field: 'vatVnd', flex: 1,
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.vatVnd, 0, false, true),
-                // aggFunc: this.SumA
+                type: 'rightAligned', aggFunc: this.calTotal
             },
         ];
 
@@ -180,6 +180,24 @@ export class ContainerInvoiceComponent extends AppComponentBase implements OnIni
                 this.paginationParams.totalCount = result.totalCount;
                 this.rowData = result.items;
                 this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
+                if (result.totalCount > 0) {
+                    var _sumFreight = 0;
+                    var _sumInsurance = 0;
+                    var _sumTax = 0;
+                    var _sumAmount = 0;
+                    var _sumTaxVnd = 0;
+                    var _sumVatVnd = 0;
+                    _sumFreight = result.items[0].grandFreight;
+                    _sumInsurance = result.items[0].grandInsurance;
+                    _sumTax = result.items[0].grandTax;
+                    _sumAmount = result.items[0].grandAmount;
+                    _sumTaxVnd = result.items[0].grandTaxVnd;
+                    _sumVatVnd = result.items[0].grandVatVnd;
+                    var rows = this.createRow(1, _sumFreight, _sumInsurance, _sumTax, _sumAmount, _sumTaxVnd, _sumVatVnd);
+                    this.dataParams!.api.setPinnedBottomRowData(rows);
+                } else {
+                    this.dataParams!.api.setPinnedBottomRowData(null);
+                }
                 this.resetGridView();
                 this.isLoading = false;
             });
@@ -267,6 +285,30 @@ export class ContainerInvoiceComponent extends AppComponentBase implements OnIni
                 this._fileDownloadService.downloadTempFile(result);
                 this.notify.success(this.l('Download Excel Successfully'));
             });
+    }
+
+    createRow(count: number, sumFreight: number, sumInsurance: number,
+        sumTax: number, sumAmount: number, sumTaxVnd: number, sumVatVnd: number): any[] {
+        let result: any[] = [];
+
+        for (var i = 0; i < count; i++) {
+            result.push({
+                containerNo: 'Grand Total',
+                freight: sumFreight,
+                insurance: sumInsurance,
+                tax: sumTax,
+                amount: sumAmount,
+                taxVnd: sumTaxVnd,
+                vatVnd: sumVatVnd
+            });
+        }
+        return result;
+    }
+
+    calTotal(values) {
+        var sum = 0;
+        values.forEach(function (value) { sum += Number(value); });
+        return sum;
     }
 }
 

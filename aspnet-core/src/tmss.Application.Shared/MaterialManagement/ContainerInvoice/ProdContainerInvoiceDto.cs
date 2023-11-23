@@ -24,6 +24,13 @@ namespace tmss.MaterialManagement.ContainerInvoice
         public virtual string BillofladingNo { get; set; }
         public virtual DateTime? BillDate { get; set; }
         public virtual string InvoiceNo { get; set; }
+
+        public virtual decimal? GrandFreight { get; set; }
+        public virtual decimal? GrandInsurance { get; set; }
+        public virtual decimal? GrandTax { get; set; }
+        public virtual decimal? GrandAmount { get; set; }
+        public virtual long? GrandTaxVnd { get; set; }
+        public virtual long? GrandVatVnd { get; set; }
     }
 
     public class GetProdContainerInvoiceInput : PagedAndSortedResultRequestDto
