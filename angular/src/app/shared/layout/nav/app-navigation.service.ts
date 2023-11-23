@@ -55,6 +55,7 @@ export class AppNavigationService {
                     new AppMenuItem('Container Invoice', '', 'flaticon-car', '/app/main/management/intransit/container-invoice'),
                 ]),
                 new AppMenuItem('WAREHOUSE', '', 'flaticon-user-settings', '',[],[
+                    new AppMenuItem('Container List', '', 'flaticon-car', '/app/main/management/warehouse/container-list'),
                 ]),
             ]),
             // new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),

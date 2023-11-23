@@ -124,6 +124,12 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                         loadChildren: () => import('./management/intransit/invoice/invoice.module').then(m => m.InvoiceModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
+                    //Warehouse
+                    {
+                        path: 'management/warehouse/container-list',
+                        loadChildren: () => import('./management/warehouse/container-list/container-list.module').then(m => m.ContainerListModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
                     { path: '**', redirectTo: 'dashboard' }
                 ]
             }

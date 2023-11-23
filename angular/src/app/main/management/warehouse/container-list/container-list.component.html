@@ -1,0 +1,139 @@
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" [busyIf]="isLoading">
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form">
+                    <div class="row">
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <input [(ngModel)]="containerNo" name="containerNo" class="form-control m-input"
+                                    [placeholder]="l('Container No')" type="text" (keyup.enter)="searchDatas()">
+                                <div class="input-group">
+                                    <input type='text' class="form-control m-input" name='portDateTo' [placeholder]="l('Port Date To')"
+                                        #datepicker2='bsDatepicker' [(ngModel)]='portDateTo' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker2.toggle()"></i>
+                                    </span>
+                                </div>
+                                <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
+                                    class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
+                                <button class="btn btn-primary" (click)="clearTextSearch()">
+                                    <i class="fa fa-sync"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <input [(ngModel)]="supplierNo" name="supplierNo" class="form-control m-input"
+                                    [placeholder]="l('Supplier No')" type="text" (keyup.enter)="searchDatas()">
+                                <div class="input-group">
+                                    <input type='text' class="form-control m-input" name='receiveDateFrom' [placeholder]="l('Receive Date From')"
+                                        #datepicker3='bsDatepicker' [(ngModel)]='receiveDateFrom' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker3.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <input [(ngModel)]="billNo" name="billOfLadingNo" class="form-control m-input"
+                                    [placeholder]="l('Bill Of Lading No')" type="text" (keyup.enter)="searchDatas()">
+                                <div class="input-group">
+                                    <input type='text' class="form-control m-input" name='receiveDateTo' [placeholder]="l('Receive Date To')"
+                                        #datepicker4='bsDatepicker' [(ngModel)]='receiveDateTo' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker4.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <input [(ngModel)]="invoiceNo" name="invoiceNo" class="form-control m-input"
+                                    [placeholder]="l('Invoice No')" type="text" (keyup.enter)="searchDatas()">
+                                <div class="input-group">
+                                    <input type='text' class="form-control m-input" name='billDateFrom' [placeholder]="l('Bill Date From')"
+                                        #datepicker3='bsDatepicker' [(ngModel)]='billDateFrom' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker3.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type='text' class="form-control m-input" name='portDateFrom' [placeholder]="l('Port Date From')"
+                                        #datepicker='bsDatepicker' [(ngModel)]='portDateFrom' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
+                                    </span>
+                                </div>
+                                <div class="input-group">
+                                    <input type='text' class="form-control m-input" name='billDateTo' [placeholder]="l('Bill Date To')"
+                                        #datepicker4='bsDatepicker' [(ngModel)]='billDateTo' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker4.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </form>
+                <!-- ==================================================Table================================================== -->
+                <span>
+                    <h6 class="card-header"> {{ 'Container List' }} </h6>
+                </span>
+                <div class="ui-g-12 input-group">
+                    <div class="ui-g-12 ui-md-12 frame-1000006298">
+                        <div class="segmented-picker-option groupBtn actionButton_w1" (click)="setvalradio('1')">
+                            <div class="separator"></div>
+                            <div class="label">Intransit</div>
+                        </div>
+                        <div class="segmented-picker-option groupBtn actionButton_w2" (click)="setvalradio('2')">
+                            <div class="separator"></div>
+                            <div class="label"> In Transit Port</div>
+                        </div>
+                        <div class="segmented-picker-option groupBtn actionButton_w3" (click)="setvalradio('3')">
+                            <div class="separator"></div>
+                            <div class="label">In TMV</div>
+                        </div>
+                        <div class="segmented-picker-option groupBtn actionButton_w4" (click)="setvalradio('4')">
+                            <div class="separator"></div>
+                            <div class="label">In Warehouse</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <grid-table
+                        [columnDefs]="colDefs"
+                        [paginationParams]="paginationParams"
+                        [showPagination]="true"
+                        [rowData]="rowData"
+                        [defaultColDef]="defaultColDef"
+                        (callBackEvent)="callBackDataGrid($event)"
+                        (changePaginationParams)="changePage($event)"
+                        (onChangeSelection)="onChangeRowSelection($event)"
+                        [frameworkComponents]="frameworkComponents"
+                        [height]="'49vh'"
+                        >
+                    </grid-table>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-12 text-right">
+                        <button type="button" class="btn btn-success" (click)="exportToExcel()">
+                            <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
