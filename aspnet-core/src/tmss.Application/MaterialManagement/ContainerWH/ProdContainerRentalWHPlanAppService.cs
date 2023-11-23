@@ -65,5 +65,14 @@ namespace tmss.MaterialManagement.ContainerWH
 
             return _excelExporter.ExportToFile(exportToExcel);
         }
+
+        public async Task DeleteContWH(int? Id)
+        {
+            string _sql = "Exec INV_PROD_CONTAINER_WAREHOUSE_DELETE @p_Id";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_Id = Id
+            });
+        }
     }
 }

@@ -263,6 +263,19 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
             });
     }
 
+    deleteContWH() {
+        this.message.confirm(this.l('Bạn có chắc chắn muốn xóa?'), 'Delete Container At Warehouse', (isConfirmed) => {
+            if (isConfirmed) {
+                this._service.deleteContWH(this._selectrow).subscribe(() => {
+                    this.callBackDataGrid(this.dataParams!);
+                    this.notify.success(this.l('SuccessfullyDeleted'));
+                },error =>{
+                    this.notify.error(this.l('FailedDeleted'));
+                });
+            }
+        });
+    }
+
 
     rowClickData: ProdContainerRentalWHPlanDto;
     onRowClick(params) {

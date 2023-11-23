@@ -691,6 +691,7 @@ BEGIN
            ORDER BY a.ShippingDate DESC, a.PortDate DESC, a.ReceiveDate DESC
 END
 ------------------------------------------------ContainerWarehouse------------------------------------------------
+------------------------------------------------search:
 CREATE PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_SEARCH
 (
     @p_ContainerNo NVARCHAR(15),
@@ -716,6 +717,76 @@ BEGIN
        AND (@p_RequestDateTo IS NULL OR a.RequestDate <= @p_RequestDateTo)
        AND a.IsDeleted = 0
   ORDER BY a.RequestDate DESC
+END
+------------------------------------------------edit:
+CREATE PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_EDIT
+@p_Id INT, 
+@p_ContainerNo NVARCHAR(15),
+@p_RequestDate DATE, 
+@p_RequestTime TIME, 
+@p_InvoiceNo NVARCHAR(20), 
+@p_BillOfLadingNo NVARCHAR(20), 
+@p_SupplierNo NVARCHAR(10), 
+@p_SealNo NVARCHAR(20), 
+@p_ListcaseNo NVARCHAR(MAX), 
+@p_ListLotNo NVARCHAR(MAX), 
+@p_DevanningDate DATETIME2, 
+@p_DevanningTime TIME, 
+@p_ActualDevanningDate DATETIME2, 
+@p_GateInPlanTime DATETIME2, 
+@p_GateInActualDateTime DATETIME2, 
+@p_Transport NVARCHAR(50), 
+@p_Status NVARCHAR(10),
+@p_UserId BIGINT
+AS
+BEGIN
+    IF @p_Id IS NULL
+    BEGIN
+        INSERT INTO ProdContainerRentalWHPlan 
+                    (CreationTime, CreatorUserId, IsDeleted, 
+                     ContainerNo, RequestDate, RequestTime, InvoiceNo, BillofladingNo, 
+                     SupplierNo, SealNo, ListcaseNo, ListLotNo, DevanningDate, 
+                     DevanningTime, ActualDevanningDate, GateInPlanTime, 
+                     GateInActualDateTime, Transport, Status)
+             VALUES (GETDATE(), @p_UserId, 0, 
+                     @p_ContainerNo, @p_RequestDate, @p_RequestTime, @p_InvoiceNo, @p_BillOfLadingNo, 
+                     @p_SupplierNo, @p_SealNo, @p_ListcaseNo, @p_ListLotNo, @p_DevanningDate, 
+                     @p_DevanningTime, @p_ActualDevanningDate, @p_GateInPlanTime, 
+                     @p_GateInActualDateTime, @p_Transport, @p_Status);
+    END
+    ELSE
+    BEGIN
+        UPDATE ProdContainerRentalWHPlan
+           SET ContainerNo = @p_ContainerNo,
+               RequestDate = @p_RequestDate,
+               RequestTime = @p_RequestTime,
+               InvoiceNo = @p_InvoiceNo,
+               BillofladingNo =@p_BillOfLadingNo,
+               SupplierNo = @p_SupplierNo,
+               SealNo = @p_SealNo,
+               ListcaseNo = @p_ListcaseNo,
+               ListLotNo = @p_ListLotNo,
+               DevanningDate = @p_DevanningDate,
+               DevanningTime = @p_DevanningTime,
+               ActualDevanningDate = @p_ActualDevanningDate,
+               GateInPlanTime = @p_GateInPlanTime,
+               GateInActualDateTime = @p_GateInActualDateTime,
+               Transport = @p_Transport,
+               Status = @p_Status,
+               LastModificationTime = GETDATE(),
+               LastModifierUserId = @p_UserId
+         WHERE Id = @p_Id
+    END
+
+END
+------------------------------------------------delete:
+CREATE PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_DELETE
+    @p_Id INT
+AS
+BEGIN
+    UPDATE ProdContainerRentalWHPlan
+       SET IsDeleted = 1
+     WHERE Id = @p_Id 
 END
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (
