@@ -788,6 +788,107 @@ BEGIN
        SET IsDeleted = 1
      WHERE Id = @p_Id 
 END
+------------------------------------------------Import:
+CREATE PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_MERGE
+    @Guid VARCHAR(MAX)
+AS
+BEGIN
+    BEGIN TRY 
+	  BEGIN TRANSACTION
+
+	  -- FOR BUG CHECK-
+		INSERT INTO ProcessLog(CATEGORY, PROCESS_NAME, ERROR_MESSAGE, CREATED_BY, CREATED_DATE)
+		VALUES ('ProdContainerRentalWHPlan', 'ProdContainerRentalWHPlan Import', 'START:', 'SYSTEM', GETDATE());
+
+		UPDATE t1 
+		   SET ErrorDescription = CONCAT(ISNULL(ErrorDescription, ''), 'Không tồn tại Container: ', t1.ContainerNo)
+		  FROM ProdContainerRentalWHPlan_T t1
+		 WHERE Guid = @Guid 
+       AND NOT EXISTS (SELECT 1 FROM ProdContainerInvoice t2 WHERE t2.ContainerNo = t1.ContainerNo);
+
+		IF NOT EXISTS (SELECT 1 FROM ProdContainerRentalWHPlan_T WHERE Guid = @Guid AND ErrorDescription != '')
+		BEGIN			
+	  	
+		MERGE INTO ProdContainerRentalWHPlan AS P
+		USING (
+        	SELECT t1.ContainerNo, 
+                 dbo.fn_DistinctList(STRING_AGG(t3.InvoiceNo, ','), ',') InvoiceNo,
+                 dbo.fn_DistinctList(STRING_AGG(t4.BillofladingNo, ','), ',') BillofladingNo,
+                 MAX(t2.SupplierNo) SupplierNo, t1.SealNo, t1.ListcaseNo,
+                 t1.DevanningDate, t1.DevanningTime, t1.Transport, t1.CreatorUserId
+        		FROM ProdContainerRentalWHPlan_T t1
+      INNER JOIN ProdContainerInvoice t2 ON t1.ContainerNo = t2.ContainerNo
+      INNER JOIN ProdInvoice t3 ON t3.Id = t2.InvoiceId
+      INNER JOIN ProdBillOfLading t4 ON t3.BillId = t4.Id
+        	 WHERE Guid = @Guid 
+        GROUP BY t1.ContainerNo, t1.SealNo, t1.ListcaseNo, t1.DevanningDate, t1.DevanningTime, t1.Transport, t1.CreatorUserId
+		  ) AS DT ON (P.ContainerNo = DT.ContainerNo)				    
+		WHEN MATCHED THEN
+		    UPDATE SET 
+					P.RequestDate = DT.DevanningDate,
+					P.RequestTime = DT.DevanningTime,
+					P.DevanningDate = DT.DevanningDate,
+					P.DevanningTime = DT.DevanningTime,
+					P.InvoiceNo = DT.InvoiceNo,
+					P.BillofladingNo = DT.BillofladingNo,
+					P.SealNo = DT.SealNo,
+					P.ListcaseNo = DT.ListcaseNo,
+					P.Transport = DT.Transport,
+					P.SupplierNo = DT.SupplierNo,
+          P.LastModifierUserId = DT.CreatorUserId,
+					P.LastModificationTime = GETDATE()
+		WHEN NOT MATCHED THEN
+		    INSERT (
+                ContainerNo, InvoiceNo, BillofladingNo, SupplierNo, SealNo, 
+                ListcaseNo, DevanningDate, DevanningTime, Status, Transport,
+                RequestDate, RequestTime, 
+                CreationTime, CreatorUserId, IsDeleted)				
+		  	VALUES (
+                ContainerNo, InvoiceNo, BillofladingNo, SupplierNo, SealNo,
+                ListcaseNo, DT.DevanningDate, DevanningTime, 'R', Transport,
+                DT.DevanningDate, DT.DevanningTime, 
+                GETDATE(), CreatorUserId, 0);
+		END
+
+		-- FOR BUG CHECK-
+		INSERT INTO ProcessLog (CATEGORY, PROCESS_NAME, ERROR_MESSAGE, CREATED_BY, CREATED_DATE)
+		VALUES ('ProdContainerRentalWHPlan', 'ProdContainerRentalWHPlan Import', 'END:', 'SYSTEM', GETDATE());
+
+		COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+		DECLARE @ErrorSeverity INT;
+		DECLARE @ErrorState INT;
+		DECLARE @ErrorMessage NVARCHAR(4000);
+  
+		SELECT @ErrorMessage = ERROR_MESSAGE(),
+			     @ErrorSeverity = ERROR_SEVERITY(), 
+			     @ErrorState = ERROR_STATE();
+
+		ROLLBACK TRANSACTION		
+		INSERT INTO ProCess_Log ([CATEGORY], [PROCESS_NAME], [ERROR_MESSAGE], [CREATED_DATE])
+		VALUES ('ProdContainerRentalWHPlan', 'ProdContainerRentalWHPlan Import', 'ERROR :' + @ErrorMessage + 
+															'//ERRORSTATE :' +  CAST(@ErrorState AS VARCHAR) + 
+															'//ERRORPROCEDURE :' + ERROR_PROCEDURE() + 
+															'//ERRORSEVERITY :' + CAST(@ErrorSeverity AS VARCHAR) + 
+															'//ERRORNUMBER :' + CAST(ERROR_NUMBER() AS VARCHAR) + 
+															'//ERRORLINE :' + CAST(ERROR_LINE() AS VARCHAR), GETDATE());
+	   
+	  RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+	  END CATCH;
+END
+------------------------------------------------GetListErrorImport:
+CREATE PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_GET_LIST_ERROR_IMPORT
+    @Guid NVARCHAR(MAX)
+AS 
+BEGIN
+    SELECT DISTINCT Guid, ContainerNo, InvoiceNo, BillofladingNo, 
+           SealNo, ListcaseNo, DevanningDate, DevanningTime, 
+           Transport, ErrorDescription
+      FROM ProdContainerRentalWHPlan_T
+     WHERE Guid = @Guid AND ISNULL(ErrorDescription, '') <> '' 
+END
+GO
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (
   ID BIGINT IDENTITY
@@ -821,6 +922,22 @@ BEGIN
        INSERT INTO @List SELECT @sInputList -- Put the last item in
 
   RETURN
+END
+
+GO
+------------------------------------------------
+CREATE FUNCTION fn_DistinctList
+(
+    @String NVARCHAR(MAX),
+    @Delimiter CHAR(1)
+) RETURNS NVARCHAR(MAX)
+WITH SCHEMABINDING
+AS
+BEGIN
+    DECLARE @Result NVARCHAR(MAX);
+    WITH MY_CTE AS ( SELECT DISTINCT(value) FROM STRING_SPLIT(@String, @Delimiter))
+    SELECT @Result = STRING_AGG(value, @Delimiter) FROM MY_CTE
+    RETURN @Result
 END
 
 GO

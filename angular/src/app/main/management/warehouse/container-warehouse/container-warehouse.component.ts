@@ -13,6 +13,7 @@ import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 import { AgDropdownRendererComponent } from '@app/shared/common/grid/ag-dropdown-renderer/ag-dropdown-renderer.component';
 import { EditContainerWarehouseComponent } from './edit-container-warehouse-modal.component';
+import { ImportContainerWarehouseComponent } from './import-container-warehouse-modal.component';
 
 @Component({
     selector: 'app-container-warehouse',
@@ -23,6 +24,7 @@ import { EditContainerWarehouseComponent } from './edit-container-warehouse-moda
 })
 export class ContainerWarehouseComponent extends AppComponentBase implements OnInit {
     @ViewChild('editContainerWarehouse', { static: true }) editContainerWarehouse: EditContainerWarehouseComponent;
+    @ViewChild('importExcelModal', { static: true }) importExcelModal: ImportContainerWarehouseComponent;
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
     paginationParams: PaginationParamsModel = {
@@ -103,18 +105,17 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
                 headerName: this.l('Request Date'), headerTooltip: this.l('Request Date'), field: 'requestDate', flex: 1, pinned: true,
                 valueGetter: (params) => this.pipe.transform(params.data?.requestDate, 'dd/MM/yyyy')
             },
-            // { headerName: this.l('Request Time'), headerTooltip: this.l('Request Time'), field: 'requestTime', flex: 1 },
+            { headerName: this.l('Request Time'), headerTooltip: this.l('Request Time'), field: 'requestTime', flex: 1 },
             { headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', flex: 1 },
             { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('Bill Of Lading No'), field: 'billofladingNo', flex: 1 },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
             { headerName: this.l('Seal No'), headerTooltip: this.l('Seal No'), field: 'sealNo', flex: 1 },
             { headerName: this.l('List Case No'), headerTooltip: this.l('List Case No'), field: 'listcaseNo', flex: 1 },
-            { headerName: this.l('List Lot No'), headerTooltip: this.l('List Lot No'), field: 'listLotNo', flex: 1 },
             {
                 headerName: this.l('Devanning Date'), headerTooltip: this.l('Devanning Date'), field: 'devanningDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.devanningDate, 'dd/MM/yyyy')
             },
-            // { headerName: this.l('Devanning Time'), headerTooltip: this.l('Devanning Time'), field: 'devanningTime', flex: 1 },
+            { headerName: this.l('Devanning Time'), headerTooltip: this.l('Devanning Time'), field: 'devanningTime', flex: 1 },
             {
                 headerName: this.l('Actual Devanning Date'), headerTooltip: this.l('Actual Devanning Date'), field: 'actualDevanningDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.actualDevanningDate, 'dd/MM/yyyy')
@@ -281,6 +282,10 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
     edit(e): void {
         if (e == 'Edit') this.editContainerWarehouse.show(e, this.saveSelectedRow);
         else this.editContainerWarehouse.show(e);
+    }
+
+    importFromExcel(){
+        this.importExcelModal.show();
     }
 
     rowClickData: ProdContainerRentalWHPlanDto;

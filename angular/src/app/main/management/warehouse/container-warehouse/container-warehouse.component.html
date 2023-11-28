@@ -88,6 +88,8 @@
                             <i class="far fa-edit"></i> {{"Edit" | localize}}</button>
                         <button type="button" class="btn btn-danger" (click)="deleteContWH()" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-trash-alt"></i> {{"Delete" | localize}}</button>
+                        <button type="button" class="btn btn-success" (click)="importFromExcel()">
+                            <i class="far fa-file-excel"></i> {{"ImportFromExcel" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
                             <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>
                     </div>
@@ -97,3 +99,4 @@
     </div>
 </div>
 <editContainerWarehouse #editContainerWarehouse></editContainerWarehouse>
+<importExcelModal #importExcelModal></importExcelModal>

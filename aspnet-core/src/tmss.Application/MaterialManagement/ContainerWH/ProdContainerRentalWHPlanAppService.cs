@@ -1,8 +1,15 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Dapper.Repositories;
+using Abp.UI;
+using FastMember;
+using GemBox.Spreadsheet;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using tmss.Common;
 using tmss.Dto;
 using tmss.MaterialManagement.ContainerWH.Exporting;
 
@@ -101,6 +108,126 @@ namespace tmss.MaterialManagement.ContainerWH
                 p_Status = input.Status,
                 p_UserId = AbpSession.UserId
             });
+        }
+
+        public async Task<List<ProdContainerRentalWHPlanImportDto>> ImportProdContainerRentalWHPlanFromExcel(byte[] fileBytes, string fileName)
+        {
+            try
+            {
+                List<ProdContainerRentalWHPlanImportDto> listImport = new List<ProdContainerRentalWHPlanImportDto>();
+                using (var stream = new MemoryStream(fileBytes))
+                {
+                    SpreadsheetInfo.SetLicense("EF21-1FW1-HWZF-CLQH");
+                    var xlWorkBook = ExcelFile.Load(stream);
+                    var v_worksheet = xlWorkBook.Worksheets[0];
+
+                    string v_devanning_date = (v_worksheet.Cells[2, 2]).Value?.ToString() ?? "";
+                    string strGUID = Guid.NewGuid().ToString("N");
+
+                    for (int i = 8; i < v_worksheet.Rows.Count; i++)
+                    {
+                        var row = new ProdContainerRentalWHPlanImportDto();
+                        row.Guid = strGUID;
+                        string v_time_devanning = (v_worksheet.Cells[i, 1]).Value?.ToString() ?? "";
+                        string v_container = (v_worksheet.Cells[i, 2]).Value?.ToString() ?? "";
+                        string v_seal = (v_worksheet.Cells[i, 3]).Value?.ToString() ?? "";
+                        string v_transport = (v_worksheet.Cells[i, 4]).Value?.ToString() ?? "";
+                        string v_case_no = (v_worksheet.Cells[i, 5]).Value?.ToString() ?? "";
+
+                        if (v_container != "")
+                        {
+                            try
+                            {
+                                if (string.IsNullOrEmpty(v_devanning_date))
+                                {
+                                    row.DevanningDate = null;
+                                }
+                                else
+                                {
+                                    row.DevanningDate = DateTime.Parse(v_devanning_date);
+                                }
+                            }
+                            catch
+                            {
+                                row.ErrorDescription += "Ngày nhận không hợp lệ! ";
+                            }
+                            if (v_container.Length > 15) row.ErrorDescription += "Độ dài Container No: " + v_container + " không hợp lệ! ";
+                            else row.ContainerNo = v_container;
+
+                            if (v_seal.Length > 20) row.ErrorDescription += "Độ dài Seal No:" + v_seal + " không hợp lệ! ";
+                            else row.SealNo = v_seal;
+
+                            row.DevanningTime = v_time_devanning;
+                            row.Transport = v_transport;
+                            row.ListcaseNo = v_case_no;
+                            row.CreatorUserId = AbpSession.UserId;
+                            listImport.Add(row);
+                        }
+                    }
+                }
+
+                // import temp into db (bulkCopy)
+                if (listImport.Count > 0)
+                {
+                    IEnumerable<ProdContainerRentalWHPlanImportDto> dataE = listImport.AsEnumerable();
+                    DataTable table = new DataTable();
+                    using (var reader = ObjectReader.Create(dataE))
+                    {
+                        table.Load(reader);
+                    }
+                    string connectionString = Commons.getConnectionString();
+                    using (Microsoft.Data.SqlClient.SqlConnection conn = new Microsoft.Data.SqlClient.SqlConnection(connectionString))
+                    {
+                        await conn.OpenAsync();
+
+                        using (Microsoft.Data.SqlClient.SqlTransaction tran = conn.BeginTransaction(IsolationLevel.ReadCommitted))
+                        {
+                            using (var bulkCopy = new Microsoft.Data.SqlClient.SqlBulkCopy(conn, Microsoft.Data.SqlClient.SqlBulkCopyOptions.Default, tran))
+                            {
+                                bulkCopy.DestinationTableName = "ProdContainerRentalWHPlan_T";
+                                bulkCopy.ColumnMappings.Add("Guid", "Guid");
+                                bulkCopy.ColumnMappings.Add("ContainerNo", "ContainerNo");
+                                bulkCopy.ColumnMappings.Add("SealNo", "SealNo");
+                                bulkCopy.ColumnMappings.Add("Transport", "Transport");
+                                bulkCopy.ColumnMappings.Add("ListcaseNo", "ListcaseNo");
+                                bulkCopy.ColumnMappings.Add("DevanningDate", "DevanningDate");
+                                bulkCopy.ColumnMappings.Add("DevanningTime", "DevanningTime");
+                                bulkCopy.ColumnMappings.Add("CreatorUserId", "CreatorUserId");
+                                bulkCopy.ColumnMappings.Add("ErrorDescription", "ErrorDescription");
+                                bulkCopy.WriteToServer(table);
+                                tran.Commit();
+                            }
+                        }
+                        await conn.CloseAsync();
+                    }
+                }
+                return listImport;
+            }
+            catch (Exception ex)
+            {
+                throw new UserFriendlyException(400, ex.Message);
+            }
+        }
+
+        public async Task MergeData(string v_Guid)
+        {
+            string _sql = "Exec INV_PROD_CONTAINER_WAREHOUSE_MERGE @Guid";
+            await _dapperRepo.QueryAsync<ProdContainerRentalWHPlanImportDto>(_sql, new { Guid = v_Guid });
+        }
+
+        public async Task<PagedResultDto<ProdContainerRentalWHPlanImportDto>> GetListErrorImport(string v_Guid)
+        {
+            string _sql = "Exec INV_PROD_CONTAINER_WAREHOUSE_GET_LIST_ERROR_IMPORT @Guid";
+
+            IEnumerable<ProdContainerRentalWHPlanImportDto> result = await _dapperRepo.QueryAsync<ProdContainerRentalWHPlanImportDto>(_sql, new
+            {
+                Guid = v_Guid
+            });
+
+            var listResult = result.ToList();
+            var totalCount = listResult.Count();
+
+            return new PagedResultDto<ProdContainerRentalWHPlanImportDto>(totalCount, listResult);
         }
     }
 }
