@@ -94,6 +94,8 @@ namespace tmss.EntityFrameworkCore
 
         #region MaterialManagement
 
+        public virtual DbSet<ProdStockPart> ProdStockParts { get; set; }
+
         public virtual DbSet<ProdShipment> ProdShipments { get; set; }
 
         public virtual DbSet<ProdBillOfLading> ProdBillOfLadings { get; set; }
@@ -105,6 +107,8 @@ namespace tmss.EntityFrameworkCore
         public virtual DbSet<ProdContainerInvoice> ProdContainerInvoices { get; set; }
 
         public virtual DbSet<ProdContainerList> ProdContainerLists { get; set; }
+
+        public virtual DbSet<ProdContainerIntransit> ProdContainerIntransits { get; set; }
 
         public virtual DbSet<ProdContainerRentalWHPlan> ProdContainerRentalWHPlans { get; set; }
 
