@@ -1,0 +1,127 @@
+<div appBsModal #editContainerWarehouse="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="editContainerWarehouse" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{header + " Container Warehouse"}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="ui-g-12 p-0">
+                    <fieldset class="fieldset-border ui-g-12 pl-0 pr-0  mt-2" style="height: auto;">
+                        <div class="ui-g-12 ph-0">
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Container No'" [(ngModel)]="rowData.containerNo"
+                                    name='containerNo'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text left-text">Request Date</span>
+                                    <input type='text' class="form-control tmss-form-control" name='requestDate'
+						                #datepicker='bsDatepicker' [(ngModel)]='_requestDate' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Description'" [(ngModel)]="rowData.requestTime"
+                                    name='description'></tmss-text-input>
+                            </div> -->
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Invoice No'" [(ngModel)]="rowData.invoiceNo"
+                                    name='invoiceNo'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Bill Of Lading No'" [(ngModel)]="rowData.billofladingNo"
+                                    name='billofladingNo'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Supplier No'" [(ngModel)]="rowData.supplierNo"
+                                    name='supplierNo'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Seal No'" [(ngModel)]="rowData.sealNo"
+                                    name='sealNo'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'List Case No'" [(ngModel)]="rowData.listcaseNo"
+                                    name='listcaseNo' ></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'List Lot No'" [(ngModel)]="rowData.listLotNo"
+                                    name='listLotNo' ></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text left-text">Devanning Date</span>
+                                    <input type='text' class="form-control tmss-form-control" name='devanningDate'
+						                #datepicker2='bsDatepicker' [(ngModel)]='_devanningDate' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker2.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Reserved Stock'" [(ngModel)]="rowData.devanningTime"
+                                    name='reservedStock'></tmss-text-input>
+                            </div> -->
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text left-text">Actual Devanning Date</span>
+                                    <input type='text' class="form-control tmss-form-control" name='actualDevanningDate'
+						                #datepicker3='bsDatepicker' [(ngModel)]='_actualDevanningDate' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker3.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text left-text">Gate In Plan Time</span>
+                                    <input type='text' class="form-control tmss-form-control" name='gateInPlanTime'
+						                #datepicker4='bsDatepicker' [(ngModel)]='_gateInPlanTime' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY HH:mm:ss', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker4.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text left-text">Gate In Actual Time</span>
+                                    <input type='text' class="form-control tmss-form-control" name='gateInActualDateTime'
+						                #datepicker5='bsDatepicker' [(ngModel)]='_gateInActualDateTime' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY HH:mm:ss', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker5.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Transport'" [(ngModel)]="rowData.transport"
+                                    name='transport' ></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-combobox [items]="list" name="status" [text]="'Status'" [(ngModel)]="rowData.status"></tmss-combobox>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-primary" (click)="save()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
+                    <i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                <button type="button" class="btn btn-outline-danger" (click)="close()">
+                    <i class="fa tmss-fa fa-times mr-1"></i>{{"Cancel" | localize}}</button>
+            </div>
+        </div>
+    </div>
+</div>

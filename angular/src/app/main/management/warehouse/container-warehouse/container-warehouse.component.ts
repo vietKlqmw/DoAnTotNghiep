@@ -1,6 +1,6 @@
 import { GridApi } from '@ag-grid-enterprise/all-modules';
 import { DatePipe } from '@angular/common';
-import { Component, Injector, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AgCellButtonRendererComponent } from '@app/shared/common/grid/ag-cell-button-renderer/ag-cell-button-renderer.component';
 import { CustomColDef, FrameworkComponent, GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
 import { GridTableService } from '@app/shared/common/services/grid-table.service';
@@ -12,6 +12,7 @@ import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 import { AgDropdownRendererComponent } from '@app/shared/common/grid/ag-dropdown-renderer/ag-dropdown-renderer.component';
+import { EditContainerWarehouseComponent } from './edit-container-warehouse-modal.component';
 
 @Component({
     selector: 'app-container-warehouse',
@@ -21,6 +22,7 @@ import { AgDropdownRendererComponent } from '@app/shared/common/grid/ag-dropdown
     animations: [appModuleAnimation()]
 })
 export class ContainerWarehouseComponent extends AppComponentBase implements OnInit {
+    @ViewChild('editContainerWarehouse', { static: true }) editContainerWarehouse: EditContainerWarehouseComponent;
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
     paginationParams: PaginationParamsModel = {
@@ -101,7 +103,7 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
                 headerName: this.l('Request Date'), headerTooltip: this.l('Request Date'), field: 'requestDate', flex: 1, pinned: true,
                 valueGetter: (params) => this.pipe.transform(params.data?.requestDate, 'dd/MM/yyyy')
             },
-            { headerName: this.l('Request Time'), headerTooltip: this.l('Request Time'), field: 'requestTime', flex: 1 },
+            // { headerName: this.l('Request Time'), headerTooltip: this.l('Request Time'), field: 'requestTime', flex: 1 },
             { headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', flex: 1 },
             { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('Bill Of Lading No'), field: 'billofladingNo', flex: 1 },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
@@ -112,7 +114,7 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
                 headerName: this.l('Devanning Date'), headerTooltip: this.l('Devanning Date'), field: 'devanningDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.devanningDate, 'dd/MM/yyyy')
             },
-            { headerName: this.l('Devanning Time'), headerTooltip: this.l('Devanning Time'), field: 'devanningTime', flex: 1 },
+            // { headerName: this.l('Devanning Time'), headerTooltip: this.l('Devanning Time'), field: 'devanningTime', flex: 1 },
             {
                 headerName: this.l('Actual Devanning Date'), headerTooltip: this.l('Actual Devanning Date'), field: 'actualDevanningDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.actualDevanningDate, 'dd/MM/yyyy')
@@ -276,6 +278,10 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
         });
     }
 
+    edit(e): void {
+        if (e == 'Edit') this.editContainerWarehouse.show(e, this.saveSelectedRow);
+        else this.editContainerWarehouse.show(e);
+    }
 
     rowClickData: ProdContainerRentalWHPlanDto;
     onRowClick(params) {

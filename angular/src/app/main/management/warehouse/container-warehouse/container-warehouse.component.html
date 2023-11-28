@@ -82,6 +82,10 @@
                 <hr>
                 <div class="row">
                     <div class="col-sm-12 text-right">
+                        <button type="button" class="btn btn-primary" (click)="edit('Add')">
+                            <i class="fa fa-plus"></i> {{"Add" | localize}}</button>
+                        <button type="button" class="btn btn-primary" (click)="edit('Edit')" [disabled]="!saveSelectedRow.id">
+                            <i class="far fa-edit"></i> {{"Edit" | localize}}</button>
                         <button type="button" class="btn btn-danger" (click)="deleteContWH()" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-trash-alt"></i> {{"Delete" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
@@ -92,3 +96,4 @@
         </div>
     </div>
 </div>
+<editContainerWarehouse #editContainerWarehouse></editContainerWarehouse>

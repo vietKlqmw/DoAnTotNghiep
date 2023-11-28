@@ -74,5 +74,33 @@ namespace tmss.MaterialManagement.ContainerWH
                 p_Id = Id
             });
         }
+
+        public async Task EditContainerWH(ProdContainerRentalWHPlanDto input)
+        {
+            string _sql = "Exec INV_PROD_CONTAINER_WAREHOUSE_EDIT @p_Id, @p_ContainerNo, @p_RequestDate, @p_RequestTime," +
+                "@p_InvoiceNo, @p_BillOfLadingNo, @p_SupplierNo, @p_SealNo, @p_ListcaseNo, @p_ListLotNo, @p_DevanningDate," +
+                "@p_DevanningTime, @p_ActualDevanningDate, @p_GateInPlanTime, @p_GateInActualDateTime, @p_Transport, @p_Status, @p_UserId";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_Id = input.Id,
+                p_ContainerNo = input.ContainerNo,
+                p_RequestDate = input.RequestDate,
+                p_RequestTime = input.RequestTime,
+                p_InvoiceNo = input.InvoiceNo,
+                p_BillOfLadingNo = input.BillofladingNo,
+                p_SupplierNo = input.SupplierNo,
+                p_SealNo = input.SealNo,
+                p_ListcaseNo = input.ListcaseNo,
+                p_ListLotNo = input.ListLotNo,
+                p_DevanningDate = input.DevanningDate,
+                p_DevanningTime = input.DevanningTime,
+                p_ActualDevanningDate = input.ActualDevanningDate,
+                p_GateInPlanTime = input.GateInPlanTime,
+                p_GateInActualDateTime = input.GateInActualDateTime,
+                p_Transport = input.Transport,
+                p_Status = input.Status,
+                p_UserId = AbpSession.UserId
+            });
+        }
     }
 }
