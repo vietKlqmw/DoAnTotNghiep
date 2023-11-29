@@ -99,4 +99,23 @@ export class LoginComponent extends AppComponentBase implements OnInit {
     get useCaptcha(): boolean {
         return this.setting.getBoolean('App.UserManagement.UseCaptchaOnLogin');
     }
+
+    password_eye_click(type:number) {
+
+        let _eyeOpen = document.querySelector<HTMLElement>(".login-account .login_content .login-form .form-group img.password-eye.password-eye-open");
+        let _eyeOff = document.querySelector<HTMLElement>(".login-account .login_content .login-form .form-group img.password-eye.password-eye-off");
+        let _pass = document.querySelector<HTMLElement>(".login-account .login_content .login-form .form-group input[name=password].input-login");
+
+        if(type == 1) {
+            _eyeOff.style.display = "none";
+            _eyeOpen.style.display = "block";
+            _pass.setAttribute("type","text");
+        }
+        else {
+            _eyeOff.style.display = "block";
+            _eyeOpen.style.display = "none";
+            _pass.setAttribute("type","password");
+        }
+
+    }
 }

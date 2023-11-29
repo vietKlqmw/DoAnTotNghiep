@@ -1,33 +1,52 @@
-<div [ngClass]="{'kt-grid kt-grid--ver kt-grid--root': !useFullWidthLayout(), 'kt-content': useFullWidthLayout() }" [style.text-align]="useFullWidthLayout() ? 'center' : 'left'">
-    <div [ngClass]="{'kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v1': !useFullWidthLayout(), 'row':useFullWidthLayout()}" id="kt_login">
-        <div [ngClass]="{'kt-grid__item kt-grid__item--fluid kt-grid kt-grid--desktop kt-grid--ver-desktop kt-grid--hor-tablet-and-mobile': !useFullWidthLayout(), 'col-md-12': useFullWidthLayout()}">
-            <div class="kt-grid__item kt-grid__item--order-tablet-and-mobile-2 kt-grid kt-grid--hor kt-login__aside" *ngIf="!useFullWidthLayout()" style="background-image: url('/assets/metronic/common/images/bg/bg-4.jpg');">
-                <div class="kt-grid__item">
-                    <a (click)="goToHome()" href="">
-                        <img *ngIf="!appSession.tenant || !appSession.tenant.logoId" [src]="appRootUrl() + 'assets/common/images/app-logo-on-dark.svg'" alt="logo" height="38" />
-                        <img *ngIf="appSession.tenant && appSession.tenant.logoId" [src]="remoteServiceBaseUrl + '/TenantCustomization/GetTenantLogo?skin=light&tenantId=' + appSession.tenant.id + '&id=' + appSession.tenant.logoId" alt="logo" height="38" />
-                    </a>
+<div class="d-flex flex-row-auto flex-root login-account">
+    <div class=" login-aside-content
+            d-flex
+            flex-column flex-column-fluid
+            bgi-position-y-bottom
+            position-x-center
+            bgi-no-repeat bgi-size-contain bgi-attachment-fixed" style="background: #F2FAFF;">
+        <div class="d-flex flex-center flex-column flex-column-fluid p-10" [class.pb-lg-20]="!useFullWidthLayout()"
+            [class.pb-0]="useFullWidthLayout()">
+            <!--begin::Wrapper-->
+            <div *ngIf="useFullWidthLayout()" class="container-xxl mx-auto">
+                <div *ngIf="showTenantChange()" class="tenant-change-box mb-5 tenant-change-box">
+                    <tenant-change></tenant-change>
                 </div>
-                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver">
-                    <div class="kt-grid__item kt-grid__item--middle">
-                        <h3 class="kt-login__title">Toyota Motor Viet Nam</h3>
-                        <h4 class="kt-login__subtitle">Start your impossible.</h4>
-                    </div>
-                </div>
+                <!--begin::Form-->
+                <router-outlet></router-outlet>
+                <!--end::Form-->
             </div>
-
-            <div class="kt-grid__item kt-grid__item--fluid  kt-grid__item--order-tablet-and-mobile-1  kt-login__wrapper d-block">
-                <div class="kt-login__head d-block mt-3 mr-auto ml-auto text-right">
-                    <language-switch></language-switch>
+            <div *ngIf="!useFullWidthLayout()"
+                class="login_content w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
+                <div *ngIf="showTenantChange()" class="tenant-change-box mb-5 tenant-change-box">
+                    <tenant-change></tenant-change>
                 </div>
-
-                <div class="kt-login__body d-block mt-3 mr-auto ml-auto">
-                    <div *ngIf="showTenantChange()" class="kt-login__signup-label tenant-change-box text-center">
-                        <tenant-change></tenant-change>
-                    </div>
-                    <router-outlet></router-outlet>
-                </div>
+                <!--begin::Form-->
+                <router-outlet></router-outlet>
+                <!--end::Form-->
             </div>
+            <!--end::Wrapper-->
+        </div>
+        <!--end::Content-->
+    </div>
+    <div class="login-aside d-flex flex-column flex-row-auto">
+        <div class="d-flex flex-column-auto flex-column pt-lg-40 pt-15">
+            <!-- <a (click)="goToHome()" href="" class="d-flex justify-content-center" [class.mb-12]="!useFullWidthLayout()">
+                <img *ngIf="!appSession.tenant || !appSession.tenant.id" alt="logo" class="max-h-70px"
+                    [src]="appRootUrl() + 'assets/common/images/app-logo-on-light.svg'"
+                    [class.mb-20]="useFullWidthLayout()" />
+                <img *ngIf="appSession.tenant && appSession.tenant.id" [src]="
+                        remoteServiceBaseUrl +
+                        '/TenantCustomization/GetTenantLogo?skin=' +
+                        getLogoSkin() +
+                        '&tenantId=' +
+                        appSession.tenant.id
+                    " alt="logo" class="max-h-70px" />
+            </a> -->
+            <h3 class="font-weight-bolder text-center font-size-h4 font-size-h1-lg" 
+                style="color: red;font-weight: 600 !important;">
+                Toyota Motor Viet Nam <br /> Start your impossible.
+            </h3>
         </div>
     </div>
 </div>
