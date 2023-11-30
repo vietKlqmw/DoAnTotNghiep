@@ -2,14 +2,10 @@
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using tmss.Dto;
-using tmss.Master.MaterialType;
 using tmss.Master.UoM.Exporting;
-using tmss.Master.VehicleCBU;
 
 namespace tmss.Master.UoM
 {

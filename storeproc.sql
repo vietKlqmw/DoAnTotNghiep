@@ -416,29 +416,6 @@ VALUES
 (GETDATE(), 1, 0, 'C004', 'Coaster'),
 (GETDATE(), 1, 0, 'C005', 'Ventury'),
 (GETDATE(), 1, 0, 'C006', 'Rush');
-------------------------------------------------TransmissionType------------------------------------------------
-INSERT INTO MasterTransmissionType 
-(CreationTime, CreatorUserId, IsDeleted, Code, Name)
-VALUES 
-(GETDATE(), 1, 0, 'AT', 'Automatic'),
-(GETDATE(), 1, 0, 'MT', 'Manual'),
-(GETDATE(), 1, 0, 'HP', 'Hibrid');
-------------------------------------------------EngineType------------------------------------------------
-
-------------------------------------------------EngineModel------------------------------------------------
-
-------------------------------------------------VehicleCBU------------------------------------------------
-CREATE PROCEDURE INV_MASTER_VEHICLE_CBU_SEARCH
-    @p_VehicleType NVARCHAR(10),
-    @p_Model NVARCHAR(MAX)
-AS
-BEGIN
-    SELECT mvc.Id, mvc.VehicleType, mvc.Model, mvc.MarketingCode, mvc.ProductionCode 
-      FROM MasterVehicleCBU mvc
-     WHERE (@p_VehicleType IS NULL OR mvc.VehicleType LIKE CONCAT('%',@p_VehicleType,'%'))
-       AND (@p_Model IS NULL OR mvc.Model LIKE CONCAT('%',@p_Model,'%'))
-       AND mvc.IsDeleted = 0
-END
 ------------------------------------------------VehicleCKD------------------------------------------------
 CREATE PROCEDURE INV_MASTER_VEHICLE_CKD_SEARCH
     @p_Model NVARCHAR(1),
@@ -453,23 +430,6 @@ BEGIN
        AND (@p_Cfc IS NULL OR mvc.Cfc LIKE CONCAT('%', @p_Cfc, '%'))
        AND (@p_ModelCode IS NULL OR mvc.ModelCode LIKE CONCAT('%', @p_ModelCode, '%'))
        AND mvc.IsDeleted = 0
-END
-------------------------------------------------Engine------------------------------------------------
-CREATE PROCEDURE INV_MASTER_ENGINE_SEARCH
-    @p_MaterialCode NVARCHAR(40),
-    @p_TransmissionType NVARCHAR(5),
-    @p_EngineModel NVARCHAR(10),
-    @p_EngineType NVARCHAR(10)
-AS
-BEGIN
-    SELECT me.Id, me.MaterialCode, me.ClassType, me.ClassName, me.TransmissionType, 
-           me.EngineModel, me.EngineType
-      FROM MasterEngine me
-     WHERE (@p_MaterialCode IS NULL OR me.MaterialCode LIKE CONCAT('%', @p_MaterialCode, '%'))
-       AND (@p_TransmissionType IS NULL OR me.TransmissionType LIKE CONCAT('%', @p_TransmissionType, '%'))
-       AND (@p_EngineModel IS NULL OR me.EngineModel LIKE CONCAT('%', @p_EngineModel, '%'))
-       AND (@p_EngineType IS NULL OR me.EngineType LIKE CONCAT('%', @p_EngineType, '%'))
-       AND me.IsDeleted = 0
 END
 ------------------------------------------------Shipment------------------------------------------------
 CREATE PROCEDURE INV_PROD_SHIPMENT_SEARCH

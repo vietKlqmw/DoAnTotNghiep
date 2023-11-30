@@ -1,5 +1,4 @@
 ﻿using Abp.IdentityServer4;
-using Abp.Organizations;
 using Abp.Zero.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using tmss.Authorization.Delegation;
@@ -12,7 +11,6 @@ using tmss.Master;
 using tmss.Master.CustomsStatus;
 using tmss.Master.InvoiceStatus;
 using tmss.Master.Material;
-using tmss.Master.VehicleCBU;
 using tmss.MaterialManagement;
 using tmss.MultiTenancy;
 using tmss.MultiTenancy.Accounting;
@@ -44,7 +42,6 @@ namespace tmss.EntityFrameworkCore
         public virtual DbSet<UserDelegation> UserDelegations { get; set; }
 
         #region MASTER
-        public virtual DbSet<MasterVehicleCBU> MasterVehicleCBUs { get; set; }
 
         public virtual DbSet<MasterCustomsStatus> MasterCustomsStatuss { get; set; }
 
@@ -74,19 +71,9 @@ namespace tmss.EntityFrameworkCore
 
         public virtual DbSet<MasterVehicleCKD> MasterVehicleCKDs { get; set; }
 
-        public virtual DbSet<MasterEngine> MasterEngines { get; set; }
-
         public virtual DbSet<MasterCarSeries> MasterCarSeriess { get; set; }
 
-        public virtual DbSet<MasterEngineModel> MasterEngineModels { get; set; }
-
-        public virtual DbSet<MasterEngineType> MasterEngineTypes { get; set; }
-
-        public virtual DbSet<MasterTransmissionType> MasterTransmissionTypes { get; set; }
-
         public virtual DbSet<MasterMaterial_T> MasterMaterial_Ts { get; set; }
-
-        public virtual DbSet<MasterEngine_T> MasterEngine_Ts { get; set; }
 
         public virtual DbSet<MasterVehicleCKD_T> MasterVehicleCKD_Ts { get; set; }
 
