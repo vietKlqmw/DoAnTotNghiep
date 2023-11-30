@@ -53,6 +53,7 @@ export class AppNavigationService {
                     new AppMenuItem('Bill Of Lading', '', 'flaticon-car', '/app/main/management/intransit/billoflading'),
                     new AppMenuItem('Invoice', '', 'flaticon-car', '/app/main/management/intransit/invoice'),
                     new AppMenuItem('Container Invoice', '', 'flaticon-car', '/app/main/management/intransit/container-invoice'),
+                    new AppMenuItem('Container Intransit', '', 'flaticon-car', '/app/main/management/intransit/container-intransit'),
                 ]),
                 new AppMenuItem('WAREHOUSE', '', 'flaticon-user-settings', '',[],[
                     new AppMenuItem('Container List', '', 'flaticon-car', '/app/main/management/warehouse/container-list'),

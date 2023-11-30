@@ -28,6 +28,10 @@ namespace tmss.MaterialManagement
 
         public virtual DateTime? PortDate { get; set; }
 
+        public virtual DateTime? TransactionDate { get; set; } 
+
+        public virtual DateTime? TmvDate { get; set; }
+
         [StringLength(MaxStatusLength)]
         public virtual string Status { get; set; }
 

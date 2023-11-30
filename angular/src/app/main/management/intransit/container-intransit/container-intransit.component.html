@@ -1,0 +1,97 @@
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" [busyIf]="isLoading">
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form">
+                    <div class="row">
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <input [(ngModel)]="containerNo" name="containerNo" class="form-control m-input"
+                                    [placeholder]="l('Container No')" type="text" (keyup.enter)="searchDatas()">
+                                <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
+                                    class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
+                                <button class="btn btn-primary" (click)="clearTextSearch()">
+                                    <i class="fa fa-sync"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type='text' class="form-control m-input" name='shippingDate' [placeholder]="l('Shipping Date')"
+                                        #datepicker='bsDatepicker' [(ngModel)]='shippingDate' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type='text' class="form-control m-input" name='portDate' [placeholder]="l('Bill Date To')"
+                                        #datepicker2='bsDatepicker' [(ngModel)]='portDate' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker2.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type='text' class="form-control m-input" name='transactionDate' [placeholder]="l('Transaction Date')"
+                                        #datepicker3='bsDatepicker' [(ngModel)]='transactionDate' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker3.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type='text' class="form-control m-input" name='tmvDate' [placeholder]="l('Tmv Date')"
+                                        #datepicker4='bsDatepicker' [(ngModel)]='tmvDate' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker4.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </form>
+                <!-- ==================================================Table================================================== -->
+                <span>
+                    <h6 class="card-header"> {{ 'Container Intransit' }} </h6>
+                </span>
+                <div class="">
+                    <grid-table
+                        [columnDefs]="colDefs"
+                        [paginationParams]="paginationParams"
+                        [showPagination]="true"
+                        [rowData]="rowData"
+                        [defaultColDef]="defaultColDef"
+                        (callBackEvent)="callBackDataGrid($event)"
+                        (changePaginationParams)="changePage($event)"
+                        (onChangeSelection)="onChangeRowSelection($event)"
+                        [frameworkComponents]="frameworkComponents"
+                        [height]="'56vh'"
+                        >
+                    </grid-table>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-12 text-right">
+                        <button type="button" class="btn btn-success" (click)="exportToExcel()">
+                            <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

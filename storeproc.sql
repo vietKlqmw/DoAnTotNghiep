@@ -889,6 +889,30 @@ BEGIN
      WHERE Guid = @Guid AND ISNULL(ErrorDescription, '') <> '' 
 END
 GO
+------------------------------------------------ContainerIntransit------------------------------------------------
+CREATE PROCEDURE INV_PROD_CONTAINER_INTRANSIT_SEARCH
+(
+	  @p_ContainerNo NVARCHAR(15),
+	  @p_ShippingDate DATE,
+	  @p_PortDate DATE,
+	  @p_TransactionDate DATE,
+	  @p_TmvDate DATE
+)
+AS
+    SELECT a.Id, a.ContainerNo, a.SupplierNo, a.ShippingDate, a.PortDate, 
+           a.TransactionDate, a.TmvDate, b.Description AS Status, a.Forwarder
+      FROM ProdContainerIntransit a
+ LEFT JOIN MasterContainerStatus b
+        ON a.Status = b.Code
+     WHERE (ISNULL(@p_ContainerNo, '') = '' OR a.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
+    	 AND (ISNULL(@p_ShippingDate, '') = '' OR a.ShippingDate = @p_ShippingDate)
+    	 AND (ISNULL(@p_PortDate, '') = '' OR a.PortDate = @p_PortDate)
+    	 AND (ISNULL(@p_TransactionDate, '') = '' OR a.TransactionDate = @p_TransactionDate)
+    	 AND (ISNULL(@p_TmvDate, '') = '' OR a.TmvDate = @p_TmvDate)
+		   AND a.IsDeleted = 0
+	ORDER BY a.ShippingDate DESC
+
+GO
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (
   ID BIGINT IDENTITY
