@@ -36,15 +36,10 @@ export class AppNavigationService {
                     new AppMenuItem('Fuel Type', '', 'flaticon-car', '/app/main/master/common/fuel-type'),
                     new AppMenuItem('Carfamily', '', 'flaticon-car', '/app/main/master/common/carfamily'),
                     new AppMenuItem('Car Series', '', 'flaticon-car', '/app/main/master/common/car-series'),
-                    new AppMenuItem('Engine Model', '', 'flaticon-car', '/app/main/master/common/engine-model'),
-                    new AppMenuItem('Engine Type', '', 'flaticon-car', '/app/main/master/common/engine-type'),
-                    new AppMenuItem('Transmission Type', '', 'flaticon-car', '/app/main/master/common/transmission-type'),
                 ]),
 
                 new AppMenuItem('Material', '', 'flaticon-car', '/app/main/master/common/material'),
-                // new AppMenuItem('Engine', '', 'flaticon-car', '/app/main/master/common/'),
                 // new AppMenuItem('Vehicle CKD', '', 'flaticon-car', '/app/main/master/common/vehicle-ckd'),
-                //new AppMenuItem('Vehicle CBU', '', 'flaticon-car', '/app/main/master/common/vehicle-cbu'),
             ]),
 //MAIN
             new AppMenuItem('MANAGEMENT', '', 'flaticon-user-settings', '',[],[

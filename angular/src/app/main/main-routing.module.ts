@@ -13,11 +13,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 //MASTER
                     //Common
                     {
-                        path: 'master/common/vehicle-cbu',
-                        loadChildren: () => import('./master/common/vehicle-cbu/vehicle-cbu.module').then(m => m.VehicleCbuModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
-                    },
-                    {
                         path: 'master/common/container-status',
                         loadChildren: () => import('./master/common/container-status/container-status.module').then(m => m.ContainerStatusModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
@@ -85,21 +80,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                     {
                         path: 'master/common/car-series',
                         loadChildren: () => import('./master/common/car-series/car-series.module').then(m => m.CarSeriesModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
-                    },
-                    {
-                        path: 'master/common/engine-type',
-                        loadChildren: () => import('./master/common/engine-type/engine-type.module').then(m => m.EngineTypeModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
-                    },
-                    {
-                        path: 'master/common/engine-model',
-                        loadChildren: () => import('./master/common/engine-model/engine-model.module').then(m => m.EngineModelModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
-                    },
-                    {
-                        path: 'master/common/transmission-type',
-                        loadChildren: () => import('./master/common/transmission-type/transmission-type.module').then(m => m.TransmissionTypeModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
 //MANAGEMENT
