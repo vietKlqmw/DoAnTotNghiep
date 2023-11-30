@@ -35,4 +35,16 @@ export class DefaultLayoutComponent extends ThemesLayoutBaseComponent implements
     ngOnInit() {
         this.installationMode = UrlHelper.isInstallUrl(location.href);
     }
+
+    pinClick_left(){
+        let _pin = document.getElementById("menuleft-pin");
+        let _menu = document.getElementById("kt_aside");
+        if (_pin.classList.contains('active')){
+            _menu.classList.remove('active');
+            _pin.classList.remove('active');
+        } else{
+            _menu.classList.add('active');
+            _pin.classList.add('active');
+        }
+    }
 }

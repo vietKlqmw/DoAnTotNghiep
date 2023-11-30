@@ -10,7 +10,7 @@
             <!--begin::Wrapper-->
             <div *ngIf="useFullWidthLayout()" class="container-xxl mx-auto">
                 <div *ngIf="showTenantChange()" class="tenant-change-box mb-5 tenant-change-box">
-                    <tenant-change></tenant-change>
+                    <!-- <tenant-change></tenant-change> -->
                 </div>
                 <!--begin::Form-->
                 <router-outlet></router-outlet>
@@ -19,7 +19,7 @@
             <div *ngIf="!useFullWidthLayout()"
                 class="login_content w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
                 <div *ngIf="showTenantChange()" class="tenant-change-box mb-5 tenant-change-box">
-                    <tenant-change></tenant-change>
+                    <!-- <tenant-change></tenant-change> -->
                 </div>
                 <!--begin::Form-->
                 <router-outlet></router-outlet>
@@ -31,7 +31,7 @@
     </div>
     <div class="login-aside d-flex flex-column flex-row-auto">
         <div class="d-flex flex-column-auto flex-column pt-lg-40 pt-15">
-            <!-- <a (click)="goToHome()" href="" class="d-flex justify-content-center" [class.mb-12]="!useFullWidthLayout()">
+            <a (click)="goToHome()" href="" class="d-flex justify-content-center" [class.mb-12]="!useFullWidthLayout()">
                 <img *ngIf="!appSession.tenant || !appSession.tenant.id" alt="logo" class="max-h-70px"
                     [src]="appRootUrl() + 'assets/common/images/app-logo-on-light.svg'"
                     [class.mb-20]="useFullWidthLayout()" />
@@ -42,7 +42,7 @@
                         '&tenantId=' +
                         appSession.tenant.id
                     " alt="logo" class="max-h-70px" />
-            </a> -->
+            </a>
             <h3 class="font-weight-bolder text-center font-size-h4 font-size-h1-lg" 
                 style="color: red;font-weight: 600 !important;">
                 Toyota Motor Viet Nam <br /> Start your impossible.
