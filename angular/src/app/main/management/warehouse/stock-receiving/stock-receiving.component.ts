@@ -96,7 +96,8 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
             {
                 headerName: this.l('Working Date'), headerTooltip: this.l('Working Date'), field: 'workingDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.workingDate, 'dd/MM/yyyy')
-            }
+            },
+            { headerName: this.l('Material Id'), headerTooltip: this.l('Material Id'), field: 'materialId', flex: 1 }
         ];
 
         this.frameworkComponents = {
