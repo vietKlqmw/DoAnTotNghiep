@@ -396,6 +396,7 @@ VALUES
 (GETDATE(), 1, 0, 'D26H', 'D26H'),
 (GETDATE(), 1, 0, 'D31H', 'D31H');
 ------------------------------------------------Shipment------------------------------------------------
+------------------------------------------------Search:
 CREATE PROCEDURE INV_PROD_SHIPMENT_SEARCH
 (
     @p_ShipmentNo NVARCHAR(10),
@@ -416,6 +417,53 @@ AS
       AND (@p_ShipmentDate IS NULL OR a.ShipmentDate = @p_ShipmentDate)
       AND a.IsDeleted = 0
  ORDER BY a.Etd DESC, a.Eta DESC
+------------------------------------------------Add:
+CREATE PROCEDURE INV_PROD_SHIPMENT_ADD
+(
+    @p_ShipmentNo NVARCHAR(10),
+    @p_SupplierNo NVARCHAR(10),
+    @p_FromPort NVARCHAR(50),
+    @p_ToPort NVARCHAR(50),
+    @p_UserId BIGINT
+)
+AS
+BEGIN
+    INSERT INTO ProdShipment (CreationTime, CreatorUserId, IsDeleted, ShipmentNo, SupplierNo, FromPort, ToPort, Status)
+                      VALUES (GETDATE(), @p_UserId, 0, @p_ShipmentNo, @p_SupplierNo, @p_FromPort, @p_ToPort, 'NEW');
+END
+------------------------------------------------Edit:
+CREATE PROCEDURE INV_PROD_SHIPMENT_EDIT
+(
+    @p_ShipmentId INT,
+    @p_Buyer NVARCHAR(4), 
+    @p_FromPort NVARCHAR(50),
+    @p_ToPort NVARCHAR(50),
+    @p_ShipmentDate DATE,
+    @p_Etd DATE,
+    @p_Eta DATE,
+    @p_Ata DATE,
+    @p_OceanVesselName NVARCHAR(30),
+    @p_Atd DATE,
+    @p_Status NVARCHAR(50),
+    @p_UserId BIGINT
+)
+AS
+BEGIN
+    UPDATE ProdShipment 
+       SET LastModificationTime = GETDATE(), 
+           LastModifierUserId = @p_UserId, 
+           Buyer = @p_Buyer, 
+           FromPort = @p_FromPort, 
+           ToPort = @p_ToPort, 
+           ShipmentDate = @p_ShipmentDate, 
+           Etd = @p_Etd, 
+           Eta = @p_Eta,
+           Ata = @p_Ata,
+           OceanVesselName = @p_OceanVesselName,
+           Atd = @p_Atd,
+           Status = @p_Status
+     WHERE Id = @p_UserId;
+END
 ------------------------------------------------BillOfLading------------------------------------------------
 CREATE PROCEDURE INV_PROD_BILL_OF_LADING_SEARCH
 (

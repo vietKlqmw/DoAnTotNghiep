@@ -1,6 +1,6 @@
 import { GridApi } from '@ag-grid-enterprise/all-modules';
 import { DatePipe } from '@angular/common';
-import { Component, Injector, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AgCellButtonRendererComponent } from '@app/shared/common/grid/ag-cell-button-renderer/ag-cell-button-renderer.component';
 import { CustomColDef, FrameworkComponent, GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
 import { GridTableService } from '@app/shared/common/services/grid-table.service';
@@ -11,6 +11,7 @@ import { FileDownloadService } from '@shared/utils/file-download.service';
 import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
+import { EditShipmentModalComponent } from './edit-shipment-modal.component';
 
 @Component({
     selector: 'app-shipment',
@@ -20,6 +21,8 @@ import * as moment from 'moment';
     animations: [appModuleAnimation()]
 })
 export class ShipmentComponent extends AppComponentBase implements OnInit {
+    @ViewChild('editModal', { static: true }) editModal: EditShipmentModalComponent;
+
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
     paginationParams: PaginationParamsModel = {
@@ -227,6 +230,24 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
                 this._fileDownloadService.downloadTempFile(result);
                 this.notify.success(this.l('Download Excel Successfully'));
             });
+    }
+
+    deleteShipment() {
+        this.message.confirm(this.l('Bạn có chắc chắn muốn xóa?'), 'Delete Shipment', (isConfirmed) => {
+            if (isConfirmed) {
+                this._service.deleteShipment(this._selectrow).subscribe(() => {
+                    this.callBackDataGrid(this.dataParams!);
+                    this.notify.success(this.l('SuccessfullyDeleted'));
+                },error =>{
+                    this.notify.error(this.l('FailedDeleted'));
+                });
+            }
+        });
+    }
+
+    editShipment(e): void {
+        if (e == 'Edit') this.editModal.show(e, this.saveSelectedRow);
+        else this.editModal.show(e);
     }
 }
 
