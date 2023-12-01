@@ -67,8 +67,6 @@ namespace tmss.EntityFrameworkCore
 
         public virtual DbSet<MasterCarfamily> MasterCarfamilys { get; set; }
 
-        public virtual DbSet<MasterCarSeries> MasterCarSeriess { get; set; }
-
         public virtual DbSet<MasterMaterial_T> MasterMaterial_Ts { get; set; }
 
         #endregion
