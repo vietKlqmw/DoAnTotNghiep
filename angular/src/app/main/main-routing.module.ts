@@ -68,11 +68,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
                     {
-                        path: 'master/common/fuel-type',
-                        loadChildren: () => import('./master/common/fuel-type/fuel-type.module').then(m => m.FuelTypeModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
-                    },
-                    {
                         path: 'master/common/carfamily',
                         loadChildren: () => import('./master/common/carfamily/carfamily.module').then(m => m.CarfamilyModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }

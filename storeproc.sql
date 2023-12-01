@@ -361,14 +361,6 @@ VALUES
 (GETDATE(), 1, 0, N'UNT', N'Unit'),
 (GETDATE(), 1, 0, N'LOT', N'Lot'),
 (GETDATE(), 1, 0, N'CV', N'Case');
-------------------------------------------------FuelType------------------------------------------------
-INSERT INTO MasterFuelType 
-(CreationTime, CreatorUserId, IsDeleted, Code, Name)
-VALUES 
-(GETDATE(), 1, 0, N'F1', N'Diesel'),
-(GETDATE(), 1, 0, N'F2', N'Gasoline'),
-(GETDATE(), 1, 0, N'F3', N'Hybrid'),
-(GETDATE(), 1, 0, N'F4', N'Electronic');
 ------------------------------------------------Carfamily------------------------------------------------
 INSERT INTO MasterCarfamily 
 (CreationTime, CreatorUserId, IsDeleted, Code, Name)
@@ -416,21 +408,6 @@ VALUES
 (GETDATE(), 1, 0, 'C004', 'Coaster'),
 (GETDATE(), 1, 0, 'C005', 'Ventury'),
 (GETDATE(), 1, 0, 'C006', 'Rush');
-------------------------------------------------VehicleCKD------------------------------------------------
-CREATE PROCEDURE INV_MASTER_VEHICLE_CKD_SEARCH
-    @p_Model NVARCHAR(1),
-    @p_Cfc NVARCHAR(4),
-    @p_ModelCode NVARCHAR(50)
-AS
-BEGIN
-    SELECT mvc.Id, mvc.Model, mvc.LotCode, mvc.Cfc, mvc.Grade, mvc.GradeName, mvc.ModelCode, 
-           mvc.VehicleId, mvc.CarSeries, mvc.TransmissionType, mvc.EngineType, mvc.FuelType
-      FROM MasterVehicleCKD mvc
-     WHERE (@p_Model IS NULL OR mvc.Model LIKE CONCAT('%', @p_Model, '%'))
-       AND (@p_Cfc IS NULL OR mvc.Cfc LIKE CONCAT('%', @p_Cfc, '%'))
-       AND (@p_ModelCode IS NULL OR mvc.ModelCode LIKE CONCAT('%', @p_ModelCode, '%'))
-       AND mvc.IsDeleted = 0
-END
 ------------------------------------------------Shipment------------------------------------------------
 CREATE PROCEDURE INV_PROD_SHIPMENT_SEARCH
 (
