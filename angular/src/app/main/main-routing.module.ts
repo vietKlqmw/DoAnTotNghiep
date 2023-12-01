@@ -120,6 +120,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                         loadChildren: () => import('./management/warehouse/container-warehouse/container-warehouse.module').then(m => m.ContainerWarehouseModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
+                    {
+                        path: 'management/warehouse/stock-receiving',
+                        loadChildren: () => import('./management/warehouse/stock-receiving/stock-receiving.module').then(m => m.StockReceivingModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
                     { path: '**', redirectTo: 'dashboard' }
                 ]
             }
