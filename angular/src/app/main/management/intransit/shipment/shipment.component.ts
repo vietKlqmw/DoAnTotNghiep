@@ -10,6 +10,7 @@ import { ProdShipmentDto, ProdShipmentServiceProxy } from '@shared/service-proxi
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-shipment',
@@ -44,11 +45,10 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
     isLoading: boolean = false;
 
     shipmentNo: string = '';
-    shippingcompanyCode: string = '';
     supplierNo: string = '';
     fromPort: string = '';
     toPort: string = '';
-    shipmentDate: string = '';
+    shipmentDate: any;
     _selectrow;
 
     defaultColDef = {
@@ -76,12 +76,13 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
         this.colDefs = [
             { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 60 },
             { headerName: this.l('Shipment No'), headerTooltip: this.l('Shipment No'), field: 'shipmentNo', flex: 1 },
-            { headerName: this.l('Shipping Company Code'), headerTooltip: this.l('Shippingcompany Code'), field: 'shippingcompanyCode', flex: 1 },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
             { headerName: this.l('Buyer'), headerTooltip: this.l('Buyer'), field: 'buyer', flex: 1 },
             { headerName: this.l('From Port'), headerTooltip: this.l('From Port'), field: 'fromPort', flex: 1 },
             { headerName: this.l('To Port'), headerTooltip: this.l('To Port'), field: 'toPort', flex: 1 },
-            { headerName: this.l('Shipment Date'), headerTooltip: this.l('Shipment Date'), field: 'shipmentDate', flex: 1 },
+            {
+                headerName: this.l('Shipment Date'), headerTooltip: this.l('Shipment Date'), field: 'shipmentDate', flex: 1,
+                valueGetter: (params) => this.pipe.transform(params.data?.shipmentDate, 'dd/MM/yyyy')},
             {
                 headerName: this.l('ETD'), headerTooltip: this.l('Etd'), field: 'etd', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.etd, 'dd/MM/yyyy')
@@ -135,11 +136,10 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
         this.isLoading = true;
         this._service.getProdShipmentSearch(
             this.shipmentNo,
-            this.shippingcompanyCode,
             this.supplierNo,
             this.fromPort,
             this.toPort,
-            this.shipmentDate,
+            this.shipmentDate ? moment(this.shipmentDate) : undefined,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -156,7 +156,6 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
 
     clearTextSearch() {
         this.shipmentNo = '';
-        this.shippingcompanyCode = '';
         this.supplierNo = '';
         this.fromPort = '';
         this.toPort = '';
@@ -167,11 +166,10 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
     getDatas(paginationParams?: PaginationParamsModel) {
         return this._service.getProdShipmentSearch(
             this.shipmentNo,
-            this.shippingcompanyCode,
             this.supplierNo,
             this.fromPort,
             this.toPort,
-            this.shipmentDate,
+            this.shipmentDate ? moment(this.shipmentDate) : undefined,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -220,11 +218,10 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
         this.isLoading = true;
         this._service.getProdShipmentToExcel(
             this.shipmentNo,
-            this.shippingcompanyCode,
             this.supplierNo,
             this.fromPort,
             this.toPort,
-            this.shipmentDate)
+            this.shipmentDate ? moment(this.shipmentDate) : undefined)
             .pipe(finalize(() => this.isLoading = false))
             .subscribe(result => {
                 this._fileDownloadService.downloadTempFile(result);

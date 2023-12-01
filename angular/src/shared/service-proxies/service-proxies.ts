@@ -11663,7 +11663,6 @@ export class ProdShipmentServiceProxy {
 
     /**
      * @param shipmentNo (optional) 
-     * @param shippingcompanyCode (optional) 
      * @param supplierNo (optional) 
      * @param fromPort (optional) 
      * @param toPort (optional) 
@@ -11673,12 +11672,10 @@ export class ProdShipmentServiceProxy {
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getProdShipmentSearch(shipmentNo: string | null | undefined, shippingcompanyCode: string | null | undefined, supplierNo: string | null | undefined, fromPort: string | null | undefined, toPort: string | null | undefined, shipmentDate: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdShipmentDto> {
+    getProdShipmentSearch(shipmentNo: string | null | undefined, supplierNo: string | null | undefined, fromPort: string | null | undefined, toPort: string | null | undefined, shipmentDate: moment.Moment | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdShipmentDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdShipment/GetProdShipmentSearch?";
         if (shipmentNo !== undefined)
             url_ += "ShipmentNo=" + encodeURIComponent("" + shipmentNo) + "&"; 
-        if (shippingcompanyCode !== undefined)
-            url_ += "ShippingcompanyCode=" + encodeURIComponent("" + shippingcompanyCode) + "&"; 
         if (supplierNo !== undefined)
             url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
         if (fromPort !== undefined)
@@ -11686,7 +11683,7 @@ export class ProdShipmentServiceProxy {
         if (toPort !== undefined)
             url_ += "ToPort=" + encodeURIComponent("" + toPort) + "&"; 
         if (shipmentDate !== undefined)
-            url_ += "ShipmentDate=" + encodeURIComponent("" + shipmentDate) + "&"; 
+            url_ += "ShipmentDate=" + encodeURIComponent(shipmentDate ? "" + shipmentDate.toJSON() : "") + "&"; 
         if (sorting !== undefined)
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         if (skipCount === null)
@@ -11745,19 +11742,16 @@ export class ProdShipmentServiceProxy {
 
     /**
      * @param shipmentNo (optional) 
-     * @param shippingcompanyCode (optional) 
      * @param supplierNo (optional) 
      * @param fromPort (optional) 
      * @param toPort (optional) 
      * @param shipmentDate (optional) 
      * @return Success
      */
-    getProdShipmentToExcel(shipmentNo: string | null | undefined, shippingcompanyCode: string | null | undefined, supplierNo: string | null | undefined, fromPort: string | null | undefined, toPort: string | null | undefined, shipmentDate: string | null | undefined): Observable<FileDto> {
+    getProdShipmentToExcel(shipmentNo: string | null | undefined, supplierNo: string | null | undefined, fromPort: string | null | undefined, toPort: string | null | undefined, shipmentDate: moment.Moment | null | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdShipment/GetProdShipmentToExcel?";
         if (shipmentNo !== undefined)
             url_ += "ShipmentNo=" + encodeURIComponent("" + shipmentNo) + "&"; 
-        if (shippingcompanyCode !== undefined)
-            url_ += "ShippingcompanyCode=" + encodeURIComponent("" + shippingcompanyCode) + "&"; 
         if (supplierNo !== undefined)
             url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
         if (fromPort !== undefined)
@@ -11765,7 +11759,7 @@ export class ProdShipmentServiceProxy {
         if (toPort !== undefined)
             url_ += "ToPort=" + encodeURIComponent("" + toPort) + "&"; 
         if (shipmentDate !== undefined)
-            url_ += "ShipmentDate=" + encodeURIComponent("" + shipmentDate) + "&"; 
+            url_ += "ShipmentDate=" + encodeURIComponent(shipmentDate ? "" + shipmentDate.toJSON() : "") + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -28076,12 +28070,11 @@ export interface IPagedResultDtoOfProdInvoiceDto {
 
 export class ProdShipmentDto implements IProdShipmentDto {
     shipmentNo!: string | undefined;
-    shippingcompanyCode!: string | undefined;
     supplierNo!: string | undefined;
     buyer!: string | undefined;
     fromPort!: string | undefined;
     toPort!: string | undefined;
-    shipmentDate!: string | undefined;
+    shipmentDate!: moment.Moment | undefined;
     etd!: moment.Moment | undefined;
     eta!: moment.Moment | undefined;
     ata!: moment.Moment | undefined;
@@ -28102,12 +28095,11 @@ export class ProdShipmentDto implements IProdShipmentDto {
     init(_data?: any) {
         if (_data) {
             this.shipmentNo = _data["shipmentNo"];
-            this.shippingcompanyCode = _data["shippingcompanyCode"];
             this.supplierNo = _data["supplierNo"];
             this.buyer = _data["buyer"];
             this.fromPort = _data["fromPort"];
             this.toPort = _data["toPort"];
-            this.shipmentDate = _data["shipmentDate"];
+            this.shipmentDate = _data["shipmentDate"] ? moment(_data["shipmentDate"].toString()) : <any>undefined;
             this.etd = _data["etd"] ? moment(_data["etd"].toString()) : <any>undefined;
             this.eta = _data["eta"] ? moment(_data["eta"].toString()) : <any>undefined;
             this.ata = _data["ata"] ? moment(_data["ata"].toString()) : <any>undefined;
@@ -28128,12 +28120,11 @@ export class ProdShipmentDto implements IProdShipmentDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["shipmentNo"] = this.shipmentNo;
-        data["shippingcompanyCode"] = this.shippingcompanyCode;
         data["supplierNo"] = this.supplierNo;
         data["buyer"] = this.buyer;
         data["fromPort"] = this.fromPort;
         data["toPort"] = this.toPort;
-        data["shipmentDate"] = this.shipmentDate;
+        data["shipmentDate"] = this.shipmentDate ? this.shipmentDate.toISOString() : <any>undefined;
         data["etd"] = this.etd ? this.etd.toISOString() : <any>undefined;
         data["eta"] = this.eta ? this.eta.toISOString() : <any>undefined;
         data["ata"] = this.ata ? this.ata.toISOString() : <any>undefined;
@@ -28147,12 +28138,11 @@ export class ProdShipmentDto implements IProdShipmentDto {
 
 export interface IProdShipmentDto {
     shipmentNo: string | undefined;
-    shippingcompanyCode: string | undefined;
     supplierNo: string | undefined;
     buyer: string | undefined;
     fromPort: string | undefined;
     toPort: string | undefined;
-    shipmentDate: string | undefined;
+    shipmentDate: moment.Moment | undefined;
     etd: moment.Moment | undefined;
     eta: moment.Moment | undefined;
     ata: moment.Moment | undefined;

@@ -19,7 +19,6 @@ namespace tmss.MaterialManagement.Shipment.Exporting
                     AddHeader(
                         sheet,
                         ("Shipment No"),
-                        ("Shipping Company Code"),
                         ("Supplier No"),
                         ("Buyer"),
                         ("From Port"),
@@ -36,7 +35,6 @@ namespace tmss.MaterialManagement.Shipment.Exporting
                     AddObjects(
                         sheet, 1, listdata,
                         _ => _.ShipmentNo,
-                        _ => _.ShippingcompanyCode,
                         _ => _.SupplierNo,
                         _ => _.Buyer,
                         _ => _.FromPort,
@@ -50,7 +48,7 @@ namespace tmss.MaterialManagement.Shipment.Exporting
                         _ => _.Status
                     );
 
-                    for (var i = 0; i < 12; i++)
+                    for (var i = 0; i < 11; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

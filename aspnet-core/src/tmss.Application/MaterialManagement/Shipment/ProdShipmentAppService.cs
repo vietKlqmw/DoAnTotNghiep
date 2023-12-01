@@ -24,12 +24,11 @@ namespace tmss.MaterialManagement.Shipment
 
         public async Task<PagedResultDto<ProdShipmentDto>> GetProdShipmentSearch(GetProdShipmentInput input)
         {
-            string _sql = "Exec INV_PROD_SHIPMENT_SEARCH @p_ShipmentNo, @p_ShippingcompanyCode, @p_SupplierNo, @p_FromPort, @p_ToPort, @p_ShipmentDate";
+            string _sql = "Exec INV_PROD_SHIPMENT_SEARCH @p_ShipmentNo, @p_SupplierNo, @p_FromPort, @p_ToPort, @p_ShipmentDate";
 
             IEnumerable<ProdShipmentDto> result = await _dapperRepo.QueryAsync<ProdShipmentDto>(_sql, new
             {
                 p_ShipmentNo = input.ShipmentNo,
-                p_ShippingcompanyCode = input.ShippingcompanyCode,
                 p_SupplierNo = input.SupplierNo,
                 p_FromPort = input.FromPort,
                 p_ToPort = input.ToPort,
@@ -47,12 +46,11 @@ namespace tmss.MaterialManagement.Shipment
 
         public async Task<FileDto> GetProdShipmentToExcel(GetProdShipmentExportInput input)
         {
-            string _sql = "Exec INV_PROD_SHIPMENT_SEARCH @p_ShipmentNo, @p_ShippingcompanyCode, @p_SupplierNo, @p_FromPort, @p_ToPort, @p_ShipmentDate";
+            string _sql = "Exec INV_PROD_SHIPMENT_SEARCH @p_ShipmentNo, @p_SupplierNo, @p_FromPort, @p_ToPort, @p_ShipmentDate";
 
             IEnumerable<ProdShipmentDto> result = await _dapperRepo.QueryAsync<ProdShipmentDto>(_sql, new
             {
                 p_ShipmentNo = input.ShipmentNo,
-                p_ShippingcompanyCode = input.ShippingcompanyCode,
                 p_SupplierNo = input.SupplierNo,
                 p_FromPort = input.FromPort,
                 p_ToPort = input.ToPort,

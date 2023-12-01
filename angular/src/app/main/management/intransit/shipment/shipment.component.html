@@ -8,14 +8,6 @@
                             <div class="form-group">
                                 <input [(ngModel)]="shipmentNo" name="shipmentNo" class="form-control m-input"
                                     [placeholder]="l('Shipment No')" type="text" (keyup.enter)="searchDatas()">
-                                <input [(ngModel)]="shipmentDate" name="shipmentDate" class="form-control m-input"
-                                    [placeholder]="l('Shipment Date')" type="text" (keyup.enter)="searchDatas()">
-                            </div>
-                        </div>
-                        <div class="col-md-customize">
-                            <div class="form-group">
-                                <input [(ngModel)]="shippingcompanyCode" name="shippingcompanyCode" class="form-control m-input"
-                                    [placeholder]="l('Shipping Company Code')" type="text" (keyup.enter)="searchDatas()">
                                 <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
                                     class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
                                 <button class="btn btn-primary" (click)="clearTextSearch()">
@@ -38,6 +30,18 @@
                             <div class="form-group">
                                 <input [(ngModel)]="toPort" name="toPort" class="form-control m-input"
                                     [placeholder]="l('To Port')" type="text" (keyup.enter)="searchDatas()">
+                            </div>
+                        </div>
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type='text' class="form-control m-input" name='shipmentDate' [placeholder]="l('Shipping Date')"
+                                        #datepicker='bsDatepicker' [(ngModel)]='shipmentDate' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>

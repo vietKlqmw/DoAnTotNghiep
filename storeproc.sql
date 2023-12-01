@@ -399,27 +399,21 @@ VALUES
 CREATE PROCEDURE INV_PROD_SHIPMENT_SEARCH
 (
     @p_ShipmentNo NVARCHAR(10),
-    @p_ShippingcompanyCode NVARCHAR(10),
     @p_SupplierNo NVARCHAR(10),
     @p_FromPort NVARCHAR(50),
     @p_ToPort NVARCHAR(50),
-    @p_ShipmentDate NVARCHAR(10)
+    @p_ShipmentDate DATE
 )
 AS 
-   SELECT DISTINCT a.Id, a.ShipmentNo, a.ShippingcompanyCode, a.SupplierNo,
+   SELECT DISTINCT a.Id, a.ShipmentNo, a.SupplierNo,
           a.Buyer, a.FromPort, a.ToPort, a.ShipmentDate,
           a.Etd, a.Eta, a.Ata, a.OceanVesselName, a.Atd, a.Status
      FROM ProdShipment a
-LEFT JOIN ProdBillOfLading b 
-       ON a.Id = b.ShipmentId
-LEFT JOIN ProdInvoice c 
-       ON c.BillId = b.Id
     WHERE (@p_ShipmentNo IS NULL OR a.ShipmentNo LIKE CONCAT('%', @p_ShipmentNo, '%'))
-      AND (@p_ShippingcompanyCode IS NULL OR a.ShippingcompanyCode LIKE CONCAT('%', @p_ShippingcompanyCode, '%'))
       AND (@p_SupplierNo IS NULL OR a.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
       AND (@p_FromPort IS NULL OR a.FromPort LIKE CONCAT('%', @p_FromPort, '%'))
       AND (@p_ToPort IS NULL OR a.ToPort LIKE CONCAT('%', @p_ToPort, '%'))
-      AND (@p_ShipmentDate IS NULL OR a.ShipmentDate LIKE CONCAT('%', @p_ShipmentDate, '%'))
+      AND (@p_ShipmentDate IS NULL OR a.ShipmentDate = @p_ShipmentDate)
       AND a.IsDeleted = 0
  ORDER BY a.Etd DESC, a.Eta DESC
 ------------------------------------------------BillOfLading------------------------------------------------
