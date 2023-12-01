@@ -873,6 +873,35 @@ AS
 	ORDER BY a.ShippingDate DESC
 
 GO
+------------------------------------------------StockReceving------------------------------------------------
+CREATE PROCEDURE INV_PROD_STOCK_RECEIVING_SEARCH 
+(
+	  @p_PartNo NVARCHAR(12),
+	  @p_WorkingDateFrom DATE,
+	  @p_WorkingDateTo DATE,
+    @p_SupplierNo NVARCHAR(15),
+	  @p_ContainerNo NVARCHAR(15),
+	  @p_InvoiceNo NVARCHAR(20),
+    @p_Model NVARCHAR(4)
+)
+AS
+BEGIN
+	  SELECT r.Id, r.PartNo, r.PartName, r.PartListId, r.PartListGradeId, r.MaterialId, 
+           ISNULL(r.Qty, 0) Qty, r.TransactionDatetime, r.InvoiceDetailsId, r.WorkingDate, 
+		       r.SupplierNo, d.ContainerNo, d.InvoiceNo, r.Model
+      FROM ProdStockReceiving r
+INNER JOIN ProdInvoiceDetails d
+       	ON d.Id = r.InvoiceDetailsId
+	   WHERE (ISNULL(@p_PartNo, '') = '' OR r.PartNo LIKE CONCAT('%', @p_PartNo, '%'))
+		   AND (ISNULL(@p_WorkingDateFrom, '')= '' OR  r.WorkingDate >= @p_WorkingDateFrom)
+       AND (ISNULL(@p_WorkingDateTo, '')= '' OR r.WorkingDate <= @p_WorkingDateTo)
+       AND (ISNULL(@p_SupplierNo, '') = '' OR r.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
+       AND (ISNULL(@p_ContainerNo, '') = '' OR d.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
+       AND (ISNULL(@p_InvoiceNo, '') = '' OR d.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
+       AND (ISNULL(@p_Model, '') = '' OR r.Model LIKE CONCAT('%', @p_Model, '%'))
+       AND r.IsDeleted = 0
+  ORDER BY r.Model, r.WorkingDate DESC, r.PartNo
+END
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (
   ID BIGINT IDENTITY

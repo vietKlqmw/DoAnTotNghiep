@@ -9,6 +9,8 @@ namespace tmss.MaterialManagement
     [Table("ProdInvoiceDetails")]
     public class ProdInvoiceDetails : FullAuditedEntity<long>, IEntity<long>
     {
+        public const int MaxInvoiceNoLength = 20;
+
         public const int MaxPartNoLength = 12;
 
         public const int MaxLotNoLength = 10;
@@ -34,6 +36,9 @@ namespace tmss.MaterialManagement
         public const int MaxPartnameVnLength = 300;
 
         public const int MaxCarNameLength = 200;
+
+        [StringLength(MaxInvoiceNoLength)]
+        public virtual string InvoiceNo { get; set; } //mã hóa đơn
 
         [StringLength(MaxPartNoLength)]
         public virtual string PartNo { get; set; }

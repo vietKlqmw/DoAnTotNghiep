@@ -6,37 +6,41 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace tmss.MaterialManagement
 {
-    [Table("ProdStockPart")]
-    public class ProdStockPart : FullAuditedEntity<long>, IEntity<long>
+    [Table("ProdStockReceiving")]
+    public class ProdStockReceiving : FullAuditedEntity<long>, IEntity<long>//hàng đã nhập về kho
     {
         public const int MaxPartNoLength = 12;
 
-        public const int MaxPartNoNormalizedLength = 12;
-
         public const int MaxPartNameLength = 300;
 
-        public const int MaxPartNoNormalizedS4Length = 10;
+        public const int MaxSupplierNoLength = 15;
+
+        public const int MaxModelLength = 4;
 
         [StringLength(MaxPartNoLength)]
         public virtual string PartNo { get; set; }
 
-        [StringLength(MaxPartNoNormalizedLength)]
-        public virtual string PartNoNormalized { get; set; }
-
         [StringLength(MaxPartNameLength)]
         public virtual string PartName { get; set; }
 
-        [StringLength(MaxPartNoNormalizedS4Length)]
-        public virtual string PartNoNormalizedS4 { get; set; }
-
         public virtual long? PartListId { get; set; }
+
+        public virtual long? PartListGradeId { get; set; }
 
         public virtual long? MaterialId { get; set; }
 
-        public virtual decimal? Qty { get; set; }
+        public virtual int? Qty { get; set; }
+
+        public virtual DateTime? TransactionDatetime { get; set; }
+
+        public virtual long? InvoiceDetailsId { get; set; }
 
         public virtual DateTime? WorkingDate { get; set; }
 
-        public virtual DateTime? LastCalDatetime { get; set; }
+        [StringLength(MaxSupplierNoLength)]
+        public virtual string SupplierNo { get; set; }
+
+        [StringLength(MaxModelLength)]
+        public virtual string Model { get; set; }
     }
 }

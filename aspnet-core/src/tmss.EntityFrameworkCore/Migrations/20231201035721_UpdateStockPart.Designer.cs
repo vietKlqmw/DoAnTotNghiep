@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tmss.EntityFrameworkCore;
 
 namespace tmss.Migrations
 {
     [DbContext(typeof(tmssDbContext))]
-    partial class tmssDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231201035721_UpdateStockPart")]
+    partial class UpdateStockPart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3580,10 +3582,6 @@ namespace tmss.Migrations
                     b.Property<long?>("InvoiceId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("InvoiceNo")
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
-
                     b.Property<long?>("InvoiceParentId")
                         .HasColumnType("bigint");
 
@@ -3756,7 +3754,7 @@ namespace tmss.Migrations
                     b.ToTable("ProdShipment");
                 });
 
-            modelBuilder.Entity("tmss.MaterialManagement.ProdStockReceiving", b =>
+            modelBuilder.Entity("tmss.MaterialManagement.ProdStockPart", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -3775,11 +3773,11 @@ namespace tmss.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("InvoiceDetailsId")
-                        .HasColumnType("bigint");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastCalDatetime")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime2");
@@ -3794,9 +3792,6 @@ namespace tmss.Migrations
                         .HasColumnType("nvarchar(4)")
                         .HasMaxLength(4);
 
-                    b.Property<long?>("PartListGradeId")
-                        .HasColumnType("bigint");
-
                     b.Property<long?>("PartListId")
                         .HasColumnType("bigint");
 
@@ -3808,22 +3803,27 @@ namespace tmss.Migrations
                         .HasColumnType("nvarchar(12)")
                         .HasMaxLength(12);
 
-                    b.Property<int?>("Qty")
-                        .HasColumnType("int");
+                    b.Property<string>("PartNoNormalized")
+                        .HasColumnType("nvarchar(12)")
+                        .HasMaxLength(12);
+
+                    b.Property<string>("PartNoNormalizedS4")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<decimal?>("Qty")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("SupplierNo")
-                        .HasColumnType("nvarchar(15)")
-                        .HasMaxLength(15);
-
-                    b.Property<DateTime?>("TransactionDatetime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
 
                     b.Property<DateTime?>("WorkingDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProdStockReceiving");
+                    b.ToTable("ProdStockPart");
                 });
 
             modelBuilder.Entity("tmss.MultiTenancy.Accounting.Invoice", b =>
