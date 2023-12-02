@@ -12061,8 +12061,8 @@ export class ProdShipmentServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    createOrEdit(body: ProdShipmentDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/ProdShipment/CreateOrEdit";
+    editShipment(body: ProdShipmentDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdShipment/EditShipment";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -12077,11 +12077,11 @@ export class ProdShipmentServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateOrEdit(response_);
+            return this.processEditShipment(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCreateOrEdit(<any>response_);
+                    return this.processEditShipment(<any>response_);
                 } catch (e) {
                     return <Observable<void>><any>_observableThrow(e);
                 }
@@ -12090,7 +12090,7 @@ export class ProdShipmentServiceProxy {
         }));
     }
 
-    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+    protected processEditShipment(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
