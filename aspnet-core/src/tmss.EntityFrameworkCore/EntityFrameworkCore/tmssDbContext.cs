@@ -69,6 +69,8 @@ namespace tmss.EntityFrameworkCore
 
         public virtual DbSet<MasterMaterial_T> MasterMaterial_Ts { get; set; }
 
+        public virtual DbSet<MasterSupplierList> MasterSupplierLists { get; set; }
+
         #endregion
 
         #region MaterialManagement
