@@ -72,6 +72,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                         loadChildren: () => import('./master/common/carfamily/carfamily.module').then(m => m.CarfamilyModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
+                    {
+                        path: 'master/common/supplier-list',
+                        loadChildren: () => import('./master/common/supplier-list/supplier-list.module').then(m => m.SupplierListModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
 //MANAGEMENT
                     //Intransit
                     {
