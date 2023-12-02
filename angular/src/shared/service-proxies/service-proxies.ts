@@ -7424,6 +7424,88 @@ export class MasterStorageLocationExcelExporterServiceProxy {
 }
 
 @Injectable()
+export class MasterSupplierListServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param supplierNo (optional) 
+     * @param supplierName (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getSupplierListSearch(supplierNo: string | null | undefined, supplierName: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfMasterSupplierListDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterSupplierList/GetSupplierListSearch?";
+        if (supplierNo !== undefined)
+            url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
+        if (supplierName !== undefined)
+            url_ += "SupplierName=" + encodeURIComponent("" + supplierName) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSupplierListSearch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSupplierListSearch(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfMasterSupplierListDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfMasterSupplierListDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetSupplierListSearch(response: HttpResponseBase): Observable<PagedResultDtoOfMasterSupplierListDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMasterSupplierListDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfMasterSupplierListDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class MasterUnitOfMeasureServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -24956,6 +25038,114 @@ export class PagedResultDtoOfMasterStorageLocationDto implements IPagedResultDto
 export interface IPagedResultDtoOfMasterStorageLocationDto {
     totalCount: number;
     items: MasterStorageLocationDto[] | undefined;
+}
+
+export class MasterSupplierListDto implements IMasterSupplierListDto {
+    supplierNo!: string | undefined;
+    supplierName!: string | undefined;
+    remarks!: string | undefined;
+    supplierType!: string | undefined;
+    supplierNameVn!: string | undefined;
+    exporter!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IMasterSupplierListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.supplierNo = _data["supplierNo"];
+            this.supplierName = _data["supplierName"];
+            this.remarks = _data["remarks"];
+            this.supplierType = _data["supplierType"];
+            this.supplierNameVn = _data["supplierNameVn"];
+            this.exporter = _data["exporter"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): MasterSupplierListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MasterSupplierListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["supplierNo"] = this.supplierNo;
+        data["supplierName"] = this.supplierName;
+        data["remarks"] = this.remarks;
+        data["supplierType"] = this.supplierType;
+        data["supplierNameVn"] = this.supplierNameVn;
+        data["exporter"] = this.exporter;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IMasterSupplierListDto {
+    supplierNo: string | undefined;
+    supplierName: string | undefined;
+    remarks: string | undefined;
+    supplierType: string | undefined;
+    supplierNameVn: string | undefined;
+    exporter: string | undefined;
+    id: number | undefined;
+}
+
+export class PagedResultDtoOfMasterSupplierListDto implements IPagedResultDtoOfMasterSupplierListDto {
+    totalCount!: number;
+    items!: MasterSupplierListDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfMasterSupplierListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MasterSupplierListDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMasterSupplierListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMasterSupplierListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfMasterSupplierListDto {
+    totalCount: number;
+    items: MasterSupplierListDto[] | undefined;
 }
 
 export class MasterUnitOfMeasureDto implements IMasterUnitOfMeasureDto {
