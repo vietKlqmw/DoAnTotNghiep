@@ -19,8 +19,8 @@
                                     name='shipmentNo' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Supplier No'" [(ngModel)]="rowData.supplierNo"
-                                    name='supplierNo' [isReadonly]="isEdit"></tmss-text-input>
+                                <p-dropdown [options]="listSupplier" [filter]="true" [virtualScroll]="true" [itemSize]="30" placeholder="Select Supplier"
+                                    name="supplierNo" [(ngModel)]="rowData.supplierNo" [style]="{'width':'100%'}"></p-dropdown>
                             </div>
                             <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
                                 <tmss-text-input [text]="'Buyer'" [(ngModel)]="rowData.buyer"

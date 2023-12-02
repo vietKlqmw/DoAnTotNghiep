@@ -4,6 +4,7 @@ using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using tmss.Dto;
@@ -90,13 +91,26 @@ namespace tmss.MaterialManagement.Shipment
             });
         }
 
-        public async Task CreateOrEdit(ProdShipmentDto input)
+        public async Task EditShipment(ProdShipmentDto input)
         {
-                var mainObj = await _repo.GetAll()
-                .FirstOrDefaultAsync(e => e.Id == input.Id);
+            string _sql = "Exec INV_PROD_SHIPMENT_EDIT @p_ShipmentId, @p_Buyer, @p_FromPort, @p_ToPort, @p_ShipmentDate, " +
+                "@p_Etd, @p_Eta, @p_Ata, @p_OceanVesselName, @p_Atd, @p_Status, @p_UserId";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_ShipmentId = input.Id,
+                p_Buyer = input.Buyer,
+                p_FromPort = input.FromPort,
+                p_ToPort = input.ToPort,
+                p_ShipmentDate = input.ShipmentDate,
+                p_Etd = input.Etd,
+                p_Eta = input.Eta,
+                p_Ata = input.Ata,
+                p_OceanVesselName = input.OceanVesselName,
+                p_Atd = input.Atd,
+                p_Status = input.Status,
+                p_UserId = AbpSession.UserId
+            });
 
-                var mainObjToUpdate = ObjectMapper.Map(input, mainObj);
-            
         }
     }
 }
