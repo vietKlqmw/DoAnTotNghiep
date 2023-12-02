@@ -30,6 +30,10 @@ export class EditShipmentModalComponent extends AppComponentBase {
     _ata: any;
     _atd: any;
     listSupplier = [{ label: '', value: '' }];
+    list = [
+        { value: 'NEW', label: "NEW" },
+        { value: 'ORDERED', label: "ORDERED" }
+    ];
 
     constructor(
         private injector: Injector,
@@ -70,13 +74,21 @@ export class EditShipmentModalComponent extends AppComponentBase {
     }
 
     save(): void {
-        this.rowData.shipmentDate = moment(this._shipmentDate);
-        this.rowData.etd = moment(this._etd);
-        this.rowData.eta = moment(this._eta);
-        this.rowData.ata = moment(this._ata);
-        this.rowData.atd = moment(this._atd);
+        this.rowData.shipmentDate = this._shipmentDate ? moment(this._shipmentDate) : undefined;
+        this.rowData.etd = this._etd ? moment(this._etd) : undefined;
+        this.rowData.eta = this._eta ? moment(this._eta) : undefined;
+        this.rowData.ata = this._ata ? moment(this._ata) : undefined;
+        this.rowData.atd = this._atd ? moment(this._atd): undefined;
 
         if (!this.isEdit) {
+            if (this.rowData.shipmentNo == null) {
+                this.notify.warn('ShipmentNo is Required!');
+                return;
+            }
+            if (this.rowData.supplierNo == null) {
+                this.notify.warn('SupplierNo is Required!');
+                return;
+            }
             this.saving = true;
             this._service.addShipment(this.rowData)
                 .pipe(finalize(() => { this.saving = false; }))
@@ -87,7 +99,7 @@ export class EditShipmentModalComponent extends AppComponentBase {
                 });
         } else {
             this.saving = true;
-            this._service.createOrEdit(this.rowData)
+            this._service.editShipment(this.rowData)
                 .pipe(finalize(() => { this.saving = false; }))
                 .subscribe(() => {
                     this.notify.info(this.l('SavedSuccessfully'));

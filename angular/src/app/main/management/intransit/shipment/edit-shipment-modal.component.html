@@ -94,8 +94,7 @@
                                 </div>
                             </div>
                             <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
-                                <tmss-text-input [text]="'Status'" [(ngModel)]="rowData.status"
-                                    name='status'></tmss-text-input>
+                                <tmss-combobox [items]="list" name="status" [text]="'Status'" [(ngModel)]="rowData.status"></tmss-combobox>
                             </div>
                         </div>
                     </fieldset>

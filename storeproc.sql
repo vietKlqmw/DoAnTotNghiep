@@ -491,7 +491,7 @@ BEGIN
            OceanVesselName = @p_OceanVesselName,
            Atd = @p_Atd,
            Status = @p_Status
-     WHERE Id = @p_UserId;
+     WHERE Id = @p_ShipmentId;
 END
 ------------------------------------------------BillOfLading------------------------------------------------
 CREATE PROCEDURE INV_PROD_BILL_OF_LADING_SEARCH

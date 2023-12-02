@@ -12,6 +12,7 @@ import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 import { EditShipmentModalComponent } from './edit-shipment-modal.component';
+import { AgDropdownRendererComponent } from '@app/shared/common/grid/ag-dropdown-renderer/ag-dropdown-renderer.component';
 
 @Component({
     selector: 'app-shipment',
@@ -52,6 +53,10 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
     fromPort: string = '';
     toPort: string = '';
     shipmentDate: any;
+    listStatus = [
+        { key: 'NEW', value: 'NEW' },
+        { key: 'ORDERED', value: 'ORDERED' }
+    ];
     _selectrow;
 
     defaultColDef = {
@@ -77,15 +82,22 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
         super(injector);
 
         this.colDefs = [
-            { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 60 },
-            { headerName: this.l('Shipment No'), headerTooltip: this.l('Shipment No'), field: 'shipmentNo', flex: 1 },
+            { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 60, pinned: true },
+            { headerName: this.l('Shipment No'), headerTooltip: this.l('Shipment No'), field: 'shipmentNo', flex: 1, pinned: true },
+            {
+                headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1, pinned: true,
+                cellRenderer: 'agSelectRendererComponent',
+                list: this.listStatus,
+                cellClass: ['RendererCombobox', 'text-center']
+            },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
             { headerName: this.l('Buyer'), headerTooltip: this.l('Buyer'), field: 'buyer', flex: 1 },
             { headerName: this.l('From Port'), headerTooltip: this.l('From Port'), field: 'fromPort', flex: 1 },
             { headerName: this.l('To Port'), headerTooltip: this.l('To Port'), field: 'toPort', flex: 1 },
             {
                 headerName: this.l('Shipment Date'), headerTooltip: this.l('Shipment Date'), field: 'shipmentDate', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.shipmentDate, 'dd/MM/yyyy')},
+                valueGetter: (params) => this.pipe.transform(params.data?.shipmentDate, 'dd/MM/yyyy')
+            },
             {
                 headerName: this.l('ETD'), headerTooltip: this.l('Etd'), field: 'etd', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.etd, 'dd/MM/yyyy')
@@ -102,12 +114,12 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
             {
                 headerName: this.l('ATD'), headerTooltip: this.l('Atd'), field: 'atd', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.atd, 'dd/MM/yyyy')
-            },
-            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 }
+            }
         ];
 
         this.frameworkComponents = {
             agCellButtonComponent: AgCellButtonRendererComponent,
+            agSelectRendererComponent: AgDropdownRendererComponent
         };
     }
 
@@ -238,7 +250,7 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
                 this._service.deleteShipment(this._selectrow).subscribe(() => {
                     this.callBackDataGrid(this.dataParams!);
                     this.notify.success(this.l('SuccessfullyDeleted'));
-                },error =>{
+                }, error => {
                     this.notify.error(this.l('FailedDeleted'));
                 });
             }
@@ -248,6 +260,21 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
     editShipment(e): void {
         if (e == 'Edit') this.editModal.show(e, this.saveSelectedRow);
         else this.editModal.show(e);
+    }
+
+    rowClickData: ProdShipmentDto;
+    onRowClick(params) {
+
+        let _rows = document.querySelectorAll<HTMLElement>("body .ag-theme-alpine .ag-center-cols-container .ag-row.ag-row-level-0.ag-row-position-absolute");
+        for (let i = 0; _rows[i]; i++) { _rows[i].classList.remove("setcolor_background_rowclick"); }
+
+        if (this.rowClickData && this.rowClickData.id == params.data.id) this.rowClickData = undefined;
+        else {
+            this.rowClickData = params.data;
+            let _row = document.querySelector<HTMLElement>("body .ag-theme-alpine .ag-center-cols-container div[row-id='" + params.node.rowIndex + "'].ag-row.ag-row-level-0.ag-row-position-absolute");
+            if (_row) _row.classList.add("setcolor_background_rowclick");
+        }
+
     }
 }
 
