@@ -1,10 +1,7 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Dapper.Repositories;
 using Abp.Domain.Repositories;
-using Abp.Domain.Uow;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using tmss.Dto;
@@ -111,6 +108,17 @@ namespace tmss.MaterialManagement.Shipment
                 p_UserId = AbpSession.UserId
             });
 
+        }
+
+        public async Task UpdateStatusShipment(int? Id, string Status)
+        {
+            string _sql = "Exec INV_PROD_SHIPMENT_UPDATE_STATUS @p_ShipmentId, @p_Status, @p_UserId";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_ShipmentId = Id,
+                p_Status = Status,
+                p_UserId = AbpSession.UserId
+            });
         }
     }
 }

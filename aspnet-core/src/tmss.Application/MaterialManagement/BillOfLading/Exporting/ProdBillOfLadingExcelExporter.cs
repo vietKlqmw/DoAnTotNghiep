@@ -19,7 +19,7 @@ namespace tmss.MaterialManagement.BillOfLading.Exporting
                     AddHeader(
                         sheet,
                         ("Bill Of Lading No"),
-                        ("Shipment Id"),
+                        ("Shipment No"),
                         ("Bill Date"),
                         ("Status")
                     );
@@ -27,7 +27,7 @@ namespace tmss.MaterialManagement.BillOfLading.Exporting
                     AddObjects(
                         sheet, 1, listdata,
                         _ => _.BillofladingNo,
-                        _ => _.ShipmentId,
+                        _ => _.ShipmentNo,
                         _ => _.BillDate,
                         _ => _.StatusCode
 

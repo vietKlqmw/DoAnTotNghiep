@@ -64,6 +64,7 @@
                         [rowSelection]="rowSelection"
                         [isSuppressRowClickSelection]="true"
                         (rowClicked)="onRowClick($event)"
+                        (cellValueChanged) = "onCellValueChanged($event)"
                         [frameworkComponents]="frameworkComponents"
                         [height]="'56vh'"
                         >

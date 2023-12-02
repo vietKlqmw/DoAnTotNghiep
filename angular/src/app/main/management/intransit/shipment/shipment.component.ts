@@ -55,6 +55,7 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
     shipmentDate: any;
     listStatus = [
         { key: 'NEW', value: 'NEW' },
+        { key: 'PENDING', value: 'PENDING' },
         { key: 'ORDERED', value: 'ORDERED' }
     ];
     _selectrow;
@@ -274,7 +275,13 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
             let _row = document.querySelector<HTMLElement>("body .ag-theme-alpine .ag-center-cols-container div[row-id='" + params.node.rowIndex + "'].ag-row.ag-row-level-0.ag-row-position-absolute");
             if (_row) _row.classList.add("setcolor_background_rowclick");
         }
+    }
 
+    onCellValueChanged(ev) {
+        this._service.updateStatusShipment(ev.data.id.toString(), ev.newValue).subscribe(() => {
+            this.callBackDataGrid(this.dataParams!);
+            this.notify.success(this.l('SavedSuccessfully'));
+        });
     }
 }
 

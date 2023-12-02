@@ -74,12 +74,12 @@ export class BillofladingComponent extends AppComponentBase implements OnInit {
         this.colDefs = [
             { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 60 },
             { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('Billoflading No'), field: 'billofladingNo', flex: 1 },
-            { headerName: this.l('Shipment Id'), headerTooltip: this.l('Shipment Id'), field: 'shipmentId', flex: 1 },
+            { headerName: this.l('Shipment No'), headerTooltip: this.l('Shipment No'), field: 'shipmentNo', flex: 1 },
             {
                 headerName: this.l('Bill Date'), headerTooltip: this.l('Bill Date'), field: 'billDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.billDate, 'dd/MM/yyyy')
             },
-            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 }
+            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'statusCode', flex: 1 }
         ];
 
         this.frameworkComponents = {
@@ -175,6 +175,19 @@ export class BillofladingComponent extends AppComponentBase implements OnInit {
                 this._fileDownloadService.downloadTempFile(result);
                 this.notify.success(this.l('Download Excel Successfully'));
             });
+    }
+
+    deleteBill() {
+        this.message.confirm(this.l('Bạn có chắc chắn muốn xóa?'), 'Delete Bill Of Lading', (isConfirmed) => {
+            if (isConfirmed) {
+                this._service.deleteBillOfLading(this._selectrow).subscribe(() => {
+                    this.callBackDataGrid(this.dataParams!);
+                    this.notify.success(this.l('SuccessfullyDeleted'));
+                }, error => {
+                    this.notify.error(this.l('FailedDeleted'));
+                });
+            }
+        });
     }
 }
 

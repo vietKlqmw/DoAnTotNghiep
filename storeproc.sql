@@ -492,8 +492,38 @@ BEGIN
            Atd = @p_Atd,
            Status = @p_Status
      WHERE Id = @p_ShipmentId;
+
+    IF @p_Status = 'ORDERED'
+    BEGIN
+        DECLARE @p_BillofladingNo NVARCHAR(20) = (SELECT ShipmentNo + SupplierNo FROM ProdShipment WHERE Id = @p_ShipmentId);
+        INSERT INTO ProdBillOfLading (CreationTime, CreatorUserId, IsDeleted, BillofladingNo, ShipmentId, StatusCode)
+                              VALUES (GETDATE(), @p_UserId, 0, @p_BillofladingNo, @p_ShipmentId, 'NEW');
+    END
+END
+------------------------------------------------UpdateStatus:
+CREATE PROCEDURE INV_PROD_SHIPMENT_UPDATE_STATUS
+(
+    @p_ShipmentId INT,
+    @p_Status NVARCHAR(50),
+    @p_UserId BIGINT
+)
+AS
+BEGIN
+    UPDATE ProdShipment 
+       SET LastModificationTime = GETDATE(), 
+           LastModifierUserId = @p_UserId, 
+           Status = @p_Status
+     WHERE Id = @p_ShipmentId;
+
+    IF @p_Status = 'ORDERED'
+    BEGIN
+        DECLARE @p_BillofladingNo NVARCHAR(20) = (SELECT ShipmentNo + SupplierNo FROM ProdShipment WHERE Id = @p_ShipmentId);
+        INSERT INTO ProdBillOfLading (CreationTime, CreatorUserId, IsDeleted, BillofladingNo, ShipmentId, StatusCode)
+                              VALUES (GETDATE(), @p_UserId, 0, @p_BillofladingNo, @p_ShipmentId, 'NEW');
+    END
 END
 ------------------------------------------------BillOfLading------------------------------------------------
+------------------------------------------------Search:
 CREATE PROCEDURE INV_PROD_BILL_OF_LADING_SEARCH
 (
     @p_BillofladingNo NVARCHAR(20),
@@ -501,15 +531,36 @@ CREATE PROCEDURE INV_PROD_BILL_OF_LADING_SEARCH
     @p_BillDateTo DATE
 )
 AS 
-    SELECT DISTINCT b.Id, b.BillofladingNo, b.ShipmentId, b.BillDate, b.StatusCode
+    SELECT DISTINCT b.Id, b.BillofladingNo, b.ShipmentId, b.BillDate, ps.ShipmentNo, b.StatusCode
       FROM ProdBillOfLading b 
- LEFT JOIN ProdInvoice c 
-        ON c.BillId = b.Id
+INNER JOIN ProdShipment ps
+        ON b.ShipmentId = ps.Id
      WHERE (@p_BillofladingNo IS NULL OR b.BillofladingNo LIKE CONCAT('%', @p_BillofladingNo, '%'))
        AND (@p_BillDateFrom IS NULL OR b.BillDate >= @p_BillDateFrom)
        AND (@p_BillDateTo IS NULL OR b.BillDate <= @p_BillDateTo)
        AND b.IsDeleted = 0
   ORDER BY b.BillDate DESC
+------------------------------------------------Delete:
+CREATE PROCEDURE INV_PROD_BILL_OF_LADING_DELETE
+(
+    @p_BillId INT, 
+    @p_UserId BIGINT
+)
+AS
+BEGIN
+    UPDATE ProdBillOfLading
+       SET IsDeleted = 1,
+           LastModificationTime = GETDATE(),
+           LastModifierUserId = @p_UserId
+     WHERE Id = @p_BillId
+
+    DECLARE @p_ShipmentId INT = (SELECT ShipmentId FROM ProdBillOfLading WHERE Id = @p_BillId);
+    UPDATE ProdShipment
+       SET LastModificationTime = GETDATE(),
+           LastModifierUserId = @p_UserId,
+           Status = 'PENDING'
+     WHERE Id = @p_ShipmentId
+END
 ------------------------------------------------Invoice------------------------------------------------
 CREATE PROCEDURE INV_PROD_INVOICE_SEARCH 
 (

@@ -32,6 +32,7 @@ export class EditShipmentModalComponent extends AppComponentBase {
     listSupplier = [{ label: '', value: '' }];
     list = [
         { value: 'NEW', label: "NEW" },
+        { value: 'PENDING', label: "PENDING" },
         { value: 'ORDERED', label: "ORDERED" }
     ];
 

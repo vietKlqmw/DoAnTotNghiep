@@ -12,6 +12,8 @@ namespace tmss.MaterialManagement.BillOfLading
         public virtual DateTime? BillDate { get; set; }
 
         public virtual string StatusCode { get; set; }
+
+        public virtual string ShipmentNo { get; set; }
     }
 
     public class GetProdBillOfLadingInput : PagedAndSortedResultRequestDto

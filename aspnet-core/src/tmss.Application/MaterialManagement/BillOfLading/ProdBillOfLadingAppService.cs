@@ -57,5 +57,15 @@ namespace tmss.MaterialManagement.BillOfLading
 
             return _excelExporter.ExportToFile(exportToExcel);
         }
+
+        public async Task DeleteBillOfLading(int? BillId)
+        {
+            string _sql = "Exec INV_PROD_BILL_OF_LADING_DELETE @p_BillId, @p_UserId";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_BillId = BillId,
+                p_UserId = AbpSession.UserId
+            });
+        }
     }
 }

@@ -10001,6 +10001,56 @@ export class ProdBillOfLadingServiceProxy {
         }
         return _observableOf<FileDto>(<any>null);
     }
+
+    /**
+     * @param billId (optional) 
+     * @return Success
+     */
+    deleteBillOfLading(billId: number | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdBillOfLading/DeleteBillOfLading?";
+        if (billId !== undefined)
+            url_ += "BillId=" + encodeURIComponent("" + billId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteBillOfLading(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteBillOfLading(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteBillOfLading(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -12091,6 +12141,59 @@ export class ProdShipmentServiceProxy {
     }
 
     protected processEditShipment(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @param status (optional) 
+     * @return Success
+     */
+    updateStatusShipment(id: number | null | undefined, status: string | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdShipment/UpdateStatusShipment?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateStatusShipment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateStatusShipment(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateStatusShipment(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -27080,6 +27183,7 @@ export class ProdBillOfLadingDto implements IProdBillOfLadingDto {
     shipmentId!: number | undefined;
     billDate!: moment.Moment | undefined;
     statusCode!: string | undefined;
+    shipmentNo!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdBillOfLadingDto) {
@@ -27097,6 +27201,7 @@ export class ProdBillOfLadingDto implements IProdBillOfLadingDto {
             this.shipmentId = _data["shipmentId"];
             this.billDate = _data["billDate"] ? moment(_data["billDate"].toString()) : <any>undefined;
             this.statusCode = _data["statusCode"];
+            this.shipmentNo = _data["shipmentNo"];
             this.id = _data["id"];
         }
     }
@@ -27114,6 +27219,7 @@ export class ProdBillOfLadingDto implements IProdBillOfLadingDto {
         data["shipmentId"] = this.shipmentId;
         data["billDate"] = this.billDate ? this.billDate.toISOString() : <any>undefined;
         data["statusCode"] = this.statusCode;
+        data["shipmentNo"] = this.shipmentNo;
         data["id"] = this.id;
         return data; 
     }
@@ -27124,6 +27230,7 @@ export interface IProdBillOfLadingDto {
     shipmentId: number | undefined;
     billDate: moment.Moment | undefined;
     statusCode: string | undefined;
+    shipmentNo: string | undefined;
     id: number | undefined;
 }
 
