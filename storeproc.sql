@@ -327,6 +327,35 @@ VALUES
 (GETDATE(), 1, 0, N'CS09', N'EXPORT', N'XUẤT KHẨU'),
 (GETDATE(), 1, 0, N'CS10', N'NEW', N'MỚI')
 ;
+------------------------------------------------SupplierList------------------------------------------------
+INSERT INTO MasterSupplierList
+(CreationTime, CreatorUserId, IsDeleted, SupplierNo, SupplierName, SupplierType, SupplierNameVn)
+VALUES 
+(GETDATE(), 1, 0, 'STM', 'STM', 'ITNL', 'STM'),
+(GETDATE(), 1, 0, 'TMC', 'Japan', 'ITNL', 'Japan'),
+(GETDATE(), 1, 0, 'CTF', 'CHIEN TAI FONG', 'ITNL', 'CHIEN TAI FONG'),
+(GETDATE(), 1, 0, 'EIDAIKAKO', 'EIDAIKAKO', 'LCL', 'EIDAIKAKO'),
+(GETDATE(), 1, 0, 'TAM', 'Indonesia(Tam)', 'ITNL', 'Indonesia(Tam)'),
+(GETDATE(), 1, 0, 'TMI', 'Indonesia(TMI)', 'ITNL', 'Indonesia(TMI)'),
+(GETDATE(), 1, 0, 'UMW', 'Malaysia', 'ITNL', 'Malaysia'),
+(GETDATE(), 1, 0, 'T&K', 'Malysia(T&K)', 'ITNL', 'Malysia(T&K)'),
+(GETDATE(), 1, 0, 'TAP', 'Philipine(TAP)', 'ITNL', 'Philipine(TAP)'),
+(GETDATE(), 1, 0, 'TMP', 'Philipine(TMP)', 'ITNL', 'Philipine(TMP)'),
+(GETDATE(), 1, 0, 'SINGAPORE', 'SINGAPORE', 'ITNL', 'SINGAPORE'),
+(GETDATE(), 1, 0, 'KUO', 'Taiwan(kuo)', 'ITNL', 'Taiwan(kuo)'),
+(GETDATE(), 1, 0, 'TMT', 'Thailand(TMT)', 'ITNL', 'Thailand(TMT)'),
+(GETDATE(), 1, 0, 'USA', 'USA', 'ITNL', 'USA'),
+(GETDATE(), 1, 0, 'AUS', 'AUSTRALIA', 'ITNL', 'AUSTRALIA'),
+(GETDATE(), 1, 0, 'USA', 'USA', 'ITNL', 'USA'),
+(GETDATE(), 1, 0, 'GTE', 'GTE', 'ITNL', N'GTE(Trung Quốc)'),
+(GETDATE(), 1, 0, 'TLI', 'Philipine(TMP)', 'ITNL', 'Philipine(TMP)');
+------------------------------------------------GetSupplierList:
+CREATE PROCEDURE INV_PROD_GET_LIST_SUPPLIER
+AS
+BEGIN
+    SELECT msl.SupplierNo, msl.SupplierName 
+      FROM MasterSupplierList msl
+END
 ------------------------------------------------UnitOfMeasure------------------------------------------------
 INSERT INTO MasterUnitOfMeasure 
 (CreationTime, CreatorUserId, IsDeleted, Code, Name)
