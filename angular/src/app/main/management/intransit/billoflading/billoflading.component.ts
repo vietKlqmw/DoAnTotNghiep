@@ -1,6 +1,6 @@
 import { GridApi } from '@ag-grid-enterprise/all-modules';
 import { DatePipe } from '@angular/common';
-import { Component, Injector, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AgCellButtonRendererComponent } from '@app/shared/common/grid/ag-cell-button-renderer/ag-cell-button-renderer.component';
 import { CustomColDef, FrameworkComponent, GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
 import { GridTableService } from '@app/shared/common/services/grid-table.service';
@@ -11,6 +11,7 @@ import { FileDownloadService } from '@shared/utils/file-download.service';
 import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
+import { EditBillOfLadingModalComponent } from './edit-billoflading-modal.component';
 
 @Component({
     selector: 'app-billoflading',
@@ -20,6 +21,8 @@ import * as moment from 'moment';
     animations: [appModuleAnimation()]
 })
 export class BillofladingComponent extends AppComponentBase implements OnInit {
+    @ViewChild('editModal', { static: true }) editModal: EditBillOfLadingModalComponent;
+    
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
     paginationParams: PaginationParamsModel = {
@@ -188,6 +191,10 @@ export class BillofladingComponent extends AppComponentBase implements OnInit {
                 });
             }
         });
+    }
+
+    editBill(): void {
+        this.editModal.show(this.saveSelectedRow);
     }
 }
 

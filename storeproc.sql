@@ -540,6 +540,23 @@ INNER JOIN ProdShipment ps
        AND (@p_BillDateTo IS NULL OR b.BillDate <= @p_BillDateTo)
        AND b.IsDeleted = 0
   ORDER BY b.BillDate DESC
+------------------------------------------------Edit:
+CREATE PROCEDURE INV_PROD_BILL_OF_LADING_EDIT
+(
+    @p_BillId INT, 
+    @p_BillDate DATE,
+    @p_StatusCode NVARCHAR(50),
+    @p_UserId BIGINT
+)
+AS
+BEGIN
+    UPDATE ProdBillOfLading 
+       SET LastModificationTime = GETDATE(), 
+           LastModifierUserId = @p_UserId, 
+           BillDate = @p_BillDate, 
+           StatusCode = @p_StatusCode
+     WHERE Id = @p_BillId;
+END
 ------------------------------------------------Delete:
 CREATE PROCEDURE INV_PROD_BILL_OF_LADING_DELETE
 (

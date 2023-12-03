@@ -67,5 +67,17 @@ namespace tmss.MaterialManagement.BillOfLading
                 p_UserId = AbpSession.UserId
             });
         }
+
+        public async Task EditBillOfLading(ProdBillOfLadingDto input)
+        {
+            string _sql = "Exec INV_PROD_BILL_OF_LADING_EDIT @p_BillId, @p_BillDate, @p_StatusCode, @p_UserId";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_BillId = input.Id,
+                p_BillDate = input.BillDate,
+                p_StatusCode = input.StatusCode,
+                p_UserId = AbpSession.UserId
+            });
+        }
     }
 }
