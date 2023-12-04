@@ -379,6 +379,32 @@ VALUES
 (GETDATE(), 1, 0, 'VMDC', 'VIMADECO', 7),
 (GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 10),
 (GETDATE(), 1, 0, 'NYK', 'YLSV', 10);
+------------------------------------------------Search:
+CREATE PROCEDURE INV_MASTER_FORWARDER_SEARCH
+(
+    @p_Code NVARCHAR(10),
+    @p_Namw NVARCHAR(100),
+    @p_SupplierNo NVARCHAR(10)
+)
+AS
+BEGIN
+    SELECT mf.Id, mf.Code, mf.Name, mf.SupplierId, msl.SupplierNo 
+      FROM MasterForwarder mf
+ LEFT JOIN MasterSupplierList msl ON mf.SupplierId = msl.Id
+     WHERE (@p_Code IS NULL OR mf.Code LIKE CONCAT('%', @p_Code, '%'))
+       AND (@p_Namw IS NULL OR mf.Name LIKE CONCAT('%', @p_Namw, '%'))
+       AND (@p_SupplierNo IS NULL OR msl.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
+       AND mf.IsDeleted = 0;
+END 
+------------------------------------------------GetList:
+CREATE PROCEDURE INV_PROD_GET_LIST_FORWARDER_BY_SUPPLIERID
+    @p_SupplierId INT
+AS
+BEGIN
+    SELECT mf.Code, mf.Name 
+      FROM MasterForwarder mf
+     WHERE mf.SupplierId = @p_SupplierId;
+END
 ------------------------------------------------UnitOfMeasure------------------------------------------------
 INSERT INTO MasterUnitOfMeasure 
 (CreationTime, CreatorUserId, IsDeleted, Code, Name)

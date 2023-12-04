@@ -9,4 +9,10 @@
         public virtual string SupplierNo { get; set; }
         public virtual string SupplierName { get; set; }
     }
+
+    public class ListForwarderBySupplierIdDto
+    {
+        public virtual string Code { get; set; }
+        public virtual string Name { get; set; }
+    }
 }

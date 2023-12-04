@@ -22,5 +22,16 @@ namespace tmss.ManagementOther
 
             return result.ToList();
         }
+
+        public async Task<List<ListSupplierDto>> GetListForwarder(int? SupplierId)
+        {
+            string _sql = "Exec INV_PROD_GET_LIST_FORWARDER_BY_SUPPLIERID @p_SupplierId ";
+            IEnumerable<ListSupplierDto> result = await _dapperRepo.QueryAsync<ListSupplierDto>(_sql, new
+            {
+                p_SupplierId = SupplierId
+            });
+
+            return result.ToList();
+        }
     }
 }

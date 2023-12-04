@@ -59,7 +59,7 @@ import { ZeroTemplateHttpConfigurationService } from './zero-template-http-confi
         ApiServiceProxies.MasterMaterialGroupServiceProxy,
         ApiServiceProxies.MasterStorageLocationServiceProxy,
         ApiServiceProxies.MasterMaterialTypeServiceProxy,
-        ApiServiceProxies.MasterProductGroupServiceProxy,
+        ApiServiceProxies.MasterForwarderServiceProxy,
         ApiServiceProxies.MasterProductTypeServiceProxy,
         ApiServiceProxies.MasterMaterialServiceProxy,
         ApiServiceProxies.MasterUnitOfMeasureServiceProxy,

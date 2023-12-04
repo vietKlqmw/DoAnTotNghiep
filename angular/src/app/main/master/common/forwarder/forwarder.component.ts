@@ -6,18 +6,18 @@ import { CustomColDef, FrameworkComponent, GridParams, PaginationParamsModel } f
 import { GridTableService } from '@app/shared/common/services/grid-table.service';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { MasterProductGroupDto, MasterProductGroupServiceProxy } from '@shared/service-proxies/service-proxies';
+import { MasterForwarderDto, MasterForwarderServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-product-group',
-    templateUrl: './product-group.component.html',
+    selector: 'app-forwarder',
+    templateUrl: './forwarder.component.html',
     styleUrls: ['../../../screen-modal.less'],
     encapsulation: ViewEncapsulation.None,
     animations: [appModuleAnimation()]
 })
-export class ProductGroupComponent extends AppComponentBase implements OnInit {
+export class ForwarderComponent extends AppComponentBase implements OnInit {
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
     paginationParams: PaginationParamsModel = {
@@ -28,8 +28,8 @@ export class ProductGroupComponent extends AppComponentBase implements OnInit {
         sorting: '',
         totalPage: 1,
     };
-    selectedRow: MasterProductGroupDto = new MasterProductGroupDto();
-    datas: MasterProductGroupDto = new MasterProductGroupDto();
+    selectedRow: MasterForwarderDto = new MasterForwarderDto();
+    datas: MasterForwarderDto = new MasterForwarderDto();
     dataParams: GridParams | undefined;
     dataParamsColor: GridParams | undefined;
     rowData: any[] = [];
@@ -43,6 +43,7 @@ export class ProductGroupComponent extends AppComponentBase implements OnInit {
 
     code: string = '';
     name: string = '';
+    supplierNo: string = '';
 
     defaultColDef = {
         resizable: true,
@@ -60,15 +61,16 @@ export class ProductGroupComponent extends AppComponentBase implements OnInit {
 
     constructor(
         injector: Injector,
-        private _service: MasterProductGroupServiceProxy,
+        private _service: MasterForwarderServiceProxy,
         private gridTableService: GridTableService
     ) {
         super(injector);
 
         this.colDefs = [
             { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 100},
-            { headerName: this.l('Code'), headerTooltip: this.l('Code'), field: 'code', flex: 1},
-            { headerName: this.l('Name'), headerTooltip: this.l('Name'), field: 'name', flex: 1}
+            { headerName: this.l('Forwarder Code'), headerTooltip: this.l('Forwarder Code'), field: 'code', flex: 1 },
+            { headerName: this.l('Forwarder Name'), headerTooltip: this.l('Forwarder Name'), field: 'name', flex: 1 },
+            { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 }
         ];
 
         this.frameworkComponents = {
@@ -82,9 +84,10 @@ export class ProductGroupComponent extends AppComponentBase implements OnInit {
 
     searchDatas(): void {
         this.isLoading = true;
-        this._service.getProductGroupSearch(
+        this._service.getForwarderSearch(
             this.code,
             this.name,
+            this.supplierNo,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -101,13 +104,15 @@ export class ProductGroupComponent extends AppComponentBase implements OnInit {
     clearTextSearch() {
         this.code = '';
         this.name = '';
+        this.supplierNo = '';
         this.searchDatas();
     }
 
     getDatas(paginationParams?: PaginationParamsModel) {
-        return this._service.getProductGroupSearch(
+        return this._service.getForwarderSearch(
             this.code,
             this.name,
+            this.supplierNo,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize

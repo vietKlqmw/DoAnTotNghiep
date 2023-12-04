@@ -48,8 +48,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
                     {
-                        path: 'master/common/product-group',
-                        loadChildren: () => import('./master/common/product-group/product-group.module').then(m => m.ProductGroupModule),
+                        path: 'master/common/forwarder',
+                        loadChildren: () => import('./master/common/forwarder/forwarder.module').then(m => m.ForwarderModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
                     {

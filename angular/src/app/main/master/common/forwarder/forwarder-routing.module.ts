@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProductGroupComponent } from './product-group.component';
+import { ForwarderComponent } from './forwarder.component';
 
 const routes: Routes = [{
     path: '',
-    component: ProductGroupComponent,
+    component: ForwarderComponent,
     pathMatch: 'full'
 }];
 
@@ -12,4 +12,4 @@ const routes: Routes = [{
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class ProductGroupRoutingModule { }
+export class ForwarderRoutingModule { }
