@@ -26,8 +26,6 @@ namespace tmss.MaterialManagement.Invoice.Exporting
                         ("Bill No"),
                         ("Bill Date"),
                         ("Shipment No"),
-                        ("Ordertype Code"),
-                        ("Goodstype Code"),
                         ("Freight"),
                         ("Insurance"),
                         ("Cif"),
@@ -47,8 +45,6 @@ namespace tmss.MaterialManagement.Invoice.Exporting
                         _ => _.BillNo,
                         _ => _.BillDate,
                         _ => _.ShipmentNo,
-                        _ => _.OrderTypeCode,
-                        _ => _.GoodsTypeCode,
                         _ => _.FreightTotal,
                         _ => _.InsuranceTotal,
                         _ => _.Cif,
@@ -60,7 +56,7 @@ namespace tmss.MaterialManagement.Invoice.Exporting
                         _ => _.Status
                     );
 
-                    for (var i = 0; i < 18; i++)
+                    for (var i = 0; i < 16; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }
@@ -79,8 +75,6 @@ namespace tmss.MaterialManagement.Invoice.Exporting
                         sheet,
                         ("Part No"),
                         ("Qty"),
-                        ("Fix lot"),
-                        ("Case No"),
                         ("Module No"),
                         ("Container No"),
                         ("Supplier No"),
@@ -94,20 +88,16 @@ namespace tmss.MaterialManagement.Invoice.Exporting
                         ("VAT Rate"),
                         ("Carfamily Code"),
                         ("Part Net Weight"),
-                        ("Order No"),
                         ("Packaging Date"),
                         ("Status"),
                         ("Part Name"),
-                        ("Part Name Vn"),
-                        ("Car Name")
+                        ("Part Name Vn")
                     );
 
                     AddObjects(
                         sheet, 1, listdatadetails,
                         _ => _.PartNo,
                         _ => _.UsageQty,
-                        _ => _.Fixlot,
-                        _ => _.CaseNo,
                         _ => _.ModuleNo,
                         _ => _.ContainerNo,
                         _ => _.SupplierNo,
@@ -121,15 +111,13 @@ namespace tmss.MaterialManagement.Invoice.Exporting
                         _ => _.VatRate,
                         _ => _.CarfamilyCode,
                         _ => _.PartNetWeight,
-                        _ => _.OrderNo,
                         _ => _.PackagingDate,
                         _ => _.Status,
                         _ => _.PartName,
-                        _ => _.PartnameVn,
-                        _ => _.CarName
+                        _ => _.PartnameVn
                     );
 
-                    for (var i = 0; i < 23; i++)
+                    for (var i = 0; i < 19; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

@@ -13,12 +13,6 @@ namespace tmss.MaterialManagement
 
         public const int MaxPartNoLength = 12;
 
-        public const int MaxLotNoLength = 10;
-
-        public const int MaxFixlotLength = 4;
-
-        public const int MaxCaseNoLength = 30;
-
         public const int MaxModuleNoLength = 30;
 
         public const int MaxContainerNoLength = 15;
@@ -29,28 +23,15 @@ namespace tmss.MaterialManagement
 
         public const int MaxCarfamilyCodeLength = 4;
 
-        public const int MaxOrderNoLength = 12;
-
         public const int MaxStatusLength = 10;
 
         public const int MaxPartnameVnLength = 300;
-
-        public const int MaxCarNameLength = 200;
 
         [StringLength(MaxInvoiceNoLength)]
         public virtual string InvoiceNo { get; set; } //mã hóa đơn
 
         [StringLength(MaxPartNoLength)]
         public virtual string PartNo { get; set; }
-
-        [StringLength(MaxLotNoLength)]
-        public virtual string LotNo { get; set; }
-
-        [StringLength(MaxFixlotLength)]
-        public virtual string Fixlot { get; set; }
-
-        [StringLength(MaxCaseNoLength)]
-        public virtual string CaseNo { get; set; }
 
         [StringLength(MaxModuleNoLength)]
         public virtual string ModuleNo { get; set; }
@@ -89,9 +70,6 @@ namespace tmss.MaterialManagement
 
         public virtual decimal? PartNetWeight { get; set; } //khối lượng tịnh của part
 
-        [StringLength(MaxOrderNoLength)]
-        public virtual string OrderNo { get; set; }
-
         public virtual DateTime? PackagingDate { get; set; } //ngày đóng gói
 
         [StringLength(MaxStatusLength)]
@@ -109,18 +87,8 @@ namespace tmss.MaterialManagement
 
         public virtual decimal? VatVn { get; set; }
 
-        public virtual long? InvoiceParentId { get; set; }
-
-        public virtual DateTime? PeriodDate { get; set; }
-
-        public virtual decimal? PeriodId { get; set; }
-
         [StringLength(MaxPartnameVnLength)]
         public virtual string PartnameVn { get; set; }
 
-        [StringLength(MaxCarNameLength)]
-        public virtual string CarName { get; set; }
-
-        public virtual long? PreCustomsId { get; set; }
     }
 }

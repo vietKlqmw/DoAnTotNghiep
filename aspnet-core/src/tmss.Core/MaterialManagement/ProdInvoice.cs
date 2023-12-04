@@ -11,10 +11,6 @@ namespace tmss.MaterialManagement
     {
         public const int MaxInvoiceNoLength = 20;
 
-        public const int MaxOrdertypeCodeLength = 4;
-
-        public const int MaxGoodstypeCodeLength = 4;
-
         public const int MaxCurrencyLength = 20;
 
         public const int MaxSupplierNoLength = 10;
@@ -25,14 +21,6 @@ namespace tmss.MaterialManagement
         public virtual string InvoiceNo { get; set; } //mã hóa đơn
 
         public virtual long? BillId { get; set; }
-
-        [StringLength(MaxOrdertypeCodeLength)]
-        public virtual string OrderTypeCode { get; set; }
-
-        [StringLength(MaxGoodstypeCodeLength)]
-        public virtual string GoodsTypeCode { get; set; }
-
-        public virtual long? InvoiceParentId { get; set; }
 
         public virtual DateTime? InvoiceDate { get; set; }
 
@@ -70,7 +58,5 @@ namespace tmss.MaterialManagement
         public virtual decimal? CifVn { get; set; }
 
         public virtual decimal? ThcTotalVn { get; set; }
-
-        public virtual long? PeriodId { get; set; }
     }
 }

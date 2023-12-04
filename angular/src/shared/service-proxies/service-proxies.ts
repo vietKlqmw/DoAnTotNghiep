@@ -6186,91 +6186,6 @@ export class MasterCustomsStatusServiceProxy {
 }
 
 @Injectable()
-export class MasterFactoryServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "";
-    }
-
-    /**
-     * @param plantName (optional) 
-     * @param branchNo (optional) 
-     * @param addressLanguageEn (optional) 
-     * @param sorting (optional) 
-     * @param skipCount (optional) 
-     * @param maxResultCount (optional) 
-     * @return Success
-     */
-    getFactorySearch(plantName: string | null | undefined, branchNo: string | null | undefined, addressLanguageEn: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfMasterFactoryDto> {
-        let url_ = this.baseUrl + "/api/services/app/MasterFactory/GetFactorySearch?";
-        if (plantName !== undefined)
-            url_ += "PlantName=" + encodeURIComponent("" + plantName) + "&"; 
-        if (branchNo !== undefined)
-            url_ += "BranchNo=" + encodeURIComponent("" + branchNo) + "&"; 
-        if (addressLanguageEn !== undefined)
-            url_ += "AddressLanguageEn=" + encodeURIComponent("" + addressLanguageEn) + "&"; 
-        if (sorting !== undefined)
-            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
-        if (skipCount === null)
-            throw new Error("The parameter 'skipCount' cannot be null.");
-        else if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
-        if (maxResultCount === null)
-            throw new Error("The parameter 'maxResultCount' cannot be null.");
-        else if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",			
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetFactorySearch(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetFactorySearch(<any>response_);
-                } catch (e) {
-                    return <Observable<PagedResultDtoOfMasterFactoryDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<PagedResultDtoOfMasterFactoryDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetFactorySearch(response: HttpResponseBase): Observable<PagedResultDtoOfMasterFactoryDto> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfMasterFactoryDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<PagedResultDtoOfMasterFactoryDto>(<any>null);
-    }
-}
-
-@Injectable()
 export class MasterForwarderServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -24460,110 +24375,6 @@ export interface IPagedResultDtoOfMasterCustomsStatusDto {
     items: MasterCustomsStatusDto[] | undefined;
 }
 
-export class MasterFactoryDto implements IMasterFactoryDto {
-    plantCode!: string | undefined;
-    plantName!: string | undefined;
-    branchNo!: string | undefined;
-    addressLanguageEn!: string | undefined;
-    addressLanguageVn!: string | undefined;
-    id!: number | undefined;
-
-    constructor(data?: IMasterFactoryDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.plantCode = _data["plantCode"];
-            this.plantName = _data["plantName"];
-            this.branchNo = _data["branchNo"];
-            this.addressLanguageEn = _data["addressLanguageEn"];
-            this.addressLanguageVn = _data["addressLanguageVn"];
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): MasterFactoryDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new MasterFactoryDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["plantCode"] = this.plantCode;
-        data["plantName"] = this.plantName;
-        data["branchNo"] = this.branchNo;
-        data["addressLanguageEn"] = this.addressLanguageEn;
-        data["addressLanguageVn"] = this.addressLanguageVn;
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface IMasterFactoryDto {
-    plantCode: string | undefined;
-    plantName: string | undefined;
-    branchNo: string | undefined;
-    addressLanguageEn: string | undefined;
-    addressLanguageVn: string | undefined;
-    id: number | undefined;
-}
-
-export class PagedResultDtoOfMasterFactoryDto implements IPagedResultDtoOfMasterFactoryDto {
-    totalCount!: number;
-    items!: MasterFactoryDto[] | undefined;
-
-    constructor(data?: IPagedResultDtoOfMasterFactoryDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.totalCount = _data["totalCount"];
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items!.push(MasterFactoryDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): PagedResultDtoOfMasterFactoryDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PagedResultDtoOfMasterFactoryDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["totalCount"] = this.totalCount;
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface IPagedResultDtoOfMasterFactoryDto {
-    totalCount: number;
-    items: MasterFactoryDto[] | undefined;
-}
-
 export class MasterForwarderDto implements IMasterForwarderDto {
     code!: string | undefined;
     name!: string | undefined;
@@ -27569,6 +27380,7 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
     tmvDate!: moment.Moment | undefined;
     status!: string | undefined;
     forwarder!: string | undefined;
+    shipmentId!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdContainerIntransitDto) {
@@ -27590,6 +27402,7 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
             this.tmvDate = _data["tmvDate"] ? moment(_data["tmvDate"].toString()) : <any>undefined;
             this.status = _data["status"];
             this.forwarder = _data["forwarder"];
+            this.shipmentId = _data["shipmentId"];
             this.id = _data["id"];
         }
     }
@@ -27611,6 +27424,7 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
         data["tmvDate"] = this.tmvDate ? this.tmvDate.toISOString() : <any>undefined;
         data["status"] = this.status;
         data["forwarder"] = this.forwarder;
+        data["shipmentId"] = this.shipmentId;
         data["id"] = this.id;
         return data; 
     }
@@ -27625,6 +27439,7 @@ export interface IProdContainerIntransitDto {
     tmvDate: moment.Moment | undefined;
     status: string | undefined;
     forwarder: string | undefined;
+    shipmentId: number | undefined;
     id: number | undefined;
 }
 
@@ -28430,9 +28245,6 @@ export interface IPagedResultDtoOfProdContainerRentalWHPlanImportDto {
 
 export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
     partNo!: string | undefined;
-    lotNo!: string | undefined;
-    fixlot!: string | undefined;
-    caseNo!: string | undefined;
     moduleNo!: string | undefined;
     insurance!: number | undefined;
     containerNo!: string | undefined;
@@ -28449,7 +28261,6 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
     partName!: string | undefined;
     carfamilyCode!: string | undefined;
     partNetWeight!: number | undefined;
-    orderNo!: string | undefined;
     packagingDate!: moment.Moment | undefined;
     status!: string | undefined;
     freightVn!: number | undefined;
@@ -28458,12 +28269,7 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
     cifVn!: number | undefined;
     taxVn!: number | undefined;
     vatVn!: number | undefined;
-    invoiceParentId!: number | undefined;
-    periodDate!: moment.Moment | undefined;
-    periodId!: number | undefined;
     partnameVn!: string | undefined;
-    carName!: string | undefined;
-    preCustomsId!: number | undefined;
     grandQty!: number | undefined;
     grandCif!: number | undefined;
     grandFreight!: number | undefined;
@@ -28484,9 +28290,6 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
     init(_data?: any) {
         if (_data) {
             this.partNo = _data["partNo"];
-            this.lotNo = _data["lotNo"];
-            this.fixlot = _data["fixlot"];
-            this.caseNo = _data["caseNo"];
             this.moduleNo = _data["moduleNo"];
             this.insurance = _data["insurance"];
             this.containerNo = _data["containerNo"];
@@ -28503,7 +28306,6 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
             this.partName = _data["partName"];
             this.carfamilyCode = _data["carfamilyCode"];
             this.partNetWeight = _data["partNetWeight"];
-            this.orderNo = _data["orderNo"];
             this.packagingDate = _data["packagingDate"] ? moment(_data["packagingDate"].toString()) : <any>undefined;
             this.status = _data["status"];
             this.freightVn = _data["freightVn"];
@@ -28512,12 +28314,7 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
             this.cifVn = _data["cifVn"];
             this.taxVn = _data["taxVn"];
             this.vatVn = _data["vatVn"];
-            this.invoiceParentId = _data["invoiceParentId"];
-            this.periodDate = _data["periodDate"] ? moment(_data["periodDate"].toString()) : <any>undefined;
-            this.periodId = _data["periodId"];
             this.partnameVn = _data["partnameVn"];
-            this.carName = _data["carName"];
-            this.preCustomsId = _data["preCustomsId"];
             this.grandQty = _data["grandQty"];
             this.grandCif = _data["grandCif"];
             this.grandFreight = _data["grandFreight"];
@@ -28538,9 +28335,6 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["partNo"] = this.partNo;
-        data["lotNo"] = this.lotNo;
-        data["fixlot"] = this.fixlot;
-        data["caseNo"] = this.caseNo;
         data["moduleNo"] = this.moduleNo;
         data["insurance"] = this.insurance;
         data["containerNo"] = this.containerNo;
@@ -28557,7 +28351,6 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
         data["partName"] = this.partName;
         data["carfamilyCode"] = this.carfamilyCode;
         data["partNetWeight"] = this.partNetWeight;
-        data["orderNo"] = this.orderNo;
         data["packagingDate"] = this.packagingDate ? this.packagingDate.toISOString() : <any>undefined;
         data["status"] = this.status;
         data["freightVn"] = this.freightVn;
@@ -28566,12 +28359,7 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
         data["cifVn"] = this.cifVn;
         data["taxVn"] = this.taxVn;
         data["vatVn"] = this.vatVn;
-        data["invoiceParentId"] = this.invoiceParentId;
-        data["periodDate"] = this.periodDate ? this.periodDate.toISOString() : <any>undefined;
-        data["periodId"] = this.periodId;
         data["partnameVn"] = this.partnameVn;
-        data["carName"] = this.carName;
-        data["preCustomsId"] = this.preCustomsId;
         data["grandQty"] = this.grandQty;
         data["grandCif"] = this.grandCif;
         data["grandFreight"] = this.grandFreight;
@@ -28585,9 +28373,6 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
 
 export interface IProdInvoiceDetailsDto {
     partNo: string | undefined;
-    lotNo: string | undefined;
-    fixlot: string | undefined;
-    caseNo: string | undefined;
     moduleNo: string | undefined;
     insurance: number | undefined;
     containerNo: string | undefined;
@@ -28604,7 +28389,6 @@ export interface IProdInvoiceDetailsDto {
     partName: string | undefined;
     carfamilyCode: string | undefined;
     partNetWeight: number | undefined;
-    orderNo: string | undefined;
     packagingDate: moment.Moment | undefined;
     status: string | undefined;
     freightVn: number | undefined;
@@ -28613,12 +28397,7 @@ export interface IProdInvoiceDetailsDto {
     cifVn: number | undefined;
     taxVn: number | undefined;
     vatVn: number | undefined;
-    invoiceParentId: number | undefined;
-    periodDate: moment.Moment | undefined;
-    periodId: number | undefined;
     partnameVn: string | undefined;
-    carName: string | undefined;
-    preCustomsId: number | undefined;
     grandQty: number | undefined;
     grandCif: number | undefined;
     grandFreight: number | undefined;
@@ -28679,9 +28458,6 @@ export interface IPagedResultDtoOfProdInvoiceDetailsDto {
 export class ProdInvoiceDto implements IProdInvoiceDto {
     invoiceNo!: string | undefined;
     billId!: number | undefined;
-    orderTypeCode!: string | undefined;
-    goodsTypeCode!: string | undefined;
-    invoiceParentId!: number | undefined;
     invoiceDate!: moment.Moment | undefined;
     freight!: number | undefined;
     freightTotal!: number | undefined;
@@ -28699,7 +28475,6 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
     insuranceTotalVn!: number | undefined;
     cifVn!: number | undefined;
     thcTotalVn!: number | undefined;
-    periodId!: number | undefined;
     shipmentNo!: string | undefined;
     billNo!: string | undefined;
     billDate!: moment.Moment | undefined;
@@ -28718,9 +28493,6 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
         if (_data) {
             this.invoiceNo = _data["invoiceNo"];
             this.billId = _data["billId"];
-            this.orderTypeCode = _data["orderTypeCode"];
-            this.goodsTypeCode = _data["goodsTypeCode"];
-            this.invoiceParentId = _data["invoiceParentId"];
             this.invoiceDate = _data["invoiceDate"] ? moment(_data["invoiceDate"].toString()) : <any>undefined;
             this.freight = _data["freight"];
             this.freightTotal = _data["freightTotal"];
@@ -28738,7 +28510,6 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
             this.insuranceTotalVn = _data["insuranceTotalVn"];
             this.cifVn = _data["cifVn"];
             this.thcTotalVn = _data["thcTotalVn"];
-            this.periodId = _data["periodId"];
             this.shipmentNo = _data["shipmentNo"];
             this.billNo = _data["billNo"];
             this.billDate = _data["billDate"] ? moment(_data["billDate"].toString()) : <any>undefined;
@@ -28757,9 +28528,6 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
         data = typeof data === 'object' ? data : {};
         data["invoiceNo"] = this.invoiceNo;
         data["billId"] = this.billId;
-        data["orderTypeCode"] = this.orderTypeCode;
-        data["goodsTypeCode"] = this.goodsTypeCode;
-        data["invoiceParentId"] = this.invoiceParentId;
         data["invoiceDate"] = this.invoiceDate ? this.invoiceDate.toISOString() : <any>undefined;
         data["freight"] = this.freight;
         data["freightTotal"] = this.freightTotal;
@@ -28777,7 +28545,6 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
         data["insuranceTotalVn"] = this.insuranceTotalVn;
         data["cifVn"] = this.cifVn;
         data["thcTotalVn"] = this.thcTotalVn;
-        data["periodId"] = this.periodId;
         data["shipmentNo"] = this.shipmentNo;
         data["billNo"] = this.billNo;
         data["billDate"] = this.billDate ? this.billDate.toISOString() : <any>undefined;
@@ -28789,9 +28556,6 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
 export interface IProdInvoiceDto {
     invoiceNo: string | undefined;
     billId: number | undefined;
-    orderTypeCode: string | undefined;
-    goodsTypeCode: string | undefined;
-    invoiceParentId: number | undefined;
     invoiceDate: moment.Moment | undefined;
     freight: number | undefined;
     freightTotal: number | undefined;
@@ -28809,7 +28573,6 @@ export interface IProdInvoiceDto {
     insuranceTotalVn: number | undefined;
     cifVn: number | undefined;
     thcTotalVn: number | undefined;
-    periodId: number | undefined;
     shipmentNo: string | undefined;
     billNo: string | undefined;
     billDate: moment.Moment | undefined;

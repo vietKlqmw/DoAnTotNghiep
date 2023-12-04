@@ -219,12 +219,6 @@ VALUES
 (GETDATE(), 1, 0, N'ZDRM', N'Direct Material'),
 (GETDATE(), 1, 0, N'ZPAR', N'EG,T/M,Axles,Shaft,Part'),
 (GETDATE(), 1, 0, N'ZVEH', N'Vehicle');
-------------------------------------------------ProductGroup------------------------------------------------
-INSERT INTO MasterProductGroup 
-(CreationTime, CreatorUserId, IsDeleted, Code, Name)
-VALUES 
-(GETDATE(), 1, 0, N'PC', N'PC'),
-(GETDATE(), 1, 0, N'CV', N'CV');
 ------------------------------------------------ProductType------------------------------------------------
 INSERT INTO MasterProductType 
 (CreationTime, CreatorUserId, IsDeleted, Code, Name)
@@ -235,19 +229,6 @@ VALUES
 (GETDATE(), 1, 0, N'DRM', N'Direct'),
 (GETDATE(), 1, 0, N'SUP', N'Supplies'),
 (GETDATE(), 1, 0, N'NSM', N'Non-stock Material');
-------------------------------------------------Factory------------------------------------------------
-INSERT INTO MasterFactory 
-(CreationTime, CreatorUserId, IsDeleted, 
-PlantCode, PlantName, BranchNo, AddressLanguageEn, AddressLanguageVn)
-VALUES 
-(GETDATE(), 1, 0, 
-N'451', N'VMV HQ', N'', 
-N'Phuc Thang ward – Phuc Yen city – Vinh Phuc province', 
-N'Viet Nam / Phường Phúc Thắng – Thành phố Phúc Yên – Tỉnh Vĩnh Phúc – Việt Nam'),
-(GETDATE(), 1, 0, 
-N'452', N'VMV Trading Plant', N'', 
-N'Phuc Thang ward – Phuc Yen city – Vinh Phuc province', 
-N'Viet Nam / Phường Phúc Thắng – Thành phố Phúc Yên – Tỉnh Vĩnh Phúc – Việt Nam');
 ------------------------------------------------StorageLocation------------------------------------------------
 INSERT INTO MasterStorageLocation 
 (CreationTime, CreatorUserId, IsDeleted, 

@@ -7,9 +7,6 @@ namespace tmss.MaterialManagement.Invoice
     {
         public virtual string InvoiceNo { get; set; } //mã hóa đơn
         public virtual long? BillId { get; set; }
-        public virtual string OrderTypeCode { get; set; }
-        public virtual string GoodsTypeCode { get; set; }
-        public virtual long? InvoiceParentId { get; set; }
         public virtual DateTime? InvoiceDate { get; set; }
         public virtual decimal? Freight { get; set; } // Cước vẫn chuyển
         public virtual decimal? FreightTotal { get; set; }
@@ -27,7 +24,6 @@ namespace tmss.MaterialManagement.Invoice
         public virtual decimal? InsuranceTotalVn { get; set; }
         public virtual decimal? CifVn { get; set; }
         public virtual decimal? ThcTotalVn { get; set; }
-        public virtual long? PeriodId { get; set; }
 
         public virtual string ShipmentNo { get; set; }
         public virtual string BillNo { get; set; }
@@ -65,9 +61,6 @@ namespace tmss.MaterialManagement.Invoice
     public class ProdInvoiceDetailsDto : EntityDto<long?>
     {
         public virtual string PartNo { get; set; }
-        public virtual string LotNo { get; set; }
-        public virtual string Fixlot { get; set; }
-        public virtual string CaseNo { get; set; }
         public virtual string ModuleNo { get; set; }
         public virtual decimal? Insurance { get; set; }
         public virtual string ContainerNo { get; set; }
@@ -84,7 +77,6 @@ namespace tmss.MaterialManagement.Invoice
         public virtual string PartName { get; set; }
         public virtual string CarfamilyCode { get; set; }
         public virtual decimal? PartNetWeight { get; set; } //khối lượng tịnh của part
-        public virtual string OrderNo { get; set; }
         public virtual DateTime? PackagingDate { get; set; } //ngày đóng gói
         public virtual string Status { get; set; }
         public virtual decimal? FreightVn { get; set; }
@@ -93,12 +85,7 @@ namespace tmss.MaterialManagement.Invoice
         public virtual decimal? CifVn { get; set; }
         public virtual decimal? TaxVn { get; set; }
         public virtual decimal? VatVn { get; set; }
-        public virtual long? InvoiceParentId { get; set; }
-        public virtual DateTime? PeriodDate { get; set; }
-        public virtual decimal? PeriodId { get; set; }
         public virtual string PartnameVn { get; set; }
-        public virtual string CarName { get; set; }
-        public virtual long? PreCustomsId { get; set; }
 
         public virtual double? GrandQty { get; set; }
         public virtual decimal? GrandCif { get; set; }

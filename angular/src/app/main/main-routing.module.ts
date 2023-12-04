@@ -33,11 +33,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
                     {
-                        path: 'master/common/factory',
-                        loadChildren: () => import('./master/common/factory/factory.module').then(m => m.FactoryModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
-                    },
-                    {
                         path: 'master/common/material-group',
                         loadChildren: () => import('./master/common/material-group/material-group.module').then(m => m.MaterialGroupModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }

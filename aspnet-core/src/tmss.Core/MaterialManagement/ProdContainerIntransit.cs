@@ -37,5 +37,7 @@ namespace tmss.MaterialManagement
 
         [StringLength(MaxForwarderLength)]
         public virtual string Forwarder { get; set; }
+
+        public virtual long? ShipmentId { get; set; }
     }
 }
