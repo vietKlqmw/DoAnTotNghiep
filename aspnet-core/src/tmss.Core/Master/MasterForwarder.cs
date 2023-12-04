@@ -5,17 +5,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace tmss.Master
 {
-    [Table("MasterProductGroup")]
-    public class MasterProductGroup : FullAuditedEntity<long>, IEntity<long>
+    [Table("MasterForwarder")]
+    public class MasterForwarder : FullAuditedEntity<long>, IEntity<long>
     {
         public const int MaxCodeLength = 10;
 
-        public const int MaxNameLength = 200;
+        public const int MaxNameLength = 100;
 
         [StringLength(MaxCodeLength)]
         public virtual string Code { get; set; }
 
         [StringLength(MaxNameLength)]
         public virtual string Name { get; set; }
+
+        public virtual long? SupplierId { get; set; }
     }
 }

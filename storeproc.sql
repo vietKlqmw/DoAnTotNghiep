@@ -356,6 +356,29 @@ BEGIN
     SELECT msl.SupplierNo, msl.SupplierName 
       FROM MasterSupplierList msl
 END
+------------------------------------------------Forwarder------------------------------------------------
+INSERT INTO MasterForwarder 
+(CreationTime, CreatorUserId, IsDeleted, Code, Name, SupplierId)
+VALUES 
+(GETDATE(), 1, 0, 'NYK', 'YLSV', 6),
+(GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 6),
+(GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 2),
+(GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 2),
+(GETDATE(), 1, 0, 'NYK', 'YLSV', 2),
+(GETDATE(), 1, 0, 'VMDC', 'VIMADECO', 2),
+(GETDATE(), 1, 0, 'VMDC', 'VIMADECO', 13),
+(GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 13),
+(GETDATE(), 1, 0, 'NYK', 'YLSV', 13),
+(GETDATE(), 1, 0, 'NAMPHAT', 'NAMPHAT', 15),
+(GETDATE(), 1, 0, 'EGLV', 'EGLV', 16),
+(GETDATE(), 1, 0, 'NYK', 'YLSV', 16),
+(GETDATE(), 1, 0, 'NIPPONHN', 'NIPPON HN', 17),
+(GETDATE(), 1, 0, 'SAFIHN', 'SAFI HN', 18),
+(GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 18),
+(GETDATE(), 1, 0, 'NYK', 'YLSV', 7),
+(GETDATE(), 1, 0, 'VMDC', 'VIMADECO', 7),
+(GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 10),
+(GETDATE(), 1, 0, 'NYK', 'YLSV', 10);
 ------------------------------------------------UnitOfMeasure------------------------------------------------
 INSERT INTO MasterUnitOfMeasure 
 (CreationTime, CreatorUserId, IsDeleted, Code, Name)

@@ -73,7 +73,7 @@
                             <i class="far fa-trash-alt"></i> {{"Delete" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
                             <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>
-                        <button type="button" class="btn btn-pdf">
+                        <button type="button" class="btn btn-pdf" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-regular fa-file-pdf"></i> {{"Export Bill To Pdf" | localize}}</button>
                     </div>
                 </div>

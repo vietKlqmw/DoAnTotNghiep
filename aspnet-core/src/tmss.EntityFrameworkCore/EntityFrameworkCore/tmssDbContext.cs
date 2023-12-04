@@ -55,8 +55,6 @@ namespace tmss.EntityFrameworkCore
 
         public virtual DbSet<MasterMaterialGroup> MasterMaterialGroups { get; set; }
 
-        public virtual DbSet<MasterProductGroup> MasterProductGroups { get; set; }
-
         public virtual DbSet<MasterProductType> MasterProductTypes { get; set; }
 
         public virtual DbSet<MasterMaterialType> MasterMaterialTypes { get; set; }
@@ -70,6 +68,8 @@ namespace tmss.EntityFrameworkCore
         public virtual DbSet<MasterMaterial_T> MasterMaterial_Ts { get; set; }
 
         public virtual DbSet<MasterSupplierList> MasterSupplierLists { get; set; }
+
+        public virtual DbSet<MasterForwarder> MasterForwarders { get; set; }
 
         #endregion
 
