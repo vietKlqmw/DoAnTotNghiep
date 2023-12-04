@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    <span>{{header + " Shipment"}}</span>
+                    <span>{{header + " Container Intransit"}}</span>
                 </h4>
                 <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
                     <span aria-hidden="true">&times;</span>
@@ -15,8 +15,8 @@
                     <fieldset class="fieldset-border ui-g-12 pl-0 pr-0  mt-2" style="height: auto;">
                         <div class="ui-g-12 ph-0">
                             <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Shipment No'" [(ngModel)]="rowData.shipmentNo"
-                                    name='shipmentNo' [isReadonly]="isEdit"></tmss-text-input>
+                                <tmss-text-input [text]="'Container No'" [(ngModel)]="rowData.containerNo"
+                                    name='containerNo' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
                                 <tmss-text-input [text]="'Supplier No'" [(ngModel)]="rowData.supplierNo"
@@ -24,81 +24,58 @@
                             </div>
                             <div class="ui-g-12 ui-md-6" *ngIf="!isEdit">
                                 <p-dropdown [options]="listSupplier" [filter]="true" [virtualScroll]="true" [itemSize]="30" placeholder="Select Supplier"
-                                    name="supplierNo" [(ngModel)]="rowData.supplierNo" [style]="{'width':'100%'}"></p-dropdown>
-                            </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
-                                <tmss-text-input [text]="'Buyer'" [(ngModel)]="rowData.buyer"
-                                    name='buyer'></tmss-text-input>
+                                    name="supplierNo" [(ngModel)]="rowData.supplierNo" [style]="{'width':'100%'}"
+                                    (ngModelChange)="changeForwarder($event)"></p-dropdown>
                             </div>
                             <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'From Port'" [(ngModel)]="rowData.fromPort"
-                                    name='fromPort'></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'To Port'" [(ngModel)]="rowData.toPort"
-                                    name='toPort'></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
                                 <div class="input-group">
-                                    <span class="input-group-text left-text">Shipment Date</span>
-                                    <input type='text' class="form-control tmss-form-control" name='shipmentDate'
-						                #datepicker='bsDatepicker' [(ngModel)]='_shipmentDate' bsDatepicker
+                                    <span class="input-group-text left-text">Shipping Date</span>
+                                    <input type='text' class="form-control tmss-form-control" name='shippingDate'
+						                #datepicker='bsDatepicker' [(ngModel)]='_shippingDate' bsDatepicker
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
                                     <span class="input-group-text right-text">
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
                                     </span>
                                 </div>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
+                            <div class="ui-g-12 ui-md-6">
                                 <div class="input-group">
-                                    <span class="input-group-text left-text">ETD</span>
-                                    <input type='text' class="form-control tmss-form-control" name='etd'
-						                #datepicker2='bsDatepicker' [(ngModel)]='_etd' bsDatepicker
+                                    <span class="input-group-text left-text">Port Date</span>
+                                    <input type='text' class="form-control tmss-form-control" name='portDate'
+						                #datepicker2='bsDatepicker' [(ngModel)]='_portDate' bsDatepicker
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
                                     <span class="input-group-text right-text">
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker2.toggle()"></i>
                                     </span>
                                 </div>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
+                            <div class="ui-g-12 ui-md-6">
                                 <div class="input-group">
-                                    <span class="input-group-text left-text">ETA</span>
-                                    <input type='text' class="form-control tmss-form-control" name='eta'
-						                #datepicker3='bsDatepicker' [(ngModel)]='_eta' bsDatepicker
+                                    <span class="input-group-text left-text">Transaction Date</span>
+                                    <input type='text' class="form-control tmss-form-control" name='transDate'
+						                #datepicker3='bsDatepicker' [(ngModel)]='_transDate' bsDatepicker
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
                                     <span class="input-group-text right-text">
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker3.toggle()"></i>
                                     </span>
                                 </div>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
+                            <div class="ui-g-12 ui-md-6">
                                 <div class="input-group">
-                                    <span class="input-group-text left-text">ATA</span>
-                                    <input type='text' class="form-control tmss-form-control" name='ata'
-						                #datepicker4='bsDatepicker' [(ngModel)]='_ata' bsDatepicker
+                                    <span class="input-group-text left-text">Warehouse Date</span>
+                                    <input type='text' class="form-control tmss-form-control" name='tmvDate'
+						                #datepicker4='bsDatepicker' [(ngModel)]='_tmvDate' bsDatepicker
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
                                     <span class="input-group-text right-text">
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker4.toggle()"></i>
                                     </span>
                                 </div>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
-                                <tmss-text-input [text]="'Ocean Vessel Name'" [(ngModel)]="rowData.oceanVesselName"
-                                    name='oceanVesselName'></tmss-text-input>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-combobox [items]="listForwarder" name="forwarder" [text]="'Forwarder'" [(ngModel)]="_forwarder"></tmss-combobox>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
-                                <div class="input-group">
-                                    <span class="input-group-text left-text">ATD</span>
-                                    <input type='text' class="form-control tmss-form-control" name='atd'
-						                #datepicker5='bsDatepicker' [(ngModel)]='_atd' bsDatepicker
-                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
-                                    <span class="input-group-text right-text">
-                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker5.toggle()"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
-                                <tmss-combobox [items]="list" name="status" [text]="'Status'" [(ngModel)]="rowData.status"></tmss-combobox>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-combobox [items]="listContStatus" name="status" [text]="'Status'" [(ngModel)]="_status"></tmss-combobox>
                             </div>
                         </div>
                     </fieldset>

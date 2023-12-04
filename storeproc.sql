@@ -325,8 +325,14 @@ VALUES
 (GETDATE(), 1, 0, N'CS07', N'RETURN CASE', N'ĐÓNG VỎ THÙNG HÀNG'),
 (GETDATE(), 1, 0, N'CS08', N'RETURN CBU', N'CBU'),
 (GETDATE(), 1, 0, N'CS09', N'EXPORT', N'XUẤT KHẨU'),
-(GETDATE(), 1, 0, N'CS10', N'NEW', N'MỚI')
-;
+(GETDATE(), 1, 0, N'CS10', N'NEW', N'MỚI');
+------------------------------------------------GetList:
+CREATE PROCEDURE INV_PROD_GET_LIST_CONTAINER_STATUS
+AS
+BEGIN
+    SELECT mcs.Code, mcs.Description 
+      FROM MasterContainerStatus mcs
+END
 ------------------------------------------------SupplierList------------------------------------------------
 INSERT INTO MasterSupplierList
 (CreationTime, CreatorUserId, IsDeleted, SupplierNo, SupplierName, SupplierType, SupplierNameVn)
@@ -398,9 +404,10 @@ BEGIN
 END 
 ------------------------------------------------GetList:
 CREATE PROCEDURE INV_PROD_GET_LIST_FORWARDER_BY_SUPPLIERID
-    @p_SupplierId INT
+    @p_SupplierNo NVARCHAR(10)
 AS
 BEGIN
+    DECLARE @p_SupplierId INT = (SELECT Id FROM MasterSupplierList WHERE SupplierNo = @p_SupplierNo);
     SELECT mf.Code, mf.Name 
       FROM MasterForwarder mf
      WHERE mf.SupplierId = @p_SupplierId;
@@ -1002,6 +1009,7 @@ BEGIN
 END
 GO
 ------------------------------------------------ContainerIntransit------------------------------------------------
+------------------------------------------------Search:
 CREATE PROCEDURE INV_PROD_CONTAINER_INTRANSIT_SEARCH
 (
 	  @p_ContainerNo NVARCHAR(15),
@@ -1025,6 +1033,44 @@ AS
 	ORDER BY a.ShippingDate DESC
 
 GO
+------------------------------------------------Edit:
+CREATE PROCEDURE INV_PROD_CONTAINER_INTRANSIT_EDIT
+(
+    @p_ContId INT,
+    @p_ContainerNo NVARCHAR(15),
+    @p_SupplierNo NVARCHAR(10),
+	  @p_ShippingDate DATE,
+	  @p_PortDate DATE,
+	  @p_TransactionDate DATE,
+	  @p_TmvDate DATE,
+    @p_Status NVARCHAR(50),
+    @p_Forwarder NVARCHAR(10),
+    @p_UserId BIGINT
+)
+AS
+BEGIN
+    IF @p_ContId IS NULL
+    BEGIN
+        INSERT INTO ProdContainerIntransit 
+                    (CreationTime, CreatorUserId, IsDeleted, 
+                    ContainerNo, SupplierNo, ShippingDate, PortDate, Status, Forwarder, TmvDate, TransactionDate)
+             VALUES (GETDATE(), @p_UserId, 0, 
+                    UPPER(@p_ContainerNo), @p_SupplierNo, @p_ShippingDate, @p_PortDate, @p_Status, @p_Forwarder, @p_TmvDate, @p_TransactionDate);
+    END
+    ELSE
+    BEGIN
+        UPDATE ProdContainerIntransit 
+           SET LastModificationTime = GETDATE(), 
+               LastModifierUserId = @p_UserId, 
+               ShippingDate = @p_ShippingDate, 
+               PortDate = @p_PortDate, 
+               Status = @p_Status, 
+               Forwarder = @p_Forwarder, 
+               TmvDate = @p_TmvDate, 
+               TransactionDate = @p_TransactionDate
+         WHERE Id = @p_ContId;
+    END
+END
 ------------------------------------------------StockReceving------------------------------------------------
 CREATE PROCEDURE INV_PROD_STOCK_RECEIVING_SEARCH 
 (

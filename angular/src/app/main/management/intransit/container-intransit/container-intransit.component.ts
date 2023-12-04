@@ -1,6 +1,6 @@
 import { GridApi } from '@ag-grid-enterprise/all-modules';
 import { DatePipe } from '@angular/common';
-import { Component, Injector, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AgCellButtonRendererComponent } from '@app/shared/common/grid/ag-cell-button-renderer/ag-cell-button-renderer.component';
 import { CustomColDef, FrameworkComponent, GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
 import { GridTableService } from '@app/shared/common/services/grid-table.service';
@@ -12,6 +12,7 @@ import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
+import { EditContainerIntransitModalComponent } from './edit-container-intransit-modal.component';
 
 @Component({
     selector: 'app-container-intransit',
@@ -21,6 +22,8 @@ import { DataFormatService } from '@app/shared/common/services/data-format.servi
     animations: [appModuleAnimation()]
 })
 export class ContainerIntransitComponent extends AppComponentBase implements OnInit {
+    @ViewChild('editModal', { static: true }) editModal: EditContainerIntransitModalComponent;
+
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
     paginationParams: PaginationParamsModel = {
@@ -92,11 +95,11 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
                 valueGetter: (params) => this.pipe.transform(params.data?.transactionDate, 'dd/MM/yyyy')
             },
             {
-                headerName: this.l('Tmv Date'), headerTooltip: this.l('TmvDate'), field: 'tmvDate', flex: 1,
+                headerName: this.l('Warehouse Date'), headerTooltip: this.l('TmvDate'), field: 'tmvDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.tmvDate, 'dd/MM/yyyy')
             },
-            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
-            { headerName: this.l('Forwarder'), headerTooltip: this.l('Forwarder'), field: 'forwarder', flex: 1 }
+            { headerName: this.l('Forwarder'), headerTooltip: this.l('Forwarder'), field: 'forwarder', flex: 1 },
+            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 }
         ];
 
         this.frameworkComponents = {
@@ -223,6 +226,24 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
                 this._fileDownloadService.downloadTempFile(result);
                 this.notify.success(this.l('Download Excel Successfully'));
             });
+    }
+
+    deleteContIntransit() {
+        this.message.confirm(this.l('Bạn có chắc chắn muốn xóa?'), 'Delete Shipment', (isConfirmed) => {
+            if (isConfirmed) {
+                this._service.deleteContainerIntransit(this._selectrow).subscribe(() => {
+                    this.callBackDataGrid(this.dataParams!);
+                    this.notify.success(this.l('SuccessfullyDeleted'));
+                }, error => {
+                    this.notify.error(this.l('FailedDeleted'));
+                });
+            }
+        });
+    }
+
+    editContIntransit(e): void {
+        if (e == 'Edit') this.editModal.show(e, this.saveSelectedRow);
+        else this.editModal.show(e);
     }
 }
 

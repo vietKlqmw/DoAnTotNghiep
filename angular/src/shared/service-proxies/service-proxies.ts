@@ -10331,6 +10331,108 @@ export class ProdContainerIntransitServiceProxy {
         }
         return _observableOf<FileDto>(<any>null);
     }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    deleteContainerIntransit(id: number | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdContainerIntransit/DeleteContainerIntransit?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteContainerIntransit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteContainerIntransit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteContainerIntransit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    editContainerIntransit(body: ProdContainerIntransitDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdContainerIntransit/EditContainerIntransit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEditContainerIntransit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEditContainerIntransit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processEditContainerIntransit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -11904,13 +12006,13 @@ export class ProdOthersServiceProxy {
     }
 
     /**
-     * @param supplierId (optional) 
+     * @param supplierNo (optional) 
      * @return Success
      */
-    getListForwarder(supplierId: number | null | undefined): Observable<ListSupplierDto[]> {
+    getListForwarder(supplierNo: string | null | undefined): Observable<ListForwarderBySupplierIdDto[]> {
         let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetListForwarder?";
-        if (supplierId !== undefined)
-            url_ += "SupplierId=" + encodeURIComponent("" + supplierId) + "&"; 
+        if (supplierNo !== undefined)
+            url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -11928,14 +12030,14 @@ export class ProdOthersServiceProxy {
                 try {
                     return this.processGetListForwarder(<any>response_);
                 } catch (e) {
-                    return <Observable<ListSupplierDto[]>><any>_observableThrow(e);
+                    return <Observable<ListForwarderBySupplierIdDto[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ListSupplierDto[]>><any>_observableThrow(response_);
+                return <Observable<ListForwarderBySupplierIdDto[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetListForwarder(response: HttpResponseBase): Observable<ListSupplierDto[]> {
+    protected processGetListForwarder(response: HttpResponseBase): Observable<ListForwarderBySupplierIdDto[]> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -11949,7 +12051,7 @@ export class ProdOthersServiceProxy {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(ListSupplierDto.fromJS(item));
+                    result200!.push(ListForwarderBySupplierIdDto.fromJS(item));
             }
             return _observableOf(result200);
             }));
@@ -11958,7 +12060,62 @@ export class ProdOthersServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ListSupplierDto[]>(<any>null);
+        return _observableOf<ListForwarderBySupplierIdDto[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getListStatusCont(): Observable<ListStatusContDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetListStatusCont";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListStatusCont(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListStatusCont(<any>response_);
+                } catch (e) {
+                    return <Observable<ListStatusContDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ListStatusContDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetListStatusCont(response: HttpResponseBase): Observable<ListStatusContDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ListStatusContDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ListStatusContDto[]>(<any>null);
     }
 }
 
@@ -28745,6 +28902,86 @@ export class ListSupplierDto implements IListSupplierDto {
 export interface IListSupplierDto {
     supplierNo: string | undefined;
     supplierName: string | undefined;
+}
+
+export class ListForwarderBySupplierIdDto implements IListForwarderBySupplierIdDto {
+    code!: string | undefined;
+    name!: string | undefined;
+
+    constructor(data?: IListForwarderBySupplierIdDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): ListForwarderBySupplierIdDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListForwarderBySupplierIdDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["name"] = this.name;
+        return data; 
+    }
+}
+
+export interface IListForwarderBySupplierIdDto {
+    code: string | undefined;
+    name: string | undefined;
+}
+
+export class ListStatusContDto implements IListStatusContDto {
+    code!: string | undefined;
+    description!: string | undefined;
+
+    constructor(data?: IListStatusContDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.description = _data["description"];
+        }
+    }
+
+    static fromJS(data: any): ListStatusContDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListStatusContDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["description"] = this.description;
+        return data; 
+    }
+}
+
+export interface IListStatusContDto {
+    code: string | undefined;
+    description: string | undefined;
 }
 
 export class ProdShipmentDto implements IProdShipmentDto {

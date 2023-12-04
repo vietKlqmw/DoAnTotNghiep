@@ -60,5 +60,33 @@ namespace tmss.MaterialManagement.ContainerIntransit
 
             return _excelExporter.ExportToFile(exportToExcel);
         }
+
+        public async Task DeleteContainerIntransit(int? Id)
+        {
+            string _sql = "UPDATE ProdContainerIntransit SET IsDeleted = 1 WHERE Id = @p_Id";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_Id = Id
+            });
+        }
+
+        public async Task EditContainerIntransit(ProdContainerIntransitDto input)
+        {
+            string _sql = "Exec INV_PROD_CONTAINER_INTRANSIT_EDIT @p_ContId, @p_ContainerNo, @p_SupplierNo, @p_ShippingDate, " +
+                "@p_PortDate, @p_TransactionDate, @p_TmvDate, @p_Status, @p_Forwarder, @p_UserId";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_ContId = input.Id,
+                p_ContainerNo = input.ContainerNo,
+                p_SupplierNo = input.SupplierNo,
+                p_ShippingDate = input.ShippingDate,
+                p_PortDate = input.PortDate,
+                p_TransactionDate = input.TransactionDate,
+                p_TmvDate = input.TmvDate,
+                p_Status = input.Status,
+                p_Forwarder = input.Forwarder,
+                p_UserId = AbpSession.UserId
+            });
+        }
     }
 }
