@@ -152,6 +152,10 @@ ngx-spinner .loading-text {
     font-size: 1.3em;
 }
 
+body{
+    font-family: 'Roboto' !important;
+}
+
 /* .login-form */
 /****************************** MENU *****/
 .app-sidebar-menu .menu.menu-column>.menu-item {
@@ -547,11 +551,11 @@ body .ag-theme-alpine .ag-header-cell.ag-focus-managed.ag-header-cell-sortable.a
         box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.25), 10px 20px 20px rgba(0, 0, 0, 0.1) !important;
         border-radius: 20px !important; position: relative;}
     .login-account .login_content   .login-header{ display: flex; justify-content: space-between; }
-    
+
     .login-account .login_content .login-header img { width: 10vw; z-index: 1; }
     .login-account .login_content h3, .login-account .login_content .h3 {z-index: 3;color: #52796F !important; text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15);}
     .login-account .login_content .login-form .form-group { min-height: 4rem; display: flex; position: relative;  z-index: 2;}
-    
+
     .login-account .login_content .login-form .form-group:first-child{
         margin-top: 4rem;
     }
@@ -587,7 +591,7 @@ body .ag-theme-alpine .ag-header-cell.ag-focus-managed.ag-header-cell-sortable.a
         color: #52796F ;
         border: 1px solid #52796F ;
     }
-    
+
     .login-account .login_content .login-form .form-group input:-webkit-autofill {
         -webkit-text-fill-color: #004d79a8 !important;
         background-color: white !important;
@@ -599,12 +603,12 @@ body .ag-theme-alpine .ag-header-cell.ag-focus-managed.ag-header-cell-sortable.a
     .login-account .login_content .login-form .form-group input:-webkit-autofill:hover,
     .login-account .login_content .login-form .form-group input:-webkit-autofill:focus,
     .login-account .login_content .login-form .form-group input:-webkit-autofill:active { -webkit-text-fill-color: #52796F !important; }
-    
+
     .login-account .login_content .login-form .form-group img.password-eye { cursor: pointer; height: 24px; position: absolute; right: 6px; top: 6px; opacity: 0.5; }
     .login-account .login_content .login-form .form-group img.password-eye:hover { opacity: 1; }
-    
+
     .login-account .login_content .login-form .form-group img.password-eye.password-eye-open { display: none;  opacity: 1; }
-    
+
     @media (max-width: 991.8px) {
         .mt-5 { margin-top: 0rem !important; }
         .bgi-size-contain .login_content { width: 60vw !important;}
@@ -623,7 +627,7 @@ body .ag-theme-alpine .ag-header-cell.ag-focus-managed.ag-header-cell-sortable.a
         .login-account .login_content .login-form .form-group { min-height: 1rem; }
         .login-account .login_content .login-form .form-group.remember-user { margin-bottom: 1rem; }
     }
-    
+
     @media (max-height: 730px) {
         .login_content.p-lg-15 { padding: 3rem 4vw !important; }
         .login-account .login_content .login-form .form-group:first-child { margin-top: 3rem; }
