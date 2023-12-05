@@ -99,7 +99,8 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
                 valueGetter: (params) => this.pipe.transform(params.data?.tmvDate, 'dd/MM/yyyy')
             },
             { headerName: this.l('Forwarder'), headerTooltip: this.l('Forwarder'), field: 'forwarder', flex: 1 },
-            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 }
+            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
+            { headerName: this.l('Shipment Id'), headerTooltip: this.l('Shipment Id'), field: 'shipmentId', flex: 1 }
         ];
 
         this.frameworkComponents = {

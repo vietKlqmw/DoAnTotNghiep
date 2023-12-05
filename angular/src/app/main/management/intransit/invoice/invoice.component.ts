@@ -103,9 +103,6 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
                 valueFormatter: (params) => this.pipe.transform(params.data?.billDate, 'dd/MM/yyyy')
             },
             { headerName: this.l('Shipment No'), headerTooltip: this.l('Shipment No'), field: 'shipmentNo', flex: 1 },
-            { headerName: this.l('Order Type Code'), headerTooltip: this.l('Order Type Code'), field: 'ordertypeCode', flex: 1 },
-            { headerName: this.l('Goods Type Code'), headerTooltip: this.l('Goods Type Code'), field: 'goodstypeCode', flex: 1 },
-            { headerName: this.l('Invoice ParentId'), headerTooltip: this.l('Invoice ParentId'), field: 'invoiceParentNo', flex: 1 },
             {
                 headerName: this.l('Freight'), headerTooltip: this.l('Freight'), field: 'freightTotal', flex: 1, type: 'rightAligned',
                 valueGetter: (params) => this._fm.formatMoney_decimal(params.data?.freightTotal, 4)
@@ -143,8 +140,6 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.usageQty),
                 aggFunc: this.calTotal
             },
-            { headerName: this.l('Fix Lot'), headerTooltip: this.l('Fix Lot'), field: 'fixlot', flex: 1 },
-            { headerName: this.l('Case No'), headerTooltip: this.l('Case No'), field: 'caseNo', flex: 1 },
             { headerName: this.l('Module No'), headerTooltip: this.l('Module No'), field: 'moduleNo', flex: 1 },
             { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', flex: 1 },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
@@ -178,17 +173,14 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
             { headerName: this.l('VAT Rate'), headerTooltip: this.l('Vat Rate'), field: 'vatRate', Flex: 1, type: 'rightAligned' },
             { headerName: this.l('Carfamily Code'), headerTooltip: this.l('Carfamily Code'), field: 'carfamilyCode', flex: 1 },
             { headerName: this.l('Part Net Weight'), headerTooltip: this.l('Part Net Weight'), field: 'partNetWeight', flex: 1, type: 'rightAligned' },
-            { headerName: this.l('Order No'), headerTooltip: this.l('Order No'), field: 'orderNo', flex: 1 },
             {
                 headerName: this.l('Packaging Date'), headerTooltip: this.l('Packaging Date'), field: 'packagingDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.packagingDate, 'dd/MM/yyyy')
             },
             { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
             { headerName: this.l('Invoice Id'), headerTooltip: this.l('InvoiceId'), field: 'invoiceId', flex: 1 },
-            { headerName: this.l('Invoice Parent Id'), headerTooltip: this.l('Invoice ParentId'), field: 'invoiceParentId', flex: 1 },
             { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', flex: 1 },
-            { headerName: this.l('Part Name VN'), headerTooltip: this.l('Partname Vn'), field: 'partnameVn', flex: 1 },
-            { headerName: this.l('Car Name'), headerTooltip: this.l('Car Name'), field: 'carName', flex: 1 }
+            { headerName: this.l('Part Name VN'), headerTooltip: this.l('Partname Vn'), field: 'partnameVn', flex: 1 }
         ];
 
         this.frameworkComponents = {
