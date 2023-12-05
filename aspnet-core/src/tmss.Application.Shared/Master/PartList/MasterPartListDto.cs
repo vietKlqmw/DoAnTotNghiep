@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace tmss.Master.PartList
 {
@@ -42,5 +43,29 @@ namespace tmss.Master.PartList
 
         public virtual string CarfamilyCode { get; set; }
 
+    }
+
+    public class CreateOrEditMasterPartListDto : EntityDto<long?>
+    {
+        [StringLength(15)]
+        public virtual string PartNo { get; set; }
+
+        [StringLength(500)]
+        public virtual string PartName { get; set; }
+
+        [StringLength(10)]
+        public virtual string SupplierNo { get; set; }
+
+        public virtual long? MaterialId { get; set; }
+
+        [StringLength(4)]
+        public virtual string CarfamilyCode { get; set; }
+
+        public virtual DateTime? StartProductionMonth { get; set; }
+
+        public virtual DateTime? EndProductionMonth { get; set; }
+
+        [StringLength(5000)]
+        public virtual string Remark { get; set; }
     }
 }

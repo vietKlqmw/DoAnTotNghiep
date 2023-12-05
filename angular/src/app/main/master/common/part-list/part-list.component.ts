@@ -212,18 +212,18 @@ export class PartListComponent extends AppComponentBase implements OnInit {
             });
     }
 
-    // deletePartList() {
-    //     this.message.confirm(this.l('Bạn có chắc chắn muốn xóa?'), 'Delete PartList', (isConfirmed) => {
-    //         if (isConfirmed) {
-    //             this._service.deletePartList(this._selectrow).subscribe(() => {
-    //                 this.callBackDataGrid(this.dataParams!);
-    //                 this.notify.success(this.l('SuccessfullyDeleted'));
-    //             },error =>{
-    //                 this.notify.error(this.l('FailedDeleted'));
-    //             });
-    //         }
-    //     });
-    // }
+    deletePartList() {
+        this.message.confirm(this.l('Bạn có chắc chắn muốn xóa?'), 'Delete PartList', (isConfirmed) => {
+            if (isConfirmed) {
+                this._service.deletePartList(this._selectrow).subscribe(() => {
+                    this.callBackDataGrid(this.dataParams!);
+                    this.notify.success(this.l('SuccessfullyDeleted'));
+                },error =>{
+                    this.notify.error(this.l('FailedDeleted'));
+                });
+            }
+        });
+    }
 
     // viewPartList(): void {
     //     this.viewPartListModal.show(this.saveSelectedRow);

@@ -9,11 +9,11 @@ namespace tmss.Master
     [Table("MasterPartList")]
     public class MasterPartList : FullAuditedEntity<long>, IEntity<long>
     {
-        public const int MaxPartNoLength = 50;
+        public const int MaxPartNoLength = 15;
 
-        public const int MaxPartNameLength = 10;
+        public const int MaxPartNameLength = 500;
 
-        public const int MaxSupplierNoLength = 50;
+        public const int MaxSupplierNoLength = 10;
 
         public const int MaxCfcLength = 4;
 

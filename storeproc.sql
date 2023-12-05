@@ -182,6 +182,7 @@ BEGIN
      WHERE (@p_PartNo IS NULL OR mpl.PartNo LIKE CONCAT('%', @p_PartNo, '%'))
        AND (@p_SupplierNo IS NULL OR mpl.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
        AND (@p_Cfc IS NULL OR mpl.CarfamilyCode LIKE CONCAT('%', @p_Cfc, '%'))
+       AND mpl.IsDeleted = 0
 END
 ------------------------------------------------MaterialGroup------------------------------------------------
 INSERT INTO MasterMaterialGroup 

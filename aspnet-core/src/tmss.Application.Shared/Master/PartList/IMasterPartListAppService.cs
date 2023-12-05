@@ -7,5 +7,7 @@ namespace tmss.Master.PartList
     public interface IMasterPartListAppService : IApplicationService
     {
         Task<PagedResultDto<MasterPartListDto>> GetPartListSearch(GetMasterPartListInput input);
+
+        Task CreateOrEdit(CreateOrEditMasterPartListDto input);
     }
 }

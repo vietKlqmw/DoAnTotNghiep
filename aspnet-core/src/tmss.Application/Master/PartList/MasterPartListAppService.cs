@@ -1,9 +1,14 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Dapper.Repositories;
+using Abp.Domain.Repositories;
+using Abp.Domain.Uow;
+using Abp.EntityFrameworkCore.Uow;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using tmss.Dto;
+using tmss.EntityFrameworkCore;
 using tmss.Master.PartList.Exporting;
 
 namespace tmss.Master.PartList
@@ -11,14 +16,17 @@ namespace tmss.Master.PartList
     public class MasterPartListAppService : tmssAppServiceBase, IMasterPartListAppService
     {
         private readonly IDapperRepository<MasterPartList, long> _dapperRepo;
+        private readonly IRepository<MasterPartList, long> _repo;
         private readonly IMasterPartListExcelExporter _excelExporter;
 
         public MasterPartListAppService(
             IDapperRepository<MasterPartList, long> dapperRepo,
+            IRepository<MasterPartList, long> repo,
             IMasterPartListExcelExporter excelExporter
                                          )
         {
             _dapperRepo = dapperRepo;
+            _repo = repo;
             _excelExporter = excelExporter;
         }
         public async Task<PagedResultDto<MasterPartListDto>> GetPartListSearch(GetMasterPartListInput input)
@@ -57,5 +65,36 @@ namespace tmss.Master.PartList
             return _excelExporter.ExportToFile(exportToExcel);
         }
 
+        public async Task DeletePartList(int? Id)
+        {
+            string _sql = "UPDATE MasterPartList SET IsDeleted = 1 WHERE Id = @p_Id";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_Id = Id
+            });
+        }
+
+        public async Task CreateOrEdit(CreateOrEditMasterPartListDto input)
+        {
+            if (input.Id == null) await Create(input);
+            else await Update(input);
+        }
+
+        private async Task Create(CreateOrEditMasterPartListDto input)
+        {
+            var mainObj = ObjectMapper.Map<MasterPartList>(input);
+
+            await CurrentUnitOfWork.GetDbContext<tmssDbContext>().AddAsync(mainObj);
+        }
+
+        private async Task Update(CreateOrEditMasterPartListDto input)
+        {
+            using (CurrentUnitOfWork.DisableFilter(AbpDataFilters.MayHaveTenant))
+            {
+                var mainObj = await _repo.GetAll().FirstOrDefaultAsync(e => e.Id == input.Id);
+
+                var mainObjToUpdate = ObjectMapper.Map(input, mainObj);
+            }
+        }
     }
 }
