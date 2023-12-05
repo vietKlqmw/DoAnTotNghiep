@@ -6,10 +6,8 @@ CREATE PROCEDURE INV_MASTER_MATERIAL_SEARCH
 AS
 BEGIN
     SELECT mm.Id, mm.MaterialType, mm.MaterialCode, mm.Description, mm.MaterialGroup, 
-           mm.BaseUnitOfMeasure, mm.Plant, mm.StorageLocation, mm.ProductionGroup, mm.ProductionType, 
-           mm.ProductionPurpose, mm.ReservedStock, mm.LotCode, mm.ProductionStorageLocation, 
-           mm.CostingLotSize, mm.ProductionVersion, mm.StandardPrice, mm.MovingPrice, 
-           mm.MaterialOrigin, mm.OriginGroup, mm.EffectiveDateFrom, mm.EffectiveDateTo
+           mm.BaseUnitOfMeasure, mm.StorageLocation, mm.ProductionType, mm.StandardPrice, 
+           mm.MovingPrice, mm.MaterialOrigin, mm.EffectiveDateFrom, mm.EffectiveDateTo
       FROM MasterMaterial mm
      WHERE (@p_MaterialCode IS NULL OR mm.MaterialCode LIKE CONCAT('%', @p_MaterialCode, '%'))
        AND (@p_MaterialGroup IS NULL OR mm.MaterialGroup LIKE CONCAT('%', @p_MaterialGroup, '%'))
@@ -21,8 +19,8 @@ CREATE PROCEDURE INV_MASTER_MATERIAL_BY_ID
 AS
 BEGIN
     SELECT mm.Id, mm.MaterialType, mm.MaterialCode, mm.Description, mm.MaterialGroup, 
-           mm.BaseUnitOfMeasure, mm.StorageLocation, mm.ProductionType, mm.StandardPrice, mm.MovingPrice, 
-           mm.MaterialOrigin, mm.EffectiveDateFrom, mm.EffectiveDateTo
+           mm.BaseUnitOfMeasure, mm.StorageLocation, mm.ProductionType, mm.StandardPrice, 
+           mm.MovingPrice, mm.MaterialOrigin, mm.EffectiveDateFrom, mm.EffectiveDateTo
       FROM MasterMaterial mm
      WHERE mm.Id = @p_MaterialId
 END
