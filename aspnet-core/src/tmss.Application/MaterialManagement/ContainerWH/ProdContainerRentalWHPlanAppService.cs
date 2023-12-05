@@ -85,7 +85,7 @@ namespace tmss.MaterialManagement.ContainerWH
         public async Task EditContainerWH(ProdContainerRentalWHPlanDto input)
         {
             string _sql = "Exec INV_PROD_CONTAINER_WAREHOUSE_EDIT @p_Id, @p_ContainerNo, @p_RequestDate, @p_RequestTime," +
-                "@p_InvoiceNo, @p_BillOfLadingNo, @p_SupplierNo, @p_SealNo, @p_ListcaseNo, @p_ListLotNo, @p_DevanningDate," +
+                "@p_InvoiceNo, @p_BillOfLadingNo, @p_SupplierNo, @p_SealNo, @p_DevanningDate," +
                 "@p_DevanningTime, @p_ActualDevanningDate, @p_GateInPlanTime, @p_GateInActualDateTime, @p_Transport, @p_Status, @p_UserId";
             await _dapperRepo.ExecuteAsync(_sql, new
             {
@@ -97,8 +97,6 @@ namespace tmss.MaterialManagement.ContainerWH
                 p_BillOfLadingNo = input.BillofladingNo,
                 p_SupplierNo = input.SupplierNo,
                 p_SealNo = input.SealNo,
-                p_ListcaseNo = input.ListcaseNo,
-                p_ListLotNo = input.ListLotNo,
                 p_DevanningDate = input.DevanningDate,
                 p_DevanningTime = input.DevanningTime,
                 p_ActualDevanningDate = input.ActualDevanningDate,
@@ -132,7 +130,6 @@ namespace tmss.MaterialManagement.ContainerWH
                         string v_container = (v_worksheet.Cells[i, 2]).Value?.ToString() ?? "";
                         string v_seal = (v_worksheet.Cells[i, 3]).Value?.ToString() ?? "";
                         string v_transport = (v_worksheet.Cells[i, 4]).Value?.ToString() ?? "";
-                        string v_case_no = (v_worksheet.Cells[i, 5]).Value?.ToString() ?? "";
 
                         if (v_container != "")
                         {
@@ -159,7 +156,6 @@ namespace tmss.MaterialManagement.ContainerWH
 
                             row.DevanningTime = v_time_devanning;
                             row.Transport = v_transport;
-                            row.ListcaseNo = v_case_no;
                             row.CreatorUserId = AbpSession.UserId;
                             listImport.Add(row);
                         }
@@ -189,7 +185,6 @@ namespace tmss.MaterialManagement.ContainerWH
                                 bulkCopy.ColumnMappings.Add("ContainerNo", "ContainerNo");
                                 bulkCopy.ColumnMappings.Add("SealNo", "SealNo");
                                 bulkCopy.ColumnMappings.Add("Transport", "Transport");
-                                bulkCopy.ColumnMappings.Add("ListcaseNo", "ListcaseNo");
                                 bulkCopy.ColumnMappings.Add("DevanningDate", "DevanningDate");
                                 bulkCopy.ColumnMappings.Add("DevanningTime", "DevanningTime");
                                 bulkCopy.ColumnMappings.Add("CreatorUserId", "CreatorUserId");

@@ -53,7 +53,6 @@ export class ListErrorImportModalComponent extends AppComponentBase {
             { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 100},
             { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', flex: 1 },
             { headerName: this.l('Seal No'), headerTooltip: this.l('Seal No'), field: 'sealNo', flex: 1 },
-            { headerName: this.l('List Case No'), headerTooltip: this.l('List Case No'), field: 'listcaseNo', flex: 1 },
             {
                 headerName: this.l('Devanning Date'), headerTooltip: this.l('Devanning Date'), field: 'devanningDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.devanningDate, 'dd/MM/yyyy')

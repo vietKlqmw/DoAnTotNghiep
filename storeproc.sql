@@ -21,10 +21,8 @@ CREATE PROCEDURE INV_MASTER_MATERIAL_BY_ID
 AS
 BEGIN
     SELECT mm.Id, mm.MaterialType, mm.MaterialCode, mm.Description, mm.MaterialGroup, 
-           mm.BaseUnitOfMeasure, mm.Plant, mm.StorageLocation, mm.ProductionGroup, mm.ProductionType, 
-           mm.ProductionPurpose, mm.ReservedStock, mm.LotCode, mm.ProductionStorageLocation, 
-           mm.CostingLotSize, mm.ProductionVersion, mm.StandardPrice, mm.MovingPrice, 
-           mm.MaterialOrigin, mm.OriginGroup, mm.EffectiveDateFrom, mm.EffectiveDateTo
+           mm.BaseUnitOfMeasure, mm.StorageLocation, mm.ProductionType, mm.StandardPrice, mm.MovingPrice, 
+           mm.MaterialOrigin, mm.EffectiveDateFrom, mm.EffectiveDateTo
       FROM MasterMaterial mm
      WHERE mm.Id = @p_MaterialId
 END
@@ -36,20 +34,11 @@ CREATE PROCEDURE INV_MASTER_MATERIAL_EDIT
 @p_Description NVARCHAR(40), 
 @p_MaterialGroup NVARCHAR(9), 
 @p_BaseUnitOfMeasure NVARCHAR(3), 
-@p_Plant NVARCHAR(4), 
 @p_StorageLocation NVARCHAR(4), 
-@p_ProductionGroup NVARCHAR(3), 
-@p_ProductionPurpose NVARCHAR(2), 
 @p_ProductionType NVARCHAR(10), 
-@p_ReservedStock NVARCHAR(2), 
-@p_LotCode NVARCHAR(10), 
-@p_ProductionStorageLocation NVARCHAR(4), 
-@p_CostingLotSize DECIMAL, 
-@p_ProductionVersion NVARCHAR(4), 
 @p_StandardPrice DECIMAL, 
 @p_MovingPrice DECIMAL, 
 @p_MaterialOrigin NVARCHAR(1), 
-@p_OriginGroup NVARCHAR(4), 
 @p_EffectiveDateFrom DATE, 
 @p_EffectiveDateTo DATE, 
 @p_UserId BIGINT
@@ -59,15 +48,11 @@ BEGIN
     BEGIN
         INSERT INTO MasterMaterial (CreationTime, CreatorUserId, IsDeleted, 
                                     MaterialType, MaterialCode, Description, MaterialGroup, BaseUnitOfMeasure, 
-                                    Plant, StorageLocation, ProductionGroup, ProductionPurpose, ReservedStock, 
-                                    LotCode, ProductionStorageLocation, CostingLotSize, ProductionVersion, 
-                                    StandardPrice, MovingPrice, MaterialOrigin, OriginGroup, EffectiveDateFrom, 
+                                    StorageLocation, StandardPrice, MovingPrice, MaterialOrigin, EffectiveDateFrom, 
                                     EffectiveDateTo, ProductionType)
                             VALUES (GETDATE(), @p_UserId, 0, 
                                     @p_MaterialType, @p_MaterialCode, @p_Description, @p_MaterialGroup, @p_BaseUnitOfMeasure, 
-                                    @p_Plant, @p_StorageLocation, @p_ProductionGroup, @p_ProductionPurpose, @p_ReservedStock, 
-                                    @p_LotCode, @p_ProductionStorageLocation, @p_CostingLotSize, @p_ProductionVersion, 
-                                    @p_StandardPrice, @p_MovingPrice, @p_MaterialOrigin, @p_OriginGroup, @p_EffectiveDateFrom, 
+                                    @p_StorageLocation, @p_StandardPrice, @p_MovingPrice, @p_MaterialOrigin, @p_EffectiveDateFrom, 
                                     @p_EffectiveDateTo, @p_ProductionType);
     END
     ELSE
@@ -75,8 +60,6 @@ BEGIN
         UPDATE MasterMaterial
            SET Description = @p_Description,
                BaseUnitOfMeasure = @p_BaseUnitOfMeasure,
-               ReservedStock = @p_ReservedStock,
-               CostingLotSize = @p_CostingLotSize,
                StandardPrice = @p_StandardPrice,
                MovingPrice = @p_MovingPrice,
                EffectiveDateFrom = @p_EffectiveDateFrom,
@@ -113,9 +96,7 @@ BEGIN
 		    MERGE INTO MasterMaterial AS P
 		    USING (
         	  SELECT DISTINCT t.MaterialType, t.MaterialCode, t.Description, t.MaterialGroup, t.BaseUnitOfMeasure, 
-                   t.Plant, t.StorageLocation, t.ProductionGroup, t.ProductionPurpose, t.ReservedStock, 
-                   t.LotCode, t.ProductionStorageLocation, t.CostingLotSize, t.ProductionVersion, 
-                   t.StandardPrice, t.MovingPrice, t.MaterialOrigin, t.OriginGroup, t.EffectiveDateFrom, 
+                   t.StorageLocation, t.StandardPrice, t.MovingPrice, t.MaterialOrigin, t.EffectiveDateFrom, 
                    t.EffectiveDateTo, t.ProductionType, t.CreatorUserId
         		  FROM MasterMaterial_T t
         	   WHERE Guid = @Guid
@@ -125,19 +106,10 @@ BEGIN
 					      P.Description = DT.Description,
 					      P.MaterialGroup = DT.MaterialGroup,
 					      P.BaseUnitOfMeasure = DT.BaseUnitOfMeasure,
-					      P.Plant = DT.Plant, 
 					      P.StorageLocation = DT.StorageLocation,
-					      P.ProductionGroup = DT.ProductionGroup,
-					      P.ProductionPurpose = DT.ProductionPurpose,
-					      P.ReservedStock = DT.ReservedStock,
-					      P.LotCode = DT.LotCode,
-					      P.ProductionStorageLocation = DT.ProductionStorageLocation,
-					      P.CostingLotSize = DT.CostingLotSize,
-					      P.ProductionVersion = DT.ProductionVersion,
 					      P.StandardPrice = DT.StandardPrice,
                 P.MovingPrice = DT.MovingPrice,
                 P.MaterialOrigin = DT.MaterialOrigin,
-                P.OriginGroup = DT.OriginGroup,
                 P.EffectiveDateFrom = DT.EffectiveDateFrom,
                 P.EffectiveDateTo = DT.EffectiveDateTo,
                 P.ProductionType = DT.ProductionType,
@@ -146,15 +118,11 @@ BEGIN
 		    WHEN NOT MATCHED THEN
 		        INSERT (CreationTime, CreatorUserId, IsDeleted, 
                     MaterialType, MaterialCode, Description, MaterialGroup, BaseUnitOfMeasure, 
-                    Plant, StorageLocation, ProductionGroup, ProductionPurpose, ReservedStock, 
-                    LotCode, ProductionStorageLocation, CostingLotSize, ProductionVersion, 
-                    StandardPrice, MovingPrice, MaterialOrigin, OriginGroup, EffectiveDateFrom, 
+                    StorageLocation, StandardPrice, MovingPrice, MaterialOrigin, EffectiveDateFrom, 
                     EffectiveDateTo, ProductionType)				
 		  	    VALUES (GETDATE(), DT.CreatorUserId, 0, 
                     DT.MaterialType, DT.MaterialCode, DT.Description, DT.MaterialGroup, DT.BaseUnitOfMeasure, 
-                    DT.Plant, DT.StorageLocation, DT.ProductionGroup, DT.ProductionPurpose, DT.ReservedStock, 
-                    DT.LotCode, DT.ProductionStorageLocation, DT.CostingLotSize, DT.ProductionVersion, 
-                    DT.StandardPrice, DT.MovingPrice, DT.MaterialOrigin, DT.OriginGroup, DT.EffectiveDateFrom, 
+                    DT.StorageLocation, DT.StandardPrice, DT.MovingPrice, DT.MaterialOrigin, DT.EffectiveDateFrom, 
                     DT.EffectiveDateTo, DT.ProductionType);
 
 		END
@@ -193,11 +161,8 @@ CREATE PROCEDURE INV_MASTER_MATERIAL_GET_LIST_ERROR_IMPORT
 AS 
 BEGIN
     SELECT DISTINCT mmt.Guid, mmt.MaterialType, mmt.MaterialCode, mmt.Description, mmt.MaterialGroup, 
-           mmt.BaseUnitOfMeasure, mmt.Plant, mmt.StorageLocation, mmt.ProductionGroup, mmt.ProductionType, 
-           mmt.ProductionPurpose, mmt.ReservedStock, mmt.LotCode, mmt.ProductionStorageLocation, 
-           mmt.CostingLotSize, mmt.ProductionVersion, mmt.StandardPrice, mmt.MovingPrice, 
-           mmt.MaterialOrigin, mmt.OriginGroup, mmt.EffectiveDateFrom, mmt.EffectiveDateTo,
-           mmt.ErrorDescription
+           mmt.BaseUnitOfMeasure, mmt.StorageLocation, mmt.ProductionType, mmt.StandardPrice, mmt.MovingPrice, 
+           mmt.MaterialOrigin, mmt.EffectiveDateFrom, mmt.EffectiveDateTo, mmt.ErrorDescription
       FROM MasterMaterial_T mmt
      WHERE mmt.Guid = @Guid AND ISNULL(mmt.ErrorDescription, '') <> '' 
 END
@@ -663,7 +628,7 @@ CREATE PROCEDURE INV_PROD_INVOICE_DETAILS_SEARCH
 )
 AS 
 BEGIN
-    SELECT a.PartNo, a.ModuleNo, a.Insurance, a.ContainerNo, a.InvoiceId, 
+    SELECT a.PartNo, a.Insurance, a.ContainerNo, a.InvoiceId, 
            a.SupplierNo, a.Freight, a.Thc, a.Cif, a.Tax, a.TaxRate, a.Vat, a.VatRate, a.UsageQty, 
            a.PartName, a.CarfamilyCode, a.PartNetWeight, a.PackagingDate, a.FreightVn, 
            a.InsuranceVn, a.ThcVn, a.CifVn, a.TaxVn, a.VatVn, a.PartnameVn--, e.Description AS Status
@@ -739,12 +704,11 @@ BEGIN
                     ELSE a.RequestStatus END RequestStatus,
 			              a.ContainerNo, a.SupplierNo, a.BillOfLadingNo, a.SealNo, a.ContainerSize, 
                     a.ShipmentId, a.ShippingDate, a.PortDate, a.PortDateActual, a.PortTransitDate, 
-			              a.ReceiveDate, a.RequestId, a.InvoiceNo, a.ListLotNo, a.ListCaseNo, a.Transport, 
+			              a.ReceiveDate, a.RequestId, a.InvoiceNo, a.Transport, 
 			              a.DevanningDate, a.DevanningTime, a.Remark, a.WhLocation, a.GateInDate, 
 			              a.GateInTime, a.TransitPortReqId, a.TransitPortReqDate, a.TransitPortReqTime, 
 			              a.Freight, a.Insurance, a.Cif, a.Tax, a.Amount, b.Description Status, 
-			              a.LocationCode, a.LocationDate, a.ReceivingPeriodId, a.OrdertypeCode, 
-			              a.GoodstypeCode, a.BillDate, a.ReceiveTime
+			              a.LocationCode, a.LocationDate, a.ReceivingPeriodId, a.BillDate, a.ReceiveTime
                FROM ProdContainerList a
          INNER JOIN ProdContainerInvoice c
                  ON c.ContainerNo = a.ContainerNo 
@@ -802,7 +766,7 @@ CREATE PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_SEARCH
 AS
 BEGIN 
     SELECT a.Id, a.ContainerNo, a.RequestDate, a.RequestTime, a.InvoiceNo, a.BillofladingNo, 
-           a.SupplierNo, a.SealNo, a.ListcaseNo, a.ListLotNo, a.DevanningDate, a.DevanningTime, 
+           a.SupplierNo, a.SealNo, a.DevanningDate, a.DevanningTime, 
            a.ActualDevanningDate, a.GateInPlanTime, a.GateInActualDateTime, a.Transport, a.Status
       FROM ProdContainerRentalWHPlan a
      WHERE (@p_ContainerNo IS NULL OR a.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
@@ -825,8 +789,6 @@ CREATE PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_EDIT
 @p_BillOfLadingNo NVARCHAR(20), 
 @p_SupplierNo NVARCHAR(10), 
 @p_SealNo NVARCHAR(20), 
-@p_ListcaseNo NVARCHAR(MAX), 
-@p_ListLotNo NVARCHAR(MAX), 
 @p_DevanningDate DATETIME2, 
 @p_DevanningTime TIME, 
 @p_ActualDevanningDate DATETIME2, 
@@ -842,12 +804,12 @@ BEGIN
         INSERT INTO ProdContainerRentalWHPlan 
                     (CreationTime, CreatorUserId, IsDeleted, 
                      ContainerNo, RequestDate, RequestTime, InvoiceNo, BillofladingNo, 
-                     SupplierNo, SealNo, ListcaseNo, ListLotNo, DevanningDate, 
+                     SupplierNo, SealNo, DevanningDate, 
                      DevanningTime, ActualDevanningDate, GateInPlanTime, 
                      GateInActualDateTime, Transport, Status)
              VALUES (GETDATE(), @p_UserId, 0, 
                      @p_ContainerNo, @p_RequestDate, @p_RequestTime, @p_InvoiceNo, @p_BillOfLadingNo, 
-                     @p_SupplierNo, @p_SealNo, @p_ListcaseNo, @p_ListLotNo, @p_DevanningDate, 
+                     @p_SupplierNo, @p_SealNo, @p_DevanningDate, 
                      @p_DevanningTime, @p_ActualDevanningDate, @p_GateInPlanTime, 
                      @p_GateInActualDateTime, @p_Transport, @p_Status);
     END
@@ -861,8 +823,6 @@ BEGIN
                BillofladingNo =@p_BillOfLadingNo,
                SupplierNo = @p_SupplierNo,
                SealNo = @p_SealNo,
-               ListcaseNo = @p_ListcaseNo,
-               ListLotNo = @p_ListLotNo,
                DevanningDate = @p_DevanningDate,
                DevanningTime = @p_DevanningTime,
                ActualDevanningDate = @p_ActualDevanningDate,
@@ -898,7 +858,7 @@ BEGIN
 		VALUES ('ProdContainerRentalWHPlan', 'ProdContainerRentalWHPlan Import', 'START:', 'SYSTEM', GETDATE());
 
 		UPDATE t1 
-		   SET ErrorDescription = CONCAT(ISNULL(ErrorDescription, ''), 'Không tồn tại Container: ', t1.ContainerNo)
+		   SET ErrorDescription = CONCAT(ISNULL(ErrorDescription, ''), N'Không tồn tại Container: ', t1.ContainerNo)
 		  FROM ProdContainerRentalWHPlan_T t1
 		 WHERE Guid = @Guid 
        AND NOT EXISTS (SELECT 1 FROM ProdContainerInvoice t2 WHERE t2.ContainerNo = t1.ContainerNo);
@@ -911,14 +871,14 @@ BEGIN
         	SELECT t1.ContainerNo, 
                  dbo.fn_DistinctList(STRING_AGG(t3.InvoiceNo, ','), ',') InvoiceNo,
                  dbo.fn_DistinctList(STRING_AGG(t4.BillofladingNo, ','), ',') BillofladingNo,
-                 MAX(t2.SupplierNo) SupplierNo, t1.SealNo, t1.ListcaseNo,
+                 MAX(t2.SupplierNo) SupplierNo, t1.SealNo, 
                  t1.DevanningDate, t1.DevanningTime, t1.Transport, t1.CreatorUserId
         		FROM ProdContainerRentalWHPlan_T t1
       INNER JOIN ProdContainerInvoice t2 ON t1.ContainerNo = t2.ContainerNo
       INNER JOIN ProdInvoice t3 ON t3.Id = t2.InvoiceId
       INNER JOIN ProdBillOfLading t4 ON t3.BillId = t4.Id
         	 WHERE Guid = @Guid 
-        GROUP BY t1.ContainerNo, t1.SealNo, t1.ListcaseNo, t1.DevanningDate, t1.DevanningTime, t1.Transport, t1.CreatorUserId
+        GROUP BY t1.ContainerNo, t1.SealNo, t1.DevanningDate, t1.DevanningTime, t1.Transport, t1.CreatorUserId
 		  ) AS DT ON (P.ContainerNo = DT.ContainerNo)				    
 		WHEN MATCHED THEN
 		    UPDATE SET 
@@ -929,7 +889,6 @@ BEGIN
 					P.InvoiceNo = DT.InvoiceNo,
 					P.BillofladingNo = DT.BillofladingNo,
 					P.SealNo = DT.SealNo,
-					P.ListcaseNo = DT.ListcaseNo,
 					P.Transport = DT.Transport,
 					P.SupplierNo = DT.SupplierNo,
           P.LastModifierUserId = DT.CreatorUserId,
@@ -937,12 +896,12 @@ BEGIN
 		WHEN NOT MATCHED THEN
 		    INSERT (
                 ContainerNo, InvoiceNo, BillofladingNo, SupplierNo, SealNo, 
-                ListcaseNo, DevanningDate, DevanningTime, Status, Transport,
+                DevanningDate, DevanningTime, Status, Transport,
                 RequestDate, RequestTime, 
                 CreationTime, CreatorUserId, IsDeleted)				
 		  	VALUES (
                 ContainerNo, InvoiceNo, BillofladingNo, SupplierNo, SealNo,
-                ListcaseNo, DT.DevanningDate, DevanningTime, 'R', Transport,
+                DT.DevanningDate, DevanningTime, 'R', Transport,
                 DT.DevanningDate, DT.DevanningTime, 
                 GETDATE(), CreatorUserId, 0);
 		END
@@ -980,8 +939,7 @@ CREATE PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_GET_LIST_ERROR_IMPORT
 AS 
 BEGIN
     SELECT DISTINCT Guid, ContainerNo, InvoiceNo, BillofladingNo, 
-           SealNo, ListcaseNo, DevanningDate, DevanningTime, 
-           Transport, ErrorDescription
+           SealNo, DevanningDate, DevanningTime, Transport, ErrorDescription
       FROM ProdContainerRentalWHPlan_T
      WHERE Guid = @Guid AND ISNULL(ErrorDescription, '') <> '' 
 END
@@ -1062,7 +1020,7 @@ CREATE PROCEDURE INV_PROD_STOCK_RECEIVING_SEARCH
 )
 AS
 BEGIN
-	  SELECT r.Id, r.PartNo, r.PartName, r.PartListId, r.PartListGradeId, r.MaterialId, 
+	  SELECT r.Id, r.PartNo, r.PartName, r.PartListId, r.MaterialId, 
            ISNULL(r.Qty, 0) Qty, r.TransactionDatetime, r.InvoiceDetailsId, r.WorkingDate, 
 		       r.SupplierNo, d.ContainerNo, d.InvoiceNo, r.Model
       FROM ProdStockReceiving r

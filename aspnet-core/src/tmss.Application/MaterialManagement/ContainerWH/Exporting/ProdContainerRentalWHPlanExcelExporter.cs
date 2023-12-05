@@ -25,8 +25,6 @@ namespace tmss.MaterialManagement.ContainerWH.Exporting
                         ("Bill Of Lading No"),
                         ("Supplier No"),
                         ("Seal No"),
-                        ("List Case No"),
-                        ("List Lot No"),
                         ("Devanning Date"),
                         ("Devanning Time"),
                         ("Actual Devanning Date"),
@@ -45,8 +43,6 @@ namespace tmss.MaterialManagement.ContainerWH.Exporting
                         _ => _.BillofladingNo,
                         _ => _.SupplierNo,
                         _ => _.SealNo,
-                        _ => _.ListcaseNo,
-                        _ => _.ListLotNo,
                         _ => _.DevanningDate,
                         _ => _.DevanningTime,
                         _ => _.ActualDevanningDate,
@@ -56,7 +52,7 @@ namespace tmss.MaterialManagement.ContainerWH.Exporting
                         _ => _.Status
                     );
 
-                    for (var i = 0; i < 16; i++)
+                    for (var i = 0; i < 14; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

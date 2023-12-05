@@ -24573,20 +24573,11 @@ export class MasterMaterialDto implements IMasterMaterialDto {
     description!: string | undefined;
     materialGroup!: string | undefined;
     baseUnitOfMeasure!: string | undefined;
-    plant!: string | undefined;
     storageLocation!: string | undefined;
-    productionGroup!: string | undefined;
-    productionPurpose!: string | undefined;
     productionType!: string | undefined;
-    reservedStock!: string | undefined;
-    lotCode!: string | undefined;
-    productionStorageLocation!: string | undefined;
-    costingLotSize!: number | undefined;
-    productionVersion!: string | undefined;
     standardPrice!: number | undefined;
     movingPrice!: number | undefined;
     materialOrigin!: string | undefined;
-    originGroup!: string | undefined;
     effectiveDateFrom!: moment.Moment | undefined;
     effectiveDateTo!: moment.Moment | undefined;
     id!: number | undefined;
@@ -24607,20 +24598,11 @@ export class MasterMaterialDto implements IMasterMaterialDto {
             this.description = _data["description"];
             this.materialGroup = _data["materialGroup"];
             this.baseUnitOfMeasure = _data["baseUnitOfMeasure"];
-            this.plant = _data["plant"];
             this.storageLocation = _data["storageLocation"];
-            this.productionGroup = _data["productionGroup"];
-            this.productionPurpose = _data["productionPurpose"];
             this.productionType = _data["productionType"];
-            this.reservedStock = _data["reservedStock"];
-            this.lotCode = _data["lotCode"];
-            this.productionStorageLocation = _data["productionStorageLocation"];
-            this.costingLotSize = _data["costingLotSize"];
-            this.productionVersion = _data["productionVersion"];
             this.standardPrice = _data["standardPrice"];
             this.movingPrice = _data["movingPrice"];
             this.materialOrigin = _data["materialOrigin"];
-            this.originGroup = _data["originGroup"];
             this.effectiveDateFrom = _data["effectiveDateFrom"] ? moment(_data["effectiveDateFrom"].toString()) : <any>undefined;
             this.effectiveDateTo = _data["effectiveDateTo"] ? moment(_data["effectiveDateTo"].toString()) : <any>undefined;
             this.id = _data["id"];
@@ -24641,20 +24623,11 @@ export class MasterMaterialDto implements IMasterMaterialDto {
         data["description"] = this.description;
         data["materialGroup"] = this.materialGroup;
         data["baseUnitOfMeasure"] = this.baseUnitOfMeasure;
-        data["plant"] = this.plant;
         data["storageLocation"] = this.storageLocation;
-        data["productionGroup"] = this.productionGroup;
-        data["productionPurpose"] = this.productionPurpose;
         data["productionType"] = this.productionType;
-        data["reservedStock"] = this.reservedStock;
-        data["lotCode"] = this.lotCode;
-        data["productionStorageLocation"] = this.productionStorageLocation;
-        data["costingLotSize"] = this.costingLotSize;
-        data["productionVersion"] = this.productionVersion;
         data["standardPrice"] = this.standardPrice;
         data["movingPrice"] = this.movingPrice;
         data["materialOrigin"] = this.materialOrigin;
-        data["originGroup"] = this.originGroup;
         data["effectiveDateFrom"] = this.effectiveDateFrom ? this.effectiveDateFrom.toISOString() : <any>undefined;
         data["effectiveDateTo"] = this.effectiveDateTo ? this.effectiveDateTo.toISOString() : <any>undefined;
         data["id"] = this.id;
@@ -24668,20 +24641,11 @@ export interface IMasterMaterialDto {
     description: string | undefined;
     materialGroup: string | undefined;
     baseUnitOfMeasure: string | undefined;
-    plant: string | undefined;
     storageLocation: string | undefined;
-    productionGroup: string | undefined;
-    productionPurpose: string | undefined;
     productionType: string | undefined;
-    reservedStock: string | undefined;
-    lotCode: string | undefined;
-    productionStorageLocation: string | undefined;
-    costingLotSize: number | undefined;
-    productionVersion: string | undefined;
     standardPrice: number | undefined;
     movingPrice: number | undefined;
     materialOrigin: string | undefined;
-    originGroup: string | undefined;
     effectiveDateFrom: moment.Moment | undefined;
     effectiveDateTo: moment.Moment | undefined;
     id: number | undefined;
@@ -24742,20 +24706,11 @@ export class MasterMaterialImportDto implements IMasterMaterialImportDto {
     description!: string | undefined;
     materialGroup!: string | undefined;
     baseUnitOfMeasure!: string | undefined;
-    plant!: string | undefined;
     storageLocation!: string | undefined;
-    productionGroup!: string | undefined;
-    productionPurpose!: string | undefined;
     productionType!: string | undefined;
-    reservedStock!: string | undefined;
-    lotCode!: string | undefined;
-    productionStorageLocation!: string | undefined;
-    costingLotSize!: number | undefined;
-    productionVersion!: string | undefined;
     standardPrice!: number | undefined;
     movingPrice!: number | undefined;
     materialOrigin!: string | undefined;
-    originGroup!: string | undefined;
     effectiveDateFrom!: moment.Moment | undefined;
     effectiveDateTo!: moment.Moment | undefined;
     errorDescription!: string | undefined;
@@ -24778,20 +24733,11 @@ export class MasterMaterialImportDto implements IMasterMaterialImportDto {
             this.description = _data["description"];
             this.materialGroup = _data["materialGroup"];
             this.baseUnitOfMeasure = _data["baseUnitOfMeasure"];
-            this.plant = _data["plant"];
             this.storageLocation = _data["storageLocation"];
-            this.productionGroup = _data["productionGroup"];
-            this.productionPurpose = _data["productionPurpose"];
             this.productionType = _data["productionType"];
-            this.reservedStock = _data["reservedStock"];
-            this.lotCode = _data["lotCode"];
-            this.productionStorageLocation = _data["productionStorageLocation"];
-            this.costingLotSize = _data["costingLotSize"];
-            this.productionVersion = _data["productionVersion"];
             this.standardPrice = _data["standardPrice"];
             this.movingPrice = _data["movingPrice"];
             this.materialOrigin = _data["materialOrigin"];
-            this.originGroup = _data["originGroup"];
             this.effectiveDateFrom = _data["effectiveDateFrom"] ? moment(_data["effectiveDateFrom"].toString()) : <any>undefined;
             this.effectiveDateTo = _data["effectiveDateTo"] ? moment(_data["effectiveDateTo"].toString()) : <any>undefined;
             this.errorDescription = _data["errorDescription"];
@@ -24814,20 +24760,11 @@ export class MasterMaterialImportDto implements IMasterMaterialImportDto {
         data["description"] = this.description;
         data["materialGroup"] = this.materialGroup;
         data["baseUnitOfMeasure"] = this.baseUnitOfMeasure;
-        data["plant"] = this.plant;
         data["storageLocation"] = this.storageLocation;
-        data["productionGroup"] = this.productionGroup;
-        data["productionPurpose"] = this.productionPurpose;
         data["productionType"] = this.productionType;
-        data["reservedStock"] = this.reservedStock;
-        data["lotCode"] = this.lotCode;
-        data["productionStorageLocation"] = this.productionStorageLocation;
-        data["costingLotSize"] = this.costingLotSize;
-        data["productionVersion"] = this.productionVersion;
         data["standardPrice"] = this.standardPrice;
         data["movingPrice"] = this.movingPrice;
         data["materialOrigin"] = this.materialOrigin;
-        data["originGroup"] = this.originGroup;
         data["effectiveDateFrom"] = this.effectiveDateFrom ? this.effectiveDateFrom.toISOString() : <any>undefined;
         data["effectiveDateTo"] = this.effectiveDateTo ? this.effectiveDateTo.toISOString() : <any>undefined;
         data["errorDescription"] = this.errorDescription;
@@ -24843,20 +24780,11 @@ export interface IMasterMaterialImportDto {
     description: string | undefined;
     materialGroup: string | undefined;
     baseUnitOfMeasure: string | undefined;
-    plant: string | undefined;
     storageLocation: string | undefined;
-    productionGroup: string | undefined;
-    productionPurpose: string | undefined;
     productionType: string | undefined;
-    reservedStock: string | undefined;
-    lotCode: string | undefined;
-    productionStorageLocation: string | undefined;
-    costingLotSize: number | undefined;
-    productionVersion: string | undefined;
     standardPrice: number | undefined;
     movingPrice: number | undefined;
     materialOrigin: string | undefined;
-    originGroup: string | undefined;
     effectiveDateFrom: moment.Moment | undefined;
     effectiveDateTo: moment.Moment | undefined;
     errorDescription: string | undefined;
@@ -27689,8 +27617,6 @@ export class ProdContainerListDto implements IProdContainerListDto {
     receiveDate!: moment.Moment | undefined;
     requestId!: number | undefined;
     invoiceNo!: string | undefined;
-    listLotNo!: string | undefined;
-    listCaseNo!: string | undefined;
     transport!: string | undefined;
     devanningDate!: moment.Moment | undefined;
     devanningTime!: string | undefined;
@@ -27710,8 +27636,6 @@ export class ProdContainerListDto implements IProdContainerListDto {
     locationCode!: string | undefined;
     locationDate!: moment.Moment | undefined;
     receivingPeriodId!: number | undefined;
-    ordertypeCode!: string | undefined;
-    goodstypeCode!: string | undefined;
     rentalWhId!: number | undefined;
     requestStatus!: string | undefined;
     billDate!: moment.Moment | undefined;
@@ -27747,8 +27671,6 @@ export class ProdContainerListDto implements IProdContainerListDto {
             this.receiveDate = _data["receiveDate"] ? moment(_data["receiveDate"].toString()) : <any>undefined;
             this.requestId = _data["requestId"];
             this.invoiceNo = _data["invoiceNo"];
-            this.listLotNo = _data["listLotNo"];
-            this.listCaseNo = _data["listCaseNo"];
             this.transport = _data["transport"];
             this.devanningDate = _data["devanningDate"] ? moment(_data["devanningDate"].toString()) : <any>undefined;
             this.devanningTime = _data["devanningTime"];
@@ -27768,8 +27690,6 @@ export class ProdContainerListDto implements IProdContainerListDto {
             this.locationCode = _data["locationCode"];
             this.locationDate = _data["locationDate"] ? moment(_data["locationDate"].toString()) : <any>undefined;
             this.receivingPeriodId = _data["receivingPeriodId"];
-            this.ordertypeCode = _data["ordertypeCode"];
-            this.goodstypeCode = _data["goodstypeCode"];
             this.rentalWhId = _data["rentalWhId"];
             this.requestStatus = _data["requestStatus"];
             this.billDate = _data["billDate"] ? moment(_data["billDate"].toString()) : <any>undefined;
@@ -27805,8 +27725,6 @@ export class ProdContainerListDto implements IProdContainerListDto {
         data["receiveDate"] = this.receiveDate ? this.receiveDate.toISOString() : <any>undefined;
         data["requestId"] = this.requestId;
         data["invoiceNo"] = this.invoiceNo;
-        data["listLotNo"] = this.listLotNo;
-        data["listCaseNo"] = this.listCaseNo;
         data["transport"] = this.transport;
         data["devanningDate"] = this.devanningDate ? this.devanningDate.toISOString() : <any>undefined;
         data["devanningTime"] = this.devanningTime;
@@ -27826,8 +27744,6 @@ export class ProdContainerListDto implements IProdContainerListDto {
         data["locationCode"] = this.locationCode;
         data["locationDate"] = this.locationDate ? this.locationDate.toISOString() : <any>undefined;
         data["receivingPeriodId"] = this.receivingPeriodId;
-        data["ordertypeCode"] = this.ordertypeCode;
-        data["goodstypeCode"] = this.goodstypeCode;
         data["rentalWhId"] = this.rentalWhId;
         data["requestStatus"] = this.requestStatus;
         data["billDate"] = this.billDate ? this.billDate.toISOString() : <any>undefined;
@@ -27856,8 +27772,6 @@ export interface IProdContainerListDto {
     receiveDate: moment.Moment | undefined;
     requestId: number | undefined;
     invoiceNo: string | undefined;
-    listLotNo: string | undefined;
-    listCaseNo: string | undefined;
     transport: string | undefined;
     devanningDate: moment.Moment | undefined;
     devanningTime: string | undefined;
@@ -27877,8 +27791,6 @@ export interface IProdContainerListDto {
     locationCode: string | undefined;
     locationDate: moment.Moment | undefined;
     receivingPeriodId: number | undefined;
-    ordertypeCode: string | undefined;
-    goodstypeCode: string | undefined;
     rentalWhId: number | undefined;
     requestStatus: string | undefined;
     billDate: moment.Moment | undefined;
@@ -27947,8 +27859,6 @@ export class ProdContainerRentalWHPlanDto implements IProdContainerRentalWHPlanD
     billofladingNo!: string | undefined;
     supplierNo!: string | undefined;
     sealNo!: string | undefined;
-    listcaseNo!: string | undefined;
-    listLotNo!: string | undefined;
     devanningDate!: moment.Moment | undefined;
     devanningTime!: string | undefined;
     actualDevanningDate!: moment.Moment | undefined;
@@ -27976,8 +27886,6 @@ export class ProdContainerRentalWHPlanDto implements IProdContainerRentalWHPlanD
             this.billofladingNo = _data["billofladingNo"];
             this.supplierNo = _data["supplierNo"];
             this.sealNo = _data["sealNo"];
-            this.listcaseNo = _data["listcaseNo"];
-            this.listLotNo = _data["listLotNo"];
             this.devanningDate = _data["devanningDate"] ? moment(_data["devanningDate"].toString()) : <any>undefined;
             this.devanningTime = _data["devanningTime"];
             this.actualDevanningDate = _data["actualDevanningDate"] ? moment(_data["actualDevanningDate"].toString()) : <any>undefined;
@@ -28005,8 +27913,6 @@ export class ProdContainerRentalWHPlanDto implements IProdContainerRentalWHPlanD
         data["billofladingNo"] = this.billofladingNo;
         data["supplierNo"] = this.supplierNo;
         data["sealNo"] = this.sealNo;
-        data["listcaseNo"] = this.listcaseNo;
-        data["listLotNo"] = this.listLotNo;
         data["devanningDate"] = this.devanningDate ? this.devanningDate.toISOString() : <any>undefined;
         data["devanningTime"] = this.devanningTime;
         data["actualDevanningDate"] = this.actualDevanningDate ? this.actualDevanningDate.toISOString() : <any>undefined;
@@ -28027,8 +27933,6 @@ export interface IProdContainerRentalWHPlanDto {
     billofladingNo: string | undefined;
     supplierNo: string | undefined;
     sealNo: string | undefined;
-    listcaseNo: string | undefined;
-    listLotNo: string | undefined;
     devanningDate: moment.Moment | undefined;
     devanningTime: string | undefined;
     actualDevanningDate: moment.Moment | undefined;
@@ -28096,8 +28000,6 @@ export class ProdContainerRentalWHPlanImportDto implements IProdContainerRentalW
     billofladingNo!: string | undefined;
     supplierNo!: string | undefined;
     sealNo!: string | undefined;
-    listcaseNo!: string | undefined;
-    listLotNo!: string | undefined;
     devanningDate!: moment.Moment | undefined;
     devanningTime!: string | undefined;
     actualDevanningDate!: moment.Moment | undefined;
@@ -28127,8 +28029,6 @@ export class ProdContainerRentalWHPlanImportDto implements IProdContainerRentalW
             this.billofladingNo = _data["billofladingNo"];
             this.supplierNo = _data["supplierNo"];
             this.sealNo = _data["sealNo"];
-            this.listcaseNo = _data["listcaseNo"];
-            this.listLotNo = _data["listLotNo"];
             this.devanningDate = _data["devanningDate"] ? moment(_data["devanningDate"].toString()) : <any>undefined;
             this.devanningTime = _data["devanningTime"];
             this.actualDevanningDate = _data["actualDevanningDate"] ? moment(_data["actualDevanningDate"].toString()) : <any>undefined;
@@ -28158,8 +28058,6 @@ export class ProdContainerRentalWHPlanImportDto implements IProdContainerRentalW
         data["billofladingNo"] = this.billofladingNo;
         data["supplierNo"] = this.supplierNo;
         data["sealNo"] = this.sealNo;
-        data["listcaseNo"] = this.listcaseNo;
-        data["listLotNo"] = this.listLotNo;
         data["devanningDate"] = this.devanningDate ? this.devanningDate.toISOString() : <any>undefined;
         data["devanningTime"] = this.devanningTime;
         data["actualDevanningDate"] = this.actualDevanningDate ? this.actualDevanningDate.toISOString() : <any>undefined;
@@ -28182,8 +28080,6 @@ export interface IProdContainerRentalWHPlanImportDto {
     billofladingNo: string | undefined;
     supplierNo: string | undefined;
     sealNo: string | undefined;
-    listcaseNo: string | undefined;
-    listLotNo: string | undefined;
     devanningDate: moment.Moment | undefined;
     devanningTime: string | undefined;
     actualDevanningDate: moment.Moment | undefined;
@@ -28245,7 +28141,6 @@ export interface IPagedResultDtoOfProdContainerRentalWHPlanImportDto {
 
 export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
     partNo!: string | undefined;
-    moduleNo!: string | undefined;
     insurance!: number | undefined;
     containerNo!: string | undefined;
     invoiceId!: number | undefined;
@@ -28290,7 +28185,6 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
     init(_data?: any) {
         if (_data) {
             this.partNo = _data["partNo"];
-            this.moduleNo = _data["moduleNo"];
             this.insurance = _data["insurance"];
             this.containerNo = _data["containerNo"];
             this.invoiceId = _data["invoiceId"];
@@ -28335,7 +28229,6 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["partNo"] = this.partNo;
-        data["moduleNo"] = this.moduleNo;
         data["insurance"] = this.insurance;
         data["containerNo"] = this.containerNo;
         data["invoiceId"] = this.invoiceId;
@@ -28373,7 +28266,6 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
 
 export interface IProdInvoiceDetailsDto {
     partNo: string | undefined;
-    moduleNo: string | undefined;
     insurance: number | undefined;
     containerNo: string | undefined;
     invoiceId: number | undefined;
@@ -28883,7 +28775,6 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
     partNo!: string | undefined;
     partName!: string | undefined;
     partListId!: number | undefined;
-    partListGradeId!: number | undefined;
     materialId!: number | undefined;
     qty!: number | undefined;
     transactionDatetime!: moment.Moment | undefined;
@@ -28910,7 +28801,6 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
             this.partNo = _data["partNo"];
             this.partName = _data["partName"];
             this.partListId = _data["partListId"];
-            this.partListGradeId = _data["partListGradeId"];
             this.materialId = _data["materialId"];
             this.qty = _data["qty"];
             this.transactionDatetime = _data["transactionDatetime"] ? moment(_data["transactionDatetime"].toString()) : <any>undefined;
@@ -28937,7 +28827,6 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
         data["partNo"] = this.partNo;
         data["partName"] = this.partName;
         data["partListId"] = this.partListId;
-        data["partListGradeId"] = this.partListGradeId;
         data["materialId"] = this.materialId;
         data["qty"] = this.qty;
         data["transactionDatetime"] = this.transactionDatetime ? this.transactionDatetime.toISOString() : <any>undefined;
@@ -28957,7 +28846,6 @@ export interface IProdStockReceivingDto {
     partNo: string | undefined;
     partName: string | undefined;
     partListId: number | undefined;
-    partListGradeId: number | undefined;
     materialId: number | undefined;
     qty: number | undefined;
     transactionDatetime: moment.Moment | undefined;

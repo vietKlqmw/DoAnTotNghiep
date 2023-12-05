@@ -24,20 +24,11 @@ namespace tmss.Master.Material.Exporting
                         ("Description"),
                         ("Material Group"),
                         ("Base Unit Of Measure"),
-                        ("Factory"),
                         ("Storage Location"),
-                        ("Production Group"),
-                        ("Production Purpose"),
                         ("Production Type"),
-                        ("Reserved Stock"),
-                        ("Lot Code"),
-                        ("Production Storage Location"),
-                        ("Costing Lot Size"),
-                        ("Production Version"),
                         ("Standard Price"),
                         ("Moving Price"),
                         ("Material Origin"),
-                        ("Origin Group"),
                         ("Effective Date From"),
                         ("Effective Date To")
                     );
@@ -49,25 +40,16 @@ namespace tmss.Master.Material.Exporting
                         _ => _.Description,
                         _ => _.MaterialGroup,
                         _ => _.BaseUnitOfMeasure,
-                        _ => _.Plant,
                         _ => _.StorageLocation,
-                        _ => _.ProductionGroup,
-                        _ => _.ProductionPurpose,
                         _ => _.ProductionType,
-                        _ => _.ReservedStock,
-                        _ => _.LotCode,
-                        _ => _.ProductionStorageLocation,
-                        _ => _.CostingLotSize,
-                        _ => _.ProductionVersion,
                         _ => _.StandardPrice,
                         _ => _.MovingPrice,
                         _ => _.MaterialOrigin,
-                        _ => _.OriginGroup,
                         _ => _.EffectiveDateFrom,
                         _ => _.EffectiveDateTo
                     );
 
-                    for (var i = 0; i < 21; i++)
+                    for (var i = 0; i < 12; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

@@ -61,7 +61,6 @@ namespace tmss.MaterialManagement.Invoice
     public class ProdInvoiceDetailsDto : EntityDto<long?>
     {
         public virtual string PartNo { get; set; }
-        public virtual string ModuleNo { get; set; }
         public virtual decimal? Insurance { get; set; }
         public virtual string ContainerNo { get; set; }
         public virtual long? InvoiceId { get; set; }

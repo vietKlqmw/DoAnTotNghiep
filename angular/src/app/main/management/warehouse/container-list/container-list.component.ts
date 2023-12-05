@@ -113,8 +113,6 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
                 valueFormatter: (params) => this.pipe.transform(params.data?.portTransitDate, 'dd/MM/yyyy')
             },
             { headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', flex: 1 },
-            { headerName: this.l('List Lot No'), headerTooltip: this.l('List Lot No'), field: 'listLotNo', flex: 1 },
-            { headerName: this.l('List Case No'), headerTooltip: this.l('List Case No'), field: 'listCaseNo', flex: 1 },
             { headerName: this.l('Transport'), headerTooltip: this.l('Transport'), field: 'transport', flex: 1 },
             {
                 headerName: this.l('Devanning Date'), headerTooltip: this.l('Devanning Date'), field: 'devanningDate', flex: 1,
@@ -162,9 +160,7 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
             {
                 headerName: this.l('Location Date'), headerTooltip: this.l('Location Date'), field: 'locationDate', flex: 1,
                 valueFormatter: (params) => this.pipe.transform(params.data?.locationDate, 'dd/MM/yyyy')
-            },
-            { headerName: this.l('Order Type Code'), headerTooltip: this.l('Ordertype Code'), field: 'orderTypeCode', flex: 1 },
-            { headerName: this.l('Goods Type Code'), headerTooltip: this.l('Goodstype Code'), field: 'goodsTypeCode', flex: 1 }
+            }
         ];
 
         this.frameworkComponents = {

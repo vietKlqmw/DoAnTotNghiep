@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using tmss.DataExporting.Excel.NPOI;
 using tmss.Dto;
 using tmss.Storage;
@@ -75,7 +73,6 @@ namespace tmss.MaterialManagement.Invoice.Exporting
                         sheet,
                         ("Part No"),
                         ("Qty"),
-                        ("Module No"),
                         ("Container No"),
                         ("Supplier No"),
                         ("Freight"),
@@ -98,7 +95,6 @@ namespace tmss.MaterialManagement.Invoice.Exporting
                         sheet, 1, listdatadetails,
                         _ => _.PartNo,
                         _ => _.UsageQty,
-                        _ => _.ModuleNo,
                         _ => _.ContainerNo,
                         _ => _.SupplierNo,
                         _ => _.Freight,
@@ -117,7 +113,7 @@ namespace tmss.MaterialManagement.Invoice.Exporting
                         _ => _.PartnameVn
                     );
 
-                    for (var i = 0; i < 19; i++)
+                    for (var i = 0; i < 18; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

@@ -8,7 +8,6 @@ namespace tmss.MaterialManagement.StockReceiving
         public virtual string PartNo { get; set; }
         public virtual string PartName { get; set; }
         public virtual long? PartListId { get; set; }
-        public virtual long? PartListGradeId { get; set; }
         public virtual long? MaterialId { get; set; }
         public virtual int? Qty { get; set; }
         public virtual DateTime? TransactionDatetime { get; set; }

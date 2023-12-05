@@ -25,8 +25,6 @@ namespace tmss.MaterialManagement
 
         public virtual long? PartListId { get; set; }
 
-        public virtual long? PartListGradeId { get; set; }
-
         public virtual long? MaterialId { get; set; }
 
         public virtual int? Qty { get; set; }

@@ -111,63 +111,15 @@ export class MaterialComponent extends AppComponentBase implements OnInit {
                 flex: 1
             },
             {
-                headerName: this.l('Factory'),
-                headerTooltip: this.l('Factory'),
-                field: 'plant',
-                flex: 1
-            },
-            {
                 headerName: this.l('Storage Location'),
                 headerTooltip: this.l('Storage Location'),
                 field: 'storageLocation',
                 flex: 1
             },
             {
-                headerName: this.l('Production Group'),
-                headerTooltip: this.l('Production Group'),
-                field: 'productionGroup',
-                flex: 1
-            },
-            {
-                headerName: this.l('Production Purpose'),
-                headerTooltip: this.l('Production Purpose'),
-                field: 'productionPurpose',
-                flex: 1
-            },
-            {
                 headerName: this.l('Production Type'),
                 headerTooltip: this.l('Production Type'),
                 field: 'productionType',
-                flex: 1
-            },
-            {
-                headerName: this.l('Reserved Stock'),
-                headerTooltip: this.l('Reserved Stock'),
-                field: 'reservedStock',
-                flex: 1
-            },
-            {
-                headerName: this.l('Lot Code'),
-                headerTooltip: this.l('Lot Code'),
-                field: 'lotCode',
-                flex: 1
-            },
-            {
-                headerName: this.l('Production Storage Location'),
-                headerTooltip: this.l('Production Storage Location'),
-                field: 'productionStorageLocation',
-                flex: 1
-            },
-            {
-                headerName: this.l('Costing Lot Size'),
-                headerTooltip: this.l('Costing Lot Size'),
-                field: 'costingLotSize',
-                flex: 1
-            },
-            {
-                headerName: this.l('Production Version'),
-                headerTooltip: this.l('Production Version'),
-                field: 'productionVersion',
                 flex: 1
             },
             {
@@ -187,12 +139,6 @@ export class MaterialComponent extends AppComponentBase implements OnInit {
                 headerTooltip: this.l('Material Origin'),
                 field: 'materialOrigin',
                 cellClass: ['text-center'],
-                flex: 1
-            },
-            {
-                headerName: this.l('Origin Group'),
-                headerTooltip: this.l('Origin Group'),
-                field: 'originGroup',
                 flex: 1
             },
             {

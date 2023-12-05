@@ -19,27 +19,11 @@ namespace tmss.Master.Material
 
         public const int MaxBaseUnitOfMeasureLength = 3;
 
-        public const int MaxPlantLength = 4;
-
         public const int MaxStorageLocationLength = 4;
 
-        public const int MaxProductionGroupLength = 3;
-
-        public const int MaxProductionPurposeLength = 2;
+        public const int MaxMaterialOriginLength = 50;
 
         public const int MaxProductionTypeLength = 10;
-
-        public const int MaxReservedStockLength = 2;
-
-        public const int MaxLotCodeLength = 10;
-
-        public const int MaxProductionStorageLocationLength = 4;
-
-        public const int MaxProductionVersionLength = 4;
-
-        public const int MaxMaterialOriginLength = 1;
-
-        public const int MaxOriginGroupLength = 4;
 
         [StringLength(MaxMaterialTypeLength)]
         public virtual string MaterialType { get; set; }//Loại vật liệu
@@ -56,31 +40,8 @@ namespace tmss.Master.Material
         [StringLength(MaxBaseUnitOfMeasureLength)]
         public virtual string BaseUnitOfMeasure { get; set; }//Đơn Vị Đo Cơ Bản
 
-        [StringLength(MaxPlantLength)]
-        public virtual string Plant { get; set; }//~Factory Code
-
         [StringLength(MaxStorageLocationLength)]
         public virtual string StorageLocation { get; set; }//Địa điểm lưu trữ
-
-        [StringLength(MaxProductionGroupLength)]
-        public virtual string ProductionGroup { get; set; }//Nhóm sản xuất
-
-        [StringLength(MaxProductionPurposeLength)]
-        public virtual string ProductionPurpose { get; set; }//Mục đích sản xuất
-
-        [StringLength(MaxReservedStockLength)]
-        public virtual string ReservedStock { get; set; }
-
-        [StringLength(MaxLotCodeLength)]
-        public virtual string LotCode { get; set; }//Số lô
-
-        [StringLength(MaxProductionStorageLocationLength)]
-        public virtual string ProductionStorageLocation { get; set; }//Vị trí lưu trữ sản xuất
-
-        public virtual decimal? CostingLotSize { get; set; }//Kích thước lô chi phí
-
-        [StringLength(MaxProductionVersionLength)]
-        public virtual string ProductionVersion { get; set; }//Phiên bản sản xuất
 
         public virtual decimal? StandardPrice { get; set; }//Giá chuẩn
 
@@ -88,9 +49,6 @@ namespace tmss.Master.Material
 
         [StringLength(MaxMaterialOriginLength)]
         public virtual string MaterialOrigin { get; set; }//Nguồn gốc nguyên liệu
-
-        [StringLength(MaxOriginGroupLength)]
-        public virtual string OriginGroup { get; set; }//Nhóm xuất xứ
 
         public virtual DateTime? EffectiveDateFrom { get; set; }
 

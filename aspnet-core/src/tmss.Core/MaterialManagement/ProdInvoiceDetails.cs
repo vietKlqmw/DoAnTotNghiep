@@ -13,8 +13,6 @@ namespace tmss.MaterialManagement
 
         public const int MaxPartNoLength = 12;
 
-        public const int MaxModuleNoLength = 30;
-
         public const int MaxContainerNoLength = 15;
 
         public const int MaxSupplierNoLength = 50;
@@ -32,9 +30,6 @@ namespace tmss.MaterialManagement
 
         [StringLength(MaxPartNoLength)]
         public virtual string PartNo { get; set; }
-
-        [StringLength(MaxModuleNoLength)]
-        public virtual string ModuleNo { get; set; }
 
         public virtual decimal? Insurance { get; set; }
 

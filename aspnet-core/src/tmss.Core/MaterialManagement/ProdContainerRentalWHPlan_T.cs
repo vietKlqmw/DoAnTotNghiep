@@ -19,10 +19,6 @@ namespace tmss.MaterialManagement
 
         public const int MaxSealNoLength = 20;
 
-        public const int MaxListcaseNoLength = 1000;
-
-        public const int MaxListLotNoLength = 1000;
-
         public const int MaxTransportLength = 50;
 
         public const int MaxStatusLength = 10;
@@ -48,12 +44,6 @@ namespace tmss.MaterialManagement
 
         [StringLength(MaxSealNoLength)]
         public virtual string SealNo { get; set; }
-
-        [StringLength(MaxListcaseNoLength)]
-        public virtual string ListcaseNo { get; set; }
-
-        [StringLength(MaxListLotNoLength)]
-        public virtual string ListLotNo { get; set; }
 
         public virtual DateTime? DevanningDate { get; set; }
 

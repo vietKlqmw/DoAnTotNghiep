@@ -12,8 +12,6 @@ namespace tmss.MaterialManagement.ContainerWH
         public virtual string BillofladingNo { get; set; }
         public virtual string SupplierNo { get; set; }
         public virtual string SealNo { get; set; }
-        public virtual string ListcaseNo { get; set; }
-        public virtual string ListLotNo { get; set; }
         public virtual DateTime? DevanningDate { get; set; }
         public virtual TimeSpan? DevanningTime { get; set; }
         public virtual DateTime? ActualDevanningDate { get; set; }
@@ -55,8 +53,6 @@ namespace tmss.MaterialManagement.ContainerWH
         public virtual string BillofladingNo { get; set; }
         public virtual string SupplierNo { get; set; }
         public virtual string SealNo { get; set; }
-        public virtual string ListcaseNo { get; set; }
-        public virtual string ListLotNo { get; set; }
         public virtual DateTime? DevanningDate { get; set; }
         public virtual string DevanningTime { get; set; }
         public virtual DateTime? ActualDevanningDate { get; set; }

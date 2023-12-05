@@ -19,10 +19,6 @@ namespace tmss.MaterialManagement
 
         public const int MaxInvoiceNoLength = 20;
 
-        public const int MaxListLotNoLength = 1000;
-
-        public const int MaxListCaseNoLength = 1000;
-
         public const int MaxTransportLength = 10;
 
         public const int MaxRemarkLength = 1000;
@@ -38,10 +34,6 @@ namespace tmss.MaterialManagement
         public const int MaxTransitPortReqTimeLength = 255;
 
         public const int MaxGateInTimeLength = 255;
-
-        public const int MaxOrderTypeCodeLength = 4;
-
-        public const int MaxGoodsTypeCodeLength = 4;
 
         public const int MaxRequestStatusLength = 20;
 
@@ -78,12 +70,6 @@ namespace tmss.MaterialManagement
 
         [StringLength(MaxInvoiceNoLength)]
         public virtual string InvoiceNo { get; set; }
-
-        [StringLength(MaxListLotNoLength)]
-        public virtual string ListLotNo { get; set; }
-
-        [StringLength(MaxListCaseNoLength)]
-        public virtual string ListCaseNo { get; set; }
 
         [StringLength(MaxTransportLength)]
         public virtual string Transport { get; set; }
@@ -130,12 +116,6 @@ namespace tmss.MaterialManagement
         public virtual DateTime? LocationDate { get; set; }
 
         public virtual long? ReceivingPeriodId { get; set; }
-
-        [StringLength(MaxOrderTypeCodeLength)]
-        public virtual string OrdertypeCode { get; set; }
-
-        [StringLength(MaxGoodsTypeCodeLength)]
-        public virtual string GoodstypeCode { get; set; }
 
         public virtual long? RentalWhId { get; set; }
 

@@ -18,8 +18,6 @@ namespace tmss.MaterialManagement.ContainerList
         public virtual DateTime? ReceiveDate { get; set; }
         public virtual long? RequestId { get; set; }
         public virtual string InvoiceNo { get; set; }
-        public virtual string ListLotNo { get; set; }
-        public virtual string ListCaseNo { get; set; }
         public virtual string Transport { get; set; }
         public virtual DateTime? DevanningDate { get; set; }
         public virtual string DevanningTime { get; set; }
@@ -39,8 +37,6 @@ namespace tmss.MaterialManagement.ContainerList
         public virtual string LocationCode { get; set; }
         public virtual DateTime? LocationDate { get; set; }
         public virtual long? ReceivingPeriodId { get; set; }
-        public virtual string OrdertypeCode { get; set; }
-        public virtual string GoodstypeCode { get; set; }
         public virtual long? RentalWhId { get; set; }
         public virtual string RequestStatus { get; set; }
         public virtual DateTime? BillDate { get; set; }

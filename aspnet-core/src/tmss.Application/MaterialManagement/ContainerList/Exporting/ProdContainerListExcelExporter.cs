@@ -32,8 +32,6 @@ namespace tmss.MaterialManagement.ContainerList.Exporting
                         "Port Date Actual(ATA)",
                         "Port Transit Date",
                         "Invoice No",
-                        "List Lot No",
-                        "List Case No",
                         "Transport",
                         "Devanning Date",
                         "Devanning Time",
@@ -49,9 +47,7 @@ namespace tmss.MaterialManagement.ContainerList.Exporting
                         "TAX",
                         "Amount",
                         "Location Code",
-                        "Location Date",
-                        "Order Type Code",
-                        "Goods Type Code"
+                        "Location Date"
                     );
 
                     AddObjects(
@@ -70,8 +66,6 @@ namespace tmss.MaterialManagement.ContainerList.Exporting
                         _ => _.PortDateActual,
                         _ => _.PortTransitDate,
                         _ => _.InvoiceNo,
-                        _ => _.ListLotNo,
-                        _ => _.ListCaseNo,
                         _ => _.Transport,
                         _ => _.DevanningDate,
                         _ => _.DevanningTime,
@@ -87,12 +81,10 @@ namespace tmss.MaterialManagement.ContainerList.Exporting
                         _ => _.Tax,
                         _ => _.Amount,
                         _ => _.LocationCode,
-                        _ => _.LocationDate,
-                        _ => _.OrdertypeCode,
-                        _ => _.GoodstypeCode
+                        _ => _.LocationDate
                     );
 
-                    for (var i = 0; i < 34; i++)
+                    for (var i = 0; i < 30; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

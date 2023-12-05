@@ -140,7 +140,6 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.usageQty),
                 aggFunc: this.calTotal
             },
-            { headerName: this.l('Module No'), headerTooltip: this.l('Module No'), field: 'moduleNo', flex: 1 },
             { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', flex: 1 },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
             {
