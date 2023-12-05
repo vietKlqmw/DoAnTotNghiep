@@ -36,6 +36,7 @@ export class AppNavigationService {
                     new AppMenuItem('Forwarder', '', 'flaticon-car', '/app/main/master/common/forwarder'),
                 ]),
                 new AppMenuItem('Material', '', 'flaticon-car', '/app/main/master/common/material'),
+                new AppMenuItem('Part List', '', 'flaticon-car', '/app/main/master/common/part-list')
             ]),
 //MAIN
             new AppMenuItem('MANAGEMENT', '', 'flaticon-user-settings', '',[],[

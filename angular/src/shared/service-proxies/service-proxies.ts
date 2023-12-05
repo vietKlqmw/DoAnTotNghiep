@@ -7041,6 +7041,219 @@ export class MasterMaterialTypeServiceProxy {
 }
 
 @Injectable()
+export class MasterPartListServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param partNo (optional) 
+     * @param supplierNo (optional) 
+     * @param carfamilyCode (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getPartListSearch(partNo: string | null | undefined, supplierNo: string | null | undefined, carfamilyCode: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfMasterPartListDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterPartList/GetPartListSearch?";
+        if (partNo !== undefined)
+            url_ += "PartNo=" + encodeURIComponent("" + partNo) + "&"; 
+        if (supplierNo !== undefined)
+            url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
+        if (carfamilyCode !== undefined)
+            url_ += "CarfamilyCode=" + encodeURIComponent("" + carfamilyCode) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPartListSearch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPartListSearch(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfMasterPartListDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfMasterPartListDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPartListSearch(response: HttpResponseBase): Observable<PagedResultDtoOfMasterPartListDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMasterPartListDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfMasterPartListDto>(<any>null);
+    }
+
+    /**
+     * @param partNo (optional) 
+     * @param supplierNo (optional) 
+     * @param carfamilyCode (optional) 
+     * @return Success
+     */
+    getPartListToExcel(partNo: string | null | undefined, supplierNo: string | null | undefined, carfamilyCode: string | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterPartList/GetPartListToExcel?";
+        if (partNo !== undefined)
+            url_ += "PartNo=" + encodeURIComponent("" + partNo) + "&"; 
+        if (supplierNo !== undefined)
+            url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
+        if (carfamilyCode !== undefined)
+            url_ += "CarfamilyCode=" + encodeURIComponent("" + carfamilyCode) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPartListToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPartListToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPartListToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class MasterPartListExcelExporterServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    exportToFile(body: MasterPartListDto[] | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterPartListExcelExporter/ExportToFile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToFile(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processExportToFile(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class MasterProductTypeServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -25021,6 +25234,126 @@ export class PagedResultDtoOfMasterMaterialTypeDto implements IPagedResultDtoOfM
 export interface IPagedResultDtoOfMasterMaterialTypeDto {
     totalCount: number;
     items: MasterMaterialTypeDto[] | undefined;
+}
+
+export class MasterPartListDto implements IMasterPartListDto {
+    partNo!: string | undefined;
+    partName!: string | undefined;
+    supplierNo!: string | undefined;
+    supplierId!: number | undefined;
+    materialId!: number | undefined;
+    carfamilyCode!: string | undefined;
+    startProductionMonth!: moment.Moment | undefined;
+    endProductionMonth!: moment.Moment | undefined;
+    remark!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IMasterPartListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.partNo = _data["partNo"];
+            this.partName = _data["partName"];
+            this.supplierNo = _data["supplierNo"];
+            this.supplierId = _data["supplierId"];
+            this.materialId = _data["materialId"];
+            this.carfamilyCode = _data["carfamilyCode"];
+            this.startProductionMonth = _data["startProductionMonth"] ? moment(_data["startProductionMonth"].toString()) : <any>undefined;
+            this.endProductionMonth = _data["endProductionMonth"] ? moment(_data["endProductionMonth"].toString()) : <any>undefined;
+            this.remark = _data["remark"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): MasterPartListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MasterPartListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["partNo"] = this.partNo;
+        data["partName"] = this.partName;
+        data["supplierNo"] = this.supplierNo;
+        data["supplierId"] = this.supplierId;
+        data["materialId"] = this.materialId;
+        data["carfamilyCode"] = this.carfamilyCode;
+        data["startProductionMonth"] = this.startProductionMonth ? this.startProductionMonth.toISOString() : <any>undefined;
+        data["endProductionMonth"] = this.endProductionMonth ? this.endProductionMonth.toISOString() : <any>undefined;
+        data["remark"] = this.remark;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IMasterPartListDto {
+    partNo: string | undefined;
+    partName: string | undefined;
+    supplierNo: string | undefined;
+    supplierId: number | undefined;
+    materialId: number | undefined;
+    carfamilyCode: string | undefined;
+    startProductionMonth: moment.Moment | undefined;
+    endProductionMonth: moment.Moment | undefined;
+    remark: string | undefined;
+    id: number | undefined;
+}
+
+export class PagedResultDtoOfMasterPartListDto implements IPagedResultDtoOfMasterPartListDto {
+    totalCount!: number;
+    items!: MasterPartListDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfMasterPartListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MasterPartListDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMasterPartListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMasterPartListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfMasterPartListDto {
+    totalCount: number;
+    items: MasterPartListDto[] | undefined;
 }
 
 export class MasterProductTypeDto implements IMasterProductTypeDto {

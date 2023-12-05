@@ -166,6 +166,23 @@ BEGIN
       FROM MasterMaterial_T mmt
      WHERE mmt.Guid = @Guid AND ISNULL(mmt.ErrorDescription, '') <> '' 
 END
+------------------------------------------------PartList------------------------------------------------
+------------------------------------------------Search:
+CREATE PROCEDURE INV_MASTER_PART_LIST_SEARCH
+(
+    @p_PartNo NVARCHAR(50),
+    @p_SupplierNo NVARCHAR(10),
+    @p_Cfc NVARCHAR(4)
+)
+AS
+BEGIN
+    SELECT mpl.Id, mpl.PartNo, mpl.PartName, mpl.SupplierNo, mpl.SupplierId, mpl.MaterialId, 
+           mpl.CarfamilyCode, mpl.StartProductionMonth, mpl.EndProductionMonth, mpl.Remark
+      FROM MasterPartList mpl
+     WHERE (@p_PartNo IS NULL OR mpl.PartNo LIKE CONCAT('%', @p_PartNo, '%'))
+       AND (@p_SupplierNo IS NULL OR mpl.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
+       AND (@p_Cfc IS NULL OR mpl.CarfamilyCode LIKE CONCAT('%', @p_Cfc, '%'))
+END
 ------------------------------------------------MaterialGroup------------------------------------------------
 INSERT INTO MasterMaterialGroup 
 (CreationTime, CreatorUserId, IsDeleted, Code, Name)

@@ -58,6 +58,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
                     {
+                        path: 'master/common/part-list',
+                        loadChildren: () => import('./master/common/part-list/part-list.module').then(m => m.PartListModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
+                    {
                         path: 'master/common/uom',
                         loadChildren: () => import('./master/common/uom/uom.module').then(m => m.UomModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }

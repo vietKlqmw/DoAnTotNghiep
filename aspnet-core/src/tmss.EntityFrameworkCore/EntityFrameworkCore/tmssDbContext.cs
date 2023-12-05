@@ -69,6 +69,8 @@ namespace tmss.EntityFrameworkCore
 
         public virtual DbSet<MasterForwarder> MasterForwarders { get; set; }
 
+        public virtual DbSet<MasterPartList> MasterPartLists { get; set; }
+
         #endregion
 
         #region MaterialManagement

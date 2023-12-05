@@ -32,7 +32,10 @@ export class GridTableComponent extends AppComponentBase implements OnInit {
     //Col Def
     @Input() columnDefs?: CustomColDef[];
     @Input() defaultColDef;
-    @Input() autoGroupColumnDef: any;
+    @Input() autoGroupColumnDef: any = {
+        headerName: 'Group',
+        pinned: true
+    };
     @Input() frameworkComponents?: FrameworkComponent;
     @Input() rowData: any[] = [];
     @Input() modules: Module[] = [ClientSideRowModelModule, RangeSelectionModule, RowGroupingModule, RichSelectModule, SetFilterModule, MultiFilterModule];
