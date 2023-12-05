@@ -630,11 +630,11 @@ CREATE PROCEDURE INV_PROD_INVOICE_SEARCH
 )
 AS
 BEGIN 
-    SELECT DISTINCT a.Id, a.InvoiceNo, a.BillId, a.OrderTypeCode, a.GoodsTypeCode, a.InvoiceDate, 
+    SELECT DISTINCT a.Id, a.InvoiceNo, a.BillId, a.InvoiceDate, 
            a.Freight, a.FreightTotal, a.Insurance, a.InsuranceTotal, a.Cif, a.ThcTotal, a.NetWeight, 
-           a.GrossWeight, a.Currency, a.SupplierNo, a.Quantity, a.FreightTotalVn, a.InsuranceTotalVn, 
-           a.CifVn, a.ThcTotalVn, a.PeriodId, b.BillofladingNo AS BillNo, c.ShipmentNo, 
-           e.Description AS Status, parent.InvoiceNo InvoiceParentId, b.BillDate
+           a.GrossWeight, a.Currency, a.SupplierNo, a.Quantity, a.Status, a.FreightTotalVn, 
+           a.InsuranceTotalVn, a.CifVn, a.ThcTotalVn, b.BillofladingNo AS BillNo, c.ShipmentNo, 
+           e.Description AS Status, b.BillDate
       FROM ProdInvoice a
  LEFT JOIN ProdBillOfLading b
         ON a.BillId = b.Id
@@ -642,8 +642,6 @@ BEGIN
         ON c.Id = b.ShipmentId
  LEFT JOIN ProdContainerInvoice d
         ON d.InvoiceId = a.Id
- LEFT JOIN ProdInvoice parent
-        ON a.InvoiceParentId = parent.Id
 	LEFT JOIN MasterInvoiceStatus e
         ON a.Status = e.Code
      WHERE (@p_InvoiceNo IS NULL OR a.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
@@ -665,16 +663,15 @@ CREATE PROCEDURE INV_PROD_INVOICE_DETAILS_SEARCH
 )
 AS 
 BEGIN
-    SELECT a.PartNo, a.LotNo, a.Fixlot, a.CaseNo, a.ModuleNo, a.Insurance, a.ContainerNo, a.InvoiceId, 
+    SELECT a.PartNo, a.ModuleNo, a.Insurance, a.ContainerNo, a.InvoiceId, 
            a.SupplierNo, a.Freight, a.Thc, a.Cif, a.Tax, a.TaxRate, a.Vat, a.VatRate, a.UsageQty, 
-           a.PartName, a.CarfamilyCode, a.PartNetWeight, a.OrderNo, a.PackagingDate, a.FreightVn, 
-           a.InsuranceVn, a.ThcVn, a.CifVn, a.TaxVn, a.VatVn, a.InvoiceParentId, a.PeriodDate, 
-           a.PeriodId, a.PartnameVn, a.CarName, a.PreCustomsId--, e.Description AS Status
+           a.PartName, a.CarfamilyCode, a.PartNetWeight, a.PackagingDate, a.FreightVn, 
+           a.InsuranceVn, a.ThcVn, a.CifVn, a.TaxVn, a.VatVn, a.PartnameVn--, e.Description AS Status
       FROM ProdInvoiceDetails a 
  LEFT JOIN ProdInvoice inv 
-        ON inv.Id = CASE WHEN inv.Id = inv.InvoiceParentId THEN a.InvoiceParentId ELSE a.InvoiceId END
+        ON inv.Id = a.InvoiceId 
  LEFT JOIN ProdContainerInvoice d 
-        ON d.InvoiceId = inv.InvoiceParentId AND d.ContainerNo = a.ContainerNo
+        ON d.ContainerNo = a.ContainerNo
 -- LEFT JOIN MasterInvoiceStatus e
 --        ON a.Status = e.Code
      WHERE inv.Id = @p_InvoiceId
