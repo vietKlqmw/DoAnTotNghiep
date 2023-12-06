@@ -1,6 +1,6 @@
 import { Component, Injector, ViewChild } from "@angular/core";
 import { AppComponentBase } from "@shared/common/app-component-base";
-import { CreateOrEditMasterPartListDto, MasterPartListServiceProxy, ProdOthersServiceProxy } from "@shared/service-proxies/service-proxies";
+import { MasterPartListDto, MasterPartListServiceProxy, ProdOthersServiceProxy } from "@shared/service-proxies/service-proxies";
 import { ModalDirective } from "ngx-bootstrap/modal";
 import { finalize } from "rxjs/operators";
 import { BsDatepickerDirective } from "ngx-bootstrap/datepicker";
@@ -16,7 +16,7 @@ export class EditPartListModalComponent extends AppComponentBase {
     @ViewChild('datepicker', { static: false }) datepicker!: BsDatepickerDirective;
     @ViewChild('datepicker2', { static: false }) datepicker2!: BsDatepickerDirective;
 
-    rowData: CreateOrEditMasterPartListDto = new CreateOrEditMasterPartListDto();
+    rowData: MasterPartListDto = new MasterPartListDto();
 
     saving = false;
 
@@ -57,12 +57,12 @@ export class EditPartListModalComponent extends AppComponentBase {
         });
     }
 
-    show(type, material?: CreateOrEditMasterPartListDto): void {
+    show(type, material?: MasterPartListDto): void {
         if (type == 'Edit') this.isEdit = true;
         else this.isEdit = false;
         this.header = type;
         if (material) this.rowData = material;
-        else this.rowData = new CreateOrEditMasterPartListDto();
+        else this.rowData = new MasterPartListDto();
 
         const dateValue = this.rowData.startProductionMonth ? new Date(this.rowData.startProductionMonth?.toString()) : new Date();
         this.datepicker?.bsValueChange.emit(dateValue);
@@ -77,7 +77,7 @@ export class EditPartListModalComponent extends AppComponentBase {
         this.rowData.endProductionMonth = this._endProductionMonth ? moment(this._endProductionMonth) : undefined;
 
         this.saving = true;
-        this._service.createOrEdit(this.rowData)
+        this._service.editPartList(this.rowData)
             .pipe(finalize(() => { this.saving = false; }))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));

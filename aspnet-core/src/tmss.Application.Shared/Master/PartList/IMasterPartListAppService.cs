@@ -8,6 +8,5 @@ namespace tmss.Master.PartList
     {
         Task<PagedResultDto<MasterPartListDto>> GetPartListSearch(GetMasterPartListInput input);
 
-        Task CreateOrEdit(CreateOrEditMasterPartListDto input);
     }
 }

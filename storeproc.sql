@@ -191,6 +191,50 @@ BEGIN
        AND (@p_Cfc IS NULL OR mpl.CarfamilyCode LIKE CONCAT('%', @p_Cfc, '%'))
        AND mpl.IsDeleted = 0
 END
+------------------------------------------------Edit:
+CREATE PROCEDURE INV_MASTER_PART_LIST_EDIT
+(
+    @p_PartListId INT,
+    @p_PartNo NVARCHAR(15),
+    @p_PartName NVARCHAR(500),
+    @p_SupplierNo NVARCHAR(10),
+    @p_Cfc NVARCHAR(4),
+    @p_Remark NVARCHAR(MAX),
+    @p_StartProductionMonth DATE,
+    @p_EndProductionMonth DATE,
+    @p_MaterialId INT,
+    @p_UserId BIGINT
+)
+AS
+BEGIN
+    DECLARE @SupplierId INT = (SELECT Id FROM MasterSupplierList WHERE SupplierNo = @p_SupplierNo);
+    IF @p_PartListId IS NULL
+    BEGIN
+        INSERT INTO MasterPartList 
+                    (CreationTime, CreatorUserId, IsDeleted, 
+                    PartNo, PartName, SupplierNo, SupplierId, MaterialId, CarfamilyCode, 
+                    StartProductionMonth, EndProductionMonth, Remark)
+             VALUES (GETDATE(), @p_UserId, 0, 
+                    UPPER(@p_PartNo), @p_PartName, @p_SupplierNo, @SupplierId, @p_MaterialId, @p_Cfc, 
+                    @p_StartProductionMonth, @p_EndProductionMonth, @p_Remark);
+    END
+    ELSE
+    BEGIN
+        UPDATE MasterPartList 
+           SET LastModificationTime = GETDATE(), 
+               LastModifierUserId = @p_UserId, 
+               PartNo = UPPER(@p_PartNo), 
+               PartName = @p_PartName, 
+               SupplierNo = @p_SupplierNo, 
+               SupplierId = @SupplierId, 
+               MaterialId = @p_MaterialId, 
+               CarfamilyCode = @p_Cfc, 
+               StartProductionMonth = @p_StartProductionMonth, 
+               EndProductionMonth = @p_EndProductionMonth, 
+               Remark = @p_Remark
+         WHERE Id = @p_PartListId;
+    END
+END
 ------------------------------------------------MaterialGroup------------------------------------------------
 INSERT INTO MasterMaterialGroup 
 (CreationTime, CreatorUserId, IsDeleted, Code, Name)

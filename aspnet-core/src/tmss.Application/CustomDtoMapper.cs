@@ -164,9 +164,6 @@ namespace tmss
 
             /* ADD YOUR OWN CUSTOM AUTOMAPPER MAPPINGS HERE */
 
-            configuration.CreateMap<MasterPartListDto, MasterPartList>();
-            configuration.CreateMap<MasterPartList, MasterPartListDto>();
-            configuration.CreateMap<CreateOrEditMasterPartListDto, MasterPartList>();
         }
     }
 }

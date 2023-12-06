@@ -7184,8 +7184,8 @@ export class MasterPartListServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    createOrEdit(body: CreateOrEditMasterPartListDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/MasterPartList/CreateOrEdit";
+    editPartList(body: MasterPartListDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MasterPartList/EditPartList";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -7200,11 +7200,11 @@ export class MasterPartListServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateOrEdit(response_);
+            return this.processEditPartList(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCreateOrEdit(<any>response_);
+                    return this.processEditPartList(<any>response_);
                 } catch (e) {
                     return <Observable<void>><any>_observableThrow(e);
                 }
@@ -7213,7 +7213,7 @@ export class MasterPartListServiceProxy {
         }));
     }
 
-    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+    protected processEditPartList(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -25570,74 +25570,6 @@ export class PagedResultDtoOfMasterPartListDto implements IPagedResultDtoOfMaste
 export interface IPagedResultDtoOfMasterPartListDto {
     totalCount: number;
     items: MasterPartListDto[] | undefined;
-}
-
-export class CreateOrEditMasterPartListDto implements ICreateOrEditMasterPartListDto {
-    partNo!: string | undefined;
-    partName!: string | undefined;
-    supplierNo!: string | undefined;
-    materialId!: number | undefined;
-    carfamilyCode!: string | undefined;
-    startProductionMonth!: moment.Moment | undefined;
-    endProductionMonth!: moment.Moment | undefined;
-    remark!: string | undefined;
-    id!: number | undefined;
-
-    constructor(data?: ICreateOrEditMasterPartListDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.partNo = _data["partNo"];
-            this.partName = _data["partName"];
-            this.supplierNo = _data["supplierNo"];
-            this.materialId = _data["materialId"];
-            this.carfamilyCode = _data["carfamilyCode"];
-            this.startProductionMonth = _data["startProductionMonth"] ? moment(_data["startProductionMonth"].toString()) : <any>undefined;
-            this.endProductionMonth = _data["endProductionMonth"] ? moment(_data["endProductionMonth"].toString()) : <any>undefined;
-            this.remark = _data["remark"];
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): CreateOrEditMasterPartListDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateOrEditMasterPartListDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["partNo"] = this.partNo;
-        data["partName"] = this.partName;
-        data["supplierNo"] = this.supplierNo;
-        data["materialId"] = this.materialId;
-        data["carfamilyCode"] = this.carfamilyCode;
-        data["startProductionMonth"] = this.startProductionMonth ? this.startProductionMonth.toISOString() : <any>undefined;
-        data["endProductionMonth"] = this.endProductionMonth ? this.endProductionMonth.toISOString() : <any>undefined;
-        data["remark"] = this.remark;
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface ICreateOrEditMasterPartListDto {
-    partNo: string | undefined;
-    partName: string | undefined;
-    supplierNo: string | undefined;
-    materialId: number | undefined;
-    carfamilyCode: string | undefined;
-    startProductionMonth: moment.Moment | undefined;
-    endProductionMonth: moment.Moment | undefined;
-    remark: string | undefined;
-    id: number | undefined;
 }
 
 export class MasterProductTypeDto implements IMasterProductTypeDto {

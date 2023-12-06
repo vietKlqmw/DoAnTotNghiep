@@ -66,11 +66,6 @@ export class PartListComponent extends AppComponentBase implements OnInit {
         tooltip: (params) => params.value,
     };
 
-    autoGroupColumnDef: any = {
-        headerName: 'Carfamily Code',
-        pinned: true
-    };
-
     constructor(
         injector: Injector,
         private _service: MasterPartListServiceProxy,
@@ -80,10 +75,11 @@ export class PartListComponent extends AppComponentBase implements OnInit {
         super(injector);
 
         this.colDefs = [
-            { field: 'carfamilyCode', rowGroup: true, hide: true, cellClass: ['cell-border', 'cell-readonly'], flex: 1 },
+            { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 60 },
             { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'partNo', flex: 1 },
             { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', flex: 1 },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
+            { headerName: this.l('Carfamily Code'), headerTooltip: this.l('Carfamily Code'), field: 'carfamilyCode', flex: 1 },
             {
                 headerName: this.l('Start Production Month'), headerTooltip: this.l('Start Production Month'), field: 'startProductionMonth', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.startProductionMonth, 'dd/MM/yyyy')
@@ -228,7 +224,7 @@ export class PartListComponent extends AppComponentBase implements OnInit {
     }
 
     viewMaterialById(): void {
-        this.viewMaterial.show(this._selectrow);
+        this.viewMaterial.show(this.saveSelectedRow.materialId);
     }
 
     editPartList(e): void {
