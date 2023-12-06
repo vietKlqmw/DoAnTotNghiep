@@ -6488,60 +6488,6 @@ export class MasterMaterialServiceProxy {
     }
 
     /**
-     * @param idMaterial (optional) 
-     * @return Success
-     */
-    getDataMaterialbyId(idMaterial: number | null | undefined): Observable<PagedResultDtoOfMasterMaterialDto> {
-        let url_ = this.baseUrl + "/api/services/app/MasterMaterial/GetDataMaterialbyId?";
-        if (idMaterial !== undefined)
-            url_ += "IdMaterial=" + encodeURIComponent("" + idMaterial) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",			
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetDataMaterialbyId(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetDataMaterialbyId(<any>response_);
-                } catch (e) {
-                    return <Observable<PagedResultDtoOfMasterMaterialDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<PagedResultDtoOfMasterMaterialDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetDataMaterialbyId(response: HttpResponseBase): Observable<PagedResultDtoOfMasterMaterialDto> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfMasterMaterialDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<PagedResultDtoOfMasterMaterialDto>(<any>null);
-    }
-
-    /**
      * @param body (optional) 
      * @return Success
      */
@@ -12346,6 +12292,174 @@ export class ProdOthersServiceProxy {
             }));
         }
         return _observableOf<ListStatusContDto[]>(<any>null);
+    }
+
+    /**
+     * @param idMaterial (optional) 
+     * @return Success
+     */
+    getDataMaterialbyId(idMaterial: number | null | undefined): Observable<MasterMaterialDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetDataMaterialbyId?";
+        if (idMaterial !== undefined)
+            url_ += "IdMaterial=" + encodeURIComponent("" + idMaterial) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDataMaterialbyId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDataMaterialbyId(<any>response_);
+                } catch (e) {
+                    return <Observable<MasterMaterialDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MasterMaterialDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDataMaterialbyId(response: HttpResponseBase): Observable<MasterMaterialDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(MasterMaterialDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MasterMaterialDto[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getListCarfamilyCode(): Observable<ProdOthersDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetListCarfamilyCode";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListCarfamilyCode(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListCarfamilyCode(<any>response_);
+                } catch (e) {
+                    return <Observable<ProdOthersDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ProdOthersDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetListCarfamilyCode(response: HttpResponseBase): Observable<ProdOthersDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ProdOthersDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ProdOthersDto[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getListMaterialUsage(): Observable<ListMaterialUsageDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetListMaterialUsage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListMaterialUsage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListMaterialUsage(<any>response_);
+                } catch (e) {
+                    return <Observable<ListMaterialUsageDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ListMaterialUsageDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetListMaterialUsage(response: HttpResponseBase): Observable<ListMaterialUsageDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ListMaterialUsageDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ListMaterialUsageDto[]>(<any>null);
     }
 }
 
@@ -29140,6 +29254,86 @@ export class ListStatusContDto implements IListStatusContDto {
 export interface IListStatusContDto {
     code: string | undefined;
     description: string | undefined;
+}
+
+export class ProdOthersDto implements IProdOthersDto {
+    code!: string | undefined;
+    name!: string | undefined;
+
+    constructor(data?: IProdOthersDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): ProdOthersDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProdOthersDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["name"] = this.name;
+        return data; 
+    }
+}
+
+export interface IProdOthersDto {
+    code: string | undefined;
+    name: string | undefined;
+}
+
+export class ListMaterialUsageDto implements IListMaterialUsageDto {
+    materialId!: number | undefined;
+    materialCode!: string | undefined;
+
+    constructor(data?: IListMaterialUsageDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.materialId = _data["materialId"];
+            this.materialCode = _data["materialCode"];
+        }
+    }
+
+    static fromJS(data: any): ListMaterialUsageDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListMaterialUsageDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["materialId"] = this.materialId;
+        data["materialCode"] = this.materialCode;
+        return data; 
+    }
+}
+
+export interface IListMaterialUsageDto {
+    materialId: number | undefined;
+    materialCode: string | undefined;
 }
 
 export class ProdShipmentDto implements IProdShipmentDto {

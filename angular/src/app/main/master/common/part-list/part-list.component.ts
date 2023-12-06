@@ -10,6 +10,8 @@ import { MasterPartListDto, MasterPartListServiceProxy } from '@shared/service-p
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
+import { ViewMaterialComponent } from '../../other/view-material/view-material.component';
+import { EditPartListModalComponent } from './edit-part-list-modal.component';
 
 @Component({
     selector: 'app-part-list',
@@ -19,8 +21,8 @@ import { finalize } from 'rxjs/operators';
     animations: [appModuleAnimation()]
 })
 export class PartListComponent extends AppComponentBase implements OnInit {
-    // @ViewChild('viewPartListModal', { static: true }) viewPartListModal: ViewPartListModalComponent;
-    // @ViewChild('editPartListModal', { static: true }) editPartListModal: EditPartListModalComponent;
+    @ViewChild('viewMaterial', { static: true }) viewMaterial: ViewMaterialComponent;
+    @ViewChild('editPartListModal', { static: true }) editPartListModal: EditPartListModalComponent;
     // @ViewChild('importExcelModal', { static: true }) importExcelModal: ImportPartListComponent;
 
     defaultColDefs: CustomColDef[] = [];
@@ -225,14 +227,14 @@ export class PartListComponent extends AppComponentBase implements OnInit {
         });
     }
 
-    // viewPartList(): void {
-    //     this.viewPartListModal.show(this.saveSelectedRow);
-    // }
+    viewMaterialById(): void {
+        this.viewMaterial.show(this._selectrow);
+    }
 
-    // editPartList(e): void {
-    //     if (e == 'Edit') this.editPartListModal.show(e, this.saveSelectedRow);
-    //     else this.editPartListModal.show(e);
-    // }
+    editPartList(e): void {
+        if (e == 'Edit') this.editPartListModal.show(e, this.saveSelectedRow);
+        else this.editPartListModal.show(e);
+    }
 
     // importFromExcel(){
     //     this.importExcelModal.show();

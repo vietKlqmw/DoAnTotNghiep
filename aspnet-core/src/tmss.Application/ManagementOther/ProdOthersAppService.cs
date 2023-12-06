@@ -41,5 +41,33 @@ namespace tmss.ManagementOther
 
             return result.ToList();
         }
+
+        public async Task<List<MasterMaterialDto>> GetDataMaterialbyId(long? IdMaterial)
+        {
+            string _sql = "Exec INV_MASTER_MATERIAL_BY_ID @p_MaterialId";
+
+            IEnumerable<MasterMaterialDto> result = await _dapperRepo.QueryAsync<MasterMaterialDto>(_sql, new
+            {
+                p_MaterialId = IdMaterial
+            });
+
+            return result.ToList();
+        }
+
+        public async Task<List<ProdOthersDto>> GetListCarfamilyCode()
+        {
+            string _sql = "Exec INV_PROD_GET_LIST_CFC ";
+            IEnumerable<ProdOthersDto> result = await _dapperRepo.QueryAsync<ProdOthersDto>(_sql);
+
+            return result.ToList();
+        }
+
+        public async Task<List<ListMaterialUsageDto>> GetListMaterialUsage()
+        {
+            string _sql = "Exec INV_PROD_GET_LIST_MATERIAL_USAGE";
+            IEnumerable<ListMaterialUsageDto> result = await _dapperRepo.QueryAsync<ListMaterialUsageDto>(_sql);
+
+            return result.ToList();
+        }
     }
 }

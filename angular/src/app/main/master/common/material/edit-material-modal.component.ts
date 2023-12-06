@@ -44,7 +44,7 @@ export class EditMaterialModalComponent extends AppComponentBase {
 
         const dateValue = this.rowData.effectiveDateFrom ? new Date(this.rowData.effectiveDateFrom?.toString()) : new Date();
         this.datepicker?.bsValueChange.emit(dateValue);
-        const dateValue2 = this.rowData.effectiveDateTo ? new Date(this.rowData.effectiveDateTo?.toString()) : new Date();
+        const dateValue2 = this.rowData.effectiveDateTo ? new Date(this.rowData.effectiveDateTo?.toString()) : undefined;
         this.datepicker2?.bsValueChange.emit(dateValue2);
 
         this.modal.show();
@@ -52,7 +52,7 @@ export class EditMaterialModalComponent extends AppComponentBase {
 
     save(): void {
         this.rowData.effectiveDateFrom = moment(this._effectiveDateFrom);
-        this.rowData.effectiveDateTo = moment(this._effectiveDateTo);
+        this.rowData.effectiveDateTo = this._effectiveDateTo ? moment(this._effectiveDateTo) : undefined;
 
         this.saving = true;
         this._service.editInfoMaterial(this.rowData)

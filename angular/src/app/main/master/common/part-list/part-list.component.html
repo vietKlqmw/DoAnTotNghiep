@@ -56,10 +56,12 @@
                 <hr>
                 <div class="row">
                     <div class="col-sm-12 text-right">
-                        <!-- <button type="button" class="btn btn-primary" (click)="editPartList('Add')">
+                        <button type="button" class="btn btn-view" (click)="viewMaterialById()" [disabled]="!saveSelectedRow.id">
+                            <i class="far fa-regular fa-eye"></i> {{"View Material" | localize}}</button>
+                        <button type="button" class="btn btn-primary" (click)="editPartList('Add')">
                             <i class="fa fa-plus"></i> {{"Add" | localize}}</button>
                         <button type="button" class="btn btn-primary" (click)="editPartList('Edit')" [disabled]="!saveSelectedRow.id">
-                            <i class="far fa-edit"></i> {{"Edit" | localize}}</button> -->
+                            <i class="far fa-edit"></i> {{"Edit" | localize}}</button>
                         <button type="button" class="btn btn-danger" (click)="deletePartList()" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-trash-alt"></i> {{"Delete" | localize}}</button>
                         <!-- <button type="button" class="btn btn-success" (click)="importFromExcel()">
@@ -72,6 +74,6 @@
         </div>
     </div>
 </div>
-<!-- <viewPartListModal #viewPartListModal></viewPartListModal>
+<viewMaterial #viewMaterial></viewMaterial>
 <editPartListModal #editPartListModal></editPartListModal>
-<import-partList #importExcelModal></import-partList> -->
+<!-- <import-partList #importExcelModal></import-partList> -->

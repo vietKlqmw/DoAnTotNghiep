@@ -1,0 +1,74 @@
+<div appBsModal #editPartListModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="editPartListModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{header + " Part List"}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="ui-g-12 p-0">
+                    <fieldset class="fieldset-border ui-g-12 pl-0 pr-0  mt-2" style="height: auto;">
+                        <div class="ui-g-12 ph-0">
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Part No'" [(ngModel)]="rowData.partNo"
+                                    name='partNo' [isReadonly]="isEdit"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <p-dropdown [options]="listSupplier" [filter]="true" [virtualScroll]="true" [itemSize]="30" placeholder="Select Supplier"
+                                    name="supplierNo" [(ngModel)]="rowData.supplierNo" [style]="{'width':'100%'}"></p-dropdown>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Part Name'" [(ngModel)]="rowData.partName"
+                                    name='partName'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <p-dropdown [options]="listCfc" [filter]="true" [virtualScroll]="true" [itemSize]="30" placeholder="Select Carfamily Code"
+                                    name="carfamilyCode" [(ngModel)]="rowData.carfamilyCode" [style]="{'width':'100%'}"></p-dropdown>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Remark'" [(ngModel)]="rowData.remark"
+                                    name='remark'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text left-text">Start Production Month</span>
+                                    <input type='text' class="form-control tmss-form-control" name='startProductionMonth'
+						                #datepicker='bsDatepicker' [(ngModel)]='_startProductionMonth' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text left-text">End Production Month</span>
+                                    <input type='text' class="form-control tmss-form-control" name='endProductionMonth'
+						                #datepicker2='bsDatepicker' [(ngModel)]='_endProductionMonth' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker2.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-combobox [items]="listMaterialUsage" name="materialId" [text]="'Material'" [(ngModel)]="rowData.materialId"></tmss-combobox>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-primary" (click)="save()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
+                    <i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                <button type="button" class="btn btn-outline-danger" (click)="close()">
+                    <i class="fa tmss-fa fa-times mr-1"></i>{{"Cancel" | localize}}</button>
+            </div>
+        </div>
+    </div>
+</div>

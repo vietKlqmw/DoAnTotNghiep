@@ -24,6 +24,15 @@ BEGIN
       FROM MasterMaterial mm
      WHERE mm.Id = @p_MaterialId
 END
+------------------------------------------------GetListMasterialUsage:
+CREATE PROCEDURE INV_PROD_GET_LIST_MATERIAL_USAGE
+AS
+BEGIN
+    SELECT mm.Id MaterialId, mm.MaterialType + ' - ' + mm.MaterialCode MaterialCode
+      FROM MasterMaterial mm 
+     WHERE ((mm.EffectiveDateTo IS NULL AND mm.EffectiveDateFrom <= GETDATE()) OR mm.EffectiveDateTo >= GETDATE())
+       AND mm.IsDeleted = 0
+END
 ------------------------------------------------Edit data:
 CREATE PROCEDURE INV_MASTER_MATERIAL_EDIT
 @p_MaterialId INT, 
@@ -442,6 +451,13 @@ VALUES
 (GETDATE(), 1, 0, 'D23H', 'D23H'),
 (GETDATE(), 1, 0, 'D26H', 'D26H'),
 (GETDATE(), 1, 0, 'D31H', 'D31H');
+------------------------------------------------GetList:
+CREATE PROCEDURE INV_PROD_GET_LIST_CFC
+AS
+BEGIN
+    SELECT mc.Code, mc.Name 
+      FROM MasterCarfamily mc
+END
 ------------------------------------------------Shipment------------------------------------------------
 ------------------------------------------------Search:
 CREATE PROCEDURE INV_PROD_SHIPMENT_SEARCH

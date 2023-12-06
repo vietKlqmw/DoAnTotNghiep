@@ -2,6 +2,8 @@
 {
     public class ProdOthersDto
     {
+        public virtual string Code { get; set; }
+        public virtual string Name { get; set; }
     }
 
     public class ListSupplierDto
@@ -20,5 +22,11 @@
     {
         public virtual string Code { get; set; }
         public virtual string Description { get; set; }
+    }
+
+    public class ListMaterialUsageDto
+    {
+        public virtual long? MaterialId { get; set; }
+        public virtual string MaterialCode { get; set;}
     }
 }

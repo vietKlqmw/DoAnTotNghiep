@@ -67,24 +67,6 @@ namespace tmss.Master.Material
             return _excelExporter.ExportToFile(exportToExcel);
         }
 
-        public async Task<PagedResultDto<MasterMaterialDto>> GetDataMaterialbyId(long? IdMaterial)
-        {
-            string _sql = "Exec INV_MASTER_MATERIAL_BY_ID @p_MaterialId";
-
-
-            IEnumerable<MasterMaterialDto> result = await _dapperRepo.QueryAsync<MasterMaterialDto>(_sql, new
-            {
-                p_MaterialId = IdMaterial
-            });
-
-            var listResult = result.ToList();
-            var totalCount = listResult.Count();
-
-            return new PagedResultDto<MasterMaterialDto>(
-                totalCount,
-                listResult);
-        }
-
         public async Task EditInfoMaterial(MasterMaterialDto input)
         {
             string _sql = "Exec INV_MASTER_MATERIAL_EDIT @p_MaterialId, @p_MaterialType, " +
