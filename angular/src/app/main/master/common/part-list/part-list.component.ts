@@ -12,6 +12,7 @@ import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 import { ViewMaterialComponent } from '../../other/view-material/view-material.component';
 import { EditPartListModalComponent } from './edit-part-list-modal.component';
+import { ImportPartListComponent } from './import-part-list-modal.component';
 
 @Component({
     selector: 'app-part-list',
@@ -23,7 +24,7 @@ import { EditPartListModalComponent } from './edit-part-list-modal.component';
 export class PartListComponent extends AppComponentBase implements OnInit {
     @ViewChild('viewMaterial', { static: true }) viewMaterial: ViewMaterialComponent;
     @ViewChild('editPartListModal', { static: true }) editPartListModal: EditPartListModalComponent;
-    // @ViewChild('importExcelModal', { static: true }) importExcelModal: ImportPartListComponent;
+    @ViewChild('importExcelModal', { static: true }) importExcelModal: ImportPartListComponent;
 
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
@@ -232,8 +233,8 @@ export class PartListComponent extends AppComponentBase implements OnInit {
         else this.editPartListModal.show(e);
     }
 
-    // importFromExcel(){
-    //     this.importExcelModal.show();
-    // }
+    importFromExcel(){
+        this.importExcelModal.show();
+    }
 }
 
