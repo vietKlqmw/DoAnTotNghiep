@@ -8,6 +8,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { FileUpload } from 'primeng/fileupload';
 import { finalize } from 'rxjs/operators';
 import { PartListComponent } from './part-list.component';
+import { ListErrorImportModalComponent } from './list-error-import-part-list-modal.component';
 
 @Component({
 
@@ -19,7 +20,7 @@ export class ImportPartListComponent extends AppComponentBase {
     @ViewChild('imgInput', { static: false }) InputVar: ElementRef;
     @ViewChild('ExcelFileUpload', { static: false }) excelFileUpload: FileUpload;
     @ViewChild('importExcelModal', { static: true }) modal: ModalDirective;
-    // @ViewChild('listErrorImport', { static: true }) listErrorImport: ListErrorImportModalComponent;
+    @ViewChild('listErrorImport', { static: true }) listErrorImport: ListErrorImportModalComponent;
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
     @Output() modalClose: EventEmitter<any> = new EventEmitter<any>();
 
@@ -95,7 +96,7 @@ export class ImportPartListComponent extends AppComponentBase {
                 }))
                 .subscribe(response => {
                     if (response.success) {
-                        if (response.result.PartList.length == 0) {
+                        if (response.result.material.length == 0) {
                             this.notify.error('Dữ liệu không hợp lệ!');
                             this.progressBarHidden();
                             this.close();
@@ -122,35 +123,35 @@ export class ImportPartListComponent extends AppComponentBase {
     }
 
     mergeData(guid) {
-        // this.isLoading = true;
-        // this._service.mergeDataPartList(guid)
-        //     .pipe(
-        //         finalize(() => {
-        //             this.isLoading = false;
-        //         })
-        //     )
-        //     .subscribe(() => {
-        //         this.showMessImport(guid);
-        //     });
+        this.isLoading = true;
+        this._service.mergeDataPartList(guid)
+            .pipe(
+                finalize(() => {
+                    this.isLoading = false;
+                })
+            )
+            .subscribe(() => {
+                this.showMessImport(guid);
+            });
     }
 
-    // showMessImport(guid) {
-    //     this._service.getListErrorImport(guid)
-    //         .subscribe((result) => {
-    //             if (result.items.length > 0) {
-    //                 this.listErrorImport.show(guid);
-    //                 this.InputVar.nativeElement.value = '';
-    //                 this.progressBarHidden();
-    //                 this.disabled = false;
-    //             }
-    //             else {
-    //                 this.notify.info(this.l('SavedSuccessfully'));
-    //                 this._component.searchDatas();
-    //                 this.disabled = false;
-    //                 this.close();
-    //             }
-    //         });
-    // }
+    showMessImport(guid) {
+        this._service.getListErrorImport(guid)
+            .subscribe((result) => {
+                if (result.items.length > 0) {
+                    this.listErrorImport.show(guid);
+                    this.InputVar.nativeElement.value = '';
+                    this.progressBarHidden();
+                    this.disabled = false;
+                }
+                else {
+                    this.notify.info(this.l('SavedSuccessfully'));
+                    this._component.searchDatas();
+                    this.disabled = false;
+                    this.close();
+                }
+            });
+    }
 
     progressBarVisible() {
         this.vissbleInputName = 'vissible';

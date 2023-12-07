@@ -5,6 +5,7 @@ import { PartListComponent } from './part-list.component';
 import { ViewMaterialModule } from '../../other/view-material/view-material.module';
 import { EditPartListModalComponent } from './edit-part-list-modal.component';
 import { ImportPartListComponent } from './import-part-list-modal.component';
+import { ListErrorImportModalComponent } from './list-error-import-part-list-modal.component';
 
 @NgModule({
     imports: [
@@ -16,7 +17,7 @@ import { ImportPartListComponent } from './import-part-list-modal.component';
         PartListComponent,
         EditPartListModalComponent,
         ImportPartListComponent,
-        // ListErrorImportPartListModalComponent
+        ListErrorImportModalComponent
     ]
 })
 export class PartListModule { }

@@ -7231,6 +7231,173 @@ export class MasterPartListServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param fileName (optional) 
+     * @param body (optional) 
+     * @return Success
+     */
+    importPartListFromExcel(fileName: string | null | undefined, body: string | null | undefined): Observable<MasterPartListImportDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/MasterPartList/ImportPartListFromExcel?";
+        if (fileName !== undefined)
+            url_ += "fileName=" + encodeURIComponent("" + fileName) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processImportPartListFromExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processImportPartListFromExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<MasterPartListImportDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MasterPartListImportDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processImportPartListFromExcel(response: HttpResponseBase): Observable<MasterPartListImportDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(MasterPartListImportDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MasterPartListImportDto[]>(<any>null);
+    }
+
+    /**
+     * @param v_Guid (optional) 
+     * @return Success
+     */
+    mergeDataPartList(v_Guid: string | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MasterPartList/MergeDataPartList?";
+        if (v_Guid !== undefined)
+            url_ += "v_Guid=" + encodeURIComponent("" + v_Guid) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMergeDataPartList(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMergeDataPartList(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processMergeDataPartList(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param v_Guid (optional) 
+     * @return Success
+     */
+    getListErrorImport(v_Guid: string | null | undefined): Observable<PagedResultDtoOfMasterPartListImportDto> {
+        let url_ = this.baseUrl + "/api/services/app/MasterPartList/GetListErrorImport?";
+        if (v_Guid !== undefined)
+            url_ += "v_Guid=" + encodeURIComponent("" + v_Guid) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListErrorImport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListErrorImport(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfMasterPartListImportDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfMasterPartListImportDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetListErrorImport(response: HttpResponseBase): Observable<PagedResultDtoOfMasterPartListImportDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfMasterPartListImportDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfMasterPartListImportDto>(<any>null);
+    }
 }
 
 @Injectable()
@@ -25570,6 +25737,126 @@ export class PagedResultDtoOfMasterPartListDto implements IPagedResultDtoOfMaste
 export interface IPagedResultDtoOfMasterPartListDto {
     totalCount: number;
     items: MasterPartListDto[] | undefined;
+}
+
+export class MasterPartListImportDto implements IMasterPartListImportDto {
+    guid!: string | undefined;
+    partNo!: string | undefined;
+    partName!: string | undefined;
+    supplierNo!: string | undefined;
+    carfamilyCode!: string | undefined;
+    startProductionMonth!: moment.Moment | undefined;
+    endProductionMonth!: moment.Moment | undefined;
+    remark!: string | undefined;
+    errorDescription!: string | undefined;
+    creatorUserId!: number | undefined;
+
+    constructor(data?: IMasterPartListImportDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.guid = _data["guid"];
+            this.partNo = _data["partNo"];
+            this.partName = _data["partName"];
+            this.supplierNo = _data["supplierNo"];
+            this.carfamilyCode = _data["carfamilyCode"];
+            this.startProductionMonth = _data["startProductionMonth"] ? moment(_data["startProductionMonth"].toString()) : <any>undefined;
+            this.endProductionMonth = _data["endProductionMonth"] ? moment(_data["endProductionMonth"].toString()) : <any>undefined;
+            this.remark = _data["remark"];
+            this.errorDescription = _data["errorDescription"];
+            this.creatorUserId = _data["creatorUserId"];
+        }
+    }
+
+    static fromJS(data: any): MasterPartListImportDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MasterPartListImportDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["guid"] = this.guid;
+        data["partNo"] = this.partNo;
+        data["partName"] = this.partName;
+        data["supplierNo"] = this.supplierNo;
+        data["carfamilyCode"] = this.carfamilyCode;
+        data["startProductionMonth"] = this.startProductionMonth ? this.startProductionMonth.toISOString() : <any>undefined;
+        data["endProductionMonth"] = this.endProductionMonth ? this.endProductionMonth.toISOString() : <any>undefined;
+        data["remark"] = this.remark;
+        data["errorDescription"] = this.errorDescription;
+        data["creatorUserId"] = this.creatorUserId;
+        return data; 
+    }
+}
+
+export interface IMasterPartListImportDto {
+    guid: string | undefined;
+    partNo: string | undefined;
+    partName: string | undefined;
+    supplierNo: string | undefined;
+    carfamilyCode: string | undefined;
+    startProductionMonth: moment.Moment | undefined;
+    endProductionMonth: moment.Moment | undefined;
+    remark: string | undefined;
+    errorDescription: string | undefined;
+    creatorUserId: number | undefined;
+}
+
+export class PagedResultDtoOfMasterPartListImportDto implements IPagedResultDtoOfMasterPartListImportDto {
+    totalCount!: number;
+    items!: MasterPartListImportDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfMasterPartListImportDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(MasterPartListImportDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMasterPartListImportDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfMasterPartListImportDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfMasterPartListImportDto {
+    totalCount: number;
+    items: MasterPartListImportDto[] | undefined;
 }
 
 export class MasterProductTypeDto implements IMasterProductTypeDto {

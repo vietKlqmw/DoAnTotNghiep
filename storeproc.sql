@@ -248,46 +248,56 @@ BEGIN
 		VALUES ('MasterPartList', 'MasterPartList Import', 'START:', 'SYSTEM', GETDATE());
 
     UPDATE t1 
-		   SET ErrorDescription = CONCAT(ErrorDescription, N'Không tồn tại PartNo - PartName: ', t1.PartNo, '-', t1.PartName)
+		   SET ErrorDescription = CONCAT(ErrorDescription, N' Material không tồn tại hoặc chưa có hiệu lực!')
 		  FROM MasterPartList_T t1
 		 WHERE Guid = @Guid 
 		   AND t1.PartNo IS NOT NULL
        AND t1.PartName IS NOT NULL
-       AND NOT EXISTS (Select 1 from MasterPartList t2 WHERE t2.PartNo = t1.PartNo AND t2.PartName = t2.PartName);
+       AND NOT EXISTS (SELECT 1 FROM MasterMaterial t2 
+                        WHERE t2.MaterialCode = SUBSTRING(t1.PartNo, 1, 10) AND t2.Description = t1.PartName
+                          AND ((t2.EffectiveDateTo IS NULL AND t2.EffectiveDateFrom <= GETDATE()) OR t2.EffectiveDateTo >= GETDATE())
+                          AND t1.StartProductionMonth > t2.EffectiveDateFrom
+                          AND t2.IsDeleted = 0);
 
-		IF NOT EXISTS (SELECT 1 FROM MasterMaterial_T mmt WHERE mmt.Guid = @Guid AND mmt.ErrorDescription != '')
+    UPDATE t1 
+		   SET ErrorDescription = CONCAT(ErrorDescription, N' Không tồn tại SupplierNo: ', t1.SupplierNo)
+		  FROM MasterPartList_T t1
+		 WHERE Guid = @Guid 
+		   AND t1.SupplierNo IS NOT NULL
+       AND NOT EXISTS (SELECT 1 FROM MasterSupplierList t2 WHERE t2.SupplierNo = t1.SupplierNo AND t2.IsDeleted = 0);
+
+     UPDATE t1 
+		   SET ErrorDescription = CONCAT(ErrorDescription, N' Không tồn tại CarfamilyCode: ', t1.CarfamilyCode)
+		  FROM MasterPartList_T t1
+		 WHERE Guid = @Guid 
+		   AND t1.CarfamilyCode IS NOT NULL
+       AND NOT EXISTS (SELECT 1 FROM MasterCarfamily t2 WHERE t2.Code = t1.CarfamilyCode AND t2.IsDeleted = 0);
+
+		IF NOT EXISTS (SELECT 1 FROM MasterPartList_T WHERE Guid = @Guid AND ErrorDescription != '')
 		BEGIN					
-		    MERGE INTO MasterMaterial AS P
+		    MERGE INTO MasterPartList AS P
 		    USING (
-        	  SELECT DISTINCT t.MaterialType, t.MaterialCode, t.Description, t.MaterialGroup, t.BaseUnitOfMeasure, 
-                   t.StorageLocation, t.StandardPrice, t.MovingPrice, t.MaterialOrigin, t.EffectiveDateFrom, 
-                   t.EffectiveDateTo, t.ProductionType, t.CreatorUserId
-        		  FROM MasterMaterial_T t
-        	   WHERE Guid = @Guid
-		    ) AS DT	ON (P.MaterialType = DT.MaterialType AND P.MaterialCode = DT.MaterialCode)				    
+        	  SELECT DISTINCT t.PartNo, t.PartName, t.SupplierNo, t.CarfamilyCode, t.StartProductionMonth, 
+                   t.EndProductionMonth, t.Remark, t.CreatorUserId, msl.Id SupplierId, mm.Id MaterialId
+        		  FROM MasterPartList_T t
+         LEFT JOIN MasterSupplierList msl ON t.SupplierNo = msl.SupplierNo
+         LEFT JOIN MasterMaterial mm ON SUBSTRING(t.PartNo, 1, 10) = mm.MaterialCode AND t.PartName = mm.Description
+        	   WHERE t.Guid = @Guid
+		    ) AS DT	ON (P.CarfamilyCode = DT.CarfamilyCode AND P.SupplierNo = DT.SupplierNo AND P.PartNo = DT.PartNo AND P.PartName = DT.PartName)				    
 		    WHEN MATCHED THEN
 		        UPDATE SET 
-					      P.Description = DT.Description,
-					      P.MaterialGroup = DT.MaterialGroup,
-					      P.BaseUnitOfMeasure = DT.BaseUnitOfMeasure,
-					      P.StorageLocation = DT.StorageLocation,
-					      P.StandardPrice = DT.StandardPrice,
-                P.MovingPrice = DT.MovingPrice,
-                P.MaterialOrigin = DT.MaterialOrigin,
-                P.EffectiveDateFrom = DT.EffectiveDateFrom,
-                P.EffectiveDateTo = DT.EffectiveDateTo,
-                P.ProductionType = DT.ProductionType,
+					      P.StartProductionMonth = DT.StartProductionMonth,
+					      P.EndProductionMonth = DT.EndProductionMonth,
+					      P.Remark = DT.Remark,
                 P.LastModifierUserId = DT.CreatorUserId,
 					      P.LastModificationTime = GETDATE()
 		    WHEN NOT MATCHED THEN
 		        INSERT (CreationTime, CreatorUserId, IsDeleted, 
-                    MaterialType, MaterialCode, Description, MaterialGroup, BaseUnitOfMeasure, 
-                    StorageLocation, StandardPrice, MovingPrice, MaterialOrigin, EffectiveDateFrom, 
-                    EffectiveDateTo, ProductionType)				
+                    PartNo, PartName, SupplierNo, SupplierId, MaterialId, CarfamilyCode, 
+                    StartProductionMonth, EndProductionMonth, Remark)				
 		  	    VALUES (GETDATE(), DT.CreatorUserId, 0, 
-                    DT.MaterialType, DT.MaterialCode, DT.Description, DT.MaterialGroup, DT.BaseUnitOfMeasure, 
-                    DT.StorageLocation, DT.StandardPrice, DT.MovingPrice, DT.MaterialOrigin, DT.EffectiveDateFrom, 
-                    DT.EffectiveDateTo, DT.ProductionType);
+                    DT.PartNo, DT.PartName, DT.SupplierNo, DT.SupplierId, DT.MaterialId, DT.CarfamilyCode,  
+                    DT.StartProductionMonth, DT.EndProductionMonth, DT.Remark);
 
 		END
 
@@ -317,6 +327,17 @@ BEGIN
 	   
 	  RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
 	  END CATCH;
+END
+------------------------------------------------Get List Error Import:
+CREATE PROCEDURE INV_MASTER_PART_LIST_GET_LIST_ERROR_IMPORT
+    @Guid NVARCHAR(max)
+AS 
+BEGIN
+    SELECT DISTINCT mplt.Guid, mplt.PartNo, mplt.PartName, mplt.SupplierNo, 
+           mplt.CarfamilyCode, mplt.Remark, mplt.StartProductionMonth, 
+           mplt.EndProductionMonth, mplt.ErrorDescription
+      FROM MasterPartList_T mplt
+     WHERE mplt.Guid = @Guid AND ISNULL(mplt.ErrorDescription, '') <> '' 
 END
 ------------------------------------------------MaterialGroup------------------------------------------------
 INSERT INTO MasterMaterialGroup 

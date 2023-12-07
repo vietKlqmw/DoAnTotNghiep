@@ -247,7 +247,7 @@ namespace tmss.Master.PartList
             }
         }
 
-        public async Task MergeDataMaterial(string v_Guid)
+        public async Task MergeDataPartList(string v_Guid)
         {
             string _sql = "Exec INV_MASTER_PART_LIST_MERGE @Guid";
             await _dapperRepo.QueryAsync<MasterPartListImportDto>(_sql, new { Guid = v_Guid });
