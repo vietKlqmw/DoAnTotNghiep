@@ -43,4 +43,26 @@ namespace tmss.Master.PartList
         public virtual string CarfamilyCode { get; set; }
 
     }
+
+    public class MasterPartListImportDto
+    {
+        public virtual string Guid { get; set; }
+        public virtual string PartNo { get; set; }
+
+        public virtual string PartName { get; set; }
+
+        public virtual string SupplierNo { get; set; }
+
+        public virtual string CarfamilyCode { get; set; }
+
+        public virtual DateTime? StartProductionMonth { get; set; }
+
+        public virtual DateTime? EndProductionMonth { get; set; }
+
+        public virtual string Remark { get; set; }
+
+        public virtual string ErrorDescription { get; set; }
+
+        public virtual long? CreatorUserId { get; set; }
+    }
 }

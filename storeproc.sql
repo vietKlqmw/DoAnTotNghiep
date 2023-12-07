@@ -235,6 +235,89 @@ BEGIN
          WHERE Id = @p_PartListId;
     END
 END
+------------------------------------------------Import:
+CREATE PROCEDURE INV_MASTER_PART_LIST_MERGE
+    @Guid VARCHAR(MAX)
+AS
+BEGIN
+    BEGIN TRY 
+	  BEGIN TRANSACTION
+
+	  -- FOR BUG CHECK-
+		INSERT INTO ProcessLog(CATEGORY, PROCESS_NAME, ERROR_MESSAGE, CREATED_BY, CREATED_DATE)
+		VALUES ('MasterPartList', 'MasterPartList Import', 'START:', 'SYSTEM', GETDATE());
+
+    UPDATE t1 
+		   SET ErrorDescription = CONCAT(ErrorDescription, N'Không tồn tại PartNo - PartName: ', t1.PartNo, '-', t1.PartName)
+		  FROM MasterPartList_T t1
+		 WHERE Guid = @Guid 
+		   AND t1.PartNo IS NOT NULL
+       AND t1.PartName IS NOT NULL
+       AND NOT EXISTS (Select 1 from MasterPartList t2 WHERE t2.PartNo = t1.PartNo AND t2.PartName = t2.PartName);
+
+		IF NOT EXISTS (SELECT 1 FROM MasterMaterial_T mmt WHERE mmt.Guid = @Guid AND mmt.ErrorDescription != '')
+		BEGIN					
+		    MERGE INTO MasterMaterial AS P
+		    USING (
+        	  SELECT DISTINCT t.MaterialType, t.MaterialCode, t.Description, t.MaterialGroup, t.BaseUnitOfMeasure, 
+                   t.StorageLocation, t.StandardPrice, t.MovingPrice, t.MaterialOrigin, t.EffectiveDateFrom, 
+                   t.EffectiveDateTo, t.ProductionType, t.CreatorUserId
+        		  FROM MasterMaterial_T t
+        	   WHERE Guid = @Guid
+		    ) AS DT	ON (P.MaterialType = DT.MaterialType AND P.MaterialCode = DT.MaterialCode)				    
+		    WHEN MATCHED THEN
+		        UPDATE SET 
+					      P.Description = DT.Description,
+					      P.MaterialGroup = DT.MaterialGroup,
+					      P.BaseUnitOfMeasure = DT.BaseUnitOfMeasure,
+					      P.StorageLocation = DT.StorageLocation,
+					      P.StandardPrice = DT.StandardPrice,
+                P.MovingPrice = DT.MovingPrice,
+                P.MaterialOrigin = DT.MaterialOrigin,
+                P.EffectiveDateFrom = DT.EffectiveDateFrom,
+                P.EffectiveDateTo = DT.EffectiveDateTo,
+                P.ProductionType = DT.ProductionType,
+                P.LastModifierUserId = DT.CreatorUserId,
+					      P.LastModificationTime = GETDATE()
+		    WHEN NOT MATCHED THEN
+		        INSERT (CreationTime, CreatorUserId, IsDeleted, 
+                    MaterialType, MaterialCode, Description, MaterialGroup, BaseUnitOfMeasure, 
+                    StorageLocation, StandardPrice, MovingPrice, MaterialOrigin, EffectiveDateFrom, 
+                    EffectiveDateTo, ProductionType)				
+		  	    VALUES (GETDATE(), DT.CreatorUserId, 0, 
+                    DT.MaterialType, DT.MaterialCode, DT.Description, DT.MaterialGroup, DT.BaseUnitOfMeasure, 
+                    DT.StorageLocation, DT.StandardPrice, DT.MovingPrice, DT.MaterialOrigin, DT.EffectiveDateFrom, 
+                    DT.EffectiveDateTo, DT.ProductionType);
+
+		END
+
+		-- FOR BUG CHECK-
+		INSERT INTO ProcessLog (CATEGORY, PROCESS_NAME, ERROR_MESSAGE, CREATED_BY, CREATED_DATE)
+		VALUES ('MasterPartList', 'MasterPartList Import', 'END:', 'SYSTEM', GETDATE());
+
+		COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+		DECLARE @ErrorSeverity INT;
+		DECLARE @ErrorState INT;
+		DECLARE @ErrorMessage NVARCHAR(4000);
+  
+		SELECT @ErrorMessage = ERROR_MESSAGE(),
+			     @ErrorSeverity = ERROR_SEVERITY(), 
+			     @ErrorState = ERROR_STATE();
+
+		ROLLBACK TRANSACTION		
+		INSERT INTO ProCess_Log ([CATEGORY], [PROCESS_NAME], [ERROR_MESSAGE], [CREATED_DATE])
+		VALUES ('MasterPartList', 'MasterPartList Import', 'ERROR :' + @ErrorMessage + 
+															'//ERRORSTATE :' +  CAST(@ErrorState AS VARCHAR) + 
+															'//ERRORPROCEDURE :' + ERROR_PROCEDURE() + 
+															'//ERRORSEVERITY :' + CAST(@ErrorSeverity AS VARCHAR) + 
+															'//ERRORNUMBER :' + CAST(ERROR_NUMBER() AS VARCHAR) + 
+															'//ERRORLINE :' + CAST(ERROR_LINE() AS VARCHAR), GETDATE());
+	   
+	  RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+	  END CATCH;
+END
 ------------------------------------------------MaterialGroup------------------------------------------------
 INSERT INTO MasterMaterialGroup 
 (CreationTime, CreatorUserId, IsDeleted, Code, Name)
