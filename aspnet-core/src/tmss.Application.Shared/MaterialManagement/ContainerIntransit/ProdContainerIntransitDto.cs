@@ -15,10 +15,6 @@ namespace tmss.MaterialManagement.ContainerIntransit
 
         public virtual DateTime? TransactionDate { get; set; }
 
-        public virtual DateTime? TmvDate { get; set; }
-
-        public virtual string Status { get; set; }
-
         public virtual string Forwarder { get; set; }
 
         public virtual long? ShipmentId { get; set; }
@@ -34,7 +30,6 @@ namespace tmss.MaterialManagement.ContainerIntransit
 
         public virtual DateTime? TransactionDate { get; set; }
 
-        public virtual DateTime? TmvDate { get; set; }
     }
 
     public class GetProdContainerIntransitExportInput
@@ -47,6 +42,5 @@ namespace tmss.MaterialManagement.ContainerIntransit
 
         public virtual DateTime? TransactionDate { get; set; }
 
-        public virtual DateTime? TmvDate { get; set; }
     }
 }

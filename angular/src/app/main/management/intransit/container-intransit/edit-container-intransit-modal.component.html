@@ -61,21 +61,10 @@
                                 </div>
                             </div>
                             <div class="ui-g-12 ui-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-text left-text">Warehouse Date</span>
-                                    <input type='text' class="form-control tmss-form-control" name='tmvDate'
-						                #datepicker4='bsDatepicker' [(ngModel)]='_tmvDate' bsDatepicker
-                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
-                                    <span class="input-group-text right-text">
-                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker4.toggle()"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
                                 <tmss-combobox [items]="listForwarder" name="forwarder" [text]="'Forwarder'" [(ngModel)]="_forwarder"></tmss-combobox>
                             </div>
                             <div class="ui-g-12 ui-md-6">
-                                <tmss-combobox [items]="listContStatus" name="status" [text]="'Status'" [(ngModel)]="_status"></tmss-combobox>
+                                <tmss-combobox [items]="listShipment" name="shipmentId" [text]="'Shipment'" [(ngModel)]="rowData.shipmentId"></tmss-combobox>
                             </div>
                         </div>
                     </fieldset>

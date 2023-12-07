@@ -24,8 +24,6 @@ namespace tmss.MaterialManagement.ContainerIntransit.Exporting
                         ("Shipping Date"),
                         ("Port Date"),
                         ("Transaction Date"),
-                        ("Tmv Date"),
-                        ("Status"),
                         ("Forwarder")
                     );
 
@@ -36,12 +34,10 @@ namespace tmss.MaterialManagement.ContainerIntransit.Exporting
                         _ => _.ShippingDate,
                         _ => _.PortDate,
                         _ => _.TransactionDate,
-                        _ => _.TmvDate,
-                        _ => _.Status,
                         _ => _.Forwarder
                     );
 
-                    for (var i = 0; i < 8; i++)
+                    for (var i = 0; i < 6; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

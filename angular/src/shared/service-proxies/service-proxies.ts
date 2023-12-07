@@ -10535,13 +10535,12 @@ export class ProdContainerIntransitServiceProxy {
      * @param shippingDate (optional) 
      * @param portDate (optional) 
      * @param transactionDate (optional) 
-     * @param tmvDate (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getProdContainerIntransitSearch(containerNo: string | null | undefined, shippingDate: moment.Moment | null | undefined, portDate: moment.Moment | null | undefined, transactionDate: moment.Moment | null | undefined, tmvDate: moment.Moment | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdContainerIntransitDto> {
+    getProdContainerIntransitSearch(containerNo: string | null | undefined, shippingDate: moment.Moment | null | undefined, portDate: moment.Moment | null | undefined, transactionDate: moment.Moment | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdContainerIntransitDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdContainerIntransit/GetProdContainerIntransitSearch?";
         if (containerNo !== undefined)
             url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
@@ -10551,8 +10550,6 @@ export class ProdContainerIntransitServiceProxy {
             url_ += "PortDate=" + encodeURIComponent(portDate ? "" + portDate.toJSON() : "") + "&"; 
         if (transactionDate !== undefined)
             url_ += "TransactionDate=" + encodeURIComponent(transactionDate ? "" + transactionDate.toJSON() : "") + "&"; 
-        if (tmvDate !== undefined)
-            url_ += "TmvDate=" + encodeURIComponent(tmvDate ? "" + tmvDate.toJSON() : "") + "&"; 
         if (sorting !== undefined)
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         if (skipCount === null)
@@ -10614,10 +10611,9 @@ export class ProdContainerIntransitServiceProxy {
      * @param shippingDate (optional) 
      * @param portDate (optional) 
      * @param transactionDate (optional) 
-     * @param tmvDate (optional) 
      * @return Success
      */
-    getProdContainerIntransitToExcel(containerNo: string | null | undefined, shippingDate: moment.Moment | null | undefined, portDate: moment.Moment | null | undefined, transactionDate: moment.Moment | null | undefined, tmvDate: moment.Moment | null | undefined): Observable<FileDto> {
+    getProdContainerIntransitToExcel(containerNo: string | null | undefined, shippingDate: moment.Moment | null | undefined, portDate: moment.Moment | null | undefined, transactionDate: moment.Moment | null | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdContainerIntransit/GetProdContainerIntransitToExcel?";
         if (containerNo !== undefined)
             url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
@@ -10627,8 +10623,6 @@ export class ProdContainerIntransitServiceProxy {
             url_ += "PortDate=" + encodeURIComponent(portDate ? "" + portDate.toJSON() : "") + "&"; 
         if (transactionDate !== undefined)
             url_ += "TransactionDate=" + encodeURIComponent(transactionDate ? "" + transactionDate.toJSON() : "") + "&"; 
-        if (tmvDate !== undefined)
-            url_ += "TmvDate=" + encodeURIComponent(tmvDate ? "" + tmvDate.toJSON() : "") + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -12627,6 +12621,61 @@ export class ProdOthersServiceProxy {
             }));
         }
         return _observableOf<ListMaterialUsageDto[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getListShipmentNewOrPending(): Observable<ListShipmentNewOrPendingDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetListShipmentNewOrPending";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListShipmentNewOrPending(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListShipmentNewOrPending(<any>response_);
+                } catch (e) {
+                    return <Observable<ListShipmentNewOrPendingDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ListShipmentNewOrPendingDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetListShipmentNewOrPending(response: HttpResponseBase): Observable<ListShipmentNewOrPendingDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ListShipmentNewOrPendingDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ListShipmentNewOrPendingDto[]>(<any>null);
     }
 }
 
@@ -28141,8 +28190,6 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
     shippingDate!: moment.Moment | undefined;
     portDate!: moment.Moment | undefined;
     transactionDate!: moment.Moment | undefined;
-    tmvDate!: moment.Moment | undefined;
-    status!: string | undefined;
     forwarder!: string | undefined;
     shipmentId!: number | undefined;
     id!: number | undefined;
@@ -28163,8 +28210,6 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
             this.shippingDate = _data["shippingDate"] ? moment(_data["shippingDate"].toString()) : <any>undefined;
             this.portDate = _data["portDate"] ? moment(_data["portDate"].toString()) : <any>undefined;
             this.transactionDate = _data["transactionDate"] ? moment(_data["transactionDate"].toString()) : <any>undefined;
-            this.tmvDate = _data["tmvDate"] ? moment(_data["tmvDate"].toString()) : <any>undefined;
-            this.status = _data["status"];
             this.forwarder = _data["forwarder"];
             this.shipmentId = _data["shipmentId"];
             this.id = _data["id"];
@@ -28185,8 +28230,6 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
         data["shippingDate"] = this.shippingDate ? this.shippingDate.toISOString() : <any>undefined;
         data["portDate"] = this.portDate ? this.portDate.toISOString() : <any>undefined;
         data["transactionDate"] = this.transactionDate ? this.transactionDate.toISOString() : <any>undefined;
-        data["tmvDate"] = this.tmvDate ? this.tmvDate.toISOString() : <any>undefined;
-        data["status"] = this.status;
         data["forwarder"] = this.forwarder;
         data["shipmentId"] = this.shipmentId;
         data["id"] = this.id;
@@ -28200,8 +28243,6 @@ export interface IProdContainerIntransitDto {
     shippingDate: moment.Moment | undefined;
     portDate: moment.Moment | undefined;
     transactionDate: moment.Moment | undefined;
-    tmvDate: moment.Moment | undefined;
-    status: string | undefined;
     forwarder: string | undefined;
     shipmentId: number | undefined;
     id: number | undefined;
@@ -29553,6 +29594,46 @@ export class ListMaterialUsageDto implements IListMaterialUsageDto {
 export interface IListMaterialUsageDto {
     materialId: number | undefined;
     materialCode: string | undefined;
+}
+
+export class ListShipmentNewOrPendingDto implements IListShipmentNewOrPendingDto {
+    shipmentId!: number | undefined;
+    shipmentNo!: string | undefined;
+
+    constructor(data?: IListShipmentNewOrPendingDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.shipmentId = _data["shipmentId"];
+            this.shipmentNo = _data["shipmentNo"];
+        }
+    }
+
+    static fromJS(data: any): ListShipmentNewOrPendingDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListShipmentNewOrPendingDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["shipmentId"] = this.shipmentId;
+        data["shipmentNo"] = this.shipmentNo;
+        return data; 
+    }
+}
+
+export interface IListShipmentNewOrPendingDto {
+    shipmentId: number | undefined;
+    shipmentNo: string | undefined;
 }
 
 export class ProdShipmentDto implements IProdShipmentDto {

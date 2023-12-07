@@ -30,11 +30,6 @@ namespace tmss.MaterialManagement
 
         public virtual DateTime? TransactionDate { get; set; } 
 
-        public virtual DateTime? TmvDate { get; set; }
-
-        [StringLength(MaxStatusLength)]
-        public virtual string Status { get; set; }
-
         [StringLength(MaxForwarderLength)]
         public virtual string Forwarder { get; set; }
 

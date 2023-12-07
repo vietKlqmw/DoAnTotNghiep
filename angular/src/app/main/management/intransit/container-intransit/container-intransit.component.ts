@@ -52,7 +52,6 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
     shippingDate: any;
     portDate: any;
     transactionDate: any;
-    tmvDate: any
     _selectrow;
 
     defaultColDef = {
@@ -79,7 +78,7 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
         super(injector);
 
         this.colDefs = [
-            { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 60 },
+            { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 80 },
             { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', flex: 1 },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
             {
@@ -94,12 +93,7 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
                 headerName: this.l('Transaction Date'), headerTooltip: this.l('TransactionDate'), field: 'transactionDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.transactionDate, 'dd/MM/yyyy')
             },
-            {
-                headerName: this.l('Warehouse Date'), headerTooltip: this.l('TmvDate'), field: 'tmvDate', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.tmvDate, 'dd/MM/yyyy')
-            },
             { headerName: this.l('Forwarder'), headerTooltip: this.l('Forwarder'), field: 'forwarder', flex: 1 },
-            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
             { headerName: this.l('Shipment Id'), headerTooltip: this.l('Shipment Id'), field: 'shipmentId', flex: 1 }
         ];
 
@@ -112,26 +106,6 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
         this.paginationParams = { pageNum: 1, pageSize: 500, totalCount: 0 };
     }
 
-    autoSizeAll() {
-        const allColumnIds: string[] = [];
-        this.dataParams.columnApi!.getAllColumns()!.forEach((column) => {
-            if (column.getId().toString() != "stt") {
-                allColumnIds.push(column.getId());
-            }
-        });
-        this.dataParams.columnApi!.autoSizeColumns(allColumnIds);
-    }
-
-    resetGridView() {
-
-        setTimeout(() => {
-            this.dataParams.columnApi!.sizeColumnsToFit({
-                suppressColumnVirtualisation: true,
-            });
-            this.autoSizeAll();
-        })
-    }
-
     searchDatas(): void {
         this.isLoading = true;
         this._service.getProdContainerIntransitSearch(
@@ -139,7 +113,6 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
             this.shippingDate ? moment(this.shippingDate) : undefined,
             this.portDate ? moment(this.portDate) : undefined,
             this.transactionDate ? moment(this.transactionDate) : undefined,
-            this.tmvDate ? moment(this.tmvDate) : undefined,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -149,7 +122,6 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
                 this.paginationParams.totalCount = result.totalCount;
                 this.rowData = result.items;
                 this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
-                this.resetGridView();
                 this.isLoading = false;
             });
     }
@@ -159,7 +131,6 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
         this.shippingDate = '';
         this.portDate = '';
         this.transactionDate = '';
-        this.tmvDate = '';
         this.searchDatas();
     }
 
@@ -169,7 +140,6 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
             this.shippingDate ? moment(this.shippingDate) : undefined,
             this.portDate ? moment(this.portDate) : undefined,
             this.transactionDate ? moment(this.transactionDate) : undefined,
-            this.tmvDate ? moment(this.tmvDate) : undefined,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -184,7 +154,6 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
             this.paginationParams.totalCount = result.totalCount;
             this.rowData = result.items;
             this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
-            this.resetGridView();
             this.isLoading = false;
         });
     }
@@ -202,7 +171,6 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
                 this.paginationParams.totalCount = result.totalCount;
                 this.rowData = result.items ?? [];
                 this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
-                this.resetGridView();
                 this.isLoading = false;
             });
     }
@@ -220,8 +188,7 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
             this.containerNo,
             this.shippingDate ? moment(this.shippingDate) : undefined,
             this.portDate ? moment(this.portDate) : undefined,
-            this.transactionDate ? moment(this.transactionDate) : undefined,
-            this.tmvDate ? moment(this.tmvDate) : undefined)
+            this.transactionDate ? moment(this.transactionDate) : undefined)
             .pipe(finalize(() => this.isLoading = false))
             .subscribe(result => {
                 this._fileDownloadService.downloadTempFile(result);

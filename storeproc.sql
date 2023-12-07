@@ -640,7 +640,7 @@ CREATE PROCEDURE INV_PROD_SHIPMENT_ADD
 AS
 BEGIN
     INSERT INTO ProdShipment (CreationTime, CreatorUserId, IsDeleted, ShipmentNo, SupplierNo, FromPort, ToPort, Status)
-                      VALUES (GETDATE(), @p_UserId, 0, @p_ShipmentNo, @p_SupplierNo, @p_FromPort, @p_ToPort, 'NEW');
+                      VALUES (GETDATE(), @p_UserId, 0, UPPER(@p_ShipmentNo), @p_SupplierNo, @p_FromPort, @p_ToPort, 'NEW');
 END
 ------------------------------------------------Edit:
 CREATE PROCEDURE INV_PROD_SHIPMENT_EDIT
@@ -703,6 +703,14 @@ BEGIN
         INSERT INTO ProdBillOfLading (CreationTime, CreatorUserId, IsDeleted, BillofladingNo, ShipmentId, StatusCode)
                               VALUES (GETDATE(), @p_UserId, 0, @p_BillofladingNo, @p_ShipmentId, 'NEW');
     END
+END
+------------------------------------------------GetListShipmentNewOrPending:
+CREATE PROCEDURE INV_PROD_SHIPMENT_GET_LIST_NEW_OR_PENDING
+AS
+BEGIN
+    SELECT Id ShipmentId, ShipmentNo 
+    FROM ProdShipment 
+    WHERE Status IN ('NEW', 'PENDING')
 END
 ------------------------------------------------BillOfLading------------------------------------------------
 ------------------------------------------------Search:
@@ -1131,20 +1139,16 @@ CREATE PROCEDURE INV_PROD_CONTAINER_INTRANSIT_SEARCH
 	  @p_ContainerNo NVARCHAR(15),
 	  @p_ShippingDate DATE,
 	  @p_PortDate DATE,
-	  @p_TransactionDate DATE,
-	  @p_TmvDate DATE
+	  @p_TransactionDate DATE
 )
 AS
     SELECT a.Id, a.ContainerNo, a.SupplierNo, a.ShippingDate, a.PortDate, 
-           a.TransactionDate, a.TmvDate, b.Description AS Status, a.Forwarder
+           a.TransactionDate, a.Forwarder, a.ShipmentId
       FROM ProdContainerIntransit a
- LEFT JOIN MasterContainerStatus b
-        ON a.Status = b.Code
      WHERE (ISNULL(@p_ContainerNo, '') = '' OR a.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
     	 AND (ISNULL(@p_ShippingDate, '') = '' OR a.ShippingDate = @p_ShippingDate)
     	 AND (ISNULL(@p_PortDate, '') = '' OR a.PortDate = @p_PortDate)
     	 AND (ISNULL(@p_TransactionDate, '') = '' OR a.TransactionDate = @p_TransactionDate)
-    	 AND (ISNULL(@p_TmvDate, '') = '' OR a.TmvDate = @p_TmvDate)
 		   AND a.IsDeleted = 0
 	ORDER BY a.ShippingDate DESC
 
@@ -1158,9 +1162,8 @@ CREATE PROCEDURE INV_PROD_CONTAINER_INTRANSIT_EDIT
 	  @p_ShippingDate DATE,
 	  @p_PortDate DATE,
 	  @p_TransactionDate DATE,
-	  @p_TmvDate DATE,
-    @p_Status NVARCHAR(50),
     @p_Forwarder NVARCHAR(10),
+    @p_ShipmentId INT, 
     @p_UserId BIGINT
 )
 AS
@@ -1169,9 +1172,11 @@ BEGIN
     BEGIN
         INSERT INTO ProdContainerIntransit 
                     (CreationTime, CreatorUserId, IsDeleted, 
-                    ContainerNo, SupplierNo, ShippingDate, PortDate, Status, Forwarder, TmvDate, TransactionDate)
+                    ContainerNo, SupplierNo, ShippingDate, PortDate, 
+                    Forwarder, TransactionDate, ShipmentId)
              VALUES (GETDATE(), @p_UserId, 0, 
-                    UPPER(@p_ContainerNo), @p_SupplierNo, @p_ShippingDate, @p_PortDate, @p_Status, @p_Forwarder, @p_TmvDate, @p_TransactionDate);
+                    UPPER(@p_ContainerNo), @p_SupplierNo, @p_ShippingDate, @p_PortDate, 
+                    @p_Forwarder, @p_TransactionDate, @p_ShipmentId);
     END
     ELSE
     BEGIN
@@ -1180,10 +1185,9 @@ BEGIN
                LastModifierUserId = @p_UserId, 
                ShippingDate = @p_ShippingDate, 
                PortDate = @p_PortDate, 
-               Status = @p_Status, 
                Forwarder = @p_Forwarder, 
-               TmvDate = @p_TmvDate, 
-               TransactionDate = @p_TransactionDate
+               TransactionDate = @p_TransactionDate,
+               ShipmentId = @p_ShipmentId
          WHERE Id = @p_ContId;
     END
 END
