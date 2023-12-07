@@ -18,24 +18,23 @@
                                 <tmss-text-input [text]="'Container No'" [(ngModel)]="rowData.containerNo"
                                     name='containerNo' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
-                                <tmss-text-input [text]="'Supplier No'" [(ngModel)]="rowData.supplierNo"
-                                    name='supplierNo' [isReadonly]="isEdit"></tmss-text-input>
-                            </div>
                             <div class="ui-g-12 ui-md-6" *ngIf="!isEdit">
-                                <p-dropdown [options]="listSupplier" [filter]="true" [virtualScroll]="true" [itemSize]="30" placeholder="Select Supplier"
-                                    name="supplierNo" [(ngModel)]="rowData.supplierNo" [style]="{'width':'100%'}"
-                                    (ngModelChange)="changeForwarder($event)"></p-dropdown>
+                                <tmss-combobox [items]="listShipment" name="shipmentId" [text]="'Shipment'"
+                                    [(ngModel)]="rowData.shipmentId" (ngModelChange)="changeSupplier($event)"></tmss-combobox>
+                            </div>
+                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
+                                <tmss-text-input [text]="'Shipment'" [(ngModel)]="rowData.shipmentId"
+                                    name='shipmentId' [isReadonly]="isEdit"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Supplier No'" [(ngModel)]="rowData.supplierNo"
+                                    name='supplierNo' [isReadonly]="true"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <div class="input-group">
                                     <span class="input-group-text left-text">Shipping Date</span>
-                                    <input type='text' class="form-control tmss-form-control" name='shippingDate'
-						                #datepicker='bsDatepicker' [(ngModel)]='_shippingDate' bsDatepicker
-                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
-                                    <span class="input-group-text right-text">
-                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
-                                    </span>
+                                    <input type='text' class="form-control tmss-form-control" name='shippingDate' readonly
+						                [(ngModel)]='_shippingDate'>
                                 </div>
                             </div>
                             <div class="ui-g-12 ui-md-6">
@@ -62,9 +61,6 @@
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-combobox [items]="listForwarder" name="forwarder" [text]="'Forwarder'" [(ngModel)]="_forwarder"></tmss-combobox>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-combobox [items]="listShipment" name="shipmentId" [text]="'Shipment'" [(ngModel)]="rowData.shipmentId"></tmss-combobox>
                             </div>
                         </div>
                     </fieldset>

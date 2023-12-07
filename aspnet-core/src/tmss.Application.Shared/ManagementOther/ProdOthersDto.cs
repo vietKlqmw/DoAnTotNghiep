@@ -1,4 +1,6 @@
-﻿namespace tmss.ManagementOther
+﻿using System;
+
+namespace tmss.ManagementOther
 {
     public class ProdOthersDto
     {
@@ -27,12 +29,24 @@
     public class ListMaterialUsageDto
     {
         public virtual long? MaterialId { get; set; }
-        public virtual string MaterialCode { get; set;}
+        public virtual string MaterialCode { get; set; }
     }
 
     public class ListShipmentNewOrPendingDto
     {
         public virtual long? ShipmentId { get; set; }
         public virtual string ShipmentNo { get; set; }
+
+        public virtual string SupplierNo { get; set; }
+        public virtual string Buyer { get; set; }
+        public virtual string FromPort { get; set; }
+        public virtual string ToPort { get; set; }
+        public virtual DateTime? ShipmentDate { get; set; }
+        public virtual DateTime? Etd { get; set; }
+        public virtual DateTime? Eta { get; set; }
+        public virtual DateTime? Ata { get; set; }
+        public virtual string OceanVesselName { get; set; }
+        public virtual DateTime? Atd { get; set; }
+        public virtual string Status { get; set; }
     }
 }

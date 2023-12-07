@@ -12677,6 +12677,64 @@ export class ProdOthersServiceProxy {
         }
         return _observableOf<ListShipmentNewOrPendingDto[]>(<any>null);
     }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getListShipmentById(id: number | null | undefined): Observable<ListShipmentNewOrPendingDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetListShipmentById?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListShipmentById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListShipmentById(<any>response_);
+                } catch (e) {
+                    return <Observable<ListShipmentNewOrPendingDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ListShipmentNewOrPendingDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetListShipmentById(response: HttpResponseBase): Observable<ListShipmentNewOrPendingDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ListShipmentNewOrPendingDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ListShipmentNewOrPendingDto[]>(<any>null);
+    }
 }
 
 @Injectable()
@@ -29599,6 +29657,17 @@ export interface IListMaterialUsageDto {
 export class ListShipmentNewOrPendingDto implements IListShipmentNewOrPendingDto {
     shipmentId!: number | undefined;
     shipmentNo!: string | undefined;
+    supplierNo!: string | undefined;
+    buyer!: string | undefined;
+    fromPort!: string | undefined;
+    toPort!: string | undefined;
+    shipmentDate!: moment.Moment | undefined;
+    etd!: moment.Moment | undefined;
+    eta!: moment.Moment | undefined;
+    ata!: moment.Moment | undefined;
+    oceanVesselName!: string | undefined;
+    atd!: moment.Moment | undefined;
+    status!: string | undefined;
 
     constructor(data?: IListShipmentNewOrPendingDto) {
         if (data) {
@@ -29613,6 +29682,17 @@ export class ListShipmentNewOrPendingDto implements IListShipmentNewOrPendingDto
         if (_data) {
             this.shipmentId = _data["shipmentId"];
             this.shipmentNo = _data["shipmentNo"];
+            this.supplierNo = _data["supplierNo"];
+            this.buyer = _data["buyer"];
+            this.fromPort = _data["fromPort"];
+            this.toPort = _data["toPort"];
+            this.shipmentDate = _data["shipmentDate"] ? moment(_data["shipmentDate"].toString()) : <any>undefined;
+            this.etd = _data["etd"] ? moment(_data["etd"].toString()) : <any>undefined;
+            this.eta = _data["eta"] ? moment(_data["eta"].toString()) : <any>undefined;
+            this.ata = _data["ata"] ? moment(_data["ata"].toString()) : <any>undefined;
+            this.oceanVesselName = _data["oceanVesselName"];
+            this.atd = _data["atd"] ? moment(_data["atd"].toString()) : <any>undefined;
+            this.status = _data["status"];
         }
     }
 
@@ -29627,6 +29707,17 @@ export class ListShipmentNewOrPendingDto implements IListShipmentNewOrPendingDto
         data = typeof data === 'object' ? data : {};
         data["shipmentId"] = this.shipmentId;
         data["shipmentNo"] = this.shipmentNo;
+        data["supplierNo"] = this.supplierNo;
+        data["buyer"] = this.buyer;
+        data["fromPort"] = this.fromPort;
+        data["toPort"] = this.toPort;
+        data["shipmentDate"] = this.shipmentDate ? this.shipmentDate.toISOString() : <any>undefined;
+        data["etd"] = this.etd ? this.etd.toISOString() : <any>undefined;
+        data["eta"] = this.eta ? this.eta.toISOString() : <any>undefined;
+        data["ata"] = this.ata ? this.ata.toISOString() : <any>undefined;
+        data["oceanVesselName"] = this.oceanVesselName;
+        data["atd"] = this.atd ? this.atd.toISOString() : <any>undefined;
+        data["status"] = this.status;
         return data; 
     }
 }
@@ -29634,6 +29725,17 @@ export class ListShipmentNewOrPendingDto implements IListShipmentNewOrPendingDto
 export interface IListShipmentNewOrPendingDto {
     shipmentId: number | undefined;
     shipmentNo: string | undefined;
+    supplierNo: string | undefined;
+    buyer: string | undefined;
+    fromPort: string | undefined;
+    toPort: string | undefined;
+    shipmentDate: moment.Moment | undefined;
+    etd: moment.Moment | undefined;
+    eta: moment.Moment | undefined;
+    ata: moment.Moment | undefined;
+    oceanVesselName: string | undefined;
+    atd: moment.Moment | undefined;
+    status: string | undefined;
 }
 
 export class ProdShipmentDto implements IProdShipmentDto {

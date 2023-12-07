@@ -77,5 +77,17 @@ namespace tmss.ManagementOther
 
             return result.ToList();
         }
+
+        public async Task<List<ListShipmentNewOrPendingDto>> GetListShipmentById(long? Id)
+        {
+            string _sql = "Exec INV_PROD_SHIPMENT_GET_BY_ID @p_Id";
+
+            IEnumerable<ListShipmentNewOrPendingDto> result = await _dapperRepo.QueryAsync<ListShipmentNewOrPendingDto>(_sql, new
+            {
+                p_Id = Id
+            });
+
+            return result.ToList();
+        }
     }
 }

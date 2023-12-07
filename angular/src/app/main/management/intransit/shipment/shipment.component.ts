@@ -59,6 +59,7 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
         { key: 'ORDERED', value: 'ORDERED' }
     ];
     _selectrow;
+    notDelete: boolean = false;
 
     defaultColDef = {
         resizable: true,
@@ -228,6 +229,13 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
         this.selectedRow = Object.assign({}, this.saveSelectedRow);
 
         this._selectrow = this.saveSelectedRow.id;
+
+        if(this._selectrow){
+            if(this.saveSelectedRow.status == 'ORDERED') this.notDelete = true;
+            else this.notDelete = false;
+        }else{
+            this.notDelete = false;
+        }
     }
 
     exportToExcel(): void {

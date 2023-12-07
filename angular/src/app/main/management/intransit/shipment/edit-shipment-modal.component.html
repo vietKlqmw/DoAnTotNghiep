@@ -71,7 +71,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
+                            <!-- <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
                                 <div class="input-group">
                                     <span class="input-group-text left-text">ATA</span>
                                     <input type='text' class="form-control tmss-form-control" name='ata'
@@ -81,12 +81,12 @@
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker4.toggle()"></i>
                                     </span>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
                                 <tmss-text-input [text]="'Ocean Vessel Name'" [(ngModel)]="rowData.oceanVesselName"
                                     name='oceanVesselName'></tmss-text-input>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
+                            <!-- <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
                                 <div class="input-group">
                                     <span class="input-group-text left-text">ATD</span>
                                     <input type='text' class="form-control tmss-form-control" name='atd'
@@ -96,9 +96,10 @@
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker5.toggle()"></i>
                                     </span>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
-                                <tmss-combobox [items]="list" name="status" [text]="'Status'" [(ngModel)]="rowData.status"></tmss-combobox>
+                                <tmss-combobox *ngIf="!isOrder" [items]="list" name="status" [text]="'Status'" [(ngModel)]="rowData.status"></tmss-combobox>
+                                <!-- <tmss-text-input *ngIf="isOrder" [text]="'Status'" [(ngModel)]="rowData.status" name='status' [isReadonly]="true"></tmss-text-input> -->
                             </div>
                         </div>
                     </fieldset>

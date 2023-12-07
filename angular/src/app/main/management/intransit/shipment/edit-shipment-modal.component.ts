@@ -35,6 +35,7 @@ export class EditShipmentModalComponent extends AppComponentBase {
         { value: 'PENDING', label: "PENDING" },
         { value: 'ORDERED', label: "ORDERED" }
     ];
+    isOrder: boolean = false;
 
     constructor(
         private injector: Injector,
@@ -70,6 +71,9 @@ export class EditShipmentModalComponent extends AppComponentBase {
         this.datepicker4?.bsValueChange.emit(dateValue4);
         const dateValue5 = this.rowData.atd ? new Date(this.rowData.atd?.toString()) : undefined;
         this.datepicker5?.bsValueChange.emit(dateValue5);
+
+        // if(this.rowData.status == 'ORDERED') this.isOrder = true;
+        // else this.isOrder = false;
 
         this.modal.show();
     }

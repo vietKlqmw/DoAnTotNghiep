@@ -678,6 +678,10 @@ BEGIN
     IF @p_Status = 'ORDERED'
     BEGIN
         DECLARE @p_BillofladingNo NVARCHAR(20) = (SELECT ShipmentNo + SupplierNo FROM ProdShipment WHERE Id = @p_ShipmentId);
+        IF EXISTS (SELECT 1 FROM ProdBillOfLading WHERE BillofladingNo = @p_BillofladingNo)
+        BEGIN
+            UPDATE ProdBillOfLading SET IsDeleted = 1 WHERE BillofladingNo = @p_BillofladingNo
+        END
         INSERT INTO ProdBillOfLading (CreationTime, CreatorUserId, IsDeleted, BillofladingNo, ShipmentId, StatusCode)
                               VALUES (GETDATE(), @p_UserId, 0, @p_BillofladingNo, @p_ShipmentId, 'NEW');
     END
@@ -700,6 +704,10 @@ BEGIN
     IF @p_Status = 'ORDERED'
     BEGIN
         DECLARE @p_BillofladingNo NVARCHAR(20) = (SELECT ShipmentNo + SupplierNo FROM ProdShipment WHERE Id = @p_ShipmentId);
+        IF EXISTS (SELECT 1 FROM ProdBillOfLading WHERE BillofladingNo = @p_BillofladingNo)
+        BEGIN
+            UPDATE ProdBillOfLading SET IsDeleted = 1 WHERE BillofladingNo = @p_BillofladingNo
+        END
         INSERT INTO ProdBillOfLading (CreationTime, CreatorUserId, IsDeleted, BillofladingNo, ShipmentId, StatusCode)
                               VALUES (GETDATE(), @p_UserId, 0, @p_BillofladingNo, @p_ShipmentId, 'NEW');
     END
@@ -708,9 +716,20 @@ END
 CREATE PROCEDURE INV_PROD_SHIPMENT_GET_LIST_NEW_OR_PENDING
 AS
 BEGIN
-    SELECT Id ShipmentId, ShipmentNo 
-    FROM ProdShipment 
-    WHERE Status IN ('NEW', 'PENDING')
+    SELECT Id ShipmentId, ShipmentNo
+      FROM ProdShipment 
+     WHERE Status IN ('NEW', 'PENDING')
+END
+------------------------------------------------GetListShipmentNewOrPending:
+CREATE PROCEDURE INV_PROD_SHIPMENT_GET_BY_ID
+    @p_Id INT
+AS
+BEGIN
+    SELECT a.Id ShipmentId, a.ShipmentNo, a.SupplierNo,
+           a.Buyer, a.FromPort, a.ToPort, a.ShipmentDate,
+           a.Etd, a.Eta, a.Ata, a.OceanVesselName, a.Atd, a.Status
+      FROM ProdShipment a
+     WHERE a.Id = @p_Id
 END
 ------------------------------------------------BillOfLading------------------------------------------------
 ------------------------------------------------Search:
