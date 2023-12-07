@@ -1,6 +1,6 @@
 ﻿------------------------------------------------Material------------------------------------------------
 ------------------------------------------------Search:
-CREATE PROCEDURE INV_MASTER_MATERIAL_SEARCH
+CREATE OR ALTER PROCEDURE INV_MASTER_MATERIAL_SEARCH
     @p_MaterialCode NVARCHAR(40),
     @p_MaterialGroup NVARCHAR(9)
 AS
@@ -14,7 +14,7 @@ BEGIN
        AND mm.IsDeleted = 0
 END
 ------------------------------------------------Get data by Id:
-CREATE PROCEDURE INV_MASTER_MATERIAL_BY_ID
+CREATE OR ALTER PROCEDURE INV_MASTER_MATERIAL_BY_ID
     @p_MaterialId BIGINT
 AS
 BEGIN
@@ -25,7 +25,7 @@ BEGIN
      WHERE mm.Id = @p_MaterialId
 END
 ------------------------------------------------GetListMasterialUsage:
-CREATE PROCEDURE INV_PROD_GET_LIST_MATERIAL_USAGE
+CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_MATERIAL_USAGE
 AS
 BEGIN
     SELECT mm.Id MaterialId, mm.MaterialType + ' - ' + mm.MaterialCode MaterialCode
@@ -34,7 +34,7 @@ BEGIN
        AND mm.IsDeleted = 0
 END
 ------------------------------------------------Edit data:
-CREATE PROCEDURE INV_MASTER_MATERIAL_EDIT
+CREATE OR ALTER PROCEDURE INV_MASTER_MATERIAL_EDIT
 @p_MaterialId INT, 
 @p_MaterialType NVARCHAR(4),
 @p_MaterialCode NVARCHAR(40), 
@@ -78,7 +78,7 @@ BEGIN
 
 END
 ------------------------------------------------Delete data:
-CREATE PROCEDURE INV_MASTER_MATERIAL_DELETE
+CREATE OR ALTER PROCEDURE INV_MASTER_MATERIAL_DELETE
     @p_Id INT
 AS
 BEGIN
@@ -87,7 +87,7 @@ BEGIN
      WHERE Id = @p_Id 
 END
 ------------------------------------------------Import data:
-CREATE PROCEDURE INV_MASTER_MATERIAL_MERGE
+CREATE OR ALTER PROCEDURE INV_MASTER_MATERIAL_MERGE
     @Guid VARCHAR(MAX)
 AS
 BEGIN
@@ -163,7 +163,7 @@ BEGIN
 END
 GO
 ------------------------------------------------Get List Import:
-CREATE PROCEDURE INV_MASTER_MATERIAL_GET_LIST_ERROR_IMPORT
+CREATE OR ALTER PROCEDURE INV_MASTER_MATERIAL_GET_LIST_ERROR_IMPORT
     @Guid NVARCHAR(max)
 AS 
 BEGIN
@@ -175,7 +175,7 @@ BEGIN
 END
 ------------------------------------------------PartList------------------------------------------------
 ------------------------------------------------Search:
-CREATE PROCEDURE INV_MASTER_PART_LIST_SEARCH
+CREATE OR ALTER PROCEDURE INV_MASTER_PART_LIST_SEARCH
 (
     @p_PartNo NVARCHAR(50),
     @p_SupplierNo NVARCHAR(10),
@@ -192,7 +192,7 @@ BEGIN
        AND mpl.IsDeleted = 0
 END
 ------------------------------------------------Edit:
-CREATE PROCEDURE INV_MASTER_PART_LIST_EDIT
+CREATE OR ALTER PROCEDURE INV_MASTER_PART_LIST_EDIT
 (
     @p_PartListId INT,
     @p_PartNo NVARCHAR(15),
@@ -236,7 +236,7 @@ BEGIN
     END
 END
 ------------------------------------------------Import:
-CREATE PROCEDURE INV_MASTER_PART_LIST_MERGE
+CREATE OR ALTER PROCEDURE INV_MASTER_PART_LIST_MERGE
     @Guid VARCHAR(MAX)
 AS
 BEGIN
@@ -329,7 +329,7 @@ BEGIN
 	  END CATCH;
 END
 ------------------------------------------------Get List Error Import:
-CREATE PROCEDURE INV_MASTER_PART_LIST_GET_LIST_ERROR_IMPORT
+CREATE OR ALTER PROCEDURE INV_MASTER_PART_LIST_GET_LIST_ERROR_IMPORT
     @Guid NVARCHAR(max)
 AS 
 BEGIN
@@ -394,7 +394,7 @@ N'Phuc Thang ward - Phuc Yen city - Vinh Phuc province - Viet Nam',
 N'Phường Phúc Thắng - Thành phố Phúc Yên - Tỉnh Vĩnh Phúc - Việt Nam', 
 N'Finished Goods');
 --Search
-CREATE PROCEDURE INV_MASTER_STORAGE_LOCATION_SEARCH
+CREATE OR ALTER PROCEDURE INV_MASTER_STORAGE_LOCATION_SEARCH
     @p_PlantName NVARCHAR(30),
     @p_StorageLocationName NVARCHAR(MAX),
     @p_AddressLanguageEn NVARCHAR(MAX),
@@ -446,7 +446,7 @@ VALUES
 (GETDATE(), 1, 0, N'CS09', N'EXPORT', N'XUẤT KHẨU'),
 (GETDATE(), 1, 0, N'CS10', N'NEW', N'MỚI');
 ------------------------------------------------GetList:
-CREATE PROCEDURE INV_PROD_GET_LIST_CONTAINER_STATUS
+CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_CONTAINER_STATUS
 AS
 BEGIN
     SELECT mcs.Code, mcs.Description 
@@ -475,7 +475,7 @@ VALUES
 (GETDATE(), 1, 0, 'GTE', 'GTE', 'ITNL', N'GTE(Trung Quốc)'),
 (GETDATE(), 1, 0, 'TLI', 'Philipine(TMP)', 'ITNL', 'Philipine(TMP)');
 ------------------------------------------------GetSupplierList:
-CREATE PROCEDURE INV_PROD_GET_LIST_SUPPLIER
+CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_SUPPLIER
 AS
 BEGIN
     SELECT msl.SupplierNo, msl.SupplierName 
@@ -505,7 +505,7 @@ VALUES
 (GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 10),
 (GETDATE(), 1, 0, 'NYK', 'YLSV', 10);
 ------------------------------------------------Search:
-CREATE PROCEDURE INV_MASTER_FORWARDER_SEARCH
+CREATE OR ALTER PROCEDURE INV_MASTER_FORWARDER_SEARCH
 (
     @p_Code NVARCHAR(10),
     @p_Namw NVARCHAR(100),
@@ -522,7 +522,7 @@ BEGIN
        AND mf.IsDeleted = 0;
 END 
 ------------------------------------------------GetList:
-CREATE PROCEDURE INV_PROD_GET_LIST_FORWARDER_BY_SUPPLIERID
+CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_FORWARDER_BY_SUPPLIERID
     @p_SupplierNo NVARCHAR(10)
 AS
 BEGIN
@@ -600,7 +600,7 @@ VALUES
 (GETDATE(), 1, 0, 'D26H', 'D26H'),
 (GETDATE(), 1, 0, 'D31H', 'D31H');
 ------------------------------------------------GetList:
-CREATE PROCEDURE INV_PROD_GET_LIST_CFC
+CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_CFC
 AS
 BEGIN
     SELECT mc.Code, mc.Name 
@@ -608,7 +608,7 @@ BEGIN
 END
 ------------------------------------------------Shipment------------------------------------------------
 ------------------------------------------------Search:
-CREATE PROCEDURE INV_PROD_SHIPMENT_SEARCH
+CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_SEARCH
 (
     @p_ShipmentNo NVARCHAR(10),
     @p_SupplierNo NVARCHAR(10),
@@ -629,7 +629,7 @@ AS
       AND a.IsDeleted = 0
  ORDER BY a.Etd DESC, a.Eta DESC
 ------------------------------------------------Add:
-CREATE PROCEDURE INV_PROD_SHIPMENT_ADD
+CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_ADD
 (
     @p_ShipmentNo NVARCHAR(10),
     @p_SupplierNo NVARCHAR(10),
@@ -643,7 +643,7 @@ BEGIN
                       VALUES (GETDATE(), @p_UserId, 0, UPPER(@p_ShipmentNo), @p_SupplierNo, @p_FromPort, @p_ToPort, 'NEW');
 END
 ------------------------------------------------Edit:
-CREATE PROCEDURE INV_PROD_SHIPMENT_EDIT
+CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_EDIT
 (
     @p_ShipmentId INT,
     @p_Buyer NVARCHAR(4), 
@@ -687,7 +687,7 @@ BEGIN
     END
 END
 ------------------------------------------------UpdateStatus:
-CREATE PROCEDURE INV_PROD_SHIPMENT_UPDATE_STATUS
+CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_UPDATE_STATUS
 (
     @p_ShipmentId INT,
     @p_Status NVARCHAR(50),
@@ -713,7 +713,7 @@ BEGIN
     END
 END
 ------------------------------------------------GetListShipmentNewOrPending:
-CREATE PROCEDURE INV_PROD_SHIPMENT_GET_LIST_NEW_OR_PENDING
+CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_GET_LIST_NEW_OR_PENDING
 AS
 BEGIN
     SELECT Id ShipmentId, ShipmentNo
@@ -721,7 +721,7 @@ BEGIN
      WHERE Status IN ('NEW', 'PENDING')
 END
 ------------------------------------------------GetListShipmentNewOrPending:
-CREATE PROCEDURE INV_PROD_SHIPMENT_GET_BY_ID
+CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_GET_BY_ID
     @p_Id INT
 AS
 BEGIN
@@ -733,7 +733,7 @@ BEGIN
 END
 ------------------------------------------------BillOfLading------------------------------------------------
 ------------------------------------------------Search:
-CREATE PROCEDURE INV_PROD_BILL_OF_LADING_SEARCH
+CREATE OR ALTER PROCEDURE INV_PROD_BILL_OF_LADING_SEARCH
 (
     @p_BillofladingNo NVARCHAR(20),
     @p_BillDateFrom DATE,
@@ -750,7 +750,7 @@ INNER JOIN ProdShipment ps
        AND b.IsDeleted = 0
   ORDER BY b.BillDate DESC
 ------------------------------------------------Edit:
-CREATE PROCEDURE INV_PROD_BILL_OF_LADING_EDIT
+CREATE OR ALTER PROCEDURE INV_PROD_BILL_OF_LADING_EDIT
 (
     @p_BillId INT, 
     @p_BillDate DATE,
@@ -783,7 +783,7 @@ BEGIN
     END
 END
 ------------------------------------------------Delete:
-CREATE PROCEDURE INV_PROD_BILL_OF_LADING_DELETE
+CREATE OR ALTER PROCEDURE INV_PROD_BILL_OF_LADING_DELETE
 (
     @p_BillId INT, 
     @p_UserId BIGINT
@@ -804,7 +804,7 @@ BEGIN
      WHERE Id = @p_ShipmentId
 END
 ------------------------------------------------Invoice------------------------------------------------
-CREATE PROCEDURE INV_PROD_INVOICE_SEARCH 
+CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_SEARCH 
 (
     @p_InvoiceNo NVARCHAR(20),
     @p_InvoiceDateFrom DATE,
@@ -845,7 +845,7 @@ BEGIN
   ORDER BY a.InvoiceDate DESC, b.BillDate DESC, a.InvoiceNo, a.Id	
 END
 ------------------------------------------------InvoiceDetails------------------------------------------------
-CREATE PROCEDURE INV_PROD_INVOICE_DETAILS_SEARCH
+CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_DETAILS_SEARCH
 (
     @p_InvoiceId INT
 )
@@ -867,7 +867,7 @@ BEGIN
   ORDER BY a.PartNo
 END
 ------------------------------------------------ContainerInvoice------------------------------------------------
-CREATE PROCEDURE INV_PROD_CONTAINER_INVOICE_SEARCH
+CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INVOICE_SEARCH
 (
     @p_BillNo NVARCHAR(20),
     @p_ContainerNo NVARCHAR(15),
@@ -903,7 +903,7 @@ INNER JOIN ProdBillOfLading c
 
 GO
 ------------------------------------------------ContainerList------------------------------------------------
-CREATE PROCEDURE INV_PROD_CONTAINER_LIST_SEARCH 
+CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_LIST_SEARCH 
 (
 	  @p_ContainerNo NVARCHAR(15),
 	  @p_SupplierNo NVARCHAR(10),
@@ -976,7 +976,7 @@ BEGIN
 END
 ------------------------------------------------ContainerWarehouse------------------------------------------------
 ------------------------------------------------search:
-CREATE PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_SEARCH
+CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_SEARCH
 (
     @p_ContainerNo NVARCHAR(15),
     @p_InvoiceNo NVARCHAR(20),
@@ -1003,7 +1003,7 @@ BEGIN
   ORDER BY a.RequestDate DESC
 END
 ------------------------------------------------edit:
-CREATE PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_EDIT
+CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_EDIT
 @p_Id INT, 
 @p_ContainerNo NVARCHAR(15),
 @p_RequestDate DATE, 
@@ -1060,7 +1060,7 @@ BEGIN
 
 END
 ------------------------------------------------delete:
-CREATE PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_DELETE
+CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_DELETE
     @p_Id INT
 AS
 BEGIN
@@ -1069,7 +1069,7 @@ BEGIN
      WHERE Id = @p_Id 
 END
 ------------------------------------------------Import:
-CREATE PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_MERGE
+CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_MERGE
     @Guid VARCHAR(MAX)
 AS
 BEGIN
@@ -1157,7 +1157,7 @@ BEGIN
 	  END CATCH;
 END
 ------------------------------------------------GetListErrorImport:
-CREATE PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_GET_LIST_ERROR_IMPORT
+CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_GET_LIST_ERROR_IMPORT
     @Guid NVARCHAR(MAX)
 AS 
 BEGIN
@@ -1169,7 +1169,7 @@ END
 GO
 ------------------------------------------------ContainerIntransit------------------------------------------------
 ------------------------------------------------Search:
-CREATE PROCEDURE INV_PROD_CONTAINER_INTRANSIT_SEARCH
+CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_SEARCH
 (
 	  @p_ContainerNo NVARCHAR(15),
 	  @p_ShippingDate DATE,
@@ -1189,7 +1189,7 @@ AS
 
 GO
 ------------------------------------------------Edit:
-CREATE PROCEDURE INV_PROD_CONTAINER_INTRANSIT_EDIT
+CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_EDIT
 (
     @p_ContId INT,
     @p_ContainerNo NVARCHAR(15),
@@ -1227,7 +1227,7 @@ BEGIN
     END
 END
 ------------------------------------------------StockReceving------------------------------------------------
-CREATE PROCEDURE INV_PROD_STOCK_RECEIVING_SEARCH 
+CREATE OR ALTER PROCEDURE INV_PROD_STOCK_RECEIVING_SEARCH 
 (
 	  @p_PartNo NVARCHAR(12),
 	  @p_WorkingDateFrom DATE,
