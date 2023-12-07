@@ -13,7 +13,7 @@ namespace tmss.MaterialManagement
 
         public const int MaxSupplierNoLength = 10;
 
-        public const int MaxStatusLength = 10;
+        public const int MaxStatusLength = 20;
 
         public const int MaxForwarderLength = 10;
 
@@ -34,5 +34,8 @@ namespace tmss.MaterialManagement
         public virtual string Forwarder { get; set; }
 
         public virtual long? ShipmentId { get; set; }
+
+        [StringLength(MaxStatusLength)]
+        public virtual string Status { get; set; }
     }
 }

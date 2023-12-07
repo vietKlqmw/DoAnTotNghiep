@@ -37,7 +37,7 @@
 						                [(ngModel)]='_shippingDate'>
                                 </div>
                             </div>
-                            <div class="ui-g-12 ui-md-6">
+                            <!-- <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
                                 <div class="input-group">
                                     <span class="input-group-text left-text">Port Date</span>
                                     <input type='text' class="form-control tmss-form-control" name='portDate'
@@ -48,7 +48,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="ui-g-12 ui-md-6">
+                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
                                 <div class="input-group">
                                     <span class="input-group-text left-text">Transaction Date</span>
                                     <input type='text' class="form-control tmss-form-control" name='transDate'
@@ -58,7 +58,7 @@
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker3.toggle()"></i>
                                     </span>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-combobox [items]="listForwarder" name="forwarder" [text]="'Forwarder'" [(ngModel)]="_forwarder"></tmss-combobox>
                             </div>

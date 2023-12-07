@@ -33,7 +33,9 @@ export class EditShipmentModalComponent extends AppComponentBase {
     list = [
         { value: 'NEW', label: "NEW" },
         { value: 'PENDING', label: "PENDING" },
-        { value: 'ORDERED', label: "ORDERED" }
+        { value: 'ORDERED', label: "ORDERED" },
+        { value: 'ORDERED (ON SEA)', label: "ORDERED (ON SEA)" },
+        { value: 'ORDERED (ON PORT)', label: "ORDERED (ON PORT)" }
     ];
     isOrder: boolean = false;
 

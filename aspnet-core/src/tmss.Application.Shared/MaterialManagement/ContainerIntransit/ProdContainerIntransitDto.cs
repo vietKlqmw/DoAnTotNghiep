@@ -17,6 +17,8 @@ namespace tmss.MaterialManagement.ContainerIntransit
 
         public virtual string Forwarder { get; set; }
 
+        public virtual string Status { get; set; }
+
         public virtual long? ShipmentId { get; set; }
     }
 

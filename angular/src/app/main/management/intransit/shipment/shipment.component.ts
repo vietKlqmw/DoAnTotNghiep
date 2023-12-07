@@ -56,7 +56,9 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
     listStatus = [
         { key: 'NEW', value: 'NEW' },
         { key: 'PENDING', value: 'PENDING' },
-        { key: 'ORDERED', value: 'ORDERED' }
+        { key: 'ORDERED', value: 'ORDERED' },
+        { key: 'ORDERED (ON SEA)', value: 'ORDERED (ON SEA)' },
+        { key: 'ORDERED (ON PORT)', value: 'ORDERED (ON PORT)' }
     ];
     _selectrow;
     notDelete: boolean = false;

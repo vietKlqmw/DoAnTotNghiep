@@ -765,6 +765,22 @@ BEGIN
            BillDate = @p_BillDate, 
            StatusCode = @p_StatusCode
      WHERE Id = @p_BillId;
+
+    DECLARE @ShipmentId INT = (SELECT ShipmentId FROM ProdBillOfLading WHERE Id = @p_BillId);
+    IF @p_StatusCode = 'PAID'
+    BEGIN
+        UPDATE ProdShipment
+           SET LastModificationTime = GETDATE(), 
+               LastModifierUserId = @p_UserId,
+               Status = 'ORDERED (ON SEA)'
+         WHERE Id = @ShipmentId;
+
+        UPDATE ProdContainerIntransit
+           SET LastModificationTime = GETDATE(), 
+               LastModifierUserId = @p_UserId,
+               Status = 'On SEA'
+         WHERE Id IN (SELECT Id FROM ProdContainerIntransit WHERE ShipmentId = @ShipmentId);
+    END
 END
 ------------------------------------------------Delete:
 CREATE PROCEDURE INV_PROD_BILL_OF_LADING_DELETE
@@ -1162,7 +1178,7 @@ CREATE PROCEDURE INV_PROD_CONTAINER_INTRANSIT_SEARCH
 )
 AS
     SELECT a.Id, a.ContainerNo, a.SupplierNo, a.ShippingDate, a.PortDate, 
-           a.TransactionDate, a.Forwarder, a.ShipmentId
+           a.TransactionDate, a.Forwarder, a.ShipmentId, a.Status
       FROM ProdContainerIntransit a
      WHERE (ISNULL(@p_ContainerNo, '') = '' OR a.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
     	 AND (ISNULL(@p_ShippingDate, '') = '' OR a.ShippingDate = @p_ShippingDate)
@@ -1192,10 +1208,10 @@ BEGIN
         INSERT INTO ProdContainerIntransit 
                     (CreationTime, CreatorUserId, IsDeleted, 
                     ContainerNo, SupplierNo, ShippingDate, PortDate, 
-                    Forwarder, TransactionDate, ShipmentId)
+                    Forwarder, TransactionDate, ShipmentId, Status)
              VALUES (GETDATE(), @p_UserId, 0, 
                     UPPER(@p_ContainerNo), @p_SupplierNo, @p_ShippingDate, @p_PortDate, 
-                    @p_Forwarder, @p_TransactionDate, @p_ShipmentId);
+                    @p_Forwarder, @p_TransactionDate, @p_ShipmentId, 'NEW');
     END
     ELSE
     BEGIN

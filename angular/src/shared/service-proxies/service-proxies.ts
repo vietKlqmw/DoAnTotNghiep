@@ -28249,6 +28249,7 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
     portDate!: moment.Moment | undefined;
     transactionDate!: moment.Moment | undefined;
     forwarder!: string | undefined;
+    status!: string | undefined;
     shipmentId!: number | undefined;
     id!: number | undefined;
 
@@ -28269,6 +28270,7 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
             this.portDate = _data["portDate"] ? moment(_data["portDate"].toString()) : <any>undefined;
             this.transactionDate = _data["transactionDate"] ? moment(_data["transactionDate"].toString()) : <any>undefined;
             this.forwarder = _data["forwarder"];
+            this.status = _data["status"];
             this.shipmentId = _data["shipmentId"];
             this.id = _data["id"];
         }
@@ -28289,6 +28291,7 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
         data["portDate"] = this.portDate ? this.portDate.toISOString() : <any>undefined;
         data["transactionDate"] = this.transactionDate ? this.transactionDate.toISOString() : <any>undefined;
         data["forwarder"] = this.forwarder;
+        data["status"] = this.status;
         data["shipmentId"] = this.shipmentId;
         data["id"] = this.id;
         return data; 
@@ -28302,6 +28305,7 @@ export interface IProdContainerIntransitDto {
     portDate: moment.Moment | undefined;
     transactionDate: moment.Moment | undefined;
     forwarder: string | undefined;
+    status: string | undefined;
     shipmentId: number | undefined;
     id: number | undefined;
 }

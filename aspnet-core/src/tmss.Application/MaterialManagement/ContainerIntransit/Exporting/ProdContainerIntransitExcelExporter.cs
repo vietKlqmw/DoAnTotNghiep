@@ -24,7 +24,8 @@ namespace tmss.MaterialManagement.ContainerIntransit.Exporting
                         ("Shipping Date"),
                         ("Port Date"),
                         ("Transaction Date"),
-                        ("Forwarder")
+                        ("Forwarder"),
+                        ("Status")
                     );
 
                     AddObjects(
@@ -34,7 +35,8 @@ namespace tmss.MaterialManagement.ContainerIntransit.Exporting
                         _ => _.ShippingDate,
                         _ => _.PortDate,
                         _ => _.TransactionDate,
-                        _ => _.Forwarder
+                        _ => _.Forwarder,
+                        _ => _.Status
                     );
 
                     for (var i = 0; i < 6; i++)

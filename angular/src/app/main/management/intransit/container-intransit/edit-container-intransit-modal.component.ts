@@ -59,8 +59,8 @@ export class EditContainerIntransitModalComponent extends AppComponentBase {
         if (material) this.rowData = material;
         else this.rowData = new ProdContainerIntransitDto();
 
-        const dateValue = this.rowData.shippingDate ? new Date(this.rowData.shippingDate?.toString()) : undefined;
-        this.datepicker?.bsValueChange.emit(dateValue);
+        // const dateValue = this.rowData.shippingDate ? new Date(this.rowData.shippingDate?.toString()) : undefined;
+        // this.datepicker?.bsValueChange.emit(dateValue);
         const dateValue2 = this.rowData.portDate ? new Date(this.rowData.portDate?.toString()) : undefined;
         this.datepicker2?.bsValueChange.emit(dateValue2);
         const dateValue3 = this.rowData.transactionDate ? new Date(this.rowData.transactionDate?.toString()) : undefined;
@@ -75,9 +75,12 @@ export class EditContainerIntransitModalComponent extends AppComponentBase {
             })
         });
 
+        this._shippingDate = this.rowData.shippingDate ? formatDate(new Date(this.rowData.shippingDate?.toString()), 'dd/MM/yyyy', 'en-US') : undefined;
+        this._shippingDateSub = this.rowData.shippingDate ? formatDate(new Date(this.rowData.shippingDate?.toString()), 'MM/dd/yyyy', 'en-US') : undefined;
+
         setTimeout(() => {
             this.modal.show();
-        }, 200)
+        }, 300)
 
     }
 
@@ -98,6 +101,12 @@ export class EditContainerIntransitModalComponent extends AppComponentBase {
         if (this.rowData.forwarder == null || this.rowData.forwarder == '') {
             this.notify.warn('Forwarder is Required!');
             return;
+        }
+        if(this.rowData.transactionDate != undefined){
+            if(this.rowData.portDate == undefined){
+                this.notify.warn('PortDate is Required!');
+                return;
+            }
         }
         this.saving = true;
         this._service.editContainerIntransit(this.rowData)
