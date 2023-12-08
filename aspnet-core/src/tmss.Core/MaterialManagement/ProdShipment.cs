@@ -23,6 +23,9 @@ namespace tmss.MaterialManagement
 
         public const int MaxStatusLength = 50;
 
+        public const int MaxForwarderLength = 10;
+
+
         [StringLength(MaxShipmentNoLength)]
         public virtual string ShipmentNo { get; set; } //số lô
 
@@ -53,6 +56,9 @@ namespace tmss.MaterialManagement
 
         [StringLength(MaxStatusLength)]
         public virtual string Status { get; set; } //trạng thái
+
+        [StringLength(MaxForwarderLength)]
+        public virtual string Forwarder { get; set; }
     }
 
 }

@@ -15,8 +15,6 @@ namespace tmss.MaterialManagement
 
         public const int MaxStatusLength = 20;
 
-        public const int MaxForwarderLength = 10;
-
         public const int MaxSealNoLength = 20;
 
 
@@ -32,9 +30,6 @@ namespace tmss.MaterialManagement
 
         public virtual DateTime? TransactionDate { get; set; } 
 
-        [StringLength(MaxForwarderLength)]
-        public virtual string Forwarder { get; set; }
-
         public virtual long? ShipmentId { get; set; }
 
         [StringLength(MaxStatusLength)]
@@ -44,5 +39,7 @@ namespace tmss.MaterialManagement
 
         [StringLength(MaxSealNoLength)]
         public virtual string SealNo { get; set; } //mã niêm chì -->gg search
+
+        public virtual int? UsageQty { get; set; }
     }
 }

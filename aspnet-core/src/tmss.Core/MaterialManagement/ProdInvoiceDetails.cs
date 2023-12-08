@@ -33,8 +33,6 @@ namespace tmss.MaterialManagement
         [StringLength(MaxContainerNoLength)]
         public virtual string ContainerNo { get; set; }
 
-        public virtual long? InvoiceId { get; set; }
-
         [StringLength(MaxSupplierNoLength)]
         public virtual string SupplierNo { get; set; }
 

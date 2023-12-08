@@ -669,7 +669,7 @@ BEGIN
      WHERE Id = @p_ShipmentId;
 
     IF @p_Status = 'ORDERED'
-    BEGIN
+        BEGIN
         DECLARE @p_BillofladingNo NVARCHAR(20) = (SELECT ShipmentNo + SupplierNo FROM ProdShipment WHERE Id = @p_ShipmentId);
         IF EXISTS (SELECT 1 FROM ProdBillOfLading WHERE BillofladingNo = @p_BillofladingNo)
         BEGIN
@@ -677,6 +677,21 @@ BEGIN
         END
         INSERT INTO ProdBillOfLading (CreationTime, CreatorUserId, IsDeleted, BillofladingNo, ShipmentId, StatusCode)
                               VALUES (GETDATE(), @p_UserId, 0, @p_BillofladingNo, @p_ShipmentId, 'NEW');
+
+        DECLARE @InvoiceNo NVARCHAR(20) = (SELECT (ShipmentNo + FORMAT(ShipmentDate, 'yyMMdd')) FROM ProdShipment WHERE Id = @p_ShipmentId); 
+        DECLARE @BillId INT = (SELECT Id FROM ProdBillOfLading WHERE BillofladingNo = @p_BillofladingNo);
+        INSERT INTO ProdInvoice (CreationTime, CreatorUserId, IsDeleted, InvoiceNo, BillId, Status, Forwarder)
+            SELECT GETDATE(), @p_UserId, 0, @InvoiceNo, @BillId, 'NEW', Forwarder
+              FROM ProdShipment 
+             WHERE Id = @p_ShipmentId
+
+        INSERT INTO ProdInvoiceDetails 
+                    (CreationTime, CreatorUserId, IsDeleted, 
+                     PartNo, ContainerNo, InvoiceNo, SupplierNo, UsageQty, PartName, CarfamilyCode)
+            SELECT GETDATE(), @p_UserId, 0, mpl.PartNo, pci.ContainerNo, @InvoiceNo, pci.SupplierNo, pci.UsageQty, mpl.PartName, mpl.CarfamilyCode
+              FROM ProdContainerIntransit pci
+         LEFT JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
+             WHERE pci.Id IN (SELECT Id FROM ProdContainerIntransit WHERE ShipmentId = @p_ShipmentId)
     END
 END
 ------------------------------------------------UpdateStatus:
@@ -695,7 +710,7 @@ BEGIN
      WHERE Id = @p_ShipmentId;
 
     IF @p_Status = 'ORDERED'
-    BEGIN
+        BEGIN
         DECLARE @p_BillofladingNo NVARCHAR(20) = (SELECT ShipmentNo + SupplierNo FROM ProdShipment WHERE Id = @p_ShipmentId);
         IF EXISTS (SELECT 1 FROM ProdBillOfLading WHERE BillofladingNo = @p_BillofladingNo)
         BEGIN
@@ -703,6 +718,21 @@ BEGIN
         END
         INSERT INTO ProdBillOfLading (CreationTime, CreatorUserId, IsDeleted, BillofladingNo, ShipmentId, StatusCode)
                               VALUES (GETDATE(), @p_UserId, 0, @p_BillofladingNo, @p_ShipmentId, 'NEW');
+
+        DECLARE @InvoiceNo NVARCHAR(20) = (SELECT (ShipmentNo + FORMAT(ShipmentDate, 'yyMMdd')) FROM ProdShipment WHERE Id = @p_ShipmentId); 
+        DECLARE @BillId INT = (SELECT Id FROM ProdBillOfLading WHERE BillofladingNo = @p_BillofladingNo);
+        INSERT INTO ProdInvoice (CreationTime, CreatorUserId, IsDeleted, InvoiceNo, BillId, Status, Forwarder)
+            SELECT GETDATE(), @p_UserId, 0, @InvoiceNo, @BillId, 'NEW', Forwarder
+              FROM ProdShipment 
+             WHERE Id = @p_ShipmentId
+
+        INSERT INTO ProdInvoiceDetails 
+                    (CreationTime, CreatorUserId, IsDeleted, 
+                     PartNo, ContainerNo, InvoiceNo, SupplierNo, UsageQty, PartName, CarfamilyCode)
+            SELECT GETDATE(), @p_UserId, 0, mpl.PartNo, pci.ContainerNo, @InvoiceNo, pci.SupplierNo, pci.UsageQty, mpl.PartName, mpl.CarfamilyCode
+              FROM ProdContainerIntransit pci
+         LEFT JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
+             WHERE pci.Id IN (SELECT Id FROM ProdContainerIntransit WHERE ShipmentId = @p_ShipmentId)
     END
 END
 ------------------------------------------------GetListShipmentNewOrPending:
