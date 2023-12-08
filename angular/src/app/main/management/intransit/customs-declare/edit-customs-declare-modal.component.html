@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    <span>{{"Edit Customs Declare"}}</span>
+                    <span>{{header + " Customs Declare"}}</span>
                 </h4>
                 <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
                     <span aria-hidden="true">&times;</span>
@@ -19,19 +19,40 @@
                                     name='customsDeclareNo' [isReadonly]="true"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text left-text">Declare Date</span>
+                                    <input type='text' class="form-control tmss-form-control" name='declareDate'
+						                #datepicker='bsDatepicker' [(ngModel)]='_declareDate' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Bill Of Lading No'" [(ngModel)]="rowData.billOfLadingNo"
                                     name='billOfLadingNo' [isReadonly]="true"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <div class="input-group">
                                     <span class="input-group-text left-text">Bill Date</span>
-                                    <input type='text' class="form-control tmss-form-control" name='billDate'
-						                #datepicker='bsDatepicker' [(ngModel)]='_billDate' bsDatepicker
-                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
-                                    <span class="input-group-text right-text">
-                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
-                                    </span>
+                                    <input type='text' class="form-control tmss-form-control" name='billDate' readonly
+						                [(ngModel)]='_billDate'>
                                 </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Invoice No'" [(ngModel)]="rowData.invoiceNo"
+                                    name='invoiceNo' [isReadonly]="true"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text left-text">Invoice Date</span>
+                                    <input type='text' class="form-control tmss-form-control" name='invoiceDate' readonly
+						                [(ngModel)]='_invoiceDate'>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Forwarder'" [(ngModel)]="rowData.forwarder" name='forwarder'></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-combobox [items]="list" name="status" [text]="'Status'" [(ngModel)]="rowData.status"></tmss-combobox>

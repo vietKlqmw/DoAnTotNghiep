@@ -12,10 +12,13 @@ namespace tmss.MaterialManagement.CustomsDeclare
         public virtual string Status { get; set; }
         public virtual string Forwarder { get; set; }
         public virtual long? BillId { get; set; }
+        public virtual long? InvoiceId { get; set; }
 
         public virtual string BillOfLadingNo { get; set; }
         public virtual DateTime? BillDate { get; set; }
         public virtual decimal? SumCustomsDeclare { get; set; }
+        public virtual string InvoiceNo { get; set; }
+        public virtual DateTime? InvoiceDate { get; set; }
     }
 
     public class GetProdCustomsDeclareInput : PagedAndSortedResultRequestDto
@@ -23,6 +26,7 @@ namespace tmss.MaterialManagement.CustomsDeclare
         public virtual string CustomsDeclareNo { get; set; }
         public virtual DateTime? DeclareDate { get; set; }
         public virtual string BillOfLadingNo { get; set; }
+        public virtual string InvoiceNo { get; set; }
     }
 
     public class GetProdCustomsDeclareExportInput
@@ -30,5 +34,6 @@ namespace tmss.MaterialManagement.CustomsDeclare
         public virtual string CustomsDeclareNo { get; set; }
         public virtual DateTime? DeclareDate { get; set; }
         public virtual string BillOfLadingNo { get; set; }
+        public virtual string InvoiceNo { get; set; }
     }
 }

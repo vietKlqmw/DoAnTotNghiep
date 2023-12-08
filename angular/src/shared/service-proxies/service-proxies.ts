@@ -11865,12 +11865,13 @@ export class ProdCustomsDeclareServiceProxy {
      * @param customsDeclareNo (optional) 
      * @param declareDate (optional) 
      * @param billOfLadingNo (optional) 
+     * @param invoiceNo (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getProdCustomsDeclareSearch(customsDeclareNo: string | null | undefined, declareDate: moment.Moment | null | undefined, billOfLadingNo: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdCustomsDeclareDto> {
+    getProdCustomsDeclareSearch(customsDeclareNo: string | null | undefined, declareDate: moment.Moment | null | undefined, billOfLadingNo: string | null | undefined, invoiceNo: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdCustomsDeclareDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdCustomsDeclare/GetProdCustomsDeclareSearch?";
         if (customsDeclareNo !== undefined)
             url_ += "CustomsDeclareNo=" + encodeURIComponent("" + customsDeclareNo) + "&"; 
@@ -11878,6 +11879,8 @@ export class ProdCustomsDeclareServiceProxy {
             url_ += "DeclareDate=" + encodeURIComponent(declareDate ? "" + declareDate.toJSON() : "") + "&"; 
         if (billOfLadingNo !== undefined)
             url_ += "BillOfLadingNo=" + encodeURIComponent("" + billOfLadingNo) + "&"; 
+        if (invoiceNo !== undefined)
+            url_ += "InvoiceNo=" + encodeURIComponent("" + invoiceNo) + "&"; 
         if (sorting !== undefined)
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         if (skipCount === null)
@@ -11938,9 +11941,10 @@ export class ProdCustomsDeclareServiceProxy {
      * @param customsDeclareNo (optional) 
      * @param declareDate (optional) 
      * @param billOfLadingNo (optional) 
+     * @param invoiceNo (optional) 
      * @return Success
      */
-    getProdCustomsDeclareToExcel(customsDeclareNo: string | null | undefined, declareDate: moment.Moment | null | undefined, billOfLadingNo: string | null | undefined): Observable<FileDto> {
+    getProdCustomsDeclareToExcel(customsDeclareNo: string | null | undefined, declareDate: moment.Moment | null | undefined, billOfLadingNo: string | null | undefined, invoiceNo: string | null | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdCustomsDeclare/GetProdCustomsDeclareToExcel?";
         if (customsDeclareNo !== undefined)
             url_ += "CustomsDeclareNo=" + encodeURIComponent("" + customsDeclareNo) + "&"; 
@@ -11948,6 +11952,8 @@ export class ProdCustomsDeclareServiceProxy {
             url_ += "DeclareDate=" + encodeURIComponent(declareDate ? "" + declareDate.toJSON() : "") + "&"; 
         if (billOfLadingNo !== undefined)
             url_ += "BillOfLadingNo=" + encodeURIComponent("" + billOfLadingNo) + "&"; 
+        if (invoiceNo !== undefined)
+            url_ += "InvoiceNo=" + encodeURIComponent("" + invoiceNo) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -11998,8 +12004,8 @@ export class ProdCustomsDeclareServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    updateCustomsDeclare(body: ProdCustomsDeclareDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/ProdCustomsDeclare/UpdateCustomsDeclare";
+    editCustomsDeclare(body: ProdCustomsDeclareDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdCustomsDeclare/EditCustomsDeclare";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -12013,12 +12019,12 @@ export class ProdCustomsDeclareServiceProxy {
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdateCustomsDeclare(response_);
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEditCustomsDeclare(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processUpdateCustomsDeclare(<any>response_);
+                    return this.processEditCustomsDeclare(<any>response_);
                 } catch (e) {
                     return <Observable<void>><any>_observableThrow(e);
                 }
@@ -12027,7 +12033,7 @@ export class ProdCustomsDeclareServiceProxy {
         }));
     }
 
-    protected processUpdateCustomsDeclare(response: HttpResponseBase): Observable<void> {
+    protected processEditCustomsDeclare(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -29351,9 +29357,12 @@ export class ProdCustomsDeclareDto implements IProdCustomsDeclareDto {
     status!: string | undefined;
     forwarder!: string | undefined;
     billId!: number | undefined;
+    invoiceId!: number | undefined;
     billOfLadingNo!: string | undefined;
     billDate!: moment.Moment | undefined;
     sumCustomsDeclare!: number | undefined;
+    invoiceNo!: string | undefined;
+    invoiceDate!: moment.Moment | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdCustomsDeclareDto) {
@@ -29374,9 +29383,12 @@ export class ProdCustomsDeclareDto implements IProdCustomsDeclareDto {
             this.status = _data["status"];
             this.forwarder = _data["forwarder"];
             this.billId = _data["billId"];
+            this.invoiceId = _data["invoiceId"];
             this.billOfLadingNo = _data["billOfLadingNo"];
             this.billDate = _data["billDate"] ? moment(_data["billDate"].toString()) : <any>undefined;
             this.sumCustomsDeclare = _data["sumCustomsDeclare"];
+            this.invoiceNo = _data["invoiceNo"];
+            this.invoiceDate = _data["invoiceDate"] ? moment(_data["invoiceDate"].toString()) : <any>undefined;
             this.id = _data["id"];
         }
     }
@@ -29397,9 +29409,12 @@ export class ProdCustomsDeclareDto implements IProdCustomsDeclareDto {
         data["status"] = this.status;
         data["forwarder"] = this.forwarder;
         data["billId"] = this.billId;
+        data["invoiceId"] = this.invoiceId;
         data["billOfLadingNo"] = this.billOfLadingNo;
         data["billDate"] = this.billDate ? this.billDate.toISOString() : <any>undefined;
         data["sumCustomsDeclare"] = this.sumCustomsDeclare;
+        data["invoiceNo"] = this.invoiceNo;
+        data["invoiceDate"] = this.invoiceDate ? this.invoiceDate.toISOString() : <any>undefined;
         data["id"] = this.id;
         return data; 
     }
@@ -29413,9 +29428,12 @@ export interface IProdCustomsDeclareDto {
     status: string | undefined;
     forwarder: string | undefined;
     billId: number | undefined;
+    invoiceId: number | undefined;
     billOfLadingNo: string | undefined;
     billDate: moment.Moment | undefined;
     sumCustomsDeclare: number | undefined;
+    invoiceNo: string | undefined;
+    invoiceDate: moment.Moment | undefined;
     id: number | undefined;
 }
 

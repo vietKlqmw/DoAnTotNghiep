@@ -414,37 +414,28 @@ END
 INSERT INTO MasterInvoiceStatus 
 (CreationTime, CreatorUserId, IsDeleted, Code, Description)
 VALUES 
-(GETDATE(), 1, 0, N'IS01', N'BEING PRE CUSTOMS'),
+(GETDATE(), 1, 0, N'IS01', N'NEW'),
 (GETDATE(), 1, 0, N'IS02', N'PRE CUSTOMS'),
-(GETDATE(), 1, 0, N'IS03', N'BEING CUSTOMS'),
-(GETDATE(), 1, 0, N'IS04', N'CUSTOMS DECLARED'),
-(GETDATE(), 1, 0, N'IS05', N'NEW'),
-(GETDATE(), 1, 0, N'IS06', N'ALLOCATING'),
-(GETDATE(), 1, 0, N'IS07', N'ALLOCATED FI'),
-(GETDATE(), 1, 0, N'IS08', N'ALLOCATED')
-;
+(GETDATE(), 1, 0, N'IS03', N'CUSTOMS DECLARED');
 ------------------------------------------------CustomsStatus------------------------------------------------
 INSERT INTO MasterCustomsStatus 
 (CreationTime, CreatorUserId, IsDeleted, Code, Description)
 VALUES 
 (GETDATE(), 1, 0, N'CuS1', N'NEW'),
-(GETDATE(), 1, 0, N'CuS2', N'COMPLETED'),
-(GETDATE(), 1, 0, N'CuS3', N'NOT PAID (REQUESTED)'),
-(GETDATE(), 1, 0, N'CuS4', N'PAID');
+(GETDATE(), 1, 0, N'CuS2', N'NOT PAID (REQUESTED)'),
+(GETDATE(), 1, 0, N'CuS3', N'PAID');
 ------------------------------------------------ContainerStatus------------------------------------------------
 INSERT INTO MasterContainerStatus 
 (CreationTime, CreatorUserId, IsDeleted, Code, Description, DescriptionVn)
 VALUES 
 (GETDATE(), 1, 0, N'CS01', N'ON SEA', N'TRÊN BIỂN'),
-(GETDATE(), 1, 0, N'CS02', N'PORT/ARRIVED (As ETA)', N'Ở CẢNG'),
-(GETDATE(), 1, 0, N'CS03', N'PORT/ARRIVED (As ATA)', N'Ở CẢNG'),
-(GETDATE(), 1, 0, N'CS04', N'TRANSFERRING', N'ĐANG ĐI ĐƯỜNG'),
-(GETDATE(), 1, 0, N'CS05', N'YARD (WAITING)', N'BÃI CHỜ'),
-(GETDATE(), 1, 0, N'CS06', N'DEVANNING', N'ĐÃ DỠ'),
-(GETDATE(), 1, 0, N'CS07', N'RETURN CASE', N'ĐÓNG VỎ THÙNG HÀNG'),
-(GETDATE(), 1, 0, N'CS08', N'RETURN CBU', N'CBU'),
-(GETDATE(), 1, 0, N'CS09', N'EXPORT', N'XUẤT KHẨU'),
-(GETDATE(), 1, 0, N'CS10', N'NEW', N'MỚI');
+(GETDATE(), 1, 0, N'CS02', N'PORT/ARRIVED', N'Ở CẢNG'),
+(GETDATE(), 1, 0, N'CS03', N'TRANSFERRING', N'ĐANG ĐI ĐƯỜNG'),
+(GETDATE(), 1, 0, N'CS04', N'YARD (WAITING)', N'BÃI CHỜ'),
+(GETDATE(), 1, 0, N'CS05', N'DEVANNING', N'ĐÃ DỠ'),
+(GETDATE(), 1, 0, N'CS06', N'RETURN CASE', N'ĐÓNG VỎ THÙNG HÀNG'),
+(GETDATE(), 1, 0, N'CS07', N'EXPORT', N'XUẤT KHẨU'),
+(GETDATE(), 1, 0, N'CS08', N'NEW', N'MỚI');
 ------------------------------------------------GetList:
 CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_CONTAINER_STATUS
 AS
@@ -1261,19 +1252,24 @@ CREATE OR ALTER PROCEDURE INV_PROD_CUSTOMS_DECLARE_SEARCH
 (
     @p_CustomsDeclareNo NVARCHAR(20),
     @p_DeclareDate DATE,
-    @p_BillOfLadingNo NVARCHAR(10)
+    @p_BillOfLadingNo NVARCHAR(10),
+    @p_InvoiceNo NVARCHAR(20)
 )
 AS
 BEGIN
     SELECT pcd.Id, pcd.CustomsDeclareNo, pcd.DeclareDate, pcd.Tax, pcd.Vat, pcd.Forwarder, pcd.BillId,
-           pbol.BillofladingNo, pbol.BillDate, (pcd.Tax + pcd.Vat) SumCustomsDeclare, mcs.Description Status
+           pbol.BillofladingNo, pbol.BillDate, (pcd.Tax + pcd.Vat) SumCustomsDeclare, mcs.Description Status,
+           pcd.InvoiceId, pi.InvoiceNo, pi.InvoiceDate
       FROM ProdCustomsDeclare pcd 
 INNER JOIN ProdBillOfLading pbol ON pcd.BillId = pbol.Id
+INNER JOIN ProdInvoice pi ON pcd.InvoiceId = pi.Id
  LEFT JOIN MasterCustomsStatus mcs ON pcd.Status = mcs.Code
      WHERE (ISNULL(@p_CustomsDeclareNo, '') = '' OR pcd.CustomsDeclareNo LIKE CONCAT('%', @p_CustomsDeclareNo, '%'))
 		   AND (ISNULL(@p_DeclareDate, '')= '' OR  pcd.DeclareDate = @p_DeclareDate)
        AND (ISNULL(@p_BillOfLadingNo, '') = '' OR pbol.BillofladingNo LIKE CONCAT('%', @p_BillOfLadingNo, '%'))
+       AND (ISNULL(@p_InvoiceNo, '') = '' OR pi.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
        AND pcd.IsDeleted = 0
+  ORDER BY pcd.DeclareDate DESC
 END
 ------------------------------------------------UpdateStatus:
 CREATE OR ALTER PROCEDURE INV_PROD_CUSTOMS_DECLARE_EDIT

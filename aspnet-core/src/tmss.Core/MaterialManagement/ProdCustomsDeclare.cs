@@ -32,5 +32,7 @@ namespace tmss.MaterialManagement
         public virtual string Forwarder { get; set; }
 
         public virtual long? BillId { get; set; }
+
+        public virtual long? InvoiceId { get; set; }
     }
 }

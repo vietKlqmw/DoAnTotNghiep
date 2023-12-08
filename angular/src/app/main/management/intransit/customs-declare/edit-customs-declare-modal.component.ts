@@ -17,8 +17,11 @@ export class EditCustomsDeclareModalComponent extends AppComponentBase {
 
     rowData: ProdCustomsDeclareDto = new ProdCustomsDeclareDto();
     saving = false;
+    isEdit: boolean = false;
+    header: string = '';
     _billDate: any;
     _declareDate: any;
+    _invoiceDate: any;
     list = [{ value: '', label: '' }];
 
     constructor(
@@ -31,8 +34,12 @@ export class EditCustomsDeclareModalComponent extends AppComponentBase {
 
     ngOnInit() { }
 
-    show(material: ProdCustomsDeclareDto): void {
-        this.rowData = material;
+    show(type, material?: ProdCustomsDeclareDto): void {
+        if (type == 'Edit') this.isEdit = true;
+        else this.isEdit = false;
+        this.header = type;
+        if (material) this.rowData = material;
+        else this.rowData = new ProdCustomsDeclareDto();
 
         const dateValue = this.rowData.declareDate ? new Date(this.rowData.declareDate?.toString()) : new Date();
         this.datepicker?.bsValueChange.emit(dateValue);
@@ -44,7 +51,7 @@ export class EditCustomsDeclareModalComponent extends AppComponentBase {
         this.rowData.declareDate = this._declareDate ? moment(this._declareDate) : undefined;
 
         this.saving = true;
-        this._service.updateCustomsDeclare(this.rowData)
+        this._service.editCustomsDeclare(this.rowData)
             .pipe(finalize(() => { this.saving = false; }))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));

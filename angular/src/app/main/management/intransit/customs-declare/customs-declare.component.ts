@@ -12,6 +12,7 @@ import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 import { EditCustomsDeclareModalComponent } from './edit-customs-declare-modal.component';
+import { DataFormatService } from '@app/shared/common/services/data-format.service';
 
 @Component({
     selector: 'app-customsdeclare',
@@ -48,6 +49,7 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
     customsDeclareNo: string = '';
     declareDate: any;
     billOfLadingNo: string = '';
+    invoiceNo: string = '';
     _selectrow;
 
     defaultColDef = {
@@ -68,17 +70,41 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
         injector: Injector,
         private _service: ProdCustomsDeclareServiceProxy,
         private gridTableService: GridTableService,
-        private _fileDownloadService: FileDownloadService
+        private _fileDownloadService: FileDownloadService,
+        private _fm: DataFormatService
     ) {
         super(injector);
 
         this.colDefs = [
-            { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 60 },
-            { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('CustomsDeclare No'), field: 'CustomsDeclareNo', flex: 1 },
-            { headerName: this.l('Shipment No'), headerTooltip: this.l('Shipment No'), field: 'shipmentNo', flex: 1 },
+            { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 80 },
+            { headerName: this.l('Customs Declare No '), headerTooltip: this.l('Customs Declare No'), field: 'customsDeclareNo', flex: 1 },
+            {
+                headerName: this.l('Declare Date'), headerTooltip: this.l('Declare Date'), field: 'declareDate', flex: 1,
+                valueGetter: (params) => this.pipe.transform(params.data?.declareDate, 'dd/MM/yyyy')
+            },
+            { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('Bill Of Lading No'), field: 'billOfLadingNo', flex: 1 },
             {
                 headerName: this.l('Bill Date'), headerTooltip: this.l('Bill Date'), field: 'billDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.billDate, 'dd/MM/yyyy')
+            },
+            { headerName: this.l('Invoice No'), headerTooltip: this.l('InvoiceNo'), field: 'invoiceNo', flex: 1 },
+            {
+                headerName: this.l('Invoice Date'), headerTooltip: this.l('Invoice Date'), field: 'invoiceDate', flex: 1,
+                valueGetter: (params) => this.pipe.transform(params.data?.invoiceDate, 'dd/MM/yyyy')
+            },
+            { headerName: this.l('Forwarder'), headerTooltip: this.l('Forwarder'), field: 'forwarder', flex: 1 },
+            {
+                headerName: this.l('Tax (VND)'), headerTooltip: this.l('Tax (VND)'), field: 'tax', flex: 1, type: 'rightAligned',
+                valueFormatter: (params) => this._fm.formatMoney_decimal(params.data?.tax, 0)
+            },
+            {
+                headerName: this.l('Vat (VND)'), headerTooltip: this.l('Vat (VND)'), field: 'vat', flex: 1, type: 'rightAligned',
+                valueFormatter: (params) => this._fm.formatMoney_decimal(params.data?.vat, 0, false, true)
+            },
+            {
+                headerName: this.l('Sum'), headerTooltip: this.l('Sum'), field: 'sumCustomsDeclare', flex: 1, type: 'rightAligned',
+                valueFormatter: (params) => this._fm.formatMoney_decimal(params.data?.sumCustomsDeclare, 0),
+                sortable: true
             },
             { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'statusCode', flex: 1 }
         ];
@@ -92,12 +118,33 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
         this.paginationParams = { pageNum: 1, pageSize: 500, totalCount: 0 };
     }
 
+    autoSizeAll() {
+        const allColumnIds: string[] = [];
+        this.dataParams.columnApi!.getAllColumns()!.forEach((column) => {
+            if (column.getId().toString() != "stt") {
+                allColumnIds.push(column.getId());
+            }
+        });
+        this.dataParams.columnApi!.autoSizeColumns(allColumnIds);
+    }
+
+    resetGridView() {
+
+        setTimeout(() => {
+            this.dataParams.columnApi!.sizeColumnsToFit({
+                suppressColumnVirtualisation: true,
+            });
+            this.autoSizeAll();
+        })
+    }
+
     searchDatas(): void {
         this.isLoading = true;
         this._service.getProdCustomsDeclareSearch(
             this.customsDeclareNo,
             this.declareDate ? moment(this.declareDate) : undefined,
             this.billOfLadingNo,
+            this.invoiceNo,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -107,6 +154,7 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
                 this.paginationParams.totalCount = result.totalCount;
                 this.rowData = result.items;
                 this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
+                this.resetGridView();
                 this.isLoading = false;
             });
     }
@@ -115,6 +163,7 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
         this.customsDeclareNo = '';
         this.declareDate = '';
         this.billOfLadingNo = '';
+        this.invoiceNo = '';
         this.searchDatas();
     }
 
@@ -123,6 +172,7 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
             this.customsDeclareNo,
             this.declareDate ? moment(this.declareDate) : undefined,
             this.billOfLadingNo,
+            this.invoiceNo,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -137,6 +187,7 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
             this.paginationParams.totalCount = result.totalCount;
             this.rowData = result.items;
             this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
+            this.resetGridView();
             this.isLoading = false;
         });
     }
@@ -154,6 +205,7 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
                 this.paginationParams.totalCount = result.totalCount;
                 this.rowData = result.items ?? [];
                 this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
+                this.resetGridView();
                 this.isLoading = false;
             });
     }
@@ -170,7 +222,8 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
         this._service.getProdCustomsDeclareToExcel(
             this.customsDeclareNo,
             this.declareDate ? moment(this.declareDate) : undefined,
-            this.billOfLadingNo)
+            this.billOfLadingNo,
+            this.invoiceNo)
             .pipe(finalize(() => this.isLoading = false))
             .subscribe(result => {
                 this._fileDownloadService.downloadTempFile(result);
