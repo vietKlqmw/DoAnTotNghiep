@@ -50,6 +50,19 @@ export class EditCustomsDeclareModalComponent extends AppComponentBase {
     save(): void {
         this.rowData.declareDate = this._declareDate ? moment(this._declareDate) : undefined;
 
+        if (this.rowData.customsDeclareNo == null) {
+            this.notify.warn('CustomsDeclareNo is Required!');
+            return;
+        }
+        if (this.rowData.billOfLadingNo == null) {
+            this.notify.warn('BillOfLadingNo is Required!');
+            return;
+        }
+        if (this.rowData.invoiceNo == null) {
+            this.notify.warn('InvoiceNo is Required!');
+            return;
+        }
+
         this.saving = true;
         this._service.editCustomsDeclare(this.rowData)
             .pipe(finalize(() => { this.saving = false; }))

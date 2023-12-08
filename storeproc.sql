@@ -1275,22 +1275,36 @@ END
 CREATE OR ALTER PROCEDURE INV_PROD_CUSTOMS_DECLARE_EDIT
 (
     @p_CustomsDeclareId INT,
+    @p_CustomsDeclareNo NVARCHAR(20),
     @p_DeclareDate DATE,
     @p_Tax DECIMAL,
     @p_Vat DECIMAL,
 	  @p_Status NVARCHAR(4),
+    @p_Forwarder NVARCHAR(10),
+    @p_BillId INT,
+    @p_InvoiceId INT,
     @p_UserId BIGINT
 )
 AS
 BEGIN
-    UPDATE ProdCustomsDeclare 
-       SET LastModificationTime = GETDATE(), 
-           LastModifierUserId = @p_UserId, 
-           DeclareDate = @p_DeclareDate, 
-           Tax = @p_Tax, 
-           Vat = @p_Vat, 
-           Status = @p_Status
-     WHERE Id = @p_CustomsDeclareId;
+    IF @p_CustomsDeclareId IS NULL
+        INSERT INTO ProdCustomsDeclare (CreationTime, CreatorUserId, IsDeleted, 
+                                        CustomsDeclareNo, DeclareDate, Tax, Vat, 
+                                        Status, Forwarder, BillId, InvoiceId)
+                                VALUES (GETDATE(), @p_UserId, 0, 
+                                        @p_CustomsDeclareNo, @p_DeclareDate, @p_Tax, @p_Vat, 
+                                        @p_Status, @p_Forwarder, @p_BillId, @p_InvoiceId);
+    ELSE
+    BEGIN
+        UPDATE ProdCustomsDeclare 
+           SET LastModificationTime = GETDATE(), 
+               LastModifierUserId = @p_UserId, 
+               DeclareDate = @p_DeclareDate, 
+               Tax = @p_Tax, 
+               Vat = @p_Vat, 
+               Status = @p_Status
+         WHERE Id = @p_CustomsDeclareId;
+    END
 END
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (

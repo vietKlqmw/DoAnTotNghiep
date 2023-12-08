@@ -30,17 +30,6 @@
                                 </div>
                             </div>
                             <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Bill Of Lading No'" [(ngModel)]="rowData.billOfLadingNo"
-                                    name='billOfLadingNo' [isReadonly]="true"></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-text left-text">Bill Date</span>
-                                    <input type='text' class="form-control tmss-form-control" name='billDate' readonly
-						                [(ngModel)]='_billDate'>
-                                </div>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Invoice No'" [(ngModel)]="rowData.invoiceNo"
                                     name='invoiceNo' [isReadonly]="true"></tmss-text-input>
                             </div>
@@ -49,6 +38,17 @@
                                     <span class="input-group-text left-text">Invoice Date</span>
                                     <input type='text' class="form-control tmss-form-control" name='invoiceDate' readonly
 						                [(ngModel)]='_invoiceDate'>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Bill Of Lading No'" [(ngModel)]="rowData.billOfLadingNo"
+                                    name='billOfLadingNo' [isReadonly]="true"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text left-text">Bill Date</span>
+                                    <input type='text' class="form-control tmss-form-control" name='billDate' readonly
+						                [(ngModel)]='_billDate'>
                                 </div>
                             </div>
                             <div class="ui-g-12 ui-md-6">

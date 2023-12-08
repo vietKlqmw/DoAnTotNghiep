@@ -51,6 +51,7 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
     billOfLadingNo: string = '';
     invoiceNo: string = '';
     _selectrow;
+    notDeleted: boolean = false;
 
     defaultColDef = {
         resizable: true,
@@ -82,15 +83,15 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
                 headerName: this.l('Declare Date'), headerTooltip: this.l('Declare Date'), field: 'declareDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.declareDate, 'dd/MM/yyyy')
             },
-            { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('Bill Of Lading No'), field: 'billOfLadingNo', flex: 1 },
-            {
-                headerName: this.l('Bill Date'), headerTooltip: this.l('Bill Date'), field: 'billDate', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.billDate, 'dd/MM/yyyy')
-            },
             { headerName: this.l('Invoice No'), headerTooltip: this.l('InvoiceNo'), field: 'invoiceNo', flex: 1 },
             {
                 headerName: this.l('Invoice Date'), headerTooltip: this.l('Invoice Date'), field: 'invoiceDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.invoiceDate, 'dd/MM/yyyy')
+            },
+            { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('Bill Of Lading No'), field: 'billOfLadingNo', flex: 1 },
+            {
+                headerName: this.l('Bill Date'), headerTooltip: this.l('Bill Date'), field: 'billDate', flex: 1,
+                valueGetter: (params) => this.pipe.transform(params.data?.billDate, 'dd/MM/yyyy')
             },
             { headerName: this.l('Forwarder'), headerTooltip: this.l('Forwarder'), field: 'forwarder', flex: 1 },
             {
@@ -215,6 +216,16 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
         this.selectedRow = Object.assign({}, this.saveSelectedRow);
 
         this._selectrow = this.saveSelectedRow.id;
+
+        if(this._selectrow){
+            if(this.saveSelectedRow.status == 'CUSTOMS DECLARED'){
+                this.notDeleted = true;
+            }else{
+                this.notDeleted = false;
+            }
+        }else{
+            this.notDeleted = false;
+        }
     }
 
     exportToExcel(): void {
@@ -231,8 +242,9 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
             });
     }
 
-    editBill(): void {
-        this.editModal.show(this.saveSelectedRow);
+    editDeclare(e): void {
+        if (e == 'Edit') this.editModal.show(e, this.saveSelectedRow);
+        else this.editModal.show(e);
     }
 }
 
