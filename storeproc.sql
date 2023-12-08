@@ -872,12 +872,12 @@ CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_DETAILS_SEARCH
 )
 AS 
 BEGIN
-    SELECT a.PartNo, a.Insurance, a.ContainerNo, a.InvoiceId, a.GrossWeight, a.Currency,  
+    SELECT a.PartNo, a.Insurance, a.ContainerNo, a.InvoiceNo, a.GrossWeight, a.Currency,  
            a.SupplierNo, a.Freight, a.Thc, a.Cif, a.Tax, a.TaxRate, a.Vat, a.VatRate, a.UsageQty, 
            a.PartName, a.CarfamilyCode
       FROM ProdInvoiceDetails a 
  LEFT JOIN ProdInvoice inv 
-        ON inv.Id = a.InvoiceId 
+        ON inv.InvoiceNo = a.InvoiceNo 
      WHERE inv.Id = @p_InvoiceId
        AND a.IsDeleted = 0
   ORDER BY a.PartNo
