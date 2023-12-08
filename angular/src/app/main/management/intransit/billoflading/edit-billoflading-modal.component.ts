@@ -17,6 +17,7 @@ export class EditBillOfLadingModalComponent extends AppComponentBase {
 
     rowData: ProdBillOfLadingDto = new ProdBillOfLadingDto();
     saving = false;
+    _status: string = '';
     _billDate: any;
     list = [];
     listWhenDateEmpty = [
@@ -47,12 +48,14 @@ export class EditBillOfLadingModalComponent extends AppComponentBase {
         const dateValue = this.rowData.billDate ? new Date(this.rowData.billDate?.toString()) : new Date();
         this.datepicker?.bsValueChange.emit(dateValue);
 
+        this._status = this.rowData.statusCode == 'NEW' ? 'PAID' : this.rowData.statusCode;
+
         this.modal.show();
     }
 
     save(): void {
         this.rowData.billDate = this._billDate ? moment(this._billDate) : undefined;
-
+        this.rowData.statusCode = this._status;
         this.saving = true;
         this._service.editBillOfLading(this.rowData)
             .pipe(finalize(() => { this.saving = false; }))
@@ -67,10 +70,10 @@ export class EditBillOfLadingModalComponent extends AppComponentBase {
         this._billDate = event;
         if (this._billDate != undefined) {
             this.list = this.listWhenDateNotEmpty;
-            this.rowData.statusCode = 'PENDING';
+            this._status = 'PAID';
         } else {
             this.list = this.listWhenDateEmpty;
-            this.rowData.statusCode = 'NEW';
+            this._status = 'NEW';
         }
     }
 

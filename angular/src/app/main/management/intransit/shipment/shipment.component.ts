@@ -233,7 +233,7 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
         this._selectrow = this.saveSelectedRow.id;
 
         if(this._selectrow){
-            if(this.saveSelectedRow.status == 'ORDERED') this.notDelete = true;
+            if(this.saveSelectedRow.status == 'ORDERED (ON SEA)' || this.saveSelectedRow.status == 'ORDERED (ON PORT)') this.notDelete = true;
             else this.notDelete = false;
         }else{
             this.notDelete = false;
@@ -288,10 +288,16 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
     }
 
     onCellValueChanged(ev) {
-        this._service.updateStatusShipment(ev.data.id.toString(), ev.newValue).subscribe(() => {
-            this.callBackDataGrid(this.dataParams!);
-            this.notify.success(this.l('SavedSuccessfully'));
-        });
+        console.log(ev.data.isEmptyShipment)
+        // if(ev.oldValue == 'ORDERED (ON SEA)' || ev.oldValue == 'ORDERED (ON PORT)'){
+        //     this.message.warn('Shipment Already Ordered and On the Sea, Can not change Status to NEW or PENDING');
+        //     this.callBackDataGrid(this.dataParams!);
+        // }else{
+        //     this._service.updateStatusShipment(ev.data.id.toString(), ev.newValue).subscribe(() => {
+        //         this.callBackDataGrid(this.dataParams!);
+        //         this.notify.success(this.l('SavedSuccessfully'));
+        //     });
+        // }
     }
 }
 

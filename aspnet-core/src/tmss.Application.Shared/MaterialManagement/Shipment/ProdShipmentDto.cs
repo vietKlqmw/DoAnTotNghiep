@@ -28,6 +28,8 @@ namespace tmss.MaterialManagement.Shipment
         public virtual DateTime? Atd { get; set; }
 
         public virtual string Status { get; set; }
+
+        public virtual int? IsEmptyShipment { get; set; }
     }
 
     public class GetProdShipmentInput : PagedAndSortedResultRequestDto

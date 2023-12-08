@@ -30162,6 +30162,7 @@ export class ProdShipmentDto implements IProdShipmentDto {
     oceanVesselName!: string | undefined;
     atd!: moment.Moment | undefined;
     status!: string | undefined;
+    isEmptyShipment!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdShipmentDto) {
@@ -30187,6 +30188,7 @@ export class ProdShipmentDto implements IProdShipmentDto {
             this.oceanVesselName = _data["oceanVesselName"];
             this.atd = _data["atd"] ? moment(_data["atd"].toString()) : <any>undefined;
             this.status = _data["status"];
+            this.isEmptyShipment = _data["isEmptyShipment"];
             this.id = _data["id"];
         }
     }
@@ -30212,6 +30214,7 @@ export class ProdShipmentDto implements IProdShipmentDto {
         data["oceanVesselName"] = this.oceanVesselName;
         data["atd"] = this.atd ? this.atd.toISOString() : <any>undefined;
         data["status"] = this.status;
+        data["isEmptyShipment"] = this.isEmptyShipment;
         data["id"] = this.id;
         return data; 
     }
@@ -30230,6 +30233,7 @@ export interface IProdShipmentDto {
     oceanVesselName: string | undefined;
     atd: moment.Moment | undefined;
     status: string | undefined;
+    isEmptyShipment: number | undefined;
     id: number | undefined;
 }
 

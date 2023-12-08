@@ -22,7 +22,7 @@ import { EditBillOfLadingModalComponent } from './edit-billoflading-modal.compon
 })
 export class BillofladingComponent extends AppComponentBase implements OnInit {
     @ViewChild('editModal', { static: true }) editModal: EditBillOfLadingModalComponent;
-    
+
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
     paginationParams: PaginationParamsModel = {
@@ -51,6 +51,7 @@ export class BillofladingComponent extends AppComponentBase implements OnInit {
     billDateFrom: any;
     billDateTo: any;
     _selectrow;
+    notDeleted: boolean = false;
 
     defaultColDef = {
         resizable: true,
@@ -165,6 +166,12 @@ export class BillofladingComponent extends AppComponentBase implements OnInit {
         this.selectedRow = Object.assign({}, this.saveSelectedRow);
 
         this._selectrow = this.saveSelectedRow.id;
+
+        if(this._selectrow){
+            if(this.saveSelectedRow.statusCode == 'PAID') this.notDeleted = true;
+            else this.notDeleted = false;
+        }
+        else this.notDeleted = false;
     }
 
     exportToExcel(): void {

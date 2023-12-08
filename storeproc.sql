@@ -608,17 +608,19 @@ CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_SEARCH
     @p_ShipmentDate DATE
 )
 AS 
-   SELECT DISTINCT a.Id, a.ShipmentNo, a.SupplierNo,
-          a.Buyer, a.FromPort, a.ToPort, a.ShipmentDate,
-          a.Etd, a.Eta, a.Ata, a.OceanVesselName, a.Atd, a.Status
-     FROM ProdShipment a
-    WHERE (@p_ShipmentNo IS NULL OR a.ShipmentNo LIKE CONCAT('%', @p_ShipmentNo, '%'))
-      AND (@p_SupplierNo IS NULL OR a.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
-      AND (@p_FromPort IS NULL OR a.FromPort LIKE CONCAT('%', @p_FromPort, '%'))
-      AND (@p_ToPort IS NULL OR a.ToPort LIKE CONCAT('%', @p_ToPort, '%'))
-      AND (@p_ShipmentDate IS NULL OR a.ShipmentDate = @p_ShipmentDate)
-      AND a.IsDeleted = 0
- ORDER BY a.Etd DESC, a.Eta DESC
+    SELECT DISTINCT a.Id, a.ShipmentNo, a.SupplierNo,
+           a.Buyer, a.FromPort, a.ToPort, a.ShipmentDate,
+           a.Etd, a.Eta, a.Ata, a.OceanVesselName, a.Atd, a.Status, 
+           (CASE WHEN pci.Id IS NULL THEN 1 ELSE 0 END) IsEmptyShipment
+      FROM ProdShipment a
+ LEFT JOIN ProdContainerIntransit pci ON a.Id = pci.ShipmentId
+     WHERE (@p_ShipmentNo IS NULL OR a.ShipmentNo LIKE CONCAT('%', @p_ShipmentNo, '%'))
+       AND (@p_SupplierNo IS NULL OR a.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
+       AND (@p_FromPort IS NULL OR a.FromPort LIKE CONCAT('%', @p_FromPort, '%'))
+       AND (@p_ToPort IS NULL OR a.ToPort LIKE CONCAT('%', @p_ToPort, '%'))
+       AND (@p_ShipmentDate IS NULL OR a.ShipmentDate = @p_ShipmentDate)
+       AND a.IsDeleted = 0
+  ORDER BY a.Status , a.ShipmentDate DESC 
 ------------------------------------------------Add:
 CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_ADD
 (
