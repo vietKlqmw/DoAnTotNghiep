@@ -1,6 +1,5 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,9 +20,7 @@ namespace tmss.MaterialManagement
 
         public const int MaxCarfamilyCodeLength = 4;
 
-        public const int MaxStatusLength = 10;
-
-        public const int MaxPartnameVnLength = 300;
+        public const int MaxCurrencyLength = 20;
 
         [StringLength(MaxInvoiceNoLength)]
         public virtual string InvoiceNo { get; set; } //mã hóa đơn
@@ -31,7 +28,7 @@ namespace tmss.MaterialManagement
         [StringLength(MaxPartNoLength)]
         public virtual string PartNo { get; set; }
 
-        public virtual decimal? Insurance { get; set; }
+        public virtual decimal? Insurance { get; set; } //Bảo hiểm
 
         [StringLength(MaxContainerNoLength)]
         public virtual string ContainerNo { get; set; }
@@ -41,11 +38,11 @@ namespace tmss.MaterialManagement
         [StringLength(MaxSupplierNoLength)]
         public virtual string SupplierNo { get; set; }
 
-        public virtual decimal? Freight { get; set; }
+        public virtual decimal? Freight { get; set; } // Cước vẫn chuyển
 
-        public virtual decimal? Thc { get; set; }
+        public virtual decimal? Thc { get; set; } //phí xếp dỡ bến
 
-        public virtual decimal? Cif { get; set; }
+        public virtual decimal? Cif { get; set; }  //Cost + Insurance + Freight
 
         public virtual decimal? Tax { get; set; } //thuế
 
@@ -63,27 +60,10 @@ namespace tmss.MaterialManagement
         [StringLength(MaxCarfamilyCodeLength)]
         public virtual string CarfamilyCode { get; set; }
 
-        public virtual decimal? PartNetWeight { get; set; } //khối lượng tịnh của part
+        public virtual decimal? GrossWeight { get; set; } //khối lượng toàn phần
 
-        public virtual DateTime? PackagingDate { get; set; } //ngày đóng gói
-
-        [StringLength(MaxStatusLength)]
-        public virtual string Status { get; set; }
-
-        public virtual decimal? FreightVn { get; set; }
-
-        public virtual decimal? InsuranceVn { get; set; }
-
-        public virtual decimal? ThcVn { get; set; }
-
-        public virtual decimal? CifVn { get; set; }
-
-        public virtual decimal? TaxVn { get; set; }
-
-        public virtual decimal? VatVn { get; set; }
-
-        [StringLength(MaxPartnameVnLength)]
-        public virtual string PartnameVn { get; set; }
+        [StringLength(MaxCurrencyLength)]
+        public virtual string Currency { get; set; } //Tiền tệ
 
     }
 }

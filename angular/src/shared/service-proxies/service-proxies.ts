@@ -29486,6 +29486,7 @@ export interface IPagedResultDtoOfProdCustomsDeclareDto {
 }
 
 export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
+    invoiceNo!: string | undefined;
     partNo!: string | undefined;
     insurance!: number | undefined;
     containerNo!: string | undefined;
@@ -29501,22 +29502,15 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
     usageQty!: number | undefined;
     partName!: string | undefined;
     carfamilyCode!: string | undefined;
-    partNetWeight!: number | undefined;
-    packagingDate!: moment.Moment | undefined;
-    status!: string | undefined;
-    freightVn!: number | undefined;
-    insuranceVn!: number | undefined;
-    thcVn!: number | undefined;
-    cifVn!: number | undefined;
-    taxVn!: number | undefined;
-    vatVn!: number | undefined;
-    partnameVn!: string | undefined;
+    grossWeight!: number | undefined;
+    currency!: string | undefined;
     grandQty!: number | undefined;
     grandCif!: number | undefined;
     grandFreight!: number | undefined;
     grandInsurance!: number | undefined;
     grandTax!: number | undefined;
     grandVat!: number | undefined;
+    grandThc!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdInvoiceDetailsDto) {
@@ -29530,6 +29524,7 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
 
     init(_data?: any) {
         if (_data) {
+            this.invoiceNo = _data["invoiceNo"];
             this.partNo = _data["partNo"];
             this.insurance = _data["insurance"];
             this.containerNo = _data["containerNo"];
@@ -29545,22 +29540,15 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
             this.usageQty = _data["usageQty"];
             this.partName = _data["partName"];
             this.carfamilyCode = _data["carfamilyCode"];
-            this.partNetWeight = _data["partNetWeight"];
-            this.packagingDate = _data["packagingDate"] ? moment(_data["packagingDate"].toString()) : <any>undefined;
-            this.status = _data["status"];
-            this.freightVn = _data["freightVn"];
-            this.insuranceVn = _data["insuranceVn"];
-            this.thcVn = _data["thcVn"];
-            this.cifVn = _data["cifVn"];
-            this.taxVn = _data["taxVn"];
-            this.vatVn = _data["vatVn"];
-            this.partnameVn = _data["partnameVn"];
+            this.grossWeight = _data["grossWeight"];
+            this.currency = _data["currency"];
             this.grandQty = _data["grandQty"];
             this.grandCif = _data["grandCif"];
             this.grandFreight = _data["grandFreight"];
             this.grandInsurance = _data["grandInsurance"];
             this.grandTax = _data["grandTax"];
             this.grandVat = _data["grandVat"];
+            this.grandThc = _data["grandThc"];
             this.id = _data["id"];
         }
     }
@@ -29574,6 +29562,7 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["invoiceNo"] = this.invoiceNo;
         data["partNo"] = this.partNo;
         data["insurance"] = this.insurance;
         data["containerNo"] = this.containerNo;
@@ -29589,28 +29578,22 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
         data["usageQty"] = this.usageQty;
         data["partName"] = this.partName;
         data["carfamilyCode"] = this.carfamilyCode;
-        data["partNetWeight"] = this.partNetWeight;
-        data["packagingDate"] = this.packagingDate ? this.packagingDate.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["freightVn"] = this.freightVn;
-        data["insuranceVn"] = this.insuranceVn;
-        data["thcVn"] = this.thcVn;
-        data["cifVn"] = this.cifVn;
-        data["taxVn"] = this.taxVn;
-        data["vatVn"] = this.vatVn;
-        data["partnameVn"] = this.partnameVn;
+        data["grossWeight"] = this.grossWeight;
+        data["currency"] = this.currency;
         data["grandQty"] = this.grandQty;
         data["grandCif"] = this.grandCif;
         data["grandFreight"] = this.grandFreight;
         data["grandInsurance"] = this.grandInsurance;
         data["grandTax"] = this.grandTax;
         data["grandVat"] = this.grandVat;
+        data["grandThc"] = this.grandThc;
         data["id"] = this.id;
         return data; 
     }
 }
 
 export interface IProdInvoiceDetailsDto {
+    invoiceNo: string | undefined;
     partNo: string | undefined;
     insurance: number | undefined;
     containerNo: string | undefined;
@@ -29626,22 +29609,15 @@ export interface IProdInvoiceDetailsDto {
     usageQty: number | undefined;
     partName: string | undefined;
     carfamilyCode: string | undefined;
-    partNetWeight: number | undefined;
-    packagingDate: moment.Moment | undefined;
-    status: string | undefined;
-    freightVn: number | undefined;
-    insuranceVn: number | undefined;
-    thcVn: number | undefined;
-    cifVn: number | undefined;
-    taxVn: number | undefined;
-    vatVn: number | undefined;
-    partnameVn: string | undefined;
+    grossWeight: number | undefined;
+    currency: string | undefined;
     grandQty: number | undefined;
     grandCif: number | undefined;
     grandFreight: number | undefined;
     grandInsurance: number | undefined;
     grandTax: number | undefined;
     grandVat: number | undefined;
+    grandThc: number | undefined;
     id: number | undefined;
 }
 
@@ -29697,22 +29673,8 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
     invoiceNo!: string | undefined;
     billId!: number | undefined;
     invoiceDate!: moment.Moment | undefined;
-    freight!: number | undefined;
-    freightTotal!: number | undefined;
-    insurance!: number | undefined;
-    insuranceTotal!: number | undefined;
-    cif!: number | undefined;
-    thcTotal!: number | undefined;
-    netWeight!: number | undefined;
-    grossWeight!: number | undefined;
-    currency!: string | undefined;
-    supplierNo!: string | undefined;
-    quantity!: number | undefined;
+    forwarder!: string | undefined;
     status!: string | undefined;
-    freightTotalVn!: number | undefined;
-    insuranceTotalVn!: number | undefined;
-    cifVn!: number | undefined;
-    thcTotalVn!: number | undefined;
     shipmentNo!: string | undefined;
     billNo!: string | undefined;
     billDate!: moment.Moment | undefined;
@@ -29732,22 +29694,8 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
             this.invoiceNo = _data["invoiceNo"];
             this.billId = _data["billId"];
             this.invoiceDate = _data["invoiceDate"] ? moment(_data["invoiceDate"].toString()) : <any>undefined;
-            this.freight = _data["freight"];
-            this.freightTotal = _data["freightTotal"];
-            this.insurance = _data["insurance"];
-            this.insuranceTotal = _data["insuranceTotal"];
-            this.cif = _data["cif"];
-            this.thcTotal = _data["thcTotal"];
-            this.netWeight = _data["netWeight"];
-            this.grossWeight = _data["grossWeight"];
-            this.currency = _data["currency"];
-            this.supplierNo = _data["supplierNo"];
-            this.quantity = _data["quantity"];
+            this.forwarder = _data["forwarder"];
             this.status = _data["status"];
-            this.freightTotalVn = _data["freightTotalVn"];
-            this.insuranceTotalVn = _data["insuranceTotalVn"];
-            this.cifVn = _data["cifVn"];
-            this.thcTotalVn = _data["thcTotalVn"];
             this.shipmentNo = _data["shipmentNo"];
             this.billNo = _data["billNo"];
             this.billDate = _data["billDate"] ? moment(_data["billDate"].toString()) : <any>undefined;
@@ -29767,22 +29715,8 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
         data["invoiceNo"] = this.invoiceNo;
         data["billId"] = this.billId;
         data["invoiceDate"] = this.invoiceDate ? this.invoiceDate.toISOString() : <any>undefined;
-        data["freight"] = this.freight;
-        data["freightTotal"] = this.freightTotal;
-        data["insurance"] = this.insurance;
-        data["insuranceTotal"] = this.insuranceTotal;
-        data["cif"] = this.cif;
-        data["thcTotal"] = this.thcTotal;
-        data["netWeight"] = this.netWeight;
-        data["grossWeight"] = this.grossWeight;
-        data["currency"] = this.currency;
-        data["supplierNo"] = this.supplierNo;
-        data["quantity"] = this.quantity;
+        data["forwarder"] = this.forwarder;
         data["status"] = this.status;
-        data["freightTotalVn"] = this.freightTotalVn;
-        data["insuranceTotalVn"] = this.insuranceTotalVn;
-        data["cifVn"] = this.cifVn;
-        data["thcTotalVn"] = this.thcTotalVn;
         data["shipmentNo"] = this.shipmentNo;
         data["billNo"] = this.billNo;
         data["billDate"] = this.billDate ? this.billDate.toISOString() : <any>undefined;
@@ -29795,22 +29729,8 @@ export interface IProdInvoiceDto {
     invoiceNo: string | undefined;
     billId: number | undefined;
     invoiceDate: moment.Moment | undefined;
-    freight: number | undefined;
-    freightTotal: number | undefined;
-    insurance: number | undefined;
-    insuranceTotal: number | undefined;
-    cif: number | undefined;
-    thcTotal: number | undefined;
-    netWeight: number | undefined;
-    grossWeight: number | undefined;
-    currency: string | undefined;
-    supplierNo: string | undefined;
-    quantity: number | undefined;
+    forwarder: string | undefined;
     status: string | undefined;
-    freightTotalVn: number | undefined;
-    insuranceTotalVn: number | undefined;
-    cifVn: number | undefined;
-    thcTotalVn: number | undefined;
     shipmentNo: string | undefined;
     billNo: string | undefined;
     billDate: moment.Moment | undefined;

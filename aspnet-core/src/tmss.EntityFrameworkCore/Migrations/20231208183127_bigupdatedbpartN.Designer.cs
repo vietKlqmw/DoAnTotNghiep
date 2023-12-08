@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tmss.EntityFrameworkCore;
 
 namespace tmss.Migrations
 {
     [DbContext(typeof(tmssDbContext))]
-    partial class tmssDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231208183127_bigupdatedbpartN")]
+    partial class bigupdatedbpartN
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2599,10 +2601,6 @@ namespace tmss.Migrations
                     b.Property<DateTime?>("PortDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("SealNo")
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
-
                     b.Property<long?>("ShipmentId")
                         .HasColumnType("bigint");
 
@@ -3377,6 +3375,10 @@ namespace tmss.Migrations
                     b.Property<string>("PartNo")
                         .HasColumnType("nvarchar(12)")
                         .HasMaxLength(12);
+
+                    b.Property<string>("SealNo")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("SupplierNo")
                         .HasColumnType("nvarchar(50)")

@@ -811,29 +811,27 @@ CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_SEARCH
 )
 AS
 BEGIN 
-    SELECT DISTINCT a.Id, a.InvoiceNo, a.BillId, a.InvoiceDate, 
-           a.Freight, a.FreightTotal, a.Insurance, a.InsuranceTotal, a.Cif, a.ThcTotal, a.NetWeight, 
-           a.GrossWeight, a.Currency, a.SupplierNo, a.Quantity, a.Status, a.FreightTotalVn, 
-           a.InsuranceTotalVn, a.CifVn, a.ThcTotalVn, b.BillofladingNo AS BillNo, c.ShipmentNo, 
+    SELECT a.Id, a.InvoiceNo, a.BillId, a.InvoiceDate, a.Status,  
+           b.BillofladingNo AS BillNo, c.ShipmentNo, 
            e.Description AS Status, b.BillDate
       FROM ProdInvoice a
  LEFT JOIN ProdBillOfLading b
         ON a.BillId = b.Id
  LEFT JOIN ProdShipment c
         ON c.Id = b.ShipmentId
- LEFT JOIN ProdContainerInvoice d
-        ON d.InvoiceId = a.Id
-	LEFT JOIN MasterInvoiceStatus e
+ LEFT JOIN ProdContainerIntransit pci
+        ON c.Id = pci.ShipmentId
+ LEFT JOIN MasterInvoiceStatus e
         ON a.Status = e.Code
      WHERE (@p_InvoiceNo IS NULL OR a.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
        AND (@p_InvoiceDateFrom IS NULL OR a.InvoiceDate >= @p_InvoiceDateFrom)
        AND (@p_InvoiceDateTo IS NULL OR a.InvoiceDate <= @p_InvoiceDateTo)
        AND (@p_BillNo IS NULL OR b.BillofladingNo LIKE CONCAT('%', @p_BillNo, '%'))
        AND (@p_ShipmentNo IS NULL OR c.ShipmentNo LIKE CONCAT('%', @p_ShipmentNo, '%'))
-       AND (@p_ContainerNo IS NULL OR d.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
+       AND (@p_ContainerNo IS NULL OR pci.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
        AND (@p_BillDateFrom IS NULL OR b.BillDate >= @p_BillDateFrom)
        AND (@p_BillDateTo IS NULL OR b.BillDate < DATEADD(DAY, 1, @p_BillDateTo))
-	     AND (@p_SupplierNo IS NULL OR a.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
+	     AND (@p_SupplierNo IS NULL OR c.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
        AND a.IsDeleted = 0
   ORDER BY a.InvoiceDate DESC, b.BillDate DESC, a.InvoiceNo, a.Id	
 END
@@ -844,17 +842,12 @@ CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_DETAILS_SEARCH
 )
 AS 
 BEGIN
-    SELECT a.PartNo, a.Insurance, a.ContainerNo, a.InvoiceId, 
+    SELECT a.PartNo, a.Insurance, a.ContainerNo, a.InvoiceId, a.GrossWeight, a.Currency,  
            a.SupplierNo, a.Freight, a.Thc, a.Cif, a.Tax, a.TaxRate, a.Vat, a.VatRate, a.UsageQty, 
-           a.PartName, a.CarfamilyCode, a.PartNetWeight, a.PackagingDate, a.FreightVn, 
-           a.InsuranceVn, a.ThcVn, a.CifVn, a.TaxVn, a.VatVn, a.PartnameVn--, e.Description AS Status
+           a.PartName, a.CarfamilyCode
       FROM ProdInvoiceDetails a 
  LEFT JOIN ProdInvoice inv 
         ON inv.Id = a.InvoiceId 
- LEFT JOIN ProdContainerInvoice d 
-        ON d.ContainerNo = a.ContainerNo
--- LEFT JOIN MasterInvoiceStatus e
---        ON a.Status = e.Code
      WHERE inv.Id = @p_InvoiceId
        AND a.IsDeleted = 0
   ORDER BY a.PartNo

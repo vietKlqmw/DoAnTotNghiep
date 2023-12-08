@@ -40,6 +40,7 @@ namespace tmss.MaterialManagement.Invoice
             if (listResult.Count > 0)
             {
                 listResult[0].GrandCif = listResult.Sum(e => e.Cif);
+                listResult[0].GrandThc = listResult.Sum(e => e.Thc);
                 listResult[0].GrandFreight = listResult.Sum(e => e.Freight);
                 listResult[0].GrandInsurance = listResult.Sum(e => e.Insurance);
                 listResult[0].GrandTax = listResult.Sum(e => e.Tax);

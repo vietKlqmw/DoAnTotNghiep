@@ -96,39 +96,13 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
                 headerName: this.l('Invoice Date'), headerTooltip: this.l('Invoice Date'), field: 'invoiceDate', flex: 1,
                 valueFormatter: (params) => this.pipe.transform(params.data?.invoiceDate, 'dd/MM/yyyy')
             },
-            { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
             { headerName: this.l('Bill No'), headerTooltip: this.l('Bill No'), field: 'billNo', flex: 1 },
             {
                 headerName: this.l('Bill Date'), headerTooltip: this.l('Bill Date'), field: 'billDate', flex: 1,
                 valueFormatter: (params) => this.pipe.transform(params.data?.billDate, 'dd/MM/yyyy')
             },
             { headerName: this.l('Shipment No'), headerTooltip: this.l('Shipment No'), field: 'shipmentNo', flex: 1 },
-            {
-                headerName: this.l('Freight'), headerTooltip: this.l('Freight'), field: 'freightTotal', flex: 1, type: 'rightAligned',
-                valueGetter: (params) => this._fm.formatMoney_decimal(params.data?.freightTotal, 4)
-            },
-            {
-                headerName: this.l('Insurance'), headerTooltip: this.l('Insurance'), field: 'insuranceTotal', flex: 1, type: 'rightAligned',
-                valueGetter: (params) => this._fm.formatMoney_decimal(params.data?.insuranceTotal, 4)
-            },
-            {
-                headerName: this.l('CIF'), headerTooltip: this.l('CIF'), field: 'cif', flex: 1, type: 'rightAligned',
-                valueGetter: (params) => this._fm.formatMoney_decimal(params.data?.cif, 4)
-            },
-            {
-                headerName: this.l('Thc'), headerTooltip: this.l('Thc'), field: 'thcTotal', flex: 1, type: 'rightAligned',
-                valueGetter: (params) => this._fm.formatMoney_decimal(params.data?.thcTotal, 4)
-            },
-            {
-                headerName: this.l('Net Weight'), headerTooltip: this.l('Net Weight'), field: 'netWeight', flex: 1, type: 'rightAligned',
-                valueGetter: (params) => this._fm.formatMoney_decimal(params.data?.netWeight, 4)
-            },
-            {
-                headerName: this.l('Gross Weight'), headerTooltip: this.l('Gross Weight'), field: 'grossWeight', flex: 1, type: 'rightAligned',
-                valueGetter: (params) => this._fm.formatMoney_decimal(params.data?.grossWeight, 4)
-            },
-            { headerName: this.l('Currency'), headerTooltip: this.l('Currency'), field: 'currency', flex: 1 },
-            { headerName: this.l('Quantity'), headerTooltip: this.l('Quantity'), field: 'quantity', flex: 1, type: 'rightAligned' },
+            { headerName: this.l('Forwarder'), headerTooltip: this.l('Forwarder'), field: 'forwarder', flex: 1 },
             { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 }
         ];
 
@@ -157,7 +131,11 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
                 cellRenderer: (params) => (params.data?.cif != null ? params.data?.cif : 0),
                 aggFunc: this.calTotal
             },
-            { headerName: this.l('THC'), headerTooltip: this.l('Thc'), field: 'thc', flex: 1, type: 'rightAligned' },
+            {
+                headerName: this.l('THC'), headerTooltip: this.l('THC'), field: 'thc', flex: 1, type: 'rightAligned',
+                cellRenderer: (params) => (params.data?.thc != null ? params.data?.thc : 0),
+                aggFunc: this.calTotal
+            },
             {
                 headerName: this.l('TAX'), headerTooltip: this.l('Tax'), field: 'tax', flex: 1, type: 'rightAligned',
                 cellRenderer: (params) => (params.data?.tax != null ? params.data?.tax : 0),
@@ -171,15 +149,12 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
             { headerName: this.l('TAX Rate'), headerTooltip: this.l('Tax Rate'), field: 'taxRate', flex: 1, type: 'rightAligned' },
             { headerName: this.l('VAT Rate'), headerTooltip: this.l('Vat Rate'), field: 'vatRate', Flex: 1, type: 'rightAligned' },
             { headerName: this.l('Carfamily Code'), headerTooltip: this.l('Carfamily Code'), field: 'carfamilyCode', flex: 1 },
-            { headerName: this.l('Part Net Weight'), headerTooltip: this.l('Part Net Weight'), field: 'partNetWeight', flex: 1, type: 'rightAligned' },
+            { headerName: this.l('Currency'), headerTooltip: this.l('Currency'), field: 'currency', flex: 1 },
             {
-                headerName: this.l('Packaging Date'), headerTooltip: this.l('Packaging Date'), field: 'packagingDate', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.packagingDate, 'dd/MM/yyyy')
+                headerName: this.l('Gross Weight'), headerTooltip: this.l('Gross Weight'), field: 'grossWeight', flex: 1, type: 'rightAligned',
+                valueGetter: (params) => this._fm.formatMoney_decimal(params.data?.grossWeight, 4)
             },
-            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
-            { headerName: this.l('Invoice Id'), headerTooltip: this.l('InvoiceId'), field: 'invoiceId', flex: 1 },
-            { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', flex: 1 },
-            { headerName: this.l('Part Name VN'), headerTooltip: this.l('Partname Vn'), field: 'partnameVn', flex: 1 }
+            { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', flex: 1 }
         ];
 
         this.frameworkComponents = {
@@ -238,7 +213,7 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
                 this.paginationParams.totalCount = result.totalCount;
                 this.rowData = result.items;
                 this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
-                this.resetGridView();
+                //this.resetGridView();
                 this.isLoading = false;
             });
     }
@@ -282,7 +257,7 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
             this.paginationParams.totalCount = result.totalCount;
             this.rowData = result.items;
             this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
-            this.resetGridView();
+            //this.resetGridView();
             this.isLoading = false;
         });
     }
@@ -300,7 +275,7 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
                 this.paginationParams.totalCount = result.totalCount;
                 this.rowData = result.items ?? [];
                 this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
-                this.resetGridView();
+                //this.resetGridView();
                 this.isLoading = false;
             });
     }
