@@ -1194,7 +1194,7 @@ CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_SEARCH
 )
 AS
     SELECT a.Id, a.ContainerNo, a.SupplierNo, a.ShippingDate, a.PortDate, 
-           a.TransactionDate, a.Forwarder, a.ShipmentId, a.Status
+           a.TransactionDate, a.ShipmentId, a.Status
       FROM ProdContainerIntransit a
      WHERE (ISNULL(@p_ContainerNo, '') = '' OR a.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
     	 AND (ISNULL(@p_ShippingDate, '') = '' OR a.ShippingDate = @p_ShippingDate)
