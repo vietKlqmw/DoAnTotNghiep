@@ -28,3 +28,14 @@ Car-Farmily
 Vehicle CKD
 Engine Master
 CKD -> Intransit|Warehouse
+---------------------------------------------------------------------------------------------------
+Luồng hướng tới:
+lô hàng mới (gồm nhiều container) trạng thái NEW
+-> thay đổi trạng thái lô hàng sang ORDERED -> sinh ra vận đơn mới, đồng thời cũng sinh ra hóa đơn 
+container
+-> vận đơn được thanh toán xong -> lô hàng + container trong đó đổi trạng thái sang on SEA
+sinh ra hóa đơn mới (tổng hợp invoice container và bill of lading)
+-> tạo customs declare -> add lô hàng -> update status sang on port
+-> thanh toán customs declare xong -> insert container sang warehouse
++++ thống kê các kiểu
+phụ: -> user order part -> list part được chuyển đi + hóa đơn + trạng thái hóa đơn.

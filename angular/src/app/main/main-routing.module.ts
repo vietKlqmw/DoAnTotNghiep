@@ -100,6 +100,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
                     {
+                        path: 'management/intransit/customs-declare',
+                        loadChildren: () => import('./management/intransit/customs-declare/customs-declare.module').then(m => m.CustomsDeclareModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
+                    {
                         path: 'management/intransit/container-intransit',
                         loadChildren: () => import('./management/intransit/container-intransit/container-intransit.module').then(m => m.ContainerIntransitModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }

@@ -101,6 +101,8 @@ namespace tmss.EntityFrameworkCore
 
         public virtual DbSet<ProdContainerTransitPortPlan_T> ProdContainerTransitPortPlan_Ts { get; set; }
 
+        public virtual DbSet<ProdCustomsDeclare> ProdCustomsDeclares { get; set; }
+
         #endregion
 
         public tmssDbContext(DbContextOptions<tmssDbContext> options)

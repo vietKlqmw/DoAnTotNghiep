@@ -29,7 +29,7 @@ export class AppNavigationService {
                     new AppMenuItem('Storage Location', '', 'flaticon-car', '/app/main/master/common/storage-location'),
                     new AppMenuItem('Material Group', '', 'flaticon-car', '/app/main/master/common/material-group'),
                     new AppMenuItem('Material Type', '', 'flaticon-car', '/app/main/master/common/material-type'),
-                    new AppMenuItem('Product Type', '', 'flaticon-car', '/app/main/master/common/product-type'),
+                    //new AppMenuItem('Product Type', '', 'flaticon-car', '/app/main/master/common/product-type'),
                     new AppMenuItem('Unit Of Measure', '', 'flaticon-car', '/app/main/master/common/uom'),
                     new AppMenuItem('Carfamily', '', 'flaticon-car', '/app/main/master/common/carfamily'),
                     new AppMenuItem('Supplier List', '', 'flaticon-car', '/app/main/master/common/supplier-list'),
@@ -43,9 +43,10 @@ export class AppNavigationService {
                 new AppMenuItem('INTRANSIT', '', 'flaticon-user-settings', '',[],[
                     new AppMenuItem('Shipment', '', 'flaticon-car', '/app/main/management/intransit/shipment'),
                     new AppMenuItem('Bill Of Lading', '', 'flaticon-car', '/app/main/management/intransit/billoflading'),
-                    new AppMenuItem('Invoice', '', 'flaticon-car', '/app/main/management/intransit/invoice'),
                     new AppMenuItem('Container Intransit', '', 'flaticon-car', '/app/main/management/intransit/container-intransit'),
                     new AppMenuItem('Container Invoice', '', 'flaticon-car', '/app/main/management/intransit/container-invoice'),
+                    new AppMenuItem('Customs Declare', '', 'flaticon-car', '/app/main/management/intransit/customs-declare'),
+                    new AppMenuItem('Invoice', '', 'flaticon-car', '/app/main/management/intransit/invoice'),
                 ]),
                 new AppMenuItem('WAREHOUSE', '', 'flaticon-user-settings', '',[],[
                     new AppMenuItem('Container List', '', 'flaticon-car', '/app/main/management/warehouse/container-list'),

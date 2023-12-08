@@ -1255,6 +1255,47 @@ INNER JOIN ProdInvoiceDetails d
        AND r.IsDeleted = 0
   ORDER BY r.Model, r.WorkingDate DESC, r.PartNo
 END
+------------------------------------------------CustomsDeclare------------------------------------------------
+------------------------------------------------Search:
+CREATE OR ALTER PROCEDURE INV_PROD_CUSTOMS_DECLARE_SEARCH 
+(
+    @p_CustomsDeclareNo NVARCHAR(20),
+    @p_DeclareDate DATE,
+    @p_BillOfLadingNo NVARCHAR(10)
+)
+AS
+BEGIN
+    SELECT pcd.Id, pcd.CustomsDeclareNo, pcd.DeclareDate, pcd.Tax, pcd.Vat, pcd.Forwarder, pcd.BillId,
+           pbol.BillofladingNo, pbol.BillDate, (pcd.Tax + pcd.Vat) SumCustomsDeclare, mcs.Description Status
+      FROM ProdCustomsDeclare pcd 
+INNER JOIN ProdBillOfLading pbol ON pcd.BillId = pbol.Id
+ LEFT JOIN MasterCustomsStatus mcs ON pcd.Status = mcs.Code
+     WHERE (ISNULL(@p_CustomsDeclareNo, '') = '' OR pcd.CustomsDeclareNo LIKE CONCAT('%', @p_CustomsDeclareNo, '%'))
+		   AND (ISNULL(@p_DeclareDate, '')= '' OR  pcd.DeclareDate = @p_DeclareDate)
+       AND (ISNULL(@p_BillOfLadingNo, '') = '' OR pbol.BillofladingNo LIKE CONCAT('%', @p_BillOfLadingNo, '%'))
+       AND pcd.IsDeleted = 0
+END
+------------------------------------------------UpdateStatus:
+CREATE OR ALTER PROCEDURE INV_PROD_CUSTOMS_DECLARE_EDIT
+(
+    @p_CustomsDeclareId INT,
+    @p_DeclareDate DATE,
+    @p_Tax DECIMAL,
+    @p_Vat DECIMAL,
+	  @p_Status NVARCHAR(4),
+    @p_UserId BIGINT
+)
+AS
+BEGIN
+    UPDATE ProdCustomsDeclare 
+       SET LastModificationTime = GETDATE(), 
+           LastModifierUserId = @p_UserId, 
+           DeclareDate = @p_DeclareDate, 
+           Tax = @p_Tax, 
+           Vat = @p_Vat, 
+           Status = @p_Status
+     WHERE Id = @p_CustomsDeclareId;
+END
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (
   ID BIGINT IDENTITY

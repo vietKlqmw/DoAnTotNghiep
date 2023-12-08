@@ -11851,6 +11851,271 @@ export class ProdContainerRentalWHPlanExcelExporterServiceProxy {
 }
 
 @Injectable()
+export class ProdCustomsDeclareServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param customsDeclareNo (optional) 
+     * @param declareDate (optional) 
+     * @param billOfLadingNo (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getProdCustomsDeclareSearch(customsDeclareNo: string | null | undefined, declareDate: moment.Moment | null | undefined, billOfLadingNo: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdCustomsDeclareDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProdCustomsDeclare/GetProdCustomsDeclareSearch?";
+        if (customsDeclareNo !== undefined)
+            url_ += "CustomsDeclareNo=" + encodeURIComponent("" + customsDeclareNo) + "&"; 
+        if (declareDate !== undefined)
+            url_ += "DeclareDate=" + encodeURIComponent(declareDate ? "" + declareDate.toJSON() : "") + "&"; 
+        if (billOfLadingNo !== undefined)
+            url_ += "BillOfLadingNo=" + encodeURIComponent("" + billOfLadingNo) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProdCustomsDeclareSearch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProdCustomsDeclareSearch(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfProdCustomsDeclareDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfProdCustomsDeclareDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetProdCustomsDeclareSearch(response: HttpResponseBase): Observable<PagedResultDtoOfProdCustomsDeclareDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfProdCustomsDeclareDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfProdCustomsDeclareDto>(<any>null);
+    }
+
+    /**
+     * @param customsDeclareNo (optional) 
+     * @param declareDate (optional) 
+     * @param billOfLadingNo (optional) 
+     * @return Success
+     */
+    getProdCustomsDeclareToExcel(customsDeclareNo: string | null | undefined, declareDate: moment.Moment | null | undefined, billOfLadingNo: string | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProdCustomsDeclare/GetProdCustomsDeclareToExcel?";
+        if (customsDeclareNo !== undefined)
+            url_ += "CustomsDeclareNo=" + encodeURIComponent("" + customsDeclareNo) + "&"; 
+        if (declareDate !== undefined)
+            url_ += "DeclareDate=" + encodeURIComponent(declareDate ? "" + declareDate.toJSON() : "") + "&"; 
+        if (billOfLadingNo !== undefined)
+            url_ += "BillOfLadingNo=" + encodeURIComponent("" + billOfLadingNo) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProdCustomsDeclareToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProdCustomsDeclareToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetProdCustomsDeclareToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    updateCustomsDeclare(body: ProdCustomsDeclareDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdCustomsDeclare/UpdateCustomsDeclare";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateCustomsDeclare(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateCustomsDeclare(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateCustomsDeclare(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
+export class ProdCustomsDeclareExcelExporterServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    exportToFile(body: ProdCustomsDeclareDto[] | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProdCustomsDeclareExcelExporter/ExportToFile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToFile(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processExportToFile(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class ProdInvoiceServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -29076,6 +29341,130 @@ export class PagedResultDtoOfProdContainerRentalWHPlanImportDto implements IPage
 export interface IPagedResultDtoOfProdContainerRentalWHPlanImportDto {
     totalCount: number;
     items: ProdContainerRentalWHPlanImportDto[] | undefined;
+}
+
+export class ProdCustomsDeclareDto implements IProdCustomsDeclareDto {
+    customsDeclareNo!: string | undefined;
+    declareDate!: moment.Moment | undefined;
+    tax!: number | undefined;
+    vat!: number | undefined;
+    status!: string | undefined;
+    forwarder!: string | undefined;
+    billId!: number | undefined;
+    billOfLadingNo!: string | undefined;
+    billDate!: moment.Moment | undefined;
+    sumCustomsDeclare!: number | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IProdCustomsDeclareDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.customsDeclareNo = _data["customsDeclareNo"];
+            this.declareDate = _data["declareDate"] ? moment(_data["declareDate"].toString()) : <any>undefined;
+            this.tax = _data["tax"];
+            this.vat = _data["vat"];
+            this.status = _data["status"];
+            this.forwarder = _data["forwarder"];
+            this.billId = _data["billId"];
+            this.billOfLadingNo = _data["billOfLadingNo"];
+            this.billDate = _data["billDate"] ? moment(_data["billDate"].toString()) : <any>undefined;
+            this.sumCustomsDeclare = _data["sumCustomsDeclare"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): ProdCustomsDeclareDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProdCustomsDeclareDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["customsDeclareNo"] = this.customsDeclareNo;
+        data["declareDate"] = this.declareDate ? this.declareDate.toISOString() : <any>undefined;
+        data["tax"] = this.tax;
+        data["vat"] = this.vat;
+        data["status"] = this.status;
+        data["forwarder"] = this.forwarder;
+        data["billId"] = this.billId;
+        data["billOfLadingNo"] = this.billOfLadingNo;
+        data["billDate"] = this.billDate ? this.billDate.toISOString() : <any>undefined;
+        data["sumCustomsDeclare"] = this.sumCustomsDeclare;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IProdCustomsDeclareDto {
+    customsDeclareNo: string | undefined;
+    declareDate: moment.Moment | undefined;
+    tax: number | undefined;
+    vat: number | undefined;
+    status: string | undefined;
+    forwarder: string | undefined;
+    billId: number | undefined;
+    billOfLadingNo: string | undefined;
+    billDate: moment.Moment | undefined;
+    sumCustomsDeclare: number | undefined;
+    id: number | undefined;
+}
+
+export class PagedResultDtoOfProdCustomsDeclareDto implements IPagedResultDtoOfProdCustomsDeclareDto {
+    totalCount!: number;
+    items!: ProdCustomsDeclareDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfProdCustomsDeclareDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ProdCustomsDeclareDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfProdCustomsDeclareDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfProdCustomsDeclareDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfProdCustomsDeclareDto {
+    totalCount: number;
+    items: ProdCustomsDeclareDto[] | undefined;
 }
 
 export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
