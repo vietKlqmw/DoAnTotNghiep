@@ -15,6 +15,8 @@ namespace tmss.MaterialManagement
 
         public const int MaxForwarderLength = 10;
 
+        public const int MaxToWarehouseLength = 20;
+
 
         [StringLength(MaxCustomsDeclareNoLength)]
         public virtual string CustomsDeclareNo { get; set; }
@@ -34,5 +36,8 @@ namespace tmss.MaterialManagement
         public virtual long? BillId { get; set; }
 
         public virtual long? InvoiceId { get; set; }
+
+        [StringLength(MaxToWarehouseLength)]
+        public virtual string ToWarehouse { get; set; }
     }
 }

@@ -288,16 +288,18 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
     }
 
     onCellValueChanged(ev) {
-        console.log(ev.data.isEmptyShipment)
-        // if(ev.oldValue == 'ORDERED (ON SEA)' || ev.oldValue == 'ORDERED (ON PORT)'){
-        //     this.message.warn('Shipment Already Ordered and On the Sea, Can not change Status to NEW or PENDING');
-        //     this.callBackDataGrid(this.dataParams!);
-        // }else{
-        //     this._service.updateStatusShipment(ev.data.id.toString(), ev.newValue).subscribe(() => {
-        //         this.callBackDataGrid(this.dataParams!);
-        //         this.notify.success(this.l('SavedSuccessfully'));
-        //     });
-        // }
+        if(ev.data.isEmptyShipment == 1){
+            this.message.warn('Shipment does not contain any containers!');
+            this.callBackDataGrid(this.dataParams!);
+        }else if(ev.oldValue == 'ORDERED (ON SEA)' || ev.oldValue == 'ORDERED (ON PORT)'){
+            this.message.warn('Shipment Already Ordered and On the Sea, Can not change Status to NEW or PENDING');
+            this.callBackDataGrid(this.dataParams!);
+        }else{
+            this._service.updateStatusShipment(ev.data.id.toString(), ev.newValue).subscribe(() => {
+                this.callBackDataGrid(this.dataParams!);
+                this.notify.success(this.l('SavedSuccessfully'));
+            });
+        }
     }
 }
 
