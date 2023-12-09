@@ -608,7 +608,7 @@ CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_SEARCH
     @p_ShipmentDate DATE
 )
 AS 
-    SELECT DISTINCT a.Id, a.ShipmentNo, a.SupplierNo,
+    SELECT DISTINCT a.Id, a.ShipmentNo, a.SupplierNo, a.Forwarder,
            a.Buyer, a.FromPort, a.ToPort, a.ShipmentDate,
            a.Etd, a.Eta, a.Ata, a.OceanVesselName, a.Atd, a.Status, 
            (CASE WHEN pci.Id IS NULL THEN 1 ELSE 0 END) IsEmptyShipment
@@ -628,27 +628,34 @@ CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_ADD
     @p_SupplierNo NVARCHAR(10),
     @p_FromPort NVARCHAR(50),
     @p_ToPort NVARCHAR(50),
+    @p_Buyer NVARCHAR(50),
+    @p_Forwarder NVARCHAR(10),
+    @p_Etd DATE,
+    @p_Eta DATE,
+    @p_OceanVesselName NVARCHAR(30),
+    @p_ShipmentDate DATE,
     @p_UserId BIGINT
 )
 AS
 BEGIN
-    INSERT INTO ProdShipment (CreationTime, CreatorUserId, IsDeleted, ShipmentNo, SupplierNo, FromPort, ToPort, Status)
-                      VALUES (GETDATE(), @p_UserId, 0, UPPER(@p_ShipmentNo), @p_SupplierNo, @p_FromPort, @p_ToPort, 'NEW');
+    INSERT INTO ProdShipment (CreationTime, CreatorUserId, IsDeleted, 
+    ShipmentNo, SupplierNo, FromPort, ToPort, Status, Buyer, Forwarder, Etd, Eta, OceanVesselName, ShipmentDate)
+                      VALUES (GETDATE(), @p_UserId, 0, 
+    UPPER(@p_ShipmentNo), @p_SupplierNo, @p_FromPort, @p_ToPort, 'NEW', @p_Buyer, @p_Forwarder, @p_Etd, @p_Eta, @p_OceanVesselName, @p_ShipmentDate);
 END
 ------------------------------------------------Edit:
 CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_EDIT
 (
     @p_ShipmentId INT,
-    @p_Buyer NVARCHAR(4), 
+    @p_Buyer NVARCHAR(50), 
     @p_FromPort NVARCHAR(50),
     @p_ToPort NVARCHAR(50),
     @p_ShipmentDate DATE,
     @p_Etd DATE,
     @p_Eta DATE,
-    @p_Ata DATE,
     @p_OceanVesselName NVARCHAR(30),
-    @p_Atd DATE,
     @p_Status NVARCHAR(50),
+    @p_Forwarder NVARCHAR(10),
     @p_UserId BIGINT
 )
 AS
@@ -662,10 +669,9 @@ BEGIN
            ShipmentDate = @p_ShipmentDate, 
            Etd = @p_Etd, 
            Eta = @p_Eta,
-           Ata = @p_Ata,
            OceanVesselName = @p_OceanVesselName,
-           Atd = @p_Atd,
-           Status = @p_Status
+           Status = @p_Status,
+           Forwarder = @p_Forwarder
      WHERE Id = @p_ShipmentId;
 
     IF @p_Status = 'ORDERED'
@@ -681,7 +687,7 @@ BEGIN
         DECLARE @InvoiceNo NVARCHAR(20) = (SELECT (ShipmentNo + FORMAT(ShipmentDate, 'yyMMdd')) FROM ProdShipment WHERE Id = @p_ShipmentId); 
         DECLARE @BillId INT = (SELECT Id FROM ProdBillOfLading WHERE BillofladingNo = @p_BillofladingNo);
         INSERT INTO ProdInvoice (CreationTime, CreatorUserId, IsDeleted, InvoiceNo, BillId, Status, Forwarder)
-            SELECT GETDATE(), @p_UserId, 0, @InvoiceNo, @BillId, 'NEW', Forwarder
+            SELECT GETDATE(), @p_UserId, 0, @InvoiceNo, @BillId, 'NEW', @p_Forwarder
               FROM ProdShipment 
              WHERE Id = @p_ShipmentId
 
@@ -842,7 +848,7 @@ CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_SEARCH
 AS
 BEGIN 
     SELECT a.Id, a.InvoiceNo, a.BillId, a.InvoiceDate, a.Status,  
-           b.BillofladingNo AS BillNo, c.ShipmentNo, 
+           b.BillofladingNo AS BillNo, c.ShipmentNo, a.Forwarder,
            e.Description AS Status, b.BillDate
       FROM ProdInvoice a
  LEFT JOIN ProdBillOfLading b

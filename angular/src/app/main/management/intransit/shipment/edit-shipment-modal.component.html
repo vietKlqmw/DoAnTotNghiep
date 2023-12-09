@@ -24,11 +24,15 @@
                             </div>
                             <div class="ui-g-12 ui-md-6" *ngIf="!isEdit">
                                 <p-dropdown [options]="listSupplier" [filter]="true" [virtualScroll]="true" [itemSize]="30" placeholder="Select Supplier"
-                                    name="supplierNo" [(ngModel)]="rowData.supplierNo" [style]="{'width':'100%'}"></p-dropdown>
+                                    name="supplierNo" [(ngModel)]="rowData.supplierNo" [style]="{'width':'100%'}"
+                                    (ngModelChange)="changeSupplier($event)"></p-dropdown>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
+                            <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Buyer'" [(ngModel)]="rowData.buyer"
                                     name='buyer'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-combobox [items]="listForwarder" name="forwarder" [text]="'Forwarder'" [(ngModel)]="_forwarder"></tmss-combobox>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'From Port'" [(ngModel)]="rowData.fromPort"
@@ -38,7 +42,7 @@
                                 <tmss-text-input [text]="'To Port'" [(ngModel)]="rowData.toPort"
                                     name='toPort'></tmss-text-input>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
+                            <div class="ui-g-12 ui-md-6">
                                 <div class="input-group">
                                     <span class="input-group-text left-text">Shipment Date</span>
                                     <input type='text' class="form-control tmss-form-control" name='shipmentDate'
@@ -49,7 +53,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
+                            <div class="ui-g-12 ui-md-6">
                                 <div class="input-group">
                                     <span class="input-group-text left-text">ETD</span>
                                     <input type='text' class="form-control tmss-form-control" name='etd'
@@ -60,7 +64,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
+                            <div class="ui-g-12 ui-md-6">
                                 <div class="input-group">
                                     <span class="input-group-text left-text">ETA</span>
                                     <input type='text' class="form-control tmss-form-control" name='eta'
@@ -82,7 +86,7 @@
                                     </span>
                                 </div>
                             </div> -->
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
+                            <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Ocean Vessel Name'" [(ngModel)]="rowData.oceanVesselName"
                                     name='oceanVesselName'></tmss-text-input>
                             </div>

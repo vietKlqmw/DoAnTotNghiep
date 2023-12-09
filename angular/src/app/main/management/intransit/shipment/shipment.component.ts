@@ -98,6 +98,7 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
             { headerName: this.l('Buyer'), headerTooltip: this.l('Buyer'), field: 'buyer', flex: 1 },
             { headerName: this.l('From Port'), headerTooltip: this.l('From Port'), field: 'fromPort', flex: 1 },
             { headerName: this.l('To Port'), headerTooltip: this.l('To Port'), field: 'toPort', flex: 1 },
+            { headerName: this.l('Forwarder'), headerTooltip: this.l('Forwarder'), field: 'forwarder', flex: 1 },
             {
                 headerName: this.l('Shipment Date'), headerTooltip: this.l('Shipment Date'), field: 'shipmentDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.shipmentDate, 'dd/MM/yyyy')

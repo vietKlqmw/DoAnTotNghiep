@@ -30190,6 +30190,7 @@ export class ProdShipmentDto implements IProdShipmentDto {
     atd!: moment.Moment | undefined;
     status!: string | undefined;
     isEmptyShipment!: number | undefined;
+    forwarder!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdShipmentDto) {
@@ -30216,6 +30217,7 @@ export class ProdShipmentDto implements IProdShipmentDto {
             this.atd = _data["atd"] ? moment(_data["atd"].toString()) : <any>undefined;
             this.status = _data["status"];
             this.isEmptyShipment = _data["isEmptyShipment"];
+            this.forwarder = _data["forwarder"];
             this.id = _data["id"];
         }
     }
@@ -30242,6 +30244,7 @@ export class ProdShipmentDto implements IProdShipmentDto {
         data["atd"] = this.atd ? this.atd.toISOString() : <any>undefined;
         data["status"] = this.status;
         data["isEmptyShipment"] = this.isEmptyShipment;
+        data["forwarder"] = this.forwarder;
         data["id"] = this.id;
         return data; 
     }
@@ -30261,6 +30264,7 @@ export interface IProdShipmentDto {
     atd: moment.Moment | undefined;
     status: string | undefined;
     isEmptyShipment: number | undefined;
+    forwarder: string | undefined;
     id: number | undefined;
 }
 

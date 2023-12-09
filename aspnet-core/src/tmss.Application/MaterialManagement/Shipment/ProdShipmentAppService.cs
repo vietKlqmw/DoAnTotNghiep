@@ -77,13 +77,19 @@ namespace tmss.MaterialManagement.Shipment
 
         public async Task AddShipment(ProdShipmentDto input)
         {
-            string _sql = "Exec INV_PROD_SHIPMENT_ADD @p_ShipmentNo, @p_SupplierNo, @p_FromPort, @p_ToPort, @p_UserId";
+            string _sql = "Exec INV_PROD_SHIPMENT_ADD @p_ShipmentNo, @p_SupplierNo, @p_FromPort, @p_ToPort, @p_Buyer, @p_Forwarder, @p_Etd, @p_Eta, @p_OceanVesselName, @p_ShipmentDate, @p_UserId";
             await _dapperRepo.ExecuteAsync(_sql, new
             {
                 p_ShipmentNo = input.ShipmentNo,
                 p_SupplierNo = input.SupplierNo,
                 p_FromPort = input.FromPort,
                 p_ToPort = input.ToPort,
+                p_Buyer = input.Buyer,
+                p_Forwarder = input.Forwarder,
+                p_Etd = input.Etd,
+                p_Eta = input.Eta,
+                p_OceanVesselName = input.OceanVesselName,
+                p_ShipmentDate = input.ShipmentDate,
                 p_UserId = AbpSession.UserId
             });
         }
@@ -91,7 +97,7 @@ namespace tmss.MaterialManagement.Shipment
         public async Task EditShipment(ProdShipmentDto input)
         {
             string _sql = "Exec INV_PROD_SHIPMENT_EDIT @p_ShipmentId, @p_Buyer, @p_FromPort, @p_ToPort, @p_ShipmentDate, " +
-                "@p_Etd, @p_Eta, @p_Ata, @p_OceanVesselName, @p_Atd, @p_Status, @p_UserId";
+                "@p_Etd, @p_Eta, @p_OceanVesselName, @p_Status, @p_Forwarder, @p_UserId";
             await _dapperRepo.ExecuteAsync(_sql, new
             {
                 p_ShipmentId = input.Id,
@@ -101,10 +107,9 @@ namespace tmss.MaterialManagement.Shipment
                 p_ShipmentDate = input.ShipmentDate,
                 p_Etd = input.Etd,
                 p_Eta = input.Eta,
-                p_Ata = input.Ata,
                 p_OceanVesselName = input.OceanVesselName,
-                p_Atd = input.Atd,
                 p_Status = input.Status,
+                p_Forwarder = input.Forwarder,
                 p_UserId = AbpSession.UserId
             });
 

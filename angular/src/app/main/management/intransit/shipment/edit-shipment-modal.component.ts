@@ -16,8 +16,6 @@ export class EditShipmentModalComponent extends AppComponentBase {
     @ViewChild('datepicker', { static: false }) datepicker!: BsDatepickerDirective;
     @ViewChild('datepicker2', { static: false }) datepicker2!: BsDatepickerDirective;
     @ViewChild('datepicker3', { static: false }) datepicker3!: BsDatepickerDirective;
-    @ViewChild('datepicker4', { static: false }) datepicker4!: BsDatepickerDirective;
-    @ViewChild('datepicker5', { static: false }) datepicker5!: BsDatepickerDirective;
 
     rowData: ProdShipmentDto = new ProdShipmentDto();
     saving = false;
@@ -27,15 +25,13 @@ export class EditShipmentModalComponent extends AppComponentBase {
     _shipmentDate: any;
     _etd: any;
     _eta: any;
-    _ata: any;
-    _atd: any;
+    _forwarder;
     listSupplier = [{ label: '', value: '' }];
+    listForwarder = [{ label: '', value: '' }];
     list = [
         { value: 'NEW', label: "NEW" },
         { value: 'PENDING', label: "PENDING" },
-        { value: 'ORDERED', label: "ORDERED" },
-        { value: 'ORDERED (ON SEA)', label: "ORDERED (ON SEA)" },
-        { value: 'ORDERED (ON PORT)', label: "ORDERED (ON PORT)" }
+        { value: 'ORDERED', label: "ORDERED" }
     ];
     isOrder: boolean = false;
 
@@ -69,33 +65,56 @@ export class EditShipmentModalComponent extends AppComponentBase {
         this.datepicker2?.bsValueChange.emit(dateValue2);
         const dateValue3 = this.rowData.eta ? new Date(this.rowData.eta?.toString()) : undefined;
         this.datepicker3?.bsValueChange.emit(dateValue3);
-        const dateValue4 = this.rowData.ata ? new Date(this.rowData.ata?.toString()) : undefined;
-        this.datepicker4?.bsValueChange.emit(dateValue4);
-        const dateValue5 = this.rowData.atd ? new Date(this.rowData.atd?.toString()) : undefined;
-        this.datepicker5?.bsValueChange.emit(dateValue5);
 
         // if(this.rowData.status == 'ORDERED') this.isOrder = true;
         // else this.isOrder = false;
 
-        this.modal.show();
+        this.listForwarder = [{ label: '', value: '' }];
+        this._forwarder = '';
+        this._other.getListForwarder(this.rowData.supplierNo).subscribe(result => {
+            result.forEach(e => {
+                this.listForwarder.push({ label: e.name, value: e.code })
+                this._forwarder = this.rowData.forwarder;
+            })
+        });
+
+        setTimeout(() => {
+            this.modal.show();
+        }, 300)
     }
 
     save(): void {
         this.rowData.shipmentDate = this._shipmentDate ? moment(this._shipmentDate) : undefined;
         this.rowData.etd = this._etd ? moment(this._etd) : undefined;
         this.rowData.eta = this._eta ? moment(this._eta) : undefined;
-        this.rowData.ata = this._ata ? moment(this._ata) : undefined;
-        this.rowData.atd = this._atd ? moment(this._atd): undefined;
+        this.rowData.forwarder = this._forwarder;
+
+        if (this.rowData.shipmentNo == null) {
+            this.notify.warn('ShipmentNo is Required!');
+            return;
+        }
+        if (this.rowData.supplierNo == null) {
+            this.notify.warn('SupplierNo is Required!');
+            return;
+        }
+        if (this.rowData.buyer == null) {
+            this.notify.warn('Buyer is Required!');
+            return;
+        }
+        if (this.rowData.fromPort == null) {
+            this.notify.warn('From Port is Required!');
+            return;
+        }
+        if (this.rowData.forwarder == null || this.rowData.forwarder == '') {
+            this.notify.warn('Forwarder is Required!');
+            return;
+        }
+        if (this.rowData.status != 'NEW' && this.rowData.shipmentDate == undefined) {
+            this.notify.warn('ShipmentDate is Required!');
+            return;
+        }
 
         if (!this.isEdit) {
-            if (this.rowData.shipmentNo == null) {
-                this.notify.warn('ShipmentNo is Required!');
-                return;
-            }
-            if (this.rowData.supplierNo == null) {
-                this.notify.warn('SupplierNo is Required!');
-                return;
-            }
             this.saving = true;
             this._service.addShipment(this.rowData)
                 .pipe(finalize(() => { this.saving = false; }))
@@ -114,6 +133,15 @@ export class EditShipmentModalComponent extends AppComponentBase {
                     this.close();
                 });
         }
+    }
+
+    changeSupplier(event) {
+        this.listForwarder = [{ label: '', value: '' }];
+        this._other.getListForwarder(event).subscribe(result => {
+            result.forEach(e => {
+                this.listForwarder.push({ label: e.name, value: e.code })
+            })
+        });
     }
 
     close(): void {
