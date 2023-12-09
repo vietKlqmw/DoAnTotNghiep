@@ -16,7 +16,7 @@
                         <div class="ui-g-12 ph-0">
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Customs Declare No'" [(ngModel)]="rowData.customsDeclareNo"
-                                    name='customsDeclareNo' [isReadonly]="true"></tmss-text-input>
+                                    name='customsDeclareNo'></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <div class="input-group">
@@ -31,7 +31,7 @@
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Invoice No'" [(ngModel)]="rowData.invoiceNo"
-                                    name='invoiceNo' [isReadonly]="true"></tmss-text-input>
+                                    name='invoiceNo'></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <div class="input-group">
@@ -52,10 +52,18 @@
                                 </div>
                             </div>
                             <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Forwarder'" [(ngModel)]="rowData.forwarder" name='forwarder'></tmss-text-input>
+                                <tmss-text-input [text]="'Forwarder'" [(ngModel)]="rowData.forwarder" name='forwarder' [isReadonly]="true"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
-                                <tmss-combobox [items]="list" name="status" [text]="'Status'" [(ngModel)]="rowData.status"></tmss-combobox>
+                                <tmss-text-input [text]="'TAX'" [(ngModel)]="_tax"
+                                    name='tax' (ngModelChange)="changeTax($event)"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'VAT'" [(ngModel)]="_vat"
+                                    name='vat' (ngModelChange)="changeVat($event)"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-combobox [items]="list" name="status" [text]="'Status'" [(ngModel)]="_status"></tmss-combobox>
                             </div>
                         </div>
                     </fieldset>

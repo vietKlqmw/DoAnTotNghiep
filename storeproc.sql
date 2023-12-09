@@ -1339,6 +1339,30 @@ BEGIN
                Status = @p_Status
          WHERE Id = @p_CustomsDeclareId;
     END
+
+    IF @p_Status = 'PAID'
+    BEGIN
+        UPDATE ProdInvoice
+           SET LastModificationTime = GETDATE(), 
+               LastModifierUserId = @p_UserId,
+               Status = 'CUSTOMS DECLARED'
+         WHERE Id = @p_InvoiceId
+
+        UPDATE ProdShipment
+           SET LastModificationTime = GETDATE(), 
+               LastModifierUserId = @p_UserId,
+               Status = 'ORDERED (ON PORT)',
+               Atd = @p_DeclareDate
+         WHERE Id = (SELECT ShipmentId FROM ProdBillOfLading WHERE Id = @p_BillId);
+
+        UPDATE ProdContainerIntransit
+           SET LastModificationTime = GETDATE(), 
+               LastModifierUserId = @p_UserId,
+               PortDate = @p_DeclareDate,
+               Status = 'PORT/ARRIVED'
+         WHERE Id IN (SELECT ps.Id FROM ProdContainerIntransit ps 
+                      WHERE ps.ShipmentId = (SELECT ShipmentId FROM ProdBillOfLading WHERE Id = @p_BillId))
+    END
 END
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (

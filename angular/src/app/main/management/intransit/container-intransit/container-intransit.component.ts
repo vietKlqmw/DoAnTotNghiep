@@ -53,6 +53,7 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
     portDate: any;
     transactionDate: any;
     _selectrow;
+    notDelete: boolean = false;
 
     defaultColDef = {
         resizable: true,
@@ -185,6 +186,13 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
         this.selectedRow = Object.assign({}, this.saveSelectedRow);
 
         this._selectrow = this.saveSelectedRow.id;
+
+        if(this._selectrow){
+            if(this.saveSelectedRow.status.includes('On')) this.notDelete = true;
+            else this.notDelete = false;
+        }else{
+            this.notDelete = false;
+        }
     }
 
     exportToExcel(): void {

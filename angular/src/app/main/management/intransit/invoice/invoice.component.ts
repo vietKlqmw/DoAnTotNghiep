@@ -70,6 +70,7 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
     invoiceDateTo: any;
     _selectrow;
     _pageSizeDetails = 500;
+    notDelete: boolean = false;
 
     defaultColDef = {
         resizable: true,
@@ -423,6 +424,13 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
         this.saveSelectedRowDetails = params.api.getSelectedRows()[0] ?? new ProdInvoiceDto();
         this.selectedRowDetails = Object.assign({}, this.saveSelectedRowDetails);
 
+        this._selectrow = this.saveSelectedRow.id;
+        if(this._selectrow){
+            if(this.saveSelectedRow.status == 'CUSTOMS DECLARED') this.notDelete = true;
+            else this.notDelete = false;
+        }else{
+            this.notDelete = false;
+        }
     }
 
     exportToExcelDetails(): void {
