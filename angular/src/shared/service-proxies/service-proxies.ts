@@ -12139,7 +12139,7 @@ export class ProdInvoiceServiceProxy {
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getProdInvoiceDetailsSearch(invoiceId: number | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdInvoiceDetailsDto> {
+    getProdInvoiceDetailsSearch(invoiceId: number | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdInvoiceDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdInvoice/GetProdInvoiceDetailsSearch?";
         if (invoiceId !== undefined)
             url_ += "InvoiceId=" + encodeURIComponent("" + invoiceId) + "&"; 
@@ -12170,14 +12170,14 @@ export class ProdInvoiceServiceProxy {
                 try {
                     return this.processGetProdInvoiceDetailsSearch(<any>response_);
                 } catch (e) {
-                    return <Observable<PagedResultDtoOfProdInvoiceDetailsDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfProdInvoiceDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PagedResultDtoOfProdInvoiceDetailsDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfProdInvoiceDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetProdInvoiceDetailsSearch(response: HttpResponseBase): Observable<PagedResultDtoOfProdInvoiceDetailsDto> {
+    protected processGetProdInvoiceDetailsSearch(response: HttpResponseBase): Observable<PagedResultDtoOfProdInvoiceDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -12188,7 +12188,7 @@ export class ProdInvoiceServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfProdInvoiceDetailsDto.fromJS(resultData200);
+            result200 = PagedResultDtoOfProdInvoiceDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -12196,7 +12196,7 @@ export class ProdInvoiceServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PagedResultDtoOfProdInvoiceDetailsDto>(<any>null);
+        return _observableOf<PagedResultDtoOfProdInvoiceDto>(<any>null);
     }
 
     /**
@@ -12421,6 +12421,58 @@ export class ProdInvoiceServiceProxy {
         }
         return _observableOf<FileDto>(<any>null);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    editInvoice(body: ProdInvoiceDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdInvoice/EditInvoice";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEditInvoice(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEditInvoice(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processEditInvoice(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -12494,7 +12546,7 @@ export class ProdInvoiceExcelExporterServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    exportToFileDetails(body: ProdInvoiceDetailsDto[] | null | undefined): Observable<FileDto> {
+    exportToFileDetails(body: ProdInvoiceDto[] | null | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdInvoiceExcelExporter/ExportToFileDetails";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -29548,8 +29600,15 @@ export interface IPagedResultDtoOfProdCustomsDeclareDto {
     items: ProdCustomsDeclareDto[] | undefined;
 }
 
-export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
+export class ProdInvoiceDto implements IProdInvoiceDto {
     invoiceNo!: string | undefined;
+    billId!: number | undefined;
+    invoiceDate!: moment.Moment | undefined;
+    forwarder!: string | undefined;
+    status!: string | undefined;
+    shipmentNo!: string | undefined;
+    billNo!: string | undefined;
+    billDate!: moment.Moment | undefined;
     partNo!: string | undefined;
     insurance!: number | undefined;
     containerNo!: string | undefined;
@@ -29576,7 +29635,7 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
     grandThc!: number | undefined;
     id!: number | undefined;
 
-    constructor(data?: IProdInvoiceDetailsDto) {
+    constructor(data?: IProdInvoiceDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -29588,6 +29647,13 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
     init(_data?: any) {
         if (_data) {
             this.invoiceNo = _data["invoiceNo"];
+            this.billId = _data["billId"];
+            this.invoiceDate = _data["invoiceDate"] ? moment(_data["invoiceDate"].toString()) : <any>undefined;
+            this.forwarder = _data["forwarder"];
+            this.status = _data["status"];
+            this.shipmentNo = _data["shipmentNo"];
+            this.billNo = _data["billNo"];
+            this.billDate = _data["billDate"] ? moment(_data["billDate"].toString()) : <any>undefined;
             this.partNo = _data["partNo"];
             this.insurance = _data["insurance"];
             this.containerNo = _data["containerNo"];
@@ -29616,9 +29682,9 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
         }
     }
 
-    static fromJS(data: any): ProdInvoiceDetailsDto {
+    static fromJS(data: any): ProdInvoiceDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ProdInvoiceDetailsDto();
+        let result = new ProdInvoiceDto();
         result.init(data);
         return result;
     }
@@ -29626,6 +29692,13 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["invoiceNo"] = this.invoiceNo;
+        data["billId"] = this.billId;
+        data["invoiceDate"] = this.invoiceDate ? this.invoiceDate.toISOString() : <any>undefined;
+        data["forwarder"] = this.forwarder;
+        data["status"] = this.status;
+        data["shipmentNo"] = this.shipmentNo;
+        data["billNo"] = this.billNo;
+        data["billDate"] = this.billDate ? this.billDate.toISOString() : <any>undefined;
         data["partNo"] = this.partNo;
         data["insurance"] = this.insurance;
         data["containerNo"] = this.containerNo;
@@ -29655,8 +29728,15 @@ export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
     }
 }
 
-export interface IProdInvoiceDetailsDto {
+export interface IProdInvoiceDto {
     invoiceNo: string | undefined;
+    billId: number | undefined;
+    invoiceDate: moment.Moment | undefined;
+    forwarder: string | undefined;
+    status: string | undefined;
+    shipmentNo: string | undefined;
+    billNo: string | undefined;
+    billDate: moment.Moment | undefined;
     partNo: string | undefined;
     insurance: number | undefined;
     containerNo: string | undefined;
@@ -29681,122 +29761,6 @@ export interface IProdInvoiceDetailsDto {
     grandTax: number | undefined;
     grandVat: number | undefined;
     grandThc: number | undefined;
-    id: number | undefined;
-}
-
-export class PagedResultDtoOfProdInvoiceDetailsDto implements IPagedResultDtoOfProdInvoiceDetailsDto {
-    totalCount!: number;
-    items!: ProdInvoiceDetailsDto[] | undefined;
-
-    constructor(data?: IPagedResultDtoOfProdInvoiceDetailsDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.totalCount = _data["totalCount"];
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items!.push(ProdInvoiceDetailsDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): PagedResultDtoOfProdInvoiceDetailsDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PagedResultDtoOfProdInvoiceDetailsDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["totalCount"] = this.totalCount;
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface IPagedResultDtoOfProdInvoiceDetailsDto {
-    totalCount: number;
-    items: ProdInvoiceDetailsDto[] | undefined;
-}
-
-export class ProdInvoiceDto implements IProdInvoiceDto {
-    invoiceNo!: string | undefined;
-    billId!: number | undefined;
-    invoiceDate!: moment.Moment | undefined;
-    forwarder!: string | undefined;
-    status!: string | undefined;
-    shipmentNo!: string | undefined;
-    billNo!: string | undefined;
-    billDate!: moment.Moment | undefined;
-    id!: number | undefined;
-
-    constructor(data?: IProdInvoiceDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.invoiceNo = _data["invoiceNo"];
-            this.billId = _data["billId"];
-            this.invoiceDate = _data["invoiceDate"] ? moment(_data["invoiceDate"].toString()) : <any>undefined;
-            this.forwarder = _data["forwarder"];
-            this.status = _data["status"];
-            this.shipmentNo = _data["shipmentNo"];
-            this.billNo = _data["billNo"];
-            this.billDate = _data["billDate"] ? moment(_data["billDate"].toString()) : <any>undefined;
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): ProdInvoiceDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProdInvoiceDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["invoiceNo"] = this.invoiceNo;
-        data["billId"] = this.billId;
-        data["invoiceDate"] = this.invoiceDate ? this.invoiceDate.toISOString() : <any>undefined;
-        data["forwarder"] = this.forwarder;
-        data["status"] = this.status;
-        data["shipmentNo"] = this.shipmentNo;
-        data["billNo"] = this.billNo;
-        data["billDate"] = this.billDate ? this.billDate.toISOString() : <any>undefined;
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface IProdInvoiceDto {
-    invoiceNo: string | undefined;
-    billId: number | undefined;
-    invoiceDate: moment.Moment | undefined;
-    forwarder: string | undefined;
-    status: string | undefined;
-    shipmentNo: string | undefined;
-    billNo: string | undefined;
-    billDate: moment.Moment | undefined;
     id: number | undefined;
 }
 

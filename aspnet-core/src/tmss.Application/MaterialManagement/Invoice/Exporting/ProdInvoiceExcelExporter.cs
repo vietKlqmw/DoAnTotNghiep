@@ -45,7 +45,7 @@ namespace tmss.MaterialManagement.Invoice.Exporting
                 });
         }
 
-        public FileDto ExportToFileDetails(List<ProdInvoiceDetailsDto> listdatadetails)
+        public FileDto ExportToFileDetails(List<ProdInvoiceDto> listdatadetails)
         {
             return CreateExcelPackage(
                 "InvoiceDetails.xlsx",

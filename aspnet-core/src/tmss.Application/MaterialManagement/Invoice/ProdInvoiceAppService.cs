@@ -22,11 +22,11 @@ namespace tmss.MaterialManagement.Invoice
             _excelExporter = excelExporter;
         }
 
-        public async Task<PagedResultDto<ProdInvoiceDetailsDto>> GetProdInvoiceDetailsSearch(GetProdInvoiceDetailsInput input)
+        public async Task<PagedResultDto<ProdInvoiceDto>> GetProdInvoiceDetailsSearch(GetProdInvoiceDetailsInput input)
         {
             string _sql = "Exec INV_PROD_INVOICE_DETAILS_SEARCH @p_InvoiceId";
 
-            IEnumerable<ProdInvoiceDetailsDto> result = await _dapperRepo.QueryAsync<ProdInvoiceDetailsDto>(_sql, new
+            IEnumerable<ProdInvoiceDto> result = await _dapperRepo.QueryAsync<ProdInvoiceDto>(_sql, new
             {
                 p_InvoiceId = input.InvoiceId
             });
@@ -48,7 +48,7 @@ namespace tmss.MaterialManagement.Invoice
                 listResult[0].GrandQty = listResult.Sum(e => e.UsageQty);
             }
 
-            return new PagedResultDto<ProdInvoiceDetailsDto>(totalCount, pagedAndFiltered);
+            return new PagedResultDto<ProdInvoiceDto>(totalCount, pagedAndFiltered);
         }
 
         public async Task<PagedResultDto<ProdInvoiceDto>> GetProdInvoiceSearch(GetProdInvoiceInput input)
@@ -82,7 +82,7 @@ namespace tmss.MaterialManagement.Invoice
         {
             string _sql = "Exec INV_PROD_INVOICE_DETAILS_SEARCH @p_InvoiceId";
 
-            IEnumerable<ProdInvoiceDetailsDto> result = await _dapperRepo.QueryAsync<ProdInvoiceDetailsDto>(_sql, new
+            IEnumerable<ProdInvoiceDto> result = await _dapperRepo.QueryAsync<ProdInvoiceDto>(_sql, new
             {
                 p_InvoiceId = input.InvoiceId
             });
@@ -113,6 +113,26 @@ namespace tmss.MaterialManagement.Invoice
             var exportToExcel = result.ToList();
 
             return _excelExporter.ExportToFile(exportToExcel);
+        }
+
+        public async Task EditInvoice(ProdInvoiceDto input)
+        {
+            string _sql = "Exec INV_PROD_INVOICE_EDIT @p_InvoiceId, @p_InvoiceNo, @p_InvoiceDate, @p_Status, @p_Freight, " +
+                "@p_Insurance, @p_Tax, @p_Vat, @p_Thc, @p_Cif, @p_UserId";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_InvoiceId = input.Id,
+                p_InvoiceNo = input.InvoiceNo,
+                p_InvoiceDate = input.InvoiceDate,
+                p_Status = input.Status,
+                p_Freight = input.Freight,
+                p_Insurance = input.Insurance,
+                p_Tax = input.Tax,
+                p_Vat = input.Vat,
+                p_Thc = input.Thc,
+                p_Cif = input.Cif,
+                p_UserId = AbpSession.UserId
+            });
         }
     }
 }

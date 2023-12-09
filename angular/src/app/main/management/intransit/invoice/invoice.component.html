@@ -105,6 +105,7 @@
                         [defaultColDef]="defaultColDef"
                         (callBackEvent)="callBackDataGridDetails($event)"
                         (changePaginationParams)="changePageDetails($event)"
+                        (onChangeSelection)="onChangeRowSelectionDetails($event)"
                         [frameworkComponents]="frameworkComponents"
                         [height]="'22vh'"
                         >
@@ -112,9 +113,9 @@
                 </div>
                 <div class="row mt-1">
                     <div class="col-sm-12 text-right">
-                        <button type="button" class="btn btn-view" [disabled]="!saveSelectedRow.id">
+                        <button type="button" class="btn btn-view" (click)="editInvoice('View')" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-regular fa-eye"></i> {{"View Invoice" | localize}}</button>
-                        <button type="button" class="btn btn-primary" [disabled]="!saveSelectedRow.id">
+                        <button type="button" class="btn btn-primary" (click)="editInvoice('Edit')" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-edit"></i> {{"Edit" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
                             <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>
@@ -126,3 +127,4 @@
         </div>
     </div>
 </div>
+<editModal #editModal></editModal>

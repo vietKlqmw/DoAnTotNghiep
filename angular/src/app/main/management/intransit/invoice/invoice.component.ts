@@ -1,6 +1,6 @@
 import { GridApi } from '@ag-grid-enterprise/all-modules';
 import { DatePipe } from '@angular/common';
-import { Component, Injector, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AgCellButtonRendererComponent } from '@app/shared/common/grid/ag-cell-button-renderer/ag-cell-button-renderer.component';
 import { CustomColDef, FrameworkComponent, GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
 import { GridTableService } from '@app/shared/common/services/grid-table.service';
@@ -12,6 +12,7 @@ import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
+import { EditInvoiceModalComponent } from './edit-invoice-modal.component';
 
 @Component({
     selector: 'app-invoice',
@@ -21,6 +22,8 @@ import { DataFormatService } from '@app/shared/common/services/data-format.servi
     animations: [appModuleAnimation()]
 })
 export class InvoiceComponent extends AppComponentBase implements OnInit {
+    @ViewChild('editModal', { static: true }) editModal: EditInvoiceModalComponent;
+
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
     colDefsDetails: any;
@@ -42,6 +45,8 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
     };
     selectedRow: ProdInvoiceDto = new ProdInvoiceDto();
     saveSelectedRow: ProdInvoiceDto = new ProdInvoiceDto();
+    selectedRowDetails: ProdInvoiceDto = new ProdInvoiceDto();
+    saveSelectedRowDetails: ProdInvoiceDto = new ProdInvoiceDto();
     datas: ProdInvoiceDto = new ProdInvoiceDto();
     dataParams: GridParams | undefined;
     dataParamsDetails: GridParams | undefined;
@@ -146,14 +151,14 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
                 cellRenderer: (params) => (params.data?.vat != null ? params.data?.vat : 0),
                 aggFunc: this.calTotal
             },
-            { headerName: this.l('TAX Rate'), headerTooltip: this.l('Tax Rate'), field: 'taxRate', flex: 1, type: 'rightAligned' },
-            { headerName: this.l('VAT Rate'), headerTooltip: this.l('Vat Rate'), field: 'vatRate', Flex: 1, type: 'rightAligned' },
+            // { headerName: this.l('TAX Rate'), headerTooltip: this.l('Tax Rate'), field: 'taxRate', flex: 1, type: 'rightAligned' },
+            // { headerName: this.l('VAT Rate'), headerTooltip: this.l('Vat Rate'), field: 'vatRate', Flex: 1, type: 'rightAligned' },
             { headerName: this.l('Carfamily Code'), headerTooltip: this.l('Carfamily Code'), field: 'carfamilyCode', flex: 1 },
             { headerName: this.l('Currency'), headerTooltip: this.l('Currency'), field: 'currency', flex: 1 },
-            {
-                headerName: this.l('Gross Weight'), headerTooltip: this.l('Gross Weight'), field: 'grossWeight', flex: 1, type: 'rightAligned',
-                valueGetter: (params) => this._fm.formatMoney_decimal(params.data?.grossWeight, 4)
-            },
+            // {
+            //     headerName: this.l('Gross Weight'), headerTooltip: this.l('Gross Weight'), field: 'grossWeight', flex: 1, type: 'rightAligned',
+            //     valueGetter: (params) => this._fm.formatMoney_decimal(params.data?.grossWeight, 4)
+            // },
             { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', flex: 1 }
         ];
 
@@ -362,6 +367,7 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
                     this.dataParamsDetails!.api.setPinnedBottomRowData(rows);
                 } else {
                     this.dataParamsDetails!.api.setPinnedBottomRowData(null);
+                    this.saveSelectedRowDetails = new ProdInvoiceDto();
                 }
 
                 this.resetGridViewDetails();
@@ -411,6 +417,12 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
         this._pageSizeDetails = this.paginationParamsDetails.pageSize;
     }
 
+    onChangeRowSelectionDetails(params: { api: { getSelectedRows: () => ProdInvoiceDto[] } }) {
+        this.saveSelectedRowDetails = params.api.getSelectedRows()[0] ?? new ProdInvoiceDto();
+        this.selectedRowDetails = Object.assign({}, this.saveSelectedRowDetails);
+
+    }
+
     exportToExcelDetails(): void {
         this.isLoading = true;
         this._service.getProdInvoiceDetailsToExcel(this._selectrow)
@@ -443,6 +455,34 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
         var sum = 0;
         values.forEach(function (value) { sum += Number(value); });
         return sum;
+    }
+
+    editInvoice(e): void {
+        let input = Object.assign(new ProdInvoiceDto(), {
+            //invoice
+            invoiceNo: this.saveSelectedRow.invoiceNo,
+            invoiceDate: this.saveSelectedRow.invoiceDate,
+            forwarder: this.saveSelectedRow.forwarder,
+            status: this.saveSelectedRow.status,
+            shipmentNo: this.saveSelectedRow.shipmentNo,
+            billNo: this.saveSelectedRow.billNo,
+            billDate: this.saveSelectedRow.billDate,
+            //invoice details
+            partNo: this.saveSelectedRowDetails.partNo,
+            insurance: this.saveSelectedRowDetails.insurance,
+            containerNo: this.saveSelectedRowDetails.containerNo,
+            supplierNo: this.saveSelectedRowDetails.supplierNo,
+            freight: this.saveSelectedRowDetails.freight,
+            thc: this.saveSelectedRowDetails.thc,
+            cif: this.saveSelectedRowDetails.cif,
+            tax: this.saveSelectedRowDetails.tax,
+            vat: this.saveSelectedRowDetails.vat,
+            usageQty: this.saveSelectedRowDetails.usageQty,
+            partName: this.saveSelectedRowDetails.partName,
+            carfamilyCode: this.saveSelectedRowDetails.carfamilyCode,
+            currency: this.saveSelectedRowDetails.currency
+        });
+        this.editModal.show(e, input);
     }
 }
 

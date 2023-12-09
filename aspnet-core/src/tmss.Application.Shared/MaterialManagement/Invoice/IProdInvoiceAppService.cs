@@ -7,6 +7,6 @@ namespace tmss.MaterialManagement.Invoice
     public interface IProdInvoiceAppService : IApplicationService
     {
         Task<PagedResultDto<ProdInvoiceDto>> GetProdInvoiceSearch(GetProdInvoiceInput input);
-        Task<PagedResultDto<ProdInvoiceDetailsDto>> GetProdInvoiceDetailsSearch(GetProdInvoiceDetailsInput input);
+        Task<PagedResultDto<ProdInvoiceDto>> GetProdInvoiceDetailsSearch(GetProdInvoiceDetailsInput input);
     }
 }

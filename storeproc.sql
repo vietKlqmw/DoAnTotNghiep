@@ -693,8 +693,8 @@ BEGIN
 
         INSERT INTO ProdInvoiceDetails 
                     (CreationTime, CreatorUserId, IsDeleted, 
-                     PartNo, ContainerNo, InvoiceNo, SupplierNo, UsageQty, PartName, CarfamilyCode)
-            SELECT GETDATE(), @p_UserId, 0, mpl.PartNo, pci.ContainerNo, @InvoiceNo, pci.SupplierNo, pci.UsageQty, mpl.PartName, mpl.CarfamilyCode
+                     PartNo, ContainerNo, InvoiceNo, SupplierNo, UsageQty, PartName, CarfamilyCode, Currency)
+            SELECT GETDATE(), @p_UserId, 0, mpl.PartNo, pci.ContainerNo, @InvoiceNo, pci.SupplierNo, pci.UsageQty, mpl.PartName, mpl.CarfamilyCode, 'VND'
               FROM ProdContainerIntransit pci
          LEFT JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
              WHERE pci.Id IN (SELECT Id FROM ProdContainerIntransit WHERE ShipmentId = @p_ShipmentId)
@@ -734,8 +734,8 @@ BEGIN
 
         INSERT INTO ProdInvoiceDetails 
                     (CreationTime, CreatorUserId, IsDeleted, 
-                     PartNo, ContainerNo, InvoiceNo, SupplierNo, UsageQty, PartName, CarfamilyCode)
-            SELECT GETDATE(), @p_UserId, 0, mpl.PartNo, pci.ContainerNo, @InvoiceNo, pci.SupplierNo, pci.UsageQty, mpl.PartName, mpl.CarfamilyCode
+                     PartNo, ContainerNo, InvoiceNo, SupplierNo, UsageQty, PartName, CarfamilyCode, Currency)
+            SELECT GETDATE(), @p_UserId, 0, mpl.PartNo, pci.ContainerNo, @InvoiceNo, pci.SupplierNo, pci.UsageQty, mpl.PartName, mpl.CarfamilyCode, 'VND'
               FROM ProdContainerIntransit pci
          LEFT JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
              WHERE pci.Id IN (SELECT Id FROM ProdContainerIntransit WHERE ShipmentId = @p_ShipmentId)
@@ -847,7 +847,7 @@ CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_SEARCH
 )
 AS
 BEGIN 
-    SELECT a.Id, a.InvoiceNo, a.BillId, a.InvoiceDate, a.Status,  
+    SELECT DISTINCT a.Id, a.InvoiceNo, a.BillId, a.InvoiceDate, a.Status,  
            b.BillofladingNo AS BillNo, c.ShipmentNo, a.Forwarder,
            e.Description AS Status, b.BillDate
       FROM ProdInvoice a
@@ -870,6 +870,41 @@ BEGIN
 	     AND (@p_SupplierNo IS NULL OR c.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
        AND a.IsDeleted = 0
   ORDER BY a.InvoiceDate DESC, b.BillDate DESC, a.InvoiceNo, a.Id	
+END
+------------------------------------------------Edit:
+CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_EDIT
+(
+    @p_InvoiceId INT, 
+    @p_InvoiceNo NVARCHAR(20),
+    @p_InvoiceDate DATE, 
+    @p_Status NVARCHAR(50), 
+    @p_Freight DECIMAL, 
+    @p_Insurance DECIMAL, 
+    @p_Tax DECIMAL, 
+    @p_Vat DECIMAL, 
+    @p_Thc DECIMAL, 
+    @p_Cif DECIMAL, 
+    @p_UserId BIGINT
+)
+AS
+BEGIN
+    UPDATE ProdInvoice 
+       SET LastModificationTime = GETDATE(), 
+           LastModifierUserId = @p_UserId,
+           InvoiceDate = @p_InvoiceDate,
+           Status = @p_Status
+     WHERE Id = @p_InvoiceId;
+
+    UPDATE ProdInvoiceDetails 
+       SET LastModificationTime = GETDATE(),
+           LastModifierUserId = @p_UserId,
+           Insurance = @p_Insurance,
+           Freight = @p_Freight,
+           Thc = @p_Thc, 
+           Cif = @p_Cif,
+           Tax = @p_Tax,
+           Vat = @p_Vat
+     WHERE InvoiceNo = @p_InvoiceNo
 END
 ------------------------------------------------InvoiceDetails------------------------------------------------
 CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_DETAILS_SEARCH
