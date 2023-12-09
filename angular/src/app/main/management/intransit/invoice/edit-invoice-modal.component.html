@@ -28,10 +28,10 @@
                                 <div class="input-group">
                                     <span class="input-group-text left-text">Invoice Date</span>
                                     <input type='text' class="form-control tmss-form-control" name='invoiceDate'
-						                #datepicker2='bsDatepicker' [(ngModel)]='_invoiceDate' bsDatepicker
+						                #datepicker='bsDatepicker' [(ngModel)]='_invoiceDate' bsDatepicker
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
                                     <span class="input-group-text right-text">
-                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker2.toggle()"></i>
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
                                     </span>
                                 </div>
                             </div>

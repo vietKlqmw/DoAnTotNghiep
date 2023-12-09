@@ -923,42 +923,6 @@ BEGIN
        AND a.IsDeleted = 0
   ORDER BY a.PartNo
 END
-------------------------------------------------ContainerInvoice------------------------------------------------
-CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INVOICE_SEARCH
-(
-    @p_BillNo NVARCHAR(20),
-    @p_ContainerNo NVARCHAR(15),
-    @p_InvoiceNo NVARCHAR(20),
-    @p_SealNo NVARCHAR(20),
-    @p_Status NVARCHAR(50),
-    @p_SupplierNo NVARCHAR(10),
-    @p_BillDateFrom DATE,
-    @p_BillDateTo DATE
-)
-AS 
-    SELECT a.Id, a.ContainerNo, a.InvoiceId, a.SupplierNo, a.SealNo, a.ContainerSize, 
-           a.PlanDevanningDate, a.ActualDevanningDate, a.Thc, b.Description Status, 
-           a.ThcVn, a.Freight, a.Insurance, a.Tax, a.Amount, a.TaxVnd, a.VatVnd, 
-           c.BillofladingNo, c.BillDate, d.InvoiceNo
-      FROM ProdContainerInvoice a
-INNER JOIN ProdInvoice d     
-        ON d.Id = a.InvoiceId
-INNER JOIN ProdBillOfLading c 
-        ON c.Id = d.BillId
- LEFT JOIN MasterCustomsStatus b
-        ON a.Status = b.Code
-     WHERE (@p_BillNo IS NULL OR c.BillofladingNo LIKE CONCAT('%', @p_BillNo, '%'))
-	     AND (@p_ContainerNo IS NULL OR a.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
-       AND (@p_InvoiceNo IS NULL OR d.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
-       AND (@p_SealNo IS NULL OR a.SealNo LIKE CONCAT('%', @p_SealNo, '%'))
-       AND (@p_Status = '-1' OR a.Status = @p_Status)
-       AND (@p_SupplierNo IS NULL OR a.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
-       AND (@p_BillDateFrom IS NULL OR c.BillDate >= @p_BillDateFrom)
-       AND (@p_BillDateTo IS NULL OR c.BillDate <= @p_BillDateTo)
-       AND a.IsDeleted = 0
-  ORDER BY c.BillDate DESC, a.PlanDevanningDate DESC, b.Description
-
-GO
 ------------------------------------------------ContainerList------------------------------------------------
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_LIST_SEARCH 
 (

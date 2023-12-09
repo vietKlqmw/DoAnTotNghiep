@@ -16,7 +16,6 @@ import { DataFormatService } from "@app/shared/common/services/data-format.servi
 export class EditInvoiceModalComponent extends AppComponentBase {
     @ViewChild('editModal', { static: true }) modal: ModalDirective;
     @ViewChild('datepicker', { static: false }) datepicker!: BsDatepickerDirective;
-    @ViewChild('datepicker1', { static: false }) datepicker1!: BsDatepickerDirective;
 
     rowData: ProdInvoiceDto = new ProdInvoiceDto();
     saving = false;
@@ -55,33 +54,43 @@ export class EditInvoiceModalComponent extends AppComponentBase {
         if (material) this.rowData = material;
         else this.rowData = new ProdInvoiceDto();
 
-        const dateValue = this.rowData.billDate ? new Date(this.rowData.billDate?.toString()) : new Date();
-        this.datepicker?.bsValueChange.emit(dateValue);
-
-        const dateValue1 = this.rowData.invoiceDate ? new Date(this.rowData.invoiceDate?.toString()) : new Date();
-        this.datepicker1?.bsValueChange.emit(dateValue1);
+        if(type == 'Edit'){
+            const dateValue = this.rowData.invoiceDate ? new Date(this.rowData.invoiceDate?.toString()) : undefined;
+            this.datepicker?.bsValueChange.emit(dateValue);
+        }
+        else{
+            this._invoiceDate = this.rowData.invoiceDate ? formatDate(new Date(this.rowData.invoiceDate?.toString()), 'dd/MM/yyyy', 'en-US') : undefined;
+        }
 
         this._billDate = this.rowData.billDate ? formatDate(new Date(this.rowData.billDate?.toString()), 'dd/MM/yyyy', 'en-US') : undefined;
         if (this.rowData.freight == undefined){
             this.rowData.freight = 0;
             this._freight = 0;
         }
+        else this._freight = this._fm.formatMoney(this.rowData.freight);
         if (this.rowData.insurance == undefined){
             this.rowData.insurance = 0;
             this._insurance = 0;
         }
+        else this._insurance = this._fm.formatMoney(this.rowData.insurance);
         if (this.rowData.cif == undefined){
             this.rowData.cif = 0;
             this._cif = 0;
         }
+        else this._cif = this._fm.formatMoney(this.rowData.cif);
         if (this.rowData.thc == undefined){
             this.rowData.thc = 0;
             this._thc = 0;
         }
+        else this._thc = this._fm.formatMoney(this.rowData.thc);
         if (this.rowData.tax == undefined) this._tax = 0;
+        else this._tax = this._fm.formatMoney(this.rowData.tax);
         if (this.rowData.vat == undefined) this._vat = 0;
+        else this._vat = this._fm.formatMoney(this.rowData.vat);
 
-        this.modal.show();
+        setTimeout(() => {
+            this.modal.show();
+        }, 200);
     }
 
     save(): void {
@@ -96,12 +105,12 @@ export class EditInvoiceModalComponent extends AppComponentBase {
             return;
         }
 
-        this.rowData.freight = this._freight != null ? Number(this._freight) : 0;
-        this.rowData.insurance = this._insurance != null ? Number(this._insurance) : 0;
-        this.rowData.cif = this._cif != null ? Number(this._cif) : 0;
-        this.rowData.thc = this._thc != null ? Number(this._thc) : 0;
-        this.rowData.tax = this._tax != null ? Number(this._tax) : 0;
-        this.rowData.vat = this._vat != null ? Number(this._vat) : 0;
+        this.rowData.freight = this._freight != null ? (this._freight.length > 3 ? Number(this._freight.replace(/,/g,'')) : Number(this._freight)) : 0;
+        this.rowData.insurance = this._insurance != null ? (this._insurance.length > 3 ? Number(this._insurance.replace(/,/g,'')) : Number(this._insurance)) : 0;
+        this.rowData.cif = this._cif != null ? (this._cif.length > 3 ? Number(this._cif.replace(/,/g,'')) : Number(this._cif)) : 0;
+        this.rowData.thc = this._thc != null ? (this._thc.length > 3 ? Number(this._thc.replace(/,/g,'')) : Number(this._thc)) : 0;
+        this.rowData.tax = this._tax != null ? (this._tax.length > 3 ? Number(this._tax.replace(/,/g,'')) : Number(this._tax)) : 0;
+        this.rowData.vat = this._vat != null ? (this._vat.length > 3 ? Number(this._vat.replace(/,/g,'')) : Number(this._vat)) : 0;
 
         if (this.rowData.freight == 0) {
             this.notify.warn('Freight is Required!');

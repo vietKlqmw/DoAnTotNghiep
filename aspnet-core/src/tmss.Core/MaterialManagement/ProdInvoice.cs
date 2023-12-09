@@ -11,7 +11,7 @@ namespace tmss.MaterialManagement
     {
         public const int MaxInvoiceNoLength = 20;
 
-        public const int MaxStatusLength = 10;
+        public const int MaxStatusLength = 50;
 
         public const int MaxForwarderLength = 10;
 

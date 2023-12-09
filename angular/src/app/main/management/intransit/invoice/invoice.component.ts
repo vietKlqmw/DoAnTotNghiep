@@ -123,32 +123,32 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
             {
                 headerName: this.l('Freight'), headerTooltip: this.l('Freight'), field: 'freight', flex: 1, type: 'rightAligned',
-                cellRenderer: (params) => (params.data?.freight != null ? params.data?.freight : 0),
+                cellRenderer: (params) => (params.data?.freight != null ? this._fm.formatMoney_decimal(params.data?.freight) : 0),
                 aggFunc: this.calTotal
             },
             {
                 headerName: this.l('Insurance'), headerTooltip: this.l('Insurance'), field: 'insurance', flex: 1, type: 'rightAligned',
-                cellRenderer: (params) => (params.data?.insurance != null ? params.data?.insurance : 0),
+                cellRenderer: (params) => (params.data?.insurance != null ? this._fm.formatMoney_decimal(params.data?.insurance) : 0),
                 aggFunc: this.calTotal
             },
             {
                 headerName: this.l('C.I.F'), headerTooltip: this.l('Cif'), field: 'cif', flex: 1, type: 'rightAligned',
-                cellRenderer: (params) => (params.data?.cif != null ? params.data?.cif : 0),
+                cellRenderer: (params) => (params.data?.cif != null ? this._fm.formatMoney_decimal(params.data?.cif) : 0),
                 aggFunc: this.calTotal
             },
             {
                 headerName: this.l('THC'), headerTooltip: this.l('THC'), field: 'thc', flex: 1, type: 'rightAligned',
-                cellRenderer: (params) => (params.data?.thc != null ? params.data?.thc : 0),
+                cellRenderer: (params) => (params.data?.thc != null ? this._fm.formatMoney_decimal(params.data?.thc) : 0),
                 aggFunc: this.calTotal
             },
             {
                 headerName: this.l('TAX'), headerTooltip: this.l('Tax'), field: 'tax', flex: 1, type: 'rightAligned',
-                cellRenderer: (params) => (params.data?.tax != null ? params.data?.tax : 0),
+                cellRenderer: (params) => (params.data?.tax != null ? this._fm.formatMoney_decimal(params.data?.tax) : 0),
                 aggFunc: this.calTotal
             },
             {
                 headerName: this.l('VAT'), headerTooltip: this.l('Vat'), field: 'vat', flex: 1, type: 'rightAligned',
-                cellRenderer: (params) => (params.data?.vat != null ? params.data?.vat : 0),
+                cellRenderer: (params) => (params.data?.vat != null ? this._fm.formatMoney_decimal(params.data?.vat) : 0),
                 aggFunc: this.calTotal
             },
             // { headerName: this.l('TAX Rate'), headerTooltip: this.l('Tax Rate'), field: 'taxRate', flex: 1, type: 'rightAligned' },
@@ -357,13 +357,15 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
                     var _sumVat = 0;
                     var _sumFreight = 0;
                     var _sumInsurance = 0;
+                    var _sumThc = 0;
                     _sumQty = result.items[0].grandQty;
                     _sumCif = result.items[0].grandCif;
                     _sumTax = result.items[0].grandTax;
                     _sumVat = result.items[0].grandVat;
                     _sumFreight = result.items[0].grandFreight;
                     _sumInsurance = result.items[0].grandInsurance;
-                    var rows = this.createRow(1, _sumQty, _sumCif, _sumTax, _sumVat, _sumFreight, _sumInsurance);
+                    _sumThc = result.items[0].grandThc;
+                    var rows = this.createRow(1, _sumQty, _sumCif, _sumTax, _sumVat, _sumFreight, _sumInsurance, _sumThc);
                     this.dataParamsDetails!.api.setPinnedBottomRowData(rows);
                 } else {
                     this.dataParamsDetails!.api.setPinnedBottomRowData(null);
@@ -434,7 +436,7 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
     }
 
     createRow(count: number, sumSty: number, sumCif: number, sumTax: number,
-        sumVat: number, sumFreight: number, sumInsurance: number): any[] {
+        sumVat: number, sumFreight: number, sumInsurance: number, sumThc: number): any[] {
         let result: any[] = [];
 
         for (var i = 0; i < count; i++) {
@@ -445,7 +447,8 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
                 cif: sumCif,
                 tax: sumTax,
                 vat: sumVat,
-                usageQty: sumSty
+                usageQty: sumSty,
+                thc: sumThc
             });
         }
         return result;
@@ -460,6 +463,7 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
     editInvoice(e): void {
         let input = Object.assign(new ProdInvoiceDto(), {
             //invoice
+            id: this.saveSelectedRow.id,
             invoiceNo: this.saveSelectedRow.invoiceNo,
             invoiceDate: this.saveSelectedRow.invoiceDate,
             forwarder: this.saveSelectedRow.forwarder,
