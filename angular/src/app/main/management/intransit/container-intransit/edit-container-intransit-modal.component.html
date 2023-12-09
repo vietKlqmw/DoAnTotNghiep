@@ -18,13 +18,9 @@
                                 <tmss-text-input [text]="'Container No'" [(ngModel)]="rowData.containerNo"
                                     name='containerNo' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="!isEdit">
+                            <div class="ui-g-12 ui-md-6">
                                 <tmss-combobox [items]="listShipment" name="shipmentId" [text]="'Shipment'"
                                     [(ngModel)]="rowData.shipmentId" (ngModelChange)="changeSupplier($event)"></tmss-combobox>
-                            </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
-                                <tmss-text-input [text]="'Shipment'" [(ngModel)]="rowData.shipmentId"
-                                    name='shipmentId' [isReadonly]="isEdit"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Supplier No'" [(ngModel)]="rowData.supplierNo"
@@ -36,6 +32,14 @@
                                     <input type='text' class="form-control tmss-form-control" name='shippingDate' readonly
 						                [(ngModel)]='_shippingDate'>
                                 </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Usage Qty'" [(ngModel)]="rowData.usageQty" [type]="'number'"
+                                    name='usageQty'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-combobox [items]="listPart" name="partListId" [text]="'Part List'"
+                                    [(ngModel)]="rowData.partListId"></tmss-combobox>
                             </div>
                             <!-- <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
                                 <div class="input-group">
@@ -59,9 +63,6 @@
                                     </span>
                                 </div>
                             </div> -->
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-combobox [items]="listForwarder" name="forwarder" [text]="'Forwarder'" [(ngModel)]="_forwarder"></tmss-combobox>
-                            </div>
                         </div>
                     </fieldset>
                 </div>

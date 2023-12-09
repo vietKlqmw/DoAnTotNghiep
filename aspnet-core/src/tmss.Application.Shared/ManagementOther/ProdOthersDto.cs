@@ -49,4 +49,12 @@ namespace tmss.ManagementOther
         public virtual DateTime? Atd { get; set; }
         public virtual string Status { get; set; }
     }
+
+
+    public class GetListPartDto
+    {
+        public virtual int? PartId { get; set; }
+        public virtual string PartNo { get; set; }
+        public virtual string PartName { get; set; }
+    }
 }

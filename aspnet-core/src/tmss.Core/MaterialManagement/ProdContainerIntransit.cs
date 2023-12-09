@@ -15,8 +15,6 @@ namespace tmss.MaterialManagement
 
         public const int MaxStatusLength = 20;
 
-        public const int MaxSealNoLength = 20;
-
 
         [StringLength(MaxContainerNoLength)]
         public virtual string ContainerNo { get; set; }
@@ -36,9 +34,6 @@ namespace tmss.MaterialManagement
         public virtual string Status { get; set; }
 
         public virtual long? PartListId { get; set; }
-
-        [StringLength(MaxSealNoLength)]
-        public virtual string SealNo { get; set; } //mã niêm chì -->gg search
 
         public virtual int? UsageQty { get; set; }
     }

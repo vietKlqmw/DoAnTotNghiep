@@ -20,6 +20,10 @@ namespace tmss.MaterialManagement.ContainerIntransit
         public virtual string Status { get; set; }
 
         public virtual long? ShipmentId { get; set; }
+
+        public virtual long? PartListId { get; set; }
+
+        public virtual int? UsageQty { get; set; }
     }
 
     public class GetProdContainerIntransitInput : PagedAndSortedResultRequestDto

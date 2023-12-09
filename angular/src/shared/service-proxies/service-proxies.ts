@@ -13006,6 +13006,61 @@ export class ProdOthersServiceProxy {
         }
         return _observableOf<ListShipmentNewOrPendingDto[]>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    getListPart(): Observable<GetListPartDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetListPart";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListPart(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListPart(<any>response_);
+                } catch (e) {
+                    return <Observable<GetListPartDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetListPartDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetListPart(response: HttpResponseBase): Observable<GetListPartDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetListPartDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetListPartDto[]>(<any>null);
+    }
 }
 
 @Injectable()
@@ -28522,6 +28577,8 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
     forwarder!: string | undefined;
     status!: string | undefined;
     shipmentId!: number | undefined;
+    partListId!: number | undefined;
+    usageQty!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdContainerIntransitDto) {
@@ -28543,6 +28600,8 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
             this.forwarder = _data["forwarder"];
             this.status = _data["status"];
             this.shipmentId = _data["shipmentId"];
+            this.partListId = _data["partListId"];
+            this.usageQty = _data["usageQty"];
             this.id = _data["id"];
         }
     }
@@ -28564,6 +28623,8 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
         data["forwarder"] = this.forwarder;
         data["status"] = this.status;
         data["shipmentId"] = this.shipmentId;
+        data["partListId"] = this.partListId;
+        data["usageQty"] = this.usageQty;
         data["id"] = this.id;
         return data; 
     }
@@ -28578,6 +28639,8 @@ export interface IProdContainerIntransitDto {
     forwarder: string | undefined;
     status: string | undefined;
     shipmentId: number | undefined;
+    partListId: number | undefined;
+    usageQty: number | undefined;
     id: number | undefined;
 }
 
@@ -30067,6 +30130,50 @@ export interface IListShipmentNewOrPendingDto {
     oceanVesselName: string | undefined;
     atd: moment.Moment | undefined;
     status: string | undefined;
+}
+
+export class GetListPartDto implements IGetListPartDto {
+    partId!: number | undefined;
+    partNo!: string | undefined;
+    partName!: string | undefined;
+
+    constructor(data?: IGetListPartDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.partId = _data["partId"];
+            this.partNo = _data["partNo"];
+            this.partName = _data["partName"];
+        }
+    }
+
+    static fromJS(data: any): GetListPartDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetListPartDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["partId"] = this.partId;
+        data["partNo"] = this.partNo;
+        data["partName"] = this.partName;
+        return data; 
+    }
+}
+
+export interface IGetListPartDto {
+    partId: number | undefined;
+    partNo: string | undefined;
+    partName: string | undefined;
 }
 
 export class ProdShipmentDto implements IProdShipmentDto {

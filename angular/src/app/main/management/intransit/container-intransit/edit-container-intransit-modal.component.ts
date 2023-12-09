@@ -29,7 +29,7 @@ export class EditContainerIntransitModalComponent extends AppComponentBase {
     _portDate: any;
     _transDate: any;
     listShipment = [{ label: '', value: undefined }];
-    listForwarder = [{ label: '', value: '' }];
+    listPart = [{ label: '', value: undefined }];
     _forwarder: string = '';
 
     constructor(
@@ -50,6 +50,13 @@ export class EditContainerIntransitModalComponent extends AppComponentBase {
             })
         });
 
+        this._other.getListPart().subscribe(result => {
+            this.shipmentData = result;
+            result.forEach(e => {
+                this.listPart.push({ label: e.partNo, value: e.partId })
+            })
+        });
+
     }
 
     show(type, material?: ProdContainerIntransitDto): void {
@@ -65,15 +72,6 @@ export class EditContainerIntransitModalComponent extends AppComponentBase {
         this.datepicker2?.bsValueChange.emit(dateValue2);
         const dateValue3 = this.rowData.transactionDate ? new Date(this.rowData.transactionDate?.toString()) : undefined;
         this.datepicker3?.bsValueChange.emit(dateValue3);
-
-        this.listForwarder = [{ label: '', value: '' }];
-        this._forwarder = '';
-        this._other.getListForwarder(this.rowData.supplierNo).subscribe(result => {
-            result.forEach(e => {
-                this.listForwarder.push({ label: e.name, value: e.code })
-                this._forwarder = this.rowData.forwarder;
-            })
-        });
 
         this._shippingDate = this.rowData.shippingDate ? formatDate(new Date(this.rowData.shippingDate?.toString()), 'dd/MM/yyyy', 'en-US') : undefined;
         this._shippingDateSub = this.rowData.shippingDate ? formatDate(new Date(this.rowData.shippingDate?.toString()), 'MM/dd/yyyy', 'en-US') : undefined;
@@ -94,19 +92,19 @@ export class EditContainerIntransitModalComponent extends AppComponentBase {
             this.notify.warn('ContainerNo is Required!');
             return;
         }
-        if (this.rowData.shipmentId == null) {
-            this.notify.warn('SupplierId is Required!');
-            return;
-        }
-        if (this.rowData.forwarder == null || this.rowData.forwarder == '') {
-            this.notify.warn('Forwarder is Required!');
-            return;
-        }
         if(this.rowData.transactionDate != undefined){
             if(this.rowData.portDate == undefined){
                 this.notify.warn('PortDate is Required!');
                 return;
             }
+        }
+        if (this.rowData.partListId == null) {
+            this.notify.warn('PartListId is Required!');
+            return;
+        }
+        if (this.rowData.usageQty == null) {
+            this.notify.warn('Usage Qty is Required!');
+            return;
         }
         this.saving = true;
         this._service.editContainerIntransit(this.rowData)
@@ -124,12 +122,6 @@ export class EditContainerIntransitModalComponent extends AppComponentBase {
                 this.rowData.supplierNo = result[0].supplierNo;
                 this._shippingDate = result[0].shipmentDate ? formatDate(new Date(result[0].shipmentDate?.toString()), 'dd/MM/yyyy', 'en-US') : undefined;
                 this._shippingDateSub = result[0].shipmentDate ? formatDate(new Date(result[0].shipmentDate?.toString()), 'MM/dd/yyyy', 'en-US') : undefined;
-                this.listForwarder = [{ label: '', value: '' }];
-                this._other.getListForwarder(this.rowData.supplierNo).subscribe(result => {
-                    result.forEach(e => {
-                        this.listForwarder.push({ label: e.name, value: e.code })
-                    })
-                });
             }
         })
     }

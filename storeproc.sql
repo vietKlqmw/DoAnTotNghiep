@@ -1194,7 +1194,7 @@ CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_SEARCH
 )
 AS
     SELECT a.Id, a.ContainerNo, a.SupplierNo, a.ShippingDate, a.PortDate, 
-           a.TransactionDate, a.ShipmentId, a.Status
+           a.TransactionDate, a.ShipmentId, a.Status, a.UsageQty, a.PartListId
       FROM ProdContainerIntransit a
      WHERE (ISNULL(@p_ContainerNo, '') = '' OR a.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
     	 AND (ISNULL(@p_ShippingDate, '') = '' OR a.ShippingDate = @p_ShippingDate)
@@ -1213,8 +1213,9 @@ CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_EDIT
 	  @p_ShippingDate DATE,
 	  @p_PortDate DATE,
 	  @p_TransactionDate DATE,
-    @p_Forwarder NVARCHAR(10),
     @p_ShipmentId INT, 
+    @p_PartListId INT,
+    @p_UsageQty INT,
     @p_UserId BIGINT
 )
 AS
@@ -1224,10 +1225,12 @@ BEGIN
         INSERT INTO ProdContainerIntransit 
                     (CreationTime, CreatorUserId, IsDeleted, 
                     ContainerNo, SupplierNo, ShippingDate, PortDate, 
-                    Forwarder, TransactionDate, ShipmentId, Status)
+                    TransactionDate, ShipmentId, Status,
+                    UsageQty, PartListId)
              VALUES (GETDATE(), @p_UserId, 0, 
                     UPPER(@p_ContainerNo), @p_SupplierNo, @p_ShippingDate, @p_PortDate, 
-                    @p_Forwarder, @p_TransactionDate, @p_ShipmentId, 'NEW');
+                    @p_TransactionDate, @p_ShipmentId, 'NEW',
+                    @p_UsageQty, @p_PartListId);
     END
     ELSE
     BEGIN
@@ -1236,9 +1239,10 @@ BEGIN
                LastModifierUserId = @p_UserId, 
                ShippingDate = @p_ShippingDate, 
                PortDate = @p_PortDate, 
-               Forwarder = @p_Forwarder, 
                TransactionDate = @p_TransactionDate,
-               ShipmentId = @p_ShipmentId
+               ShipmentId = @p_ShipmentId,
+               UsageQty = @p_UsageQty,
+               PartListId = @p_PartListId
          WHERE Id = @p_ContId;
     END
 END

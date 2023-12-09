@@ -80,7 +80,6 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
         this.colDefs = [
             { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 80 },
             { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', flex: 1 },
-            { headerName: this.l('Seal No'), headerTooltip: this.l('Seal No'), field: 'sealNo', flex: 1 },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
             {
                 headerName: this.l('Shipping Date'), headerTooltip: this.l('ShippingDate'), field: 'shippingDate', flex: 1,
@@ -94,9 +93,13 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
                 headerName: this.l('Transaction Date'), headerTooltip: this.l('TransactionDate'), field: 'transactionDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.transactionDate, 'dd/MM/yyyy')
             },
-            { headerName: this.l('Forwarder'), headerTooltip: this.l('Forwarder'), field: 'forwarder', flex: 1 },
+            {
+                headerName: this.l('Qty'), headerTooltip: this.l('Qty'), field: 'usageQty', flex: 1, type: 'rightAligned',
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.usageQty)
+            },
             { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
-            { headerName: this.l('Shipment Id'), headerTooltip: this.l('Shipment Id'), field: 'shipmentId', flex: 1 }
+            { headerName: this.l('Shipment Id'), headerTooltip: this.l('Shipment Id'), field: 'shipmentId', flex: 1 },
+            { headerName: this.l('Part List Id'), headerTooltip: this.l('Part List Id'), field: 'partListId', flex: 1 }
         ];
 
         this.frameworkComponents = {

@@ -89,5 +89,14 @@ namespace tmss.ManagementOther
 
             return result.ToList();
         }
+
+        public async Task<List<GetListPartDto>> GetListPart()
+        {
+            string _sql = "SELECT Id PartId, PartNo From MasterPartList WHERE IsDeleted = 0";
+
+            IEnumerable<GetListPartDto> result = await _dapperRepo.QueryAsync<GetListPartDto>(_sql);
+
+            return result.ToList();
+        }
     }
 }
