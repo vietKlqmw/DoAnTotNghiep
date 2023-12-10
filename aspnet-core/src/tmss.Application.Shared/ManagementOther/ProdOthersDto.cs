@@ -57,4 +57,11 @@ namespace tmss.ManagementOther
         public virtual string PartNo { get; set; }
         public virtual string PartName { get; set; }
     }
+
+    public class GetListWarehouse
+    {
+        public virtual string StorageLocation { get; set; }
+
+        public virtual string AddressLanguageVn { get; set;}
+    }
 }

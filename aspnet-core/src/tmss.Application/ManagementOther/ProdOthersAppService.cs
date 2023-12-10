@@ -108,5 +108,23 @@ namespace tmss.ManagementOther
 
             return result.ToList();
         }
+
+        public async Task<List<ProdInvoiceDto>> GetListContForWarehouse()
+        {
+            string _sql = "Exec INV_PROD_GET_LIST_CONTAINER_TO_WAREHOUSE";
+
+            IEnumerable<ProdInvoiceDto> result = await _dapperRepo.QueryAsync<ProdInvoiceDto>(_sql);
+
+            return result.ToList();
+        }
+
+        public async Task<List<GetListWarehouse>> GetListWarehouse()
+        {
+            string _sql = "Exec INV_PROD_GET_LIST_WAREHOUSE";
+
+            IEnumerable<GetListWarehouse> result = await _dapperRepo.QueryAsync<GetListWarehouse>(_sql);
+
+            return result.ToList();
+        }
     }
 }

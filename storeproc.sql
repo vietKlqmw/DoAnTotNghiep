@@ -409,6 +409,14 @@ BEGIN
        AND (@p_Category IS NULL OR msl.Category LIKE CONCAT('%', @p_Category, '%'))
        AND msl.IsDeleted = 0
 END
+------------------------------------------------GetList:
+CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_WAREHOUSE
+AS
+BEGIN
+    SELECT msl.StorageLocation, msl.AddressLanguageVn 
+      FROM MasterStorageLocation msl 
+     WHERE msl.IsDeleted = 0
+END
 ------------------------------------------------InvoiceStatus------------------------------------------------
 INSERT INTO MasterInvoiceStatus 
 (CreationTime, CreatorUserId, IsDeleted, Code, Description)
@@ -1231,6 +1239,20 @@ BEGIN
                PartListId = @p_PartListId
          WHERE Id = @p_ContId;
     END
+END
+------------------------------------------------GetListToWarehouse:
+CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_CONTAINER_TO_WAREHOUSE
+AS
+BEGIN
+        SELECT pci.Id, pci.ContainerNo, pci.SupplierNo, pci.UsageQty,
+               pi.Forwarder, pid.Insurance, pid.Freight, pid.Thc, 
+               pid.Cif, pid.Tax, pid.Vat, pid.Currency, pi.InvoiceNo,
+               pi.InvoiceDate, pid.PartNo, pid.PartName, pid.CarfamilyCode
+          FROM ProdContainerIntransit pci 
+    INNER JOIN ProdInvoiceDetails pid ON pci.ContainerNo = pid.ContainerNo
+    INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
+         WHERE pci.Status = 'PORT/ARRIVED'
+           AND pci.IsDeleted = 0
 END
 ------------------------------------------------StockReceving------------------------------------------------
 CREATE OR ALTER PROCEDURE INV_PROD_STOCK_RECEIVING_SEARCH 

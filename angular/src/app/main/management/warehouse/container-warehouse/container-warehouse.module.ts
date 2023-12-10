@@ -5,6 +5,7 @@ import { ContainerWarehouseComponent } from './container-warehouse.component';
 import { EditContainerWarehouseComponent } from './edit-container-warehouse-modal.component';
 import { ListErrorImportModalComponent } from './list-error-import-container-warehouse-modal.component';
 import { ImportContainerWarehouseComponent } from './import-container-warehouse-modal.component';
+import { AddGrnContWarehouseModalComponent } from './add-grn-container-warehouse-modal.component';
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import { ImportContainerWarehouseComponent } from './import-container-warehouse-
         ContainerWarehouseComponent,
         EditContainerWarehouseComponent,
         ListErrorImportModalComponent,
-        ImportContainerWarehouseComponent
+        ImportContainerWarehouseComponent,
+        AddGrnContWarehouseModalComponent
     ]
 })
 export class ContainerWarehouseModule { }

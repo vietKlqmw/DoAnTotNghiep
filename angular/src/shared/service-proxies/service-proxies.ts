@@ -13156,6 +13156,116 @@ export class ProdOthersServiceProxy {
         }
         return _observableOf<ProdInvoiceDto[]>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    getListContForWarehouse(): Observable<ProdInvoiceDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetListContForWarehouse";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListContForWarehouse(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListContForWarehouse(<any>response_);
+                } catch (e) {
+                    return <Observable<ProdInvoiceDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ProdInvoiceDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetListContForWarehouse(response: HttpResponseBase): Observable<ProdInvoiceDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ProdInvoiceDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ProdInvoiceDto[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getListWarehouse(): Observable<GetListWarehouse[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetListWarehouse";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListWarehouse(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListWarehouse(<any>response_);
+                } catch (e) {
+                    return <Observable<GetListWarehouse[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetListWarehouse[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetListWarehouse(response: HttpResponseBase): Observable<GetListWarehouse[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetListWarehouse.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetListWarehouse[]>(<any>null);
+    }
 }
 
 @Injectable()
@@ -30109,6 +30219,46 @@ export interface IGetListPartDto {
     partId: number | undefined;
     partNo: string | undefined;
     partName: string | undefined;
+}
+
+export class GetListWarehouse implements IGetListWarehouse {
+    storageLocation!: string | undefined;
+    addressLanguageVn!: string | undefined;
+
+    constructor(data?: IGetListWarehouse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.storageLocation = _data["storageLocation"];
+            this.addressLanguageVn = _data["addressLanguageVn"];
+        }
+    }
+
+    static fromJS(data: any): GetListWarehouse {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetListWarehouse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["storageLocation"] = this.storageLocation;
+        data["addressLanguageVn"] = this.addressLanguageVn;
+        return data; 
+    }
+}
+
+export interface IGetListWarehouse {
+    storageLocation: string | undefined;
+    addressLanguageVn: string | undefined;
 }
 
 export class ProdShipmentDto implements IProdShipmentDto {

@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import { AgDropdownRendererComponent } from '@app/shared/common/grid/ag-dropdown-renderer/ag-dropdown-renderer.component';
 import { EditContainerWarehouseComponent } from './edit-container-warehouse-modal.component';
 import { ImportContainerWarehouseComponent } from './import-container-warehouse-modal.component';
+import { AddGrnContWarehouseModalComponent } from './add-grn-container-warehouse-modal.component';
 
 @Component({
     selector: 'app-container-warehouse',
@@ -24,6 +25,7 @@ import { ImportContainerWarehouseComponent } from './import-container-warehouse-
 })
 export class ContainerWarehouseComponent extends AppComponentBase implements OnInit {
     @ViewChild('editContainerWarehouse', { static: true }) editContainerWarehouse: EditContainerWarehouseComponent;
+    @ViewChild('addGrnContWarehouse', { static: true }) addGrnContWarehouse: AddGrnContWarehouseModalComponent;
     @ViewChild('importExcelModal', { static: true }) importExcelModal: ImportContainerWarehouseComponent;
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
@@ -278,6 +280,10 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
     edit(e): void {
         if (e == 'Edit') this.editContainerWarehouse.show(e, this.saveSelectedRow);
         else this.editContainerWarehouse.show(e);
+    }
+
+    addGoodsReceivedNote(): void {
+        this.addGrnContWarehouse.show();
     }
 
     importFromExcel(){
