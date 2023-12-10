@@ -30,8 +30,8 @@
                                 </div>
                             </div>
                             <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Invoice No'" [(ngModel)]="rowData.invoiceNo"
-                                    name='invoiceNo'></tmss-text-input>
+                                <tmss-combobox [items]="listInvoicePreDeclare" name="invoiceNo" [text]="'Invoice No'" 
+                                    [(ngModel)]="rowData.invoiceId" (ngModelChange)="changeInvoice($event)"></tmss-combobox>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <div class="input-group">
@@ -55,11 +55,11 @@
                                 <tmss-text-input [text]="'Forwarder'" [(ngModel)]="rowData.forwarder" name='forwarder' [isReadonly]="true"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'TAX'" [(ngModel)]="_tax"
+                                <tmss-text-input [text]="'TAX (VND)'" [(ngModel)]="_tax"
                                     name='tax' (ngModelChange)="changeTax($event)"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'VAT'" [(ngModel)]="_vat"
+                                <tmss-text-input [text]="'VAT (VND)'" [(ngModel)]="_vat"
                                     name='vat' (ngModelChange)="changeVat($event)"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">

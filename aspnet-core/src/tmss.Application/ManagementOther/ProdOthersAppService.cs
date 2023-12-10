@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using tmss.Master.Material;
+using tmss.MaterialManagement.Invoice;
 
 namespace tmss.ManagementOther
 {
@@ -95,6 +96,15 @@ namespace tmss.ManagementOther
             string _sql = "SELECT Id PartId, PartNo From MasterPartList WHERE IsDeleted = 0";
 
             IEnumerable<GetListPartDto> result = await _dapperRepo.QueryAsync<GetListPartDto>(_sql);
+
+            return result.ToList();
+        }
+
+        public async Task<List<ProdInvoiceDto>> GetListInvociePreDeclared()
+        {
+            string _sql = "Exec INV_PROD_INVOICE_CUSTOMS_DECLARED";
+
+            IEnumerable<ProdInvoiceDto> result = await _dapperRepo.QueryAsync<ProdInvoiceDto>(_sql);
 
             return result.ToList();
         }

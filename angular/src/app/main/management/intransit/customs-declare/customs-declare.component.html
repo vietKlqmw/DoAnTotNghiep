@@ -69,7 +69,7 @@
                     <div class="col-sm-12 text-right">
                         <button type="button" class="btn btn-primary" (click)="editDeclare('Add')">
                             <i class="fa fa-plus"></i> {{"Add" | localize}}</button>
-                        <button type="button" class="btn btn-primary" (click)="editDeclare('Edit')" [disabled]="!notDeleted">
+                        <button type="button" class="btn btn-primary" (click)="editDeclare('Edit')" [disabled]="notDeleted">
                             <i class="far fa-edit"></i> {{"Edit" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
                             <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>

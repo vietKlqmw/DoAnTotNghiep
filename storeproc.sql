@@ -906,6 +906,16 @@ BEGIN
            Vat = @p_Vat
      WHERE InvoiceNo = @p_InvoiceNo
 END
+------------------------------------------------GetInvoiceCustomsDeclared:
+CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_CUSTOMS_DECLARED
+AS
+BEGIN
+    SELECT pi.Id, pi.InvoiceNo, pi.InvoiceDate, pi.BillId, pi.Forwarder,
+           pbol.BillofladingNo BillNo, pbol.BillDate
+      FROM ProdInvoice pi
+INNER JOIN ProdBillOfLading pbol ON pi.BillId = pbol.Id
+     WHERE pi.Status = 'PRE CUSTOMS'
+END
 ------------------------------------------------InvoiceDetails------------------------------------------------
 CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_DETAILS_SEARCH
 (
@@ -1340,7 +1350,7 @@ BEGIN
          WHERE Id = @p_CustomsDeclareId;
     END
 
-    IF @p_Status = 'PAID'
+    IF @p_Status = 'CuS3'
     BEGIN
         UPDATE ProdInvoice
            SET LastModificationTime = GETDATE(), 

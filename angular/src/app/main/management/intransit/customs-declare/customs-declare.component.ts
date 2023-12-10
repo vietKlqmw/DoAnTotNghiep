@@ -107,7 +107,7 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
                 valueFormatter: (params) => this._fm.formatMoney_decimal(params.data?.sumCustomsDeclare, 0),
                 sortable: true
             },
-            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'statusCode', flex: 1 }
+            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 }
         ];
 
         this.frameworkComponents = {
@@ -218,7 +218,7 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
         this._selectrow = this.saveSelectedRow.id;
 
         if(this._selectrow){
-            if(this.saveSelectedRow.status == 'CUSTOMS DECLARED'){
+            if(this.saveSelectedRow.status == 'PAID'){
                 this.notDeleted = true;
             }else{
                 this.notDeleted = false;
