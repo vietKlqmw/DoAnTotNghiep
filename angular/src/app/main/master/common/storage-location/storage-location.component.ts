@@ -70,14 +70,12 @@ export class StorageLocationComponent extends AppComponentBase implements OnInit
         super(injector);
 
         this.colDefs = [
-            { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 100 },
-            { headerName: this.l('Factory Code'), headerTooltip: this.l('Factory Code'), field: 'plantCode', flex: 1 },
-            { headerName: this.l('Factory Name'), headerTooltip: this.l('Factory Name'), field: 'plantName', flex: 1 },
-            { headerName: this.l('Storage Location'), headerTooltip: this.l('Storage Location'), field: 'storageLocation', flex: 1 },
-            { headerName: this.l('Storage Location Name'), headerTooltip: this.l('Storage Location Name'), field: 'storageLocationName', flex: 1 },
+            { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 80 },
+            { headerName: this.l('Warehouse'), headerTooltip: this.l('Storage Location'), field: 'storageLocation', width: 130 },
+            { headerName: this.l('Storage Location Name'), headerTooltip: this.l('Storage Location Name'), field: 'storageLocationName', width: 180 },
             { headerName: this.l('Address Language En'), headerTooltip: this.l('Address Language En'), field: 'addressLanguageEn', flex: 1 },
             { headerName: this.l('Address Language Vn'), headerTooltip: this.l('Address Language Vn'), field: 'addressLanguageVn', flex: 1 },
-            { headerName: this.l('Category'), headerTooltip: this.l('Category'), field: 'category', flex: 1 }
+            { headerName: this.l('Category'), headerTooltip: this.l('Category'), field: 'category', width: 130 }
         ];
 
         this.frameworkComponents = {

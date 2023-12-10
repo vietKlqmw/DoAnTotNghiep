@@ -111,12 +111,6 @@ export class MaterialComponent extends AppComponentBase implements OnInit {
                 flex: 1
             },
             {
-                headerName: this.l('Storage Location'),
-                headerTooltip: this.l('Storage Location'),
-                field: 'storageLocation',
-                flex: 1
-            },
-            {
                 headerName: this.l('Production Type'),
                 headerTooltip: this.l('Production Type'),
                 field: 'productionType',

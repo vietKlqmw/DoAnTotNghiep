@@ -6,12 +6,6 @@
                     <div class="row">
                         <div class="col-md-customize">
                             <div class="form-group">
-                                <input [(ngModel)]="plantName" name="plantName" class="form-control m-input"
-                                    [placeholder]="l('Factory Name')" type="text" (keyup.enter)="searchDatas()">
-                            </div>
-                        </div>
-                        <div class="col-md-customize">
-                            <div class="form-group">
                                 <input [(ngModel)]="storageLocationName" name="storageLocationName" class="form-control m-input"
                                     [placeholder]="l('Storage Location Name')" type="text" (keyup.enter)="searchDatas()">
                             </div>
@@ -41,7 +35,7 @@
                 </form>
                 <!-- ==================================================Table================================================== -->
                 <span>
-                    <h6 class="card-header"> {{ 'Storage Location' }} </h6>
+                    <h6 class="card-header"> {{ 'Warehouse' }} </h6>
                 </span>
                 <div class="">
                     <grid-table

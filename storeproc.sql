@@ -370,29 +370,29 @@ VALUES
 ------------------------------------------------StorageLocation------------------------------------------------
 INSERT INTO MasterStorageLocation 
 (CreationTime, CreatorUserId, IsDeleted, 
-PlantCode, PlantName, StorageLocation, StorageLocationName, 
-AddressLanguageEn, AddressLanguageVn, Category)
+StorageLocation, StorageLocationName, Category,
+AddressLanguageEn, AddressLanguageVn)
 VALUES 
 (GETDATE(), 1, 0, 
-N'451', N'VMV', N'101', N'GWH (CKD part)', 
-N'Phuc Thang ward - Phuc Yen city - Vinh Phuc province - Viet Nam', 
-N'Phường Phúc Thắng - Thành phố Phúc Yên - Tỉnh Vĩnh Phúc - Việt Nam', 
-N'Raw Material'),
+'A1', 'GWH (CKD part)', 'Raw Material',
+'Tran Thanh Ngo Ward - Hai Phong City - Viet Nam', 
+N'Phường Trần Thành Ngọ - Thành phố Hải Phòng - Việt Nam'),
 (GETDATE(), 1, 0, 
-N'451', N'VMV', N'102', N'ACC for CBU', 
-N'Phuc Thang ward - Phuc Yen city - Vinh Phuc province - Viet Nam', 
-N'Phường Phúc Thắng - Thành phố Phúc Yên - Tỉnh Vĩnh Phúc - Việt Nam', 
-N'Raw Material'),
+'A2', 'GWH (CKD part)', 'Raw Material',
+'Phuc Thang Ward - Phuc Yen City - Vinh Phuc Province - Viet Nam', 
+N'Phường Phúc Thắng - Thành phố Phúc Yên - Tỉnh Vĩnh Phúc - Việt Nam'),
 (GETDATE(), 1, 0, 
-N'451', N'VMV', N'301', N'Production Area', 
-N'Phuc Thang ward - Phuc Yen city - Vinh Phuc province - Viet Nam', 
-N'Phường Phúc Thắng - Thành phố Phúc Yên - Tỉnh Vĩnh Phúc - Việt Nam', 
-N'Production Area'),
+'B1', 'GWH (CKD part)', 'Raw Material',
+'An Hai Bac Ward - Da Nang City - Viet Nam', 
+N'Phường An Hải Bắc - Thành phố Đà Nẵng - Việt Nam'),
 (GETDATE(), 1, 0, 
-N'451', N'VMV', N'401', N'Vehicle Yard', 
-N'Phuc Thang ward - Phuc Yen city - Vinh Phuc province - Viet Nam', 
-N'Phường Phúc Thắng - Thành phố Phúc Yên - Tỉnh Vĩnh Phúc - Việt Nam', 
-N'Finished Goods');
+'C1', 'GWH (CKD part)', 'Raw Material',
+'Thanh My Loi Ward - HCM City - Viet Nam', 
+N'Phường Thạnh Mỹ Lợi - Thành phố HCM - Việt Nam'),
+(GETDATE(), 1, 0, 
+'C2', 'GWH (CKD part)', 'Raw Material',
+'Thu Duc District - Thu Duc City - Viet Nam', 
+N'Quận Thủ Đức - Thành phố Thủ Đức - Việt Nam');
 --Search
 CREATE OR ALTER PROCEDURE INV_MASTER_STORAGE_LOCATION_SEARCH
     @p_PlantName NVARCHAR(30),
@@ -401,11 +401,10 @@ CREATE OR ALTER PROCEDURE INV_MASTER_STORAGE_LOCATION_SEARCH
     @p_Category NVARCHAR(50)
 AS 
 BEGIN
-    SELECT msl.Id, msl.PlantCode, msl.PlantName, msl.StorageLocation, msl.StorageLocationName, 
+    SELECT msl.Id, msl.StorageLocation, msl.StorageLocationName, 
            msl.AddressLanguageEn, msl.AddressLanguageVn, msl.Category
       FROM MasterStorageLocation msl
-     WHERE (@p_PlantName IS NULL OR msl.PlantName LIKE CONCAT('%', @p_PlantName, '%'))
-       AND (@p_StorageLocationName IS NULL OR msl.StorageLocationName LIKE CONCAT('%', @p_StorageLocationName, '%'))
+     WHERE (@p_StorageLocationName IS NULL OR msl.StorageLocationName LIKE CONCAT('%', @p_StorageLocationName, '%'))
        AND (@p_AddressLanguageEn IS NULL OR msl.AddressLanguageEn LIKE CONCAT('%', @p_AddressLanguageEn, '%'))
        AND (@p_Category IS NULL OR msl.Category LIKE CONCAT('%', @p_Category, '%'))
        AND msl.IsDeleted = 0
