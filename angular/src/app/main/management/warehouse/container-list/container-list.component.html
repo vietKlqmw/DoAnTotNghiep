@@ -16,10 +16,6 @@
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker2.toggle()"></i>
                                     </span>
                                 </div>
-                                <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
-                                    class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
-                                <button class="btn btn-primary" (click)="clearTextSearch()">
-                                    <i class="fa fa-sync"></i></button>
                             </div>
                         </div>
                         <div class="col-md-customize">
@@ -54,14 +50,10 @@
                             <div class="form-group">
                                 <input [(ngModel)]="invoiceNo" name="invoiceNo" class="form-control m-input"
                                     [placeholder]="l('Invoice No')" type="text" (keyup.enter)="searchDatas()">
-                                <div class="input-group">
-                                    <input type='text' class="form-control m-input" name='billDateFrom' [placeholder]="l('Bill Date From')"
-                                        #datepicker5='bsDatepicker' [(ngModel)]='billDateFrom' bsDatepicker
-                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
-                                    <span class="input-group-text right-text">
-                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker5.toggle()"></i>
-                                    </span>
-                                </div>
+                                <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
+                                    class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
+                                <button class="btn btn-primary" (click)="clearTextSearch()">
+                                    <i class="fa fa-sync"></i></button>
                             </div>
                         </div>
                         <div class="col-md-customize">
@@ -72,14 +64,6 @@
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
                                     <span class="input-group-text right-text">
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
-                                    </span>
-                                </div>
-                                <div class="input-group">
-                                    <input type='text' class="form-control m-input" name='billDateTo' [placeholder]="l('Bill Date To')"
-                                        #datepicker6='bsDatepicker' [(ngModel)]='billDateTo' bsDatepicker
-                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
-                                    <span class="input-group-text right-text">
-                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker6.toggle()"></i>
                                     </span>
                                 </div>
                             </div>
@@ -103,11 +87,11 @@
                         </div>
                         <div class="segmented-picker-option groupBtn actionButton_w3" (click)="setvalradio('3')">
                             <div class="separator"></div>
-                            <div class="label">In TMV</div>
+                            <div class="label">In Warehouse</div>
                         </div>
                         <div class="segmented-picker-option groupBtn actionButton_w4" (click)="setvalradio('4')">
                             <div class="separator"></div>
-                            <div class="label">In Warehouse</div>
+                            <div class="label">In Factory</div>
                         </div>
                     </div>
                 </div>

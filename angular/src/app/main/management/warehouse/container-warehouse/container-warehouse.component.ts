@@ -93,7 +93,6 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
                 headerCheckboxSelection: true,
                 headerCheckboxSelectionFilteredOnly: true
             },
-            { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 60, pinned: true },
             {
                 headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1, pinned: true,
                 cellRenderer: 'agSelectRendererComponent',
@@ -105,11 +104,9 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
                 headerName: this.l('Request Date'), headerTooltip: this.l('Request Date'), field: 'requestDate', flex: 1, pinned: true,
                 valueGetter: (params) => this.pipe.transform(params.data?.requestDate, 'dd/MM/yyyy')
             },
-            { headerName: this.l('Request Time'), headerTooltip: this.l('Request Time'), field: 'requestTime', flex: 1 },
             { headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', flex: 1 },
             { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('Bill Of Lading No'), field: 'billofladingNo', flex: 1 },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
-            { headerName: this.l('Seal No'), headerTooltip: this.l('Seal No'), field: 'sealNo', flex: 1 },
             {
                 headerName: this.l('Devanning Date'), headerTooltip: this.l('Devanning Date'), field: 'devanningDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.devanningDate, 'dd/MM/yyyy')

@@ -28,18 +28,16 @@
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker2.toggle()"></i>
                                     </span>
                                 </div>
-                                <input [(ngModel)]="sealNo" name="sealNo" class="form-control m-input"
-                                    [placeholder]="l('Seal No')" type="text" (keyup.enter)="searchDatas()">
+                                <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
+                                    class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
+                                <button class="btn btn-primary" (click)="clearTextSearch()">
+                                    <i class="fa fa-sync"></i></button>
                             </div>
                         </div>
                         <div class="col-md-customize">
                             <div class="form-group">
                                 <input [(ngModel)]="containerNo" name="containerNo" class="form-control m-input"
                                     [placeholder]="l('Container No')" type="text" (keyup.enter)="searchDatas()">
-                                <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
-                                    class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
-                                <button class="btn btn-primary" (click)="clearTextSearch()">
-                                    <i class="fa fa-sync"></i></button>
                             </div>
                         </div>
                         <div class="col-md-customize">
@@ -81,12 +79,12 @@
                 <hr>
                 <div class="row">
                     <div class="col-sm-12 text-right">
-                        <button type="button" class="btn btn-primary" (click)="edit('Add')">
-                            <i class="fa fa-plus"></i> {{"Add" | localize}}</button>
+                        <button type="button" class="btn btn-primary" (click)="edit('Add Goods Received Note')">
+                            <i class="fa fa-plus"></i> {{"Add Goods Received Note" | localize}}</button>
+                        <button type="button" class="btn btn-primary" (click)="edit('Add Goods Delivery Note')" [disabled]="!saveSelectedRow.id">
+                            <i class="fa fa-plus"></i> {{"Add Goods Delivery Note" | localize}}</button>
                         <button type="button" class="btn btn-primary" (click)="edit('Edit')" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-edit"></i> {{"Edit" | localize}}</button>
-                        <button type="button" class="btn btn-danger" (click)="deleteContWH()" [disabled]="!saveSelectedRow.id">
-                            <i class="far fa-trash-alt"></i> {{"Delete" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="importFromExcel()">
                             <i class="far fa-file-excel"></i> {{"ImportFromExcel" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
