@@ -14,10 +14,6 @@ import { ContainerWarehouseComponent } from "./container-warehouse.component";
 export class EditContainerWarehouseComponent extends AppComponentBase {
     @ViewChild('editContainerWarehouse', { static: true }) modal: ModalDirective;
     @ViewChild('datepicker', { static: false }) datepicker!: BsDatepickerDirective;
-    @ViewChild('datepicker2', { static: false }) datepicker2!: BsDatepickerDirective;
-    @ViewChild('datepicker3', { static: false }) datepicker3!: BsDatepickerDirective;
-    @ViewChild('datepicker4', { static: false }) datepicker4!: BsDatepickerDirective;
-    @ViewChild('datepicker5', { static: false }) datepicker5!: BsDatepickerDirective;
 
     rowData: ProdContainerRentalWHPlanDto = new ProdContainerRentalWHPlanDto();
 
@@ -26,10 +22,6 @@ export class EditContainerWarehouseComponent extends AppComponentBase {
     isEdit: boolean = false;
     header: string = '';
     _requestDate: any;
-    _devanningDate: any;
-    _actualDevanningDate: any;
-    _gateInPlanTime: any;
-    _gateInActualDateTime: any;
     list = [
         { value: 'R', label: "REQUESTED" },
         { value: 'P', label: "PENDING" },
@@ -56,24 +48,12 @@ export class EditContainerWarehouseComponent extends AppComponentBase {
 
         const dateValue = this.rowData.requestDate ? new Date(this.rowData.requestDate?.toString()) : new Date();
         this.datepicker?.bsValueChange.emit(dateValue);
-        const dateValue2 = this.rowData.devanningDate ? new Date(this.rowData.devanningDate?.toString()) : new Date();
-        this.datepicker2?.bsValueChange.emit(dateValue2);
-        const dateValue3 = this.rowData.actualDevanningDate ? new Date(this.rowData.actualDevanningDate?.toString()) : new Date();
-        this.datepicker3?.bsValueChange.emit(dateValue3);
-        const dateValue4 = this.rowData.gateInPlanTime ? new Date(this.rowData.gateInPlanTime?.toString()) : new Date();
-        this.datepicker4?.bsValueChange.emit(dateValue4);
-        const dateValue5 = this.rowData.gateInActualDateTime ? new Date(this.rowData.gateInActualDateTime?.toString()) : new Date();
-        this.datepicker5?.bsValueChange.emit(dateValue5);
 
         this.modal.show();
     }
 
     save(): void {
         this.rowData.requestDate = moment(this._requestDate);
-        this.rowData.devanningDate = moment(this._devanningDate);
-        this.rowData.actualDevanningDate = moment(this._actualDevanningDate);
-        this.rowData.gateInPlanTime = moment(this._gateInPlanTime);
-        this.rowData.gateInActualDateTime = moment(this._gateInActualDateTime);
 
         this.saving = true;
         this._service.editContainerWH(this.rowData)

@@ -51,7 +51,7 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
     billOfLadingNo: string = '';
     invoiceNo: string = '';
     supplierNo: string = '';
-    sealNo: string = '';
+    warehouse: string = '';
     requestDateFrom: any;
     requestDateTo: any;
     listStatus = [
@@ -164,9 +164,9 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
             this.invoiceNo,
             this.billOfLadingNo,
             this.supplierNo,
-            this.sealNo,
             this.requestDateFrom ? moment(this.requestDateFrom) : undefined,
             this.requestDateTo ? moment(this.requestDateTo) : undefined,
+            this.warehouse,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -185,7 +185,7 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
         this.billOfLadingNo = '';
         this.containerNo = '';
         this.invoiceNo = '';
-        this.sealNo = '';
+        this.warehouse = '';
         this.supplierNo = '';
         this.requestDateFrom = '';
         this.requestDateTo = '';
@@ -198,9 +198,9 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
             this.invoiceNo,
             this.billOfLadingNo,
             this.supplierNo,
-            this.sealNo,
             this.requestDateFrom ? moment(this.requestDateFrom) : undefined,
             this.requestDateTo ? moment(this.requestDateTo) : undefined,
+            this.warehouse,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -252,9 +252,9 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
             this.invoiceNo,
             this.billOfLadingNo,
             this.supplierNo,
-            this.sealNo,
             this.requestDateFrom ? moment(this.requestDateFrom) : undefined,
-            this.requestDateTo ? moment(this.requestDateTo) : undefined)
+            this.requestDateTo ? moment(this.requestDateTo) : undefined,
+            this.warehouse)
             .pipe(finalize(() => this.isLoading = false))
             .subscribe(result => {
                 this._fileDownloadService.downloadTempFile(result);

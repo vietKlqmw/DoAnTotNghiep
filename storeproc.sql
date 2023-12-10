@@ -943,64 +943,35 @@ CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_LIST_SEARCH
 	  @p_ReceiveDateFrom DATE,
 	  @p_ReceiveDateTo DATE,
 	  @p_InvoiceNo NVARCHAR(20),
-	  @p_BillDateFrom DATE,
-	  @p_BillDateTo DATE,
 	  @p_ContainerStatus VARCHAR(1)
 )
 AS
 BEGIN 
-    SELECT DISTINCT a.Id,
+    SELECT DISTINCT a.Id, a.ContainerNo, a.SupplierNo, pbol.BillofladingNo, a.BillId, 
+                    a.InvoiceId, a.ShipmentId, a.ShippingDate, a.PortDate, pbol.BillDate, 
+                    a.ReceiveDate, d.InvoiceNo, a.Transport, a.Remark, a.Freight, 
+                    a.Insurance, a.Cif, a.Tax, a.Amount, b.Description Status, 
                     CASE WHEN a.RequestStatus = 0 THEN 'New'
-                         WHEN a.RequestStatus = 1 THEN 'Firmed'
-                         WHEN a.RequestStatus = 2 THEN 'Canceled'
-                         WHEN a.RequestStatus = 3 THEN 'Pending'
-                    ELSE a.RequestStatus END RequestStatus,
-			              a.ContainerNo, a.SupplierNo, a.BillOfLadingNo, a.SealNo, a.ContainerSize, 
-                    a.ShipmentId, a.ShippingDate, a.PortDate, a.PortDateActual, a.PortTransitDate, 
-			              a.ReceiveDate, a.RequestId, a.InvoiceNo, a.Transport, 
-			              a.DevanningDate, a.DevanningTime, a.Remark, a.WhLocation, a.GateInDate, 
-			              a.GateInTime, a.TransitPortReqId, a.TransitPortReqDate, a.TransitPortReqTime, 
-			              a.Freight, a.Insurance, a.Cif, a.Tax, a.Amount, b.Description Status, 
-			              a.LocationCode, a.LocationDate, a.ReceivingPeriodId, a.BillDate, a.ReceiveTime
+                         WHEN a.RequestStatus = 1 THEN 'Pending'
+                         WHEN a.RequestStatus = 2 THEN 'Confirmed'
+                         WHEN a.RequestStatus = 3 THEN 'Canceled'
+                    ELSE a.RequestStatus END RequestStatus
                FROM ProdContainerList a
-         INNER JOIN ProdContainerInvoice c
-                 ON c.ContainerNo = a.ContainerNo 
-         INNER JOIN ProdInvoice d 
-                 ON d.Id = c.InvoiceId
-	        LEFT JOIN MasterContainerStatus b
-                 ON a.Status = b.Code
+         INNER JOIN ProdContainerIntransit c ON c.ContainerNo = a.ContainerNo 
+         INNER JOIN ProdInvoice d ON d.Id = a.InvoiceId
+         INNER JOIN ProdBillOfLading pbol ON a.BillId = pbol.Id
+	        LEFT JOIN MasterContainerStatus b ON a.Status = b.Code
               WHERE (@p_ContainerNo IS NULL OR a.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%') 
                      OR a.ContainerNo IN (SELECT item FROM dbo.fnSplit(@p_ContainerNo, ';')) 
                     )
     		        AND (@p_SupplierNo IS NULL OR a.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
-    		        AND (@p_BillOfLadingNo IS NULL OR a.BillOfLadingNo LIKE CONCAT('%', @p_BillOfLadingNo, '%'))
+    		        AND (@p_BillOfLadingNo IS NULL OR pbol.BillofladingNo LIKE CONCAT('%', @p_BillOfLadingNo, '%'))
                 AND (@p_PortDateFrom IS NULL OR a.PortDate >= @p_PortDateFrom)
                 AND (@p_PortDateTo IS NULL OR a.PortDate <= @p_PortDateTo)
                 AND (@p_ReceiveDateFrom IS NULL OR a.ReceiveDate >= @p_ReceiveDateFrom)
-                AND (@p_ContainerStatus IN ('1','2') OR @p_ReceiveDateTo IS NULL OR a.ReceiveDate <= @p_ReceiveDateTo)
-                AND (@p_InvoiceNo IS NULL OR a.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
-                AND (@p_BillDateFrom IS NULL OR a.BillDate >= @p_BillDateFrom)
-                AND (@p_BillDateTo IS NULL OR a.BillDate <= @p_BillDateTo)		  
-			  -- Xoay quanh tham số Receive Date To, để xác định intransit hay không, dựa vào các điều kiện dưới đây
-			  -- 1. Nếu không nhập -> Intransit là các invoice được nhận về
-			  -- 2. Nếu nhập, invoice intransit phải là các invoice chưa được nhận về TMV hoặc nhận về TMV sau thời điểm receive date to. Nhưng bắt buộc phải là invoice có bill date trước ngày Receive Date to
-    		        AND (@p_ContainerStatus IS NULL 
-                     OR (@p_ContainerStatus = '1' 
-                         AND ((@p_ReceiveDateTo IS NULL AND a.ReceiveDate IS NULL) 
-                              OR (@p_ReceiveDateTo IS NOT NULL AND ISNULL(a.ReceiveDate, '2999-12-31') > @p_ReceiveDateTo)
-                             )-- 1.
-                         AND ((@p_ReceiveDateTo IS NULL) 
-                              OR (@p_ReceiveDateTo IS NOT NULL AND ISNULL(a.BillDate, d.InvoiceDate) < @p_ReceiveDateTo)
-                             )-- 2.trang thai intransit truoc ngay ve tmv
-                    ) 
-    						     OR (@p_ContainerStatus = '2' 
-                         AND ((@p_ReceiveDateTo IS NULL AND a.ReceiveDate IS NULL) 
-                              OR (@p_ReceiveDateTo IS NOT NULL AND ISNULL(a.ReceiveDate, '2999-12-31') > @p_ReceiveDateTo)
-                             ) 
-                         AND a.TransitPortReqId IS NOT NULL) -- Cont ở tại intransit port trước ngày về TMV
-    						     OR (@p_ContainerStatus = '3' AND a.ReceiveDate IS NOT NULL)
-    						     OR (@p_ContainerStatus = '4' AND a.ReceiveDate IS NOT NULL AND a.RentalWhId IS NOT NULL)
-    			          )
+                --AND (@p_ContainerStatus IN ('1','2') OR @p_ReceiveDateTo IS NULL OR a.ReceiveDate <= @p_ReceiveDateTo)
+                AND (@p_InvoiceNo IS NULL OR d.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
+    		        --AND @p_ContainerStatus IS NULL 
                 AND a.IsDeleted = 0
            ORDER BY a.ShippingDate DESC, a.PortDate DESC, a.ReceiveDate DESC
 END
@@ -1012,23 +983,24 @@ CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_SEARCH
     @p_InvoiceNo NVARCHAR(20),
     @p_BillOfLadingNo NVARCHAR(20),
     @p_SupplierNo NVARCHAR(10),
-    @p_SealNo NVARCHAR(20),
     @p_RequestDateFrom DATE,
-    @p_RequestDateTo DATE
+    @p_RequestDateTo DATE,
+    @p_Warehouse NVARCHAR(2)
 )
 AS
 BEGIN 
-    SELECT a.Id, a.ContainerNo, a.RequestDate, a.RequestTime, a.InvoiceNo, a.BillofladingNo, 
-           a.SupplierNo, a.SealNo, a.DevanningDate, a.DevanningTime, 
-           a.ActualDevanningDate, a.GateInPlanTime, a.GateInActualDateTime, a.Transport, a.Status
+    SELECT a.Id, a.ContainerNo, a.RequestDate, pi.InvoiceNo, pbol.BillofladingNo, a.ReceiveDate, 
+           a.SupplierNo, a.Transport, a.Status, a.DeliveryDate, a.Warehouse, a.BillId, a.InvoiceId
       FROM ProdContainerRentalWHPlan a
+INNER JOIN ProdInvoice pi ON a.InvoiceId = pi.Id
+INNER JOIN ProdBillOfLading pbol ON a.BillId = pbol.Id
      WHERE (@p_ContainerNo IS NULL OR a.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
-       AND (@p_InvoiceNo IS NULL OR a.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
-       AND (@p_BillOfLadingNo IS NULL OR a.BillofladingNo LIKE CONCAT('%', @p_BillOfLadingNo, '%'))
+       AND (@p_InvoiceNo IS NULL OR pi.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
+       AND (@p_BillOfLadingNo IS NULL OR pbol.BillofladingNo LIKE CONCAT('%', @p_BillOfLadingNo, '%'))
        AND (@p_SupplierNo IS NULL OR a.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
-       AND (@p_SealNo IS NULL OR a.SealNo LIKE CONCAT('%', @p_SealNo, '%'))
        AND (@p_RequestDateFrom IS NULL OR a.RequestDate >= @p_RequestDateFrom)
        AND (@p_RequestDateTo IS NULL OR a.RequestDate <= @p_RequestDateTo)
+       AND (@p_Warehouse IS NULL OR a.Warehouse = @p_Warehouse)
        AND a.IsDeleted = 0
   ORDER BY a.RequestDate DESC
 END

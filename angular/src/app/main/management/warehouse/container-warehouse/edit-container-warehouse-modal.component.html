@@ -46,58 +46,6 @@
                                     name='supplierNo'></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Seal No'" [(ngModel)]="rowData.sealNo"
-                                    name='sealNo'></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-text left-text">Devanning Date</span>
-                                    <input type='text' class="form-control tmss-form-control" name='devanningDate'
-						                #datepicker2='bsDatepicker' [(ngModel)]='_devanningDate' bsDatepicker
-                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
-                                    <span class="input-group-text right-text">
-                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker2.toggle()"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <!-- <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Reserved Stock'" [(ngModel)]="rowData.devanningTime"
-                                    name='reservedStock'></tmss-text-input>
-                            </div> -->
-                            <div class="ui-g-12 ui-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-text left-text">Actual Devanning Date</span>
-                                    <input type='text' class="form-control tmss-form-control" name='actualDevanningDate'
-						                #datepicker3='bsDatepicker' [(ngModel)]='_actualDevanningDate' bsDatepicker
-                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
-                                    <span class="input-group-text right-text">
-                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker3.toggle()"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-text left-text">Gate In Plan Time</span>
-                                    <input type='text' class="form-control tmss-form-control" name='gateInPlanTime'
-						                #datepicker4='bsDatepicker' [(ngModel)]='_gateInPlanTime' bsDatepicker
-                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY HH:mm:ss', isAnimated: true, selectFromOtherMonth: true}">
-                                    <span class="input-group-text right-text">
-                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker4.toggle()"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-text left-text">Gate In Actual Time</span>
-                                    <input type='text' class="form-control tmss-form-control" name='gateInActualDateTime'
-						                #datepicker5='bsDatepicker' [(ngModel)]='_gateInActualDateTime' bsDatepicker
-                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY HH:mm:ss', isAnimated: true, selectFromOtherMonth: true}">
-                                    <span class="input-group-text right-text">
-                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker5.toggle()"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Transport'" [(ngModel)]="rowData.transport"
                                     name='transport' ></tmss-text-input>
                             </div>

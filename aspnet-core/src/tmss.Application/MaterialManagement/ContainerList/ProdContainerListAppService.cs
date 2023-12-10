@@ -25,7 +25,7 @@ namespace tmss.MaterialManagement.ContainerList
         public async Task<PagedResultDto<ProdContainerListDto>> GetProdContainerListSearch(GetProdContainerListInput input)
         {
             string _sql = "Exec INV_PROD_CONTAINER_LIST_SEARCH @p_ContainerNo, @p_SupplierNo, @p_BillOfLadingNo, @p_PortDateFrom, @p_PortDateTo, " +
-                "@p_ReceiveDateFrom, @p_ReceiveDateTo, @p_InvoiceNo, @p_BillDateFrom, @p_BillDateTo, @p_ContainerStatus";
+                "@p_ReceiveDateFrom, @p_ReceiveDateTo, @p_InvoiceNo, @p_ContainerStatus";
 
             IEnumerable<ProdContainerListDto> result = await _dapperRepo.QueryAsync<ProdContainerListDto>(_sql, new
             {
@@ -37,8 +37,6 @@ namespace tmss.MaterialManagement.ContainerList
                 p_ReceiveDateFrom = input.ReceiveDateFrom,
                 p_ReceiveDateTo = input.ReceiveDateTo,
                 p_InvoiceNo = input.InvoiceNo,
-                p_BillDateFrom = input.BillDateFrom,
-                p_BillDateTo = input.BillDateTo,
                 p_ContainerStatus = input.ContainerStatus
             });
 
@@ -63,7 +61,7 @@ namespace tmss.MaterialManagement.ContainerList
         public async Task<FileDto> GetProdContainerListToExcel(GetProdContainerListExportInput input)
         {
             string _sql = "Exec INV_PROD_CONTAINER_LIST_SEARCH @p_ContainerNo, @p_SupplierNo, @p_BillOfLadingNo, @p_PortDateFrom, @p_PortDateTo, " +
-                "@p_ReceiveDateFrom, @p_ReceiveDateTo, @p_InvoiceNo, @p_BillDateFrom, @p_BillDateTo, @p_ContainerStatus";
+                "@p_ReceiveDateFrom, @p_ReceiveDateTo, @p_InvoiceNo, @p_ContainerStatus";
 
             IEnumerable<ProdContainerListDto> result = await _dapperRepo.QueryAsync<ProdContainerListDto>(_sql, new
             {
@@ -75,8 +73,6 @@ namespace tmss.MaterialManagement.ContainerList
                 p_ReceiveDateFrom = input.ReceiveDateFrom,
                 p_ReceiveDateTo = input.ReceiveDateTo,
                 p_InvoiceNo = input.InvoiceNo,
-                p_BillDateFrom = input.BillDateFrom,
-                p_BillDateTo = input.BillDateTo,
                 p_ContainerStatus = input.ContainerStatus
             });
 

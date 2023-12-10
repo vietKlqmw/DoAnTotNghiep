@@ -18,36 +18,23 @@ namespace tmss.MaterialManagement.ContainerList.Exporting
 
                     AddHeader(
                         sheet,
-                        "Request Status",
-                        "Container No",
-                        "Supplier No",
-                        "Status",
-                        "Bill Of Lading No",
-                        "Bill Date",
-                        "Seal No",
-                        "Container Size",
-                        "Shipping Date (ETD)",
-                        "Port Date (ETA)",
-                        "Recieve Date",
-                        "Port Date Actual(ATA)",
-                        "Port Transit Date",
-                        "Invoice No",
-                        "Transport",
-                        "Devanning Date",
-                        "Devanning Time",
-                        "Remark",
-                        "Warehouse Location",
-                        "Gate In Date",
-                        "Gate In Time",
-                        "Transit Port Request Date",
-                        "Transit Port Request Time",
-                        "Freight",
-                        "Insurance",
-                        "C.I.F",
-                        "TAX",
-                        "Amount",
-                        "Location Code",
-                        "Location Date"
+                        ("Request Status"),
+                        ("Container No"),
+                        ("Supplier No"),
+                        ("Status"),
+                        ("Bill Of Lading No"),
+                        ("Bill Date"),
+                        ("Shipping Date"),
+                        ("Port Date"),
+                        ("Recieve Date"),
+                        ("Invoice No"),
+                        ("Transport"),
+                        ("Freight"),
+                        ("Insurance"),
+                        ("C.I.F"),
+                        ("TAX"),
+                        ("Amount"),
+                        ("Remark")
                     );
 
                     AddObjects(
@@ -58,33 +45,20 @@ namespace tmss.MaterialManagement.ContainerList.Exporting
                         _ => _.Status,
                         _ => _.BillOfLadingNo,
                         _ => _.BillDate,
-                        _ => _.SealNo,
-                        _ => _.ContainerSize,
                         _ => _.ShippingDate,
                         _ => _.PortDate,
                         _ => _.ReceiveDate,
-                        _ => _.PortDateActual,
-                        _ => _.PortTransitDate,
                         _ => _.InvoiceNo,
                         _ => _.Transport,
-                        _ => _.DevanningDate,
-                        _ => _.DevanningTime,
-                        _ => _.Remark,
-                        _ => _.WhLocation,
-                        _ => _.GateInDate,
-                        _ => _.GateInTime,
-                        _ => _.TransitPortReqDate,
-                        _ => _.TransitPortReqTime,
                         _ => _.Freight,
                         _ => _.Insurance,
                         _ => _.Cif,
                         _ => _.Tax,
                         _ => _.Amount,
-                        _ => _.LocationCode,
-                        _ => _.LocationDate
+                        _ => _.Remark
                     );
 
-                    for (var i = 0; i < 30; i++)
+                    for (var i = 0; i < 17; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

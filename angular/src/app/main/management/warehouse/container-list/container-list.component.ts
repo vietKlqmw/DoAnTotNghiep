@@ -47,8 +47,6 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
     supplierNo: string = '';
     billNo: string = '';
     invoiceNo: string = '';
-    billDateFrom: any;
-    billDateTo: any;
     receiveDateFrom: any;
     receiveDateTo: any;
     portDateFrom: any;
@@ -198,13 +196,11 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
             this.containerNo,
             this.supplierNo,
             this.billNo,
+            this.invoiceNo,
             this.portDateFrom ? moment(this.portDateFrom) : undefined,
             this.portDateTo ? moment(this.portDateTo) : undefined,
             this.receiveDateFrom ? moment(this.receiveDateFrom) : undefined,
             this.receiveDateTo ? moment(this.receiveDateTo) : undefined,
-            this.invoiceNo,
-            this.billDateFrom ? moment(this.billDateFrom) : undefined,
-            this.billDateTo ? moment(this.billDateTo) : undefined,
             this.containerStatus,
             '',
             this.paginationParams.skipCount,
@@ -244,8 +240,6 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
         this.portDateFrom = '';
         this.portDateTo = '';
         this.supplierNo = '';
-        this.billDateFrom = '';
-        this.billDateTo = '';
         this.receiveDateFrom = '';
         this.receiveDateTo = '';
         this.searchDatas();
@@ -256,13 +250,11 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
             this.containerNo,
             this.supplierNo,
             this.billNo,
+            this.invoiceNo,
             this.portDateFrom ? moment(this.portDateFrom) : undefined,
             this.portDateTo ? moment(this.portDateTo) : undefined,
             this.receiveDateFrom ? moment(this.receiveDateFrom) : undefined,
             this.receiveDateTo ? moment(this.receiveDateTo) : undefined,
-            this.invoiceNo,
-            this.billDateFrom ? moment(this.billDateFrom) : undefined,
-            this.billDateTo ? moment(this.billDateTo) : undefined,
             this.containerStatus,
             '',
             this.paginationParams.skipCount,
@@ -314,13 +306,11 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
             this.containerNo,
             this.supplierNo,
             this.billNo,
+            this.invoiceNo,
             this.portDateFrom ? moment(this.portDateFrom) : undefined,
             this.portDateTo ? moment(this.portDateTo) : undefined,
             this.receiveDateFrom ? moment(this.receiveDateFrom) : undefined,
             this.receiveDateTo ? moment(this.receiveDateTo) : undefined,
-            this.invoiceNo,
-            this.billDateFrom ? moment(this.billDateFrom) : undefined,
-            this.billDateTo ? moment(this.billDateTo) : undefined,
             this.containerStatus)
             .pipe(finalize(() => this.isLoading = false))
             .subscribe(result => {

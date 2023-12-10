@@ -11098,20 +11098,18 @@ export class ProdContainerListServiceProxy {
      * @param containerNo (optional) 
      * @param supplierNo (optional) 
      * @param billOfLadingNo (optional) 
+     * @param invoiceNo (optional) 
      * @param portDateFrom (optional) 
      * @param portDateTo (optional) 
      * @param receiveDateFrom (optional) 
      * @param receiveDateTo (optional) 
-     * @param invoiceNo (optional) 
-     * @param billDateFrom (optional) 
-     * @param billDateTo (optional) 
      * @param containerStatus (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getProdContainerListSearch(containerNo: string | null | undefined, supplierNo: string | null | undefined, billOfLadingNo: string | null | undefined, portDateFrom: moment.Moment | null | undefined, portDateTo: moment.Moment | null | undefined, receiveDateFrom: moment.Moment | null | undefined, receiveDateTo: moment.Moment | null | undefined, invoiceNo: string | null | undefined, billDateFrom: moment.Moment | null | undefined, billDateTo: moment.Moment | null | undefined, containerStatus: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdContainerListDto> {
+    getProdContainerListSearch(containerNo: string | null | undefined, supplierNo: string | null | undefined, billOfLadingNo: string | null | undefined, invoiceNo: string | null | undefined, portDateFrom: moment.Moment | null | undefined, portDateTo: moment.Moment | null | undefined, receiveDateFrom: moment.Moment | null | undefined, receiveDateTo: moment.Moment | null | undefined, containerStatus: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdContainerListDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdContainerList/GetProdContainerListSearch?";
         if (containerNo !== undefined)
             url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
@@ -11119,6 +11117,8 @@ export class ProdContainerListServiceProxy {
             url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
         if (billOfLadingNo !== undefined)
             url_ += "BillOfLadingNo=" + encodeURIComponent("" + billOfLadingNo) + "&"; 
+        if (invoiceNo !== undefined)
+            url_ += "InvoiceNo=" + encodeURIComponent("" + invoiceNo) + "&"; 
         if (portDateFrom !== undefined)
             url_ += "PortDateFrom=" + encodeURIComponent(portDateFrom ? "" + portDateFrom.toJSON() : "") + "&"; 
         if (portDateTo !== undefined)
@@ -11127,12 +11127,6 @@ export class ProdContainerListServiceProxy {
             url_ += "ReceiveDateFrom=" + encodeURIComponent(receiveDateFrom ? "" + receiveDateFrom.toJSON() : "") + "&"; 
         if (receiveDateTo !== undefined)
             url_ += "ReceiveDateTo=" + encodeURIComponent(receiveDateTo ? "" + receiveDateTo.toJSON() : "") + "&"; 
-        if (invoiceNo !== undefined)
-            url_ += "InvoiceNo=" + encodeURIComponent("" + invoiceNo) + "&"; 
-        if (billDateFrom !== undefined)
-            url_ += "BillDateFrom=" + encodeURIComponent(billDateFrom ? "" + billDateFrom.toJSON() : "") + "&"; 
-        if (billDateTo !== undefined)
-            url_ += "BillDateTo=" + encodeURIComponent(billDateTo ? "" + billDateTo.toJSON() : "") + "&"; 
         if (containerStatus !== undefined)
             url_ += "ContainerStatus=" + encodeURIComponent("" + containerStatus) + "&"; 
         if (sorting !== undefined)
@@ -11195,17 +11189,15 @@ export class ProdContainerListServiceProxy {
      * @param containerNo (optional) 
      * @param supplierNo (optional) 
      * @param billOfLadingNo (optional) 
+     * @param invoiceNo (optional) 
      * @param portDateFrom (optional) 
      * @param portDateTo (optional) 
      * @param receiveDateFrom (optional) 
      * @param receiveDateTo (optional) 
-     * @param invoiceNo (optional) 
-     * @param billDateFrom (optional) 
-     * @param billDateTo (optional) 
      * @param containerStatus (optional) 
      * @return Success
      */
-    getProdContainerListToExcel(containerNo: string | null | undefined, supplierNo: string | null | undefined, billOfLadingNo: string | null | undefined, portDateFrom: moment.Moment | null | undefined, portDateTo: moment.Moment | null | undefined, receiveDateFrom: moment.Moment | null | undefined, receiveDateTo: moment.Moment | null | undefined, invoiceNo: string | null | undefined, billDateFrom: moment.Moment | null | undefined, billDateTo: moment.Moment | null | undefined, containerStatus: string | null | undefined): Observable<FileDto> {
+    getProdContainerListToExcel(containerNo: string | null | undefined, supplierNo: string | null | undefined, billOfLadingNo: string | null | undefined, invoiceNo: string | null | undefined, portDateFrom: moment.Moment | null | undefined, portDateTo: moment.Moment | null | undefined, receiveDateFrom: moment.Moment | null | undefined, receiveDateTo: moment.Moment | null | undefined, containerStatus: string | null | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdContainerList/GetProdContainerListToExcel?";
         if (containerNo !== undefined)
             url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
@@ -11213,6 +11205,8 @@ export class ProdContainerListServiceProxy {
             url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
         if (billOfLadingNo !== undefined)
             url_ += "BillOfLadingNo=" + encodeURIComponent("" + billOfLadingNo) + "&"; 
+        if (invoiceNo !== undefined)
+            url_ += "InvoiceNo=" + encodeURIComponent("" + invoiceNo) + "&"; 
         if (portDateFrom !== undefined)
             url_ += "PortDateFrom=" + encodeURIComponent(portDateFrom ? "" + portDateFrom.toJSON() : "") + "&"; 
         if (portDateTo !== undefined)
@@ -11221,12 +11215,6 @@ export class ProdContainerListServiceProxy {
             url_ += "ReceiveDateFrom=" + encodeURIComponent(receiveDateFrom ? "" + receiveDateFrom.toJSON() : "") + "&"; 
         if (receiveDateTo !== undefined)
             url_ += "ReceiveDateTo=" + encodeURIComponent(receiveDateTo ? "" + receiveDateTo.toJSON() : "") + "&"; 
-        if (invoiceNo !== undefined)
-            url_ += "InvoiceNo=" + encodeURIComponent("" + invoiceNo) + "&"; 
-        if (billDateFrom !== undefined)
-            url_ += "BillDateFrom=" + encodeURIComponent(billDateFrom ? "" + billDateFrom.toJSON() : "") + "&"; 
-        if (billDateTo !== undefined)
-            url_ += "BillDateTo=" + encodeURIComponent(billDateTo ? "" + billDateTo.toJSON() : "") + "&"; 
         if (containerStatus !== undefined)
             url_ += "ContainerStatus=" + encodeURIComponent("" + containerStatus) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
@@ -11360,15 +11348,15 @@ export class ProdContainerRentalWHPlanServiceProxy {
      * @param invoiceNo (optional) 
      * @param billofladingNo (optional) 
      * @param supplierNo (optional) 
-     * @param sealNo (optional) 
      * @param requestDateFrom (optional) 
      * @param requestDateTo (optional) 
+     * @param warehouse (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getProdContainerRentalWHPlanSearch(containerNo: string | null | undefined, invoiceNo: string | null | undefined, billofladingNo: string | null | undefined, supplierNo: string | null | undefined, sealNo: string | null | undefined, requestDateFrom: moment.Moment | null | undefined, requestDateTo: moment.Moment | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdContainerRentalWHPlanDto> {
+    getProdContainerRentalWHPlanSearch(containerNo: string | null | undefined, invoiceNo: string | null | undefined, billofladingNo: string | null | undefined, supplierNo: string | null | undefined, requestDateFrom: moment.Moment | null | undefined, requestDateTo: moment.Moment | null | undefined, warehouse: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdContainerRentalWHPlanDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdContainerRentalWHPlan/GetProdContainerRentalWHPlanSearch?";
         if (containerNo !== undefined)
             url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
@@ -11378,12 +11366,12 @@ export class ProdContainerRentalWHPlanServiceProxy {
             url_ += "BillofladingNo=" + encodeURIComponent("" + billofladingNo) + "&"; 
         if (supplierNo !== undefined)
             url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
-        if (sealNo !== undefined)
-            url_ += "SealNo=" + encodeURIComponent("" + sealNo) + "&"; 
         if (requestDateFrom !== undefined)
             url_ += "RequestDateFrom=" + encodeURIComponent(requestDateFrom ? "" + requestDateFrom.toJSON() : "") + "&"; 
         if (requestDateTo !== undefined)
             url_ += "RequestDateTo=" + encodeURIComponent(requestDateTo ? "" + requestDateTo.toJSON() : "") + "&"; 
+        if (warehouse !== undefined)
+            url_ += "Warehouse=" + encodeURIComponent("" + warehouse) + "&"; 
         if (sorting !== undefined)
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         if (skipCount === null)
@@ -11445,12 +11433,12 @@ export class ProdContainerRentalWHPlanServiceProxy {
      * @param invoiceNo (optional) 
      * @param billofladingNo (optional) 
      * @param supplierNo (optional) 
-     * @param sealNo (optional) 
      * @param requestDateFrom (optional) 
      * @param requestDateTo (optional) 
+     * @param warehouse (optional) 
      * @return Success
      */
-    getProdContainerRentalWHPlanToExcel(containerNo: string | null | undefined, invoiceNo: string | null | undefined, billofladingNo: string | null | undefined, supplierNo: string | null | undefined, sealNo: string | null | undefined, requestDateFrom: moment.Moment | null | undefined, requestDateTo: moment.Moment | null | undefined): Observable<FileDto> {
+    getProdContainerRentalWHPlanToExcel(containerNo: string | null | undefined, invoiceNo: string | null | undefined, billofladingNo: string | null | undefined, supplierNo: string | null | undefined, requestDateFrom: moment.Moment | null | undefined, requestDateTo: moment.Moment | null | undefined, warehouse: string | null | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdContainerRentalWHPlan/GetProdContainerRentalWHPlanToExcel?";
         if (containerNo !== undefined)
             url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
@@ -11460,12 +11448,12 @@ export class ProdContainerRentalWHPlanServiceProxy {
             url_ += "BillofladingNo=" + encodeURIComponent("" + billofladingNo) + "&"; 
         if (supplierNo !== undefined)
             url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
-        if (sealNo !== undefined)
-            url_ += "SealNo=" + encodeURIComponent("" + sealNo) + "&"; 
         if (requestDateFrom !== undefined)
             url_ += "RequestDateFrom=" + encodeURIComponent(requestDateFrom ? "" + requestDateFrom.toJSON() : "") + "&"; 
         if (requestDateTo !== undefined)
             url_ += "RequestDateTo=" + encodeURIComponent(requestDateTo ? "" + requestDateTo.toJSON() : "") + "&"; 
+        if (warehouse !== undefined)
+            url_ += "Warehouse=" + encodeURIComponent("" + warehouse) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -28986,40 +28974,24 @@ export interface IPagedResultDtoOfProdContainerInvoiceDto {
 export class ProdContainerListDto implements IProdContainerListDto {
     containerNo!: string | undefined;
     supplierNo!: string | undefined;
+    billId!: number | undefined;
     billOfLadingNo!: string | undefined;
-    sealNo!: string | undefined;
-    containerSize!: number | undefined;
     shipmentId!: number | undefined;
     shippingDate!: moment.Moment | undefined;
     portDate!: moment.Moment | undefined;
-    portDateActual!: moment.Moment | undefined;
-    portTransitDate!: moment.Moment | undefined;
     receiveDate!: moment.Moment | undefined;
-    requestId!: number | undefined;
     invoiceNo!: string | undefined;
+    invoiceId!: number | undefined;
     transport!: string | undefined;
-    devanningDate!: moment.Moment | undefined;
-    devanningTime!: string | undefined;
     remark!: string | undefined;
-    whLocation!: string | undefined;
-    gateInDate!: moment.Moment | undefined;
-    gateInTime!: string | undefined;
-    transitPortReqId!: number | undefined;
-    transitPortReqDate!: moment.Moment | undefined;
-    transitPortReqTime!: string | undefined;
     freight!: number | undefined;
     insurance!: number | undefined;
     cif!: number | undefined;
     tax!: number | undefined;
     amount!: number | undefined;
     status!: string | undefined;
-    locationCode!: string | undefined;
-    locationDate!: moment.Moment | undefined;
-    receivingPeriodId!: number | undefined;
-    rentalWhId!: number | undefined;
     requestStatus!: string | undefined;
     billDate!: moment.Moment | undefined;
-    receiveTime!: string | undefined;
     grandFreight!: number | undefined;
     grandInsurance!: number | undefined;
     grandCif!: number | undefined;
@@ -29040,40 +29012,24 @@ export class ProdContainerListDto implements IProdContainerListDto {
         if (_data) {
             this.containerNo = _data["containerNo"];
             this.supplierNo = _data["supplierNo"];
+            this.billId = _data["billId"];
             this.billOfLadingNo = _data["billOfLadingNo"];
-            this.sealNo = _data["sealNo"];
-            this.containerSize = _data["containerSize"];
             this.shipmentId = _data["shipmentId"];
             this.shippingDate = _data["shippingDate"] ? moment(_data["shippingDate"].toString()) : <any>undefined;
             this.portDate = _data["portDate"] ? moment(_data["portDate"].toString()) : <any>undefined;
-            this.portDateActual = _data["portDateActual"] ? moment(_data["portDateActual"].toString()) : <any>undefined;
-            this.portTransitDate = _data["portTransitDate"] ? moment(_data["portTransitDate"].toString()) : <any>undefined;
             this.receiveDate = _data["receiveDate"] ? moment(_data["receiveDate"].toString()) : <any>undefined;
-            this.requestId = _data["requestId"];
             this.invoiceNo = _data["invoiceNo"];
+            this.invoiceId = _data["invoiceId"];
             this.transport = _data["transport"];
-            this.devanningDate = _data["devanningDate"] ? moment(_data["devanningDate"].toString()) : <any>undefined;
-            this.devanningTime = _data["devanningTime"];
             this.remark = _data["remark"];
-            this.whLocation = _data["whLocation"];
-            this.gateInDate = _data["gateInDate"] ? moment(_data["gateInDate"].toString()) : <any>undefined;
-            this.gateInTime = _data["gateInTime"];
-            this.transitPortReqId = _data["transitPortReqId"];
-            this.transitPortReqDate = _data["transitPortReqDate"] ? moment(_data["transitPortReqDate"].toString()) : <any>undefined;
-            this.transitPortReqTime = _data["transitPortReqTime"];
             this.freight = _data["freight"];
             this.insurance = _data["insurance"];
             this.cif = _data["cif"];
             this.tax = _data["tax"];
             this.amount = _data["amount"];
             this.status = _data["status"];
-            this.locationCode = _data["locationCode"];
-            this.locationDate = _data["locationDate"] ? moment(_data["locationDate"].toString()) : <any>undefined;
-            this.receivingPeriodId = _data["receivingPeriodId"];
-            this.rentalWhId = _data["rentalWhId"];
             this.requestStatus = _data["requestStatus"];
             this.billDate = _data["billDate"] ? moment(_data["billDate"].toString()) : <any>undefined;
-            this.receiveTime = _data["receiveTime"];
             this.grandFreight = _data["grandFreight"];
             this.grandInsurance = _data["grandInsurance"];
             this.grandCif = _data["grandCif"];
@@ -29094,40 +29050,24 @@ export class ProdContainerListDto implements IProdContainerListDto {
         data = typeof data === 'object' ? data : {};
         data["containerNo"] = this.containerNo;
         data["supplierNo"] = this.supplierNo;
+        data["billId"] = this.billId;
         data["billOfLadingNo"] = this.billOfLadingNo;
-        data["sealNo"] = this.sealNo;
-        data["containerSize"] = this.containerSize;
         data["shipmentId"] = this.shipmentId;
         data["shippingDate"] = this.shippingDate ? this.shippingDate.toISOString() : <any>undefined;
         data["portDate"] = this.portDate ? this.portDate.toISOString() : <any>undefined;
-        data["portDateActual"] = this.portDateActual ? this.portDateActual.toISOString() : <any>undefined;
-        data["portTransitDate"] = this.portTransitDate ? this.portTransitDate.toISOString() : <any>undefined;
         data["receiveDate"] = this.receiveDate ? this.receiveDate.toISOString() : <any>undefined;
-        data["requestId"] = this.requestId;
         data["invoiceNo"] = this.invoiceNo;
+        data["invoiceId"] = this.invoiceId;
         data["transport"] = this.transport;
-        data["devanningDate"] = this.devanningDate ? this.devanningDate.toISOString() : <any>undefined;
-        data["devanningTime"] = this.devanningTime;
         data["remark"] = this.remark;
-        data["whLocation"] = this.whLocation;
-        data["gateInDate"] = this.gateInDate ? this.gateInDate.toISOString() : <any>undefined;
-        data["gateInTime"] = this.gateInTime;
-        data["transitPortReqId"] = this.transitPortReqId;
-        data["transitPortReqDate"] = this.transitPortReqDate ? this.transitPortReqDate.toISOString() : <any>undefined;
-        data["transitPortReqTime"] = this.transitPortReqTime;
         data["freight"] = this.freight;
         data["insurance"] = this.insurance;
         data["cif"] = this.cif;
         data["tax"] = this.tax;
         data["amount"] = this.amount;
         data["status"] = this.status;
-        data["locationCode"] = this.locationCode;
-        data["locationDate"] = this.locationDate ? this.locationDate.toISOString() : <any>undefined;
-        data["receivingPeriodId"] = this.receivingPeriodId;
-        data["rentalWhId"] = this.rentalWhId;
         data["requestStatus"] = this.requestStatus;
         data["billDate"] = this.billDate ? this.billDate.toISOString() : <any>undefined;
-        data["receiveTime"] = this.receiveTime;
         data["grandFreight"] = this.grandFreight;
         data["grandInsurance"] = this.grandInsurance;
         data["grandCif"] = this.grandCif;
@@ -29141,40 +29081,24 @@ export class ProdContainerListDto implements IProdContainerListDto {
 export interface IProdContainerListDto {
     containerNo: string | undefined;
     supplierNo: string | undefined;
+    billId: number | undefined;
     billOfLadingNo: string | undefined;
-    sealNo: string | undefined;
-    containerSize: number | undefined;
     shipmentId: number | undefined;
     shippingDate: moment.Moment | undefined;
     portDate: moment.Moment | undefined;
-    portDateActual: moment.Moment | undefined;
-    portTransitDate: moment.Moment | undefined;
     receiveDate: moment.Moment | undefined;
-    requestId: number | undefined;
     invoiceNo: string | undefined;
+    invoiceId: number | undefined;
     transport: string | undefined;
-    devanningDate: moment.Moment | undefined;
-    devanningTime: string | undefined;
     remark: string | undefined;
-    whLocation: string | undefined;
-    gateInDate: moment.Moment | undefined;
-    gateInTime: string | undefined;
-    transitPortReqId: number | undefined;
-    transitPortReqDate: moment.Moment | undefined;
-    transitPortReqTime: string | undefined;
     freight: number | undefined;
     insurance: number | undefined;
     cif: number | undefined;
     tax: number | undefined;
     amount: number | undefined;
     status: string | undefined;
-    locationCode: string | undefined;
-    locationDate: moment.Moment | undefined;
-    receivingPeriodId: number | undefined;
-    rentalWhId: number | undefined;
     requestStatus: string | undefined;
     billDate: moment.Moment | undefined;
-    receiveTime: string | undefined;
     grandFreight: number | undefined;
     grandInsurance: number | undefined;
     grandCif: number | undefined;
@@ -29234,18 +29158,16 @@ export interface IPagedResultDtoOfProdContainerListDto {
 export class ProdContainerRentalWHPlanDto implements IProdContainerRentalWHPlanDto {
     containerNo!: string | undefined;
     requestDate!: moment.Moment | undefined;
-    requestTime!: string | undefined;
     invoiceNo!: string | undefined;
     billofladingNo!: string | undefined;
     supplierNo!: string | undefined;
-    sealNo!: string | undefined;
-    devanningDate!: moment.Moment | undefined;
-    devanningTime!: string | undefined;
-    actualDevanningDate!: moment.Moment | undefined;
-    gateInPlanTime!: moment.Moment | undefined;
-    gateInActualDateTime!: moment.Moment | undefined;
+    receiveDate!: moment.Moment | undefined;
+    deliveryDate!: moment.Moment | undefined;
     transport!: string | undefined;
     status!: string | undefined;
+    warehouse!: string | undefined;
+    invoiceId!: number | undefined;
+    billId!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdContainerRentalWHPlanDto) {
@@ -29261,18 +29183,16 @@ export class ProdContainerRentalWHPlanDto implements IProdContainerRentalWHPlanD
         if (_data) {
             this.containerNo = _data["containerNo"];
             this.requestDate = _data["requestDate"] ? moment(_data["requestDate"].toString()) : <any>undefined;
-            this.requestTime = _data["requestTime"];
             this.invoiceNo = _data["invoiceNo"];
             this.billofladingNo = _data["billofladingNo"];
             this.supplierNo = _data["supplierNo"];
-            this.sealNo = _data["sealNo"];
-            this.devanningDate = _data["devanningDate"] ? moment(_data["devanningDate"].toString()) : <any>undefined;
-            this.devanningTime = _data["devanningTime"];
-            this.actualDevanningDate = _data["actualDevanningDate"] ? moment(_data["actualDevanningDate"].toString()) : <any>undefined;
-            this.gateInPlanTime = _data["gateInPlanTime"] ? moment(_data["gateInPlanTime"].toString()) : <any>undefined;
-            this.gateInActualDateTime = _data["gateInActualDateTime"] ? moment(_data["gateInActualDateTime"].toString()) : <any>undefined;
+            this.receiveDate = _data["receiveDate"] ? moment(_data["receiveDate"].toString()) : <any>undefined;
+            this.deliveryDate = _data["deliveryDate"] ? moment(_data["deliveryDate"].toString()) : <any>undefined;
             this.transport = _data["transport"];
             this.status = _data["status"];
+            this.warehouse = _data["warehouse"];
+            this.invoiceId = _data["invoiceId"];
+            this.billId = _data["billId"];
             this.id = _data["id"];
         }
     }
@@ -29288,18 +29208,16 @@ export class ProdContainerRentalWHPlanDto implements IProdContainerRentalWHPlanD
         data = typeof data === 'object' ? data : {};
         data["containerNo"] = this.containerNo;
         data["requestDate"] = this.requestDate ? this.requestDate.toISOString() : <any>undefined;
-        data["requestTime"] = this.requestTime;
         data["invoiceNo"] = this.invoiceNo;
         data["billofladingNo"] = this.billofladingNo;
         data["supplierNo"] = this.supplierNo;
-        data["sealNo"] = this.sealNo;
-        data["devanningDate"] = this.devanningDate ? this.devanningDate.toISOString() : <any>undefined;
-        data["devanningTime"] = this.devanningTime;
-        data["actualDevanningDate"] = this.actualDevanningDate ? this.actualDevanningDate.toISOString() : <any>undefined;
-        data["gateInPlanTime"] = this.gateInPlanTime ? this.gateInPlanTime.toISOString() : <any>undefined;
-        data["gateInActualDateTime"] = this.gateInActualDateTime ? this.gateInActualDateTime.toISOString() : <any>undefined;
+        data["receiveDate"] = this.receiveDate ? this.receiveDate.toISOString() : <any>undefined;
+        data["deliveryDate"] = this.deliveryDate ? this.deliveryDate.toISOString() : <any>undefined;
         data["transport"] = this.transport;
         data["status"] = this.status;
+        data["warehouse"] = this.warehouse;
+        data["invoiceId"] = this.invoiceId;
+        data["billId"] = this.billId;
         data["id"] = this.id;
         return data; 
     }
@@ -29308,18 +29226,16 @@ export class ProdContainerRentalWHPlanDto implements IProdContainerRentalWHPlanD
 export interface IProdContainerRentalWHPlanDto {
     containerNo: string | undefined;
     requestDate: moment.Moment | undefined;
-    requestTime: string | undefined;
     invoiceNo: string | undefined;
     billofladingNo: string | undefined;
     supplierNo: string | undefined;
-    sealNo: string | undefined;
-    devanningDate: moment.Moment | undefined;
-    devanningTime: string | undefined;
-    actualDevanningDate: moment.Moment | undefined;
-    gateInPlanTime: moment.Moment | undefined;
-    gateInActualDateTime: moment.Moment | undefined;
+    receiveDate: moment.Moment | undefined;
+    deliveryDate: moment.Moment | undefined;
     transport: string | undefined;
     status: string | undefined;
+    warehouse: string | undefined;
+    invoiceId: number | undefined;
+    billId: number | undefined;
     id: number | undefined;
 }
 

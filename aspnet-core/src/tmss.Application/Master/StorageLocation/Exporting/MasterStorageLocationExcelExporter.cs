@@ -19,9 +19,7 @@ namespace tmss.Master.StorageLocation.Exporting
 
                     AddHeader(
                         sheet,
-                        ("Plant Code"),
-                        ("Plant Name"),
-                        ("Storage Location"),
+                        ("Warehouse"),
                         ("Storage Location Name"),
                         ("Address Language En"),
                         ("Address Language Vn"),
@@ -30,8 +28,6 @@ namespace tmss.Master.StorageLocation.Exporting
 
                     AddObjects(
                         sheet, 1, listdata,
-                        _ => _.PlantCode,
-                        _ => _.PlantName,
                         _ => _.StorageLocation,
                         _ => _.StorageLocationName,
                         _ => _.AddressLanguageEn,

@@ -24,35 +24,28 @@ namespace tmss.MaterialManagement.ContainerWH.Exporting
                         ("Invoice No"),
                         ("Bill Of Lading No"),
                         ("Supplier No"),
-                        ("Seal No"),
-                        ("Devanning Date"),
-                        ("Devanning Time"),
-                        ("Actual Devanning Date"),
-                        ("Gate In Plan Time"),
-                        ("Gate In Actual Date Time"),
+                        ("Receive Date"),
+                        ("Delivery Date"),
                         ("Transport"),
-                        ("Status")
+                        ("Status"),
+                        ("Warehouse")
                     );
 
                     AddObjects(
                         sheet, 1, listdata,
                         _ => _.ContainerNo,
                         _ => _.RequestDate,
-                        _ => _.RequestTime,
                         _ => _.InvoiceNo,
                         _ => _.BillofladingNo,
                         _ => _.SupplierNo,
-                        _ => _.SealNo,
-                        _ => _.DevanningDate,
-                        _ => _.DevanningTime,
-                        _ => _.ActualDevanningDate,
-                        _ => _.GateInPlanTime,
-                        _ => _.GateInActualDateTime,
+                        _ => _.ReceiveDate,
+                        _ => _.DeliveryDate,
                         _ => _.Transport,
-                        _ => _.Status
+                        _ => _.Status,
+                        _ => _.Warehouse
                     );
 
-                    for (var i = 0; i < 14; i++)
+                    for (var i = 0; i < 10; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

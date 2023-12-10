@@ -31,7 +31,7 @@ namespace tmss.MaterialManagement.ContainerWH
 
         public async Task<PagedResultDto<ProdContainerRentalWHPlanDto>> GetProdContainerRentalWHPlanSearch(GetProdContainerRentalWHPlanInput input)
         {
-            string _sql = "Exec INV_PROD_CONTAINER_WAREHOUSE_SEARCH @p_ContainerNo, @p_InvoiceNo, @p_BillOfLadingNo, @p_SupplierNo, @p_SealNo, @p_RequestDateFrom, @p_RequestDateTo";
+            string _sql = "Exec INV_PROD_CONTAINER_WAREHOUSE_SEARCH @p_ContainerNo, @p_InvoiceNo, @p_BillOfLadingNo, @p_SupplierNo, @p_RequestDateFrom, @p_RequestDateTo, @p_Warehouse";
 
             IEnumerable<ProdContainerRentalWHPlanDto> result = await _dapperRepo.QueryAsync<ProdContainerRentalWHPlanDto>(_sql, new
             {
@@ -39,9 +39,9 @@ namespace tmss.MaterialManagement.ContainerWH
                 p_InvoiceNo = input.InvoiceNo,
                 p_BillOfLadingNo = input.BillofladingNo,
                 p_SupplierNo = input.SupplierNo,
-                p_SealNo = input.SealNo,
                 p_RequestDateFrom = input.RequestDateFrom,
-                p_RequestDateTo = input.RequestDateTo
+                p_RequestDateTo = input.RequestDateTo,
+                p_Warehouse = input.Warehouse
             });
 
             var listResult = result.ToList();
@@ -55,7 +55,7 @@ namespace tmss.MaterialManagement.ContainerWH
 
         public async Task<FileDto> GetProdContainerRentalWHPlanToExcel(GetProdContainerRentalWHPlanExportInput input)
         {
-            string _sql = "Exec INV_PROD_CONTAINER_WAREHOUSE_SEARCH @p_ContainerNo, @p_InvoiceNo, @p_BillOfLadingNo, @p_SupplierNo, @p_SealNo, @p_RequestDateFrom, @p_RequestDateTo";
+            string _sql = "Exec INV_PROD_CONTAINER_WAREHOUSE_SEARCH @p_ContainerNo, @p_InvoiceNo, @p_BillOfLadingNo, @p_SupplierNo, @p_RequestDateFrom, @p_RequestDateTo, @p_Warehouse";
 
             IEnumerable<ProdContainerRentalWHPlanDto> result = await _dapperRepo.QueryAsync<ProdContainerRentalWHPlanDto>(_sql, new
             {
@@ -63,9 +63,9 @@ namespace tmss.MaterialManagement.ContainerWH
                 p_InvoiceNo = input.InvoiceNo,
                 p_BillOfLadingNo = input.BillofladingNo,
                 p_SupplierNo = input.SupplierNo,
-                p_SealNo = input.SealNo,
                 p_RequestDateFrom = input.RequestDateFrom,
-                p_RequestDateTo = input.RequestDateTo
+                p_RequestDateTo = input.RequestDateTo,
+                p_Warehouse = input.Warehouse
             });
 
             var exportToExcel = result.ToList();
@@ -92,16 +92,9 @@ namespace tmss.MaterialManagement.ContainerWH
                 p_Id = input.Id,
                 p_ContainerNo = input.ContainerNo,
                 p_RequestDate = input.RequestDate,
-                p_RequestTime = input.RequestTime,
                 p_InvoiceNo = input.InvoiceNo,
                 p_BillOfLadingNo = input.BillofladingNo,
                 p_SupplierNo = input.SupplierNo,
-                p_SealNo = input.SealNo,
-                p_DevanningDate = input.DevanningDate,
-                p_DevanningTime = input.DevanningTime,
-                p_ActualDevanningDate = input.ActualDevanningDate,
-                p_GateInPlanTime = input.GateInPlanTime,
-                p_GateInActualDateTime = input.GateInActualDateTime,
                 p_Transport = input.Transport,
                 p_Status = input.Status,
                 p_UserId = AbpSession.UserId
