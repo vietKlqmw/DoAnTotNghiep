@@ -58,7 +58,7 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
     isExcel: boolean = true;
     isPdf: boolean = false;
     _selectrow;
-    listCont = [];
+    listCont = '';
 
     constructor(injector: Injector,
         private _service: ProdContainerRentalWHPlanServiceProxy,
@@ -131,7 +131,7 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
     }
 
     show(): void {
-        this.listCont = [];
+        this.listCont = '';
         this.modal.show();
 
     }
@@ -146,10 +146,14 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
 
         this._selectrow = this.saveSelectedRow.id;
 
-        this.listCont = [];
+        this.listCont = '';
         if(params.api.getSelectedRows().length) {
             for(var i = 0; i < params.api.getSelectedRows().length; i++){
-                this.listCont.push(params.api.getSelectedRows()[i].id)
+                if(i != params.api.getSelectedRows().length - 1){
+                    this.listCont += params.api.getSelectedRows()[i].id + ',';
+                }else{
+                    this.listCont += params.api.getSelectedRows()[i].id;
+                }
             }
         }
     }
@@ -175,6 +179,7 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
             this.notify.warn('Need to choose at least 1 Container!');
             return;
         }
+
     }
 
     rowClickData: ProdContainerRentalWHPlanDto;
