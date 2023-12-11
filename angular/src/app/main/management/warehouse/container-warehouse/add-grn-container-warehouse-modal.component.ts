@@ -29,6 +29,8 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
         sorting: '',
         totalPage: 1,
     };
+    selectedRow: ProdContainerRentalWHPlanDto = new ProdContainerRentalWHPlanDto();
+    saveSelectedRow: ProdContainerRentalWHPlanDto = new ProdContainerRentalWHPlanDto();
     rowSelection = 'multiple';
     pipe = new DatePipe('en-US');
     frameworkComponents: FrameworkComponent;
@@ -53,6 +55,10 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
     _warehouse;
     _goodsReceived;
     _receiveDate = new Date();
+    isExcel: boolean = true;
+    isPdf: boolean = false;
+    _selectrow;
+    listCont = [];
 
     constructor(injector: Injector,
         private _service: ProdContainerRentalWHPlanServiceProxy,
@@ -125,7 +131,7 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
     }
 
     show(): void {
-
+        this.listCont = [];
         this.modal.show();
 
     }
@@ -134,7 +140,41 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
         this.dataParams = params;
     }
 
+    onChangeRowSelection(params: { api: { getSelectedRows: () => ProdContainerRentalWHPlanDto[] } }) {
+        this.saveSelectedRow = params.api.getSelectedRows()[0] ?? new ProdContainerRentalWHPlanDto();
+        this.selectedRow = Object.assign({}, this.saveSelectedRow);
+
+        this._selectrow = this.saveSelectedRow.id;
+
+        this.listCont = [];
+        if(params.api.getSelectedRows().length) {
+            for(var i = 0; i < params.api.getSelectedRows().length; i++){
+                this.listCont.push(params.api.getSelectedRows()[i].id)
+            }
+        }
+    }
+
     save(): void {
+        if(this._goodsReceived == null || this._goodsReceived == ''){
+            this.notify.warn('Goods Received Note No is Required!');
+            return;
+        }
+        if(this._receiveDate == undefined){
+            this.notify.warn('Receive Date is Required!');
+            return;
+        }
+        if(this._warehouse == null || this._warehouse == ''){
+            this.notify.warn('Warehouse is Required!');
+            return;
+        }
+        if(!this.isExcel && !this.isPdf){
+            this.notify.warn('Export is Required!');
+            return;
+        }
+        if(this.listCont.length < 1){
+            this.notify.warn('Need to choose at least 1 Container!');
+            return;
+        }
     }
 
     rowClickData: ProdContainerRentalWHPlanDto;
@@ -150,6 +190,24 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
             if (_row) _row.classList.add("setcolor_background_rowclick");
         }
 
+    }
+
+    onChangeToExcel(event){
+        if (event && this.isPdf){
+            this.isExcel = event;
+            this.isPdf = !event;
+        }else{
+            this.isExcel = event;
+        }
+    }
+
+    onChangeToPdf(event){
+        if (event && this.isExcel){
+            this.isPdf = event;
+            this.isExcel = !event;
+        }else{
+            this.isPdf = event;
+        }
     }
 
     close(): void {

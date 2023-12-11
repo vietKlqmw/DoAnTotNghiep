@@ -33,6 +33,23 @@
                                 <tmss-combobox [items]="list" name="warehouse" [text]="'Warehouse'"
                                     [(ngModel)]="_warehouse"></tmss-combobox>
                             </div>
+                            <div class="ui-g-12 ui-md-4" style="display: flex;">
+                                <label>Export By: </label>
+                                <div class="kt-checkbox-list">
+                                    <label class="kt-checkbox ml-4">
+                                        <input type="checkbox" name="isExcel" [(ngModel)]="isExcel" (change)="onChangeToExcel($event.currentTarget.checked)">
+                                        <label>{{'Excel' | localize}}</label>
+                                        <span></span>
+                                    </label>
+                                </div>
+                                <div class="kt-checkbox-list ml-4">
+                                    <label class="kt-checkbox">
+                                        <input type="checkbox" name="isPdf" [(ngModel)]="isPdf" (change)="onChangeToPdf($event.currentTarget.checked)">
+                                        <label>{{'Pdf' | localize}}</label>
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </fieldset>
                 </div>
@@ -44,6 +61,7 @@
                         [rowData]="data"
                         [defaultColDef]="defaultColDef"
                         (callBackEvent)="callBackDataGrid($event)"
+                        (onChangeSelection)="onChangeRowSelection($event)"
                         [rowSelection]="rowSelection"
                         (rowClicked)="onRowClick($event)"
                         [frameworkComponents]="frameworkComponents"
