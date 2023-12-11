@@ -18,7 +18,7 @@
                         <i class="fa tmss-fa fa-plus mr-1" *ngIf="!_expandInfo"></i>
                         {{ 'Invoice Information' }}
                     </h6>
-                    <fieldset class="fieldset-border ui-g-12 pl-0 pr-0  mt-2" style="height: auto;" *ngIf="_expandInfo">
+                    <fieldset class="fieldset-border ui-g-12 pl-0 pr-0" style="height: auto;" *ngIf="_expandInfo">
                         <div class="ui-g-12 ph-0">
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Invoice No'" [(ngModel)]="rowData.invoiceNo"
@@ -76,7 +76,7 @@
                         <i class="fa tmss-fa fa-plus mr-1" *ngIf="!_expandDetailsInfo"></i>
                         {{ 'Invoice Details' }}
                     </h6>
-                    <fieldset class="fieldset-border ui-g-12 pl-0 pr-0  mt-2" style="height: auto;" *ngIf="_expandDetailsInfo">
+                    <fieldset class="fieldset-border ui-g-12 pl-0 pr-0" style="height: auto;" *ngIf="_expandDetailsInfo">
                         <div class="ui-g-12 ph-0">
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Container No'" [(ngModel)]="rowData.containerNo"
