@@ -90,10 +90,10 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
                 headerName: this.l('Port Date'), headerTooltip: this.l('PortDate'), field: 'portDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.portDate, 'dd/MM/yyyy')
             },
-            {
-                headerName: this.l('Transaction Date'), headerTooltip: this.l('TransactionDate'), field: 'transactionDate', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.transactionDate, 'dd/MM/yyyy')
-            },
+            // {
+            //     headerName: this.l('Transaction Date'), headerTooltip: this.l('TransactionDate'), field: 'transactionDate', flex: 1,
+            //     valueGetter: (params) => this.pipe.transform(params.data?.transactionDate, 'dd/MM/yyyy')
+            // },
             {
                 headerName: this.l('Qty'), headerTooltip: this.l('Qty'), field: 'usageQty', flex: 1, type: 'rightAligned',
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.usageQty)
