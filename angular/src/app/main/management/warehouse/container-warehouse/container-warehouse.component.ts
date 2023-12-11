@@ -110,23 +110,12 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
             { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('Bill Of Lading No'), field: 'billofladingNo', flex: 1 },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
             {
-                headerName: this.l('Devanning Date'), headerTooltip: this.l('Devanning Date'), field: 'devanningDate', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.devanningDate, 'dd/MM/yyyy')
+                headerName: this.l('Receive Date'), headerTooltip: this.l('Receive Date'), field: 'receiveDate', flex: 1,
+                valueGetter: (params) => this.pipe.transform(params.data?.receiveDate, 'dd/MM/yyyy')
             },
-            { headerName: this.l('Devanning Time'), headerTooltip: this.l('Devanning Time'), field: 'devanningTime', flex: 1 },
-            {
-                headerName: this.l('Actual Devanning Date'), headerTooltip: this.l('Actual Devanning Date'), field: 'actualDevanningDate', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.actualDevanningDate, 'dd/MM/yyyy')
-            },
-            {
-                headerName: this.l('Gate In Plan Time'), headerTooltip: this.l('Gate In Plan Time'), field: 'gateInPlanTime', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.gateInPlanTime, 'dd/MM/yyyy HH:mm:ss')
-            },
-            {
-                headerName: this.l('Gate In Actual Date Time'), headerTooltip: this.l('Gate In Actual Date Time'), field: 'gateInActualDateTime', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.gateInActualDateTime, 'dd/MM/yyyy HH:mm:ss')
-            },
-            { headerName: this.l('Transport'), headerTooltip: this.l('Transport'), field: 'transport', flex: 1 }
+            { headerName: this.l('Transport'), headerTooltip: this.l('Transport'), field: 'transport', flex: 1 },
+            { headerName: this.l('Warehouse'), headerTooltip: this.l('Warehouse'), field: 'warehouse', flex: 1 },
+            { headerName: this.l('Goods Received Note No'), headerTooltip: this.l('Goods Received Note No'), field: 'goodsReceivedNoteNo', flex: 1 }
         ];
 
         this.frameworkComponents = {

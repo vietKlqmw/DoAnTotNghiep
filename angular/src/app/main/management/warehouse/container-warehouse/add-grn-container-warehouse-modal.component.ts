@@ -84,11 +84,13 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
                 headerCheckboxSelection: true,
                 headerCheckboxSelectionFilteredOnly: true
             },
-            { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', width: 130, pinned: true },
+            { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'partNo', width: 120, pinned: true },
             {
                 headerName: this.l('Qty'), headerTooltip: this.l('Qty'), field: 'usageQty', width: 100, type: 'rightAligned', pinned: true,
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.usageQty),
             },
+            { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', width: 250 },
+            { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', width: 130 },
             { headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', width: 130 },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', width: 120 },
             { headerName: this.l('Forwarder'), headerTooltip: this.l('Forwarder'), field: 'forwarder', width: 120 },
@@ -212,24 +214,29 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
             listForwarder: this.listForwarder,
             listInvoice: this.listInvoice,
             address: this.list.filter(e => e.value == this._warehouse)[0].address,
+            workingDate: moment(this._receiveDate)
         });
 
         this.saving = true;
-        if(this.isExcel){
-            this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNoteExcel`, input, { responseType: 'blob' })
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(blob => {
-                saveAs(blob, "GoodsReceivedNote_" + formatDate(new Date(this._receiveDate.toString()), 'yyyyMMdd', 'en-US') + ".xlsx");
-                this.notify.success(this.l('Save Successfully'));
-            });
-        }else{
-            this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNotePdf`, input, { responseType: 'blob' })
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(blob => {
-                saveAs(blob, "GoodsReceivedNote_" + formatDate(new Date(this._receiveDate.toString()), 'yyyyMMdd', 'en-US') + ".pdf");
-                this.notify.success(this.l('Save Successfully'));
-            });
-        }
+        this._service.addGrn(input).subscribe(result => {
+            if (this.isExcel) {
+                this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNoteExcel`, input, { responseType: 'blob' })
+                    .pipe(finalize(() => this.saving = false))
+                    .subscribe(blob => {
+                        saveAs(blob, "GoodsReceivedNote_" + formatDate(new Date(this._receiveDate.toString()), 'yyyyMMdd', 'en-US') + ".xlsx");
+                        this.notify.success(this.l('Save Successfully'));
+                    });
+            } else {
+                this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNotePdf`, input, { responseType: 'blob' })
+                    .pipe(finalize(() => this.saving = false))
+                    .subscribe(blob => {
+                        saveAs(blob, "GoodsReceivedNote_" + formatDate(new Date(this._receiveDate.toString()), 'yyyyMMdd', 'en-US') + ".pdf");
+                        this.notify.success(this.l('Save Successfully'));
+                    });
+            }
+            this._component.searchDatas();
+            this.close();
+        })
 
     }
 

@@ -1084,6 +1084,39 @@ INNER JOIN MasterMaterial mm ON mpl.MaterialId = mm.Id
 INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
      WHERE pci.Id IN (SELECT item FROM dbo.fnSplit(@p_ContId, ','))
 END
+------------------------------------------------AddGoodsReceivedNote:
+CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_ADD_GOODS_RECEIVED_NOTE
+    @p_ReceiveDate DATE,
+    @p_Warehouse NVARCHAR(2),
+    @p_ListContId NVARCHAR(MAX),
+    @p_UserId BIGINT
+AS
+BEGIN
+    DECLARE @Tranport NVARCHAR(MAX) = CASE WHEN @p_Warehouse LIKE 'A%' THEN N'Miền Bắc'
+                                           WHEN @p_Warehouse LIKE 'B%' THEN N'Miền Trung'
+                                      ELSE N'Miền Nam' END;
+    INSERT INTO ProdContainerRentalWHPlan 
+    (CreationTime, CreatorUserId, IsDeleted, 
+     ContainerNo, SupplierNo, Transport, BillId, InvoiceId, ReceiveDate, Warehouse)
+        SELECT GETDATE(), @p_UserId, 0, pci.ContainerNo, pci.SupplierNo, @Tranport, pi.BillId, pi.Id, @p_ReceiveDate, @p_Warehouse 
+          FROM ProdContainerIntransit pci 
+    INNER JOIN ProdInvoiceDetails pid ON pci.ContainerNo = pid.ContainerNo
+    INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
+         WHERE pci.Id IN (SELECT item FROM dbo.fnSplit(@p_ListContId, ',')) 
+
+    UPDATE ProdContainerIntransit
+       SET IsDeleted = 1
+     WHERE Id IN (SELECT item FROM dbo.fnSplit(@p_ListContId, ','))
+
+    INSERT INTO ProdStockReceiving 
+    (CreationTime, CreatorUserId, IsDeleted, 
+     PartNo, PartName, PartListId, MaterialId, Qty, InvoiceDetailsId, WorkingDate, SupplierNo, Model)
+        SELECT GETDATE(), @p_UserId, 0, pid.PartNo, pid.PartName, pci.PartListId, mpl.MaterialId, pid.UsageQty, pid.Id, @p_ReceiveDate, pid.SupplierNo, pid.CarfamilyCode 
+          FROM ProdInvoiceDetails pid
+    INNER JOIN ProdContainerIntransit pci ON pid.ContainerNo = pci.ContainerNo
+     LEFT JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
+         WHERE pci.Id IN (SELECT item FROM dbo.fnSplit(@p_ListContId, ',')) 
+END
 ------------------------------------------------delete:
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_DELETE
     @p_Id INT

@@ -11554,6 +11554,58 @@ export class ProdContainerRentalWHPlanServiceProxy {
      * @param body (optional) 
      * @return Success
      */
+    addGrn(body: GoodsReceivedNoteExportInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdContainerRentalWHPlan/AddGrn";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddGrn(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddGrn(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddGrn(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
     editContainerWH(body: ProdContainerRentalWHPlanDto | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/ProdContainerRentalWHPlan/EditContainerWH";
         url_ = url_.replace(/[?&]$/, "");
@@ -29525,6 +29577,74 @@ export interface IPagedResultDtoOfProdContainerRentalWHPlanDto {
     items: ProdContainerRentalWHPlanDto[] | undefined;
 }
 
+export class GoodsReceivedNoteExportInput implements IGoodsReceivedNoteExportInput {
+    listContId!: string | undefined;
+    receiveDate!: string | undefined;
+    goodsReceivedNoteNo!: string | undefined;
+    listForwarder!: string | undefined;
+    listInvoice!: string | undefined;
+    warehouse!: string | undefined;
+    address!: string | undefined;
+    isExcel!: boolean;
+    workingDate!: moment.Moment | undefined;
+
+    constructor(data?: IGoodsReceivedNoteExportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.listContId = _data["listContId"];
+            this.receiveDate = _data["receiveDate"];
+            this.goodsReceivedNoteNo = _data["goodsReceivedNoteNo"];
+            this.listForwarder = _data["listForwarder"];
+            this.listInvoice = _data["listInvoice"];
+            this.warehouse = _data["warehouse"];
+            this.address = _data["address"];
+            this.isExcel = _data["isExcel"];
+            this.workingDate = _data["workingDate"] ? moment(_data["workingDate"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GoodsReceivedNoteExportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoodsReceivedNoteExportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["listContId"] = this.listContId;
+        data["receiveDate"] = this.receiveDate;
+        data["goodsReceivedNoteNo"] = this.goodsReceivedNoteNo;
+        data["listForwarder"] = this.listForwarder;
+        data["listInvoice"] = this.listInvoice;
+        data["warehouse"] = this.warehouse;
+        data["address"] = this.address;
+        data["isExcel"] = this.isExcel;
+        data["workingDate"] = this.workingDate ? this.workingDate.toISOString() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGoodsReceivedNoteExportInput {
+    listContId: string | undefined;
+    receiveDate: string | undefined;
+    goodsReceivedNoteNo: string | undefined;
+    listForwarder: string | undefined;
+    listInvoice: string | undefined;
+    warehouse: string | undefined;
+    address: string | undefined;
+    isExcel: boolean;
+    workingDate: moment.Moment | undefined;
+}
+
 export class ProdContainerRentalWHPlanImportDto implements IProdContainerRentalWHPlanImportDto {
     guid!: string | undefined;
     containerNo!: string | undefined;
@@ -29807,70 +29927,6 @@ export class PagedResultDtoOfProdCustomsDeclareDto implements IPagedResultDtoOfP
 export interface IPagedResultDtoOfProdCustomsDeclareDto {
     totalCount: number;
     items: ProdCustomsDeclareDto[] | undefined;
-}
-
-export class GoodsReceivedNoteExportInput implements IGoodsReceivedNoteExportInput {
-    listContId!: string | undefined;
-    receiveDate!: string | undefined;
-    goodsReceivedNoteNo!: string | undefined;
-    listForwarder!: string | undefined;
-    listInvoice!: string | undefined;
-    warehouse!: string | undefined;
-    address!: string | undefined;
-    isExcel!: boolean;
-
-    constructor(data?: IGoodsReceivedNoteExportInput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.listContId = _data["listContId"];
-            this.receiveDate = _data["receiveDate"];
-            this.goodsReceivedNoteNo = _data["goodsReceivedNoteNo"];
-            this.listForwarder = _data["listForwarder"];
-            this.listInvoice = _data["listInvoice"];
-            this.warehouse = _data["warehouse"];
-            this.address = _data["address"];
-            this.isExcel = _data["isExcel"];
-        }
-    }
-
-    static fromJS(data: any): GoodsReceivedNoteExportInput {
-        data = typeof data === 'object' ? data : {};
-        let result = new GoodsReceivedNoteExportInput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["listContId"] = this.listContId;
-        data["receiveDate"] = this.receiveDate;
-        data["goodsReceivedNoteNo"] = this.goodsReceivedNoteNo;
-        data["listForwarder"] = this.listForwarder;
-        data["listInvoice"] = this.listInvoice;
-        data["warehouse"] = this.warehouse;
-        data["address"] = this.address;
-        data["isExcel"] = this.isExcel;
-        return data; 
-    }
-}
-
-export interface IGoodsReceivedNoteExportInput {
-    listContId: string | undefined;
-    receiveDate: string | undefined;
-    goodsReceivedNoteNo: string | undefined;
-    listForwarder: string | undefined;
-    listInvoice: string | undefined;
-    warehouse: string | undefined;
-    address: string | undefined;
-    isExcel: boolean;
 }
 
 export class ProdInvoiceDto implements IProdInvoiceDto {

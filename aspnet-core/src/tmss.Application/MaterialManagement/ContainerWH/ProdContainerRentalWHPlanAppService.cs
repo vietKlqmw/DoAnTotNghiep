@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using tmss.Common;
 using tmss.Dto;
+using tmss.ManagementOther;
 using tmss.MaterialManagement.ContainerWH.Exporting;
 
 namespace tmss.MaterialManagement.ContainerWH
@@ -79,6 +80,18 @@ namespace tmss.MaterialManagement.ContainerWH
             await _dapperRepo.ExecuteAsync(_sql, new
             {
                 p_Id = Id
+            });
+        }
+
+        public async Task AddGrn(GoodsReceivedNoteExportInput input)
+        {
+            string _sql = "Exec INV_PROD_CONTAINER_WAREHOUSE_ADD_GOODS_RECEIVED_NOTE @p_ReceiveDate, @p_Warehouse, @p_ListContId, @p_UserId";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_ReceiveDate = input.WorkingDate,
+                p_Warehouse = input.Warehouse,
+                p_ListContId = input.ListContId,
+                p_UserId = AbpSession.UserId
             });
         }
 
