@@ -1,14 +1,18 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
 import { AgCellButtonRendererComponent } from '@app/shared/common/grid/ag-cell-button-renderer/ag-cell-button-renderer.component';
 import { FrameworkComponent, GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { ProdContainerRentalWHPlanDto, ProdContainerRentalWHPlanServiceProxy, ProdInvoiceDto, ProdOthersServiceProxy } from '@shared/service-proxies/service-proxies';
+import { GoodsReceivedNoteExportInput, ProdContainerRentalWHPlanServiceProxy, ProdInvoiceDto, ProdOthersServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ContainerWarehouseComponent } from './container-warehouse.component';
 import { BsDatepickerDirective } from 'ngx-bootstrap/datepicker';
-
+import { AppConsts } from '@shared/AppConsts';
+import { HttpClient } from '@angular/common/http';
+import * as saveAs from 'file-saver';
+import * as moment from 'moment';
+import { finalize } from 'rxjs/operators';
 @Component({
     selector: 'addGrnContWarehouse',
     templateUrl: './add-grn-container-warehouse-modal.component.html'
@@ -29,8 +33,8 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
         sorting: '',
         totalPage: 1,
     };
-    selectedRow: ProdContainerRentalWHPlanDto = new ProdContainerRentalWHPlanDto();
-    saveSelectedRow: ProdContainerRentalWHPlanDto = new ProdContainerRentalWHPlanDto();
+    selectedRow: ProdInvoiceDto = new ProdInvoiceDto();
+    saveSelectedRow: ProdInvoiceDto = new ProdInvoiceDto();
     rowSelection = 'multiple';
     pipe = new DatePipe('en-US');
     frameworkComponents: FrameworkComponent;
@@ -59,11 +63,14 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
     isPdf: boolean = false;
     _selectrow;
     listCont = '';
+    listInvoice = '';
+    listForwarder = '';
 
     constructor(injector: Injector,
         private _service: ProdContainerRentalWHPlanServiceProxy,
         private _component: ContainerWarehouseComponent,
         private _other: ProdOthersServiceProxy,
+        private _httpClient: HttpClient,
         private _fm: DataFormatService
     ) {
         super(injector);
@@ -131,7 +138,10 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
     }
 
     show(): void {
-        this.listCont = '';
+        this._warehouse = '';
+        this._receiveDate = new Date();
+        this._goodsReceived = '';
+        this.onChangeToExcel(true);
         this.modal.show();
 
     }
@@ -140,49 +150,90 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
         this.dataParams = params;
     }
 
-    onChangeRowSelection(params: { api: { getSelectedRows: () => ProdContainerRentalWHPlanDto[] } }) {
-        this.saveSelectedRow = params.api.getSelectedRows()[0] ?? new ProdContainerRentalWHPlanDto();
+    onChangeRowSelection(params: { api: { getSelectedRows: () => ProdInvoiceDto[] } }) {
+        this.saveSelectedRow = params.api.getSelectedRows()[0] ?? new ProdInvoiceDto();
         this.selectedRow = Object.assign({}, this.saveSelectedRow);
 
         this._selectrow = this.saveSelectedRow.id;
 
         this.listCont = '';
-        if(params.api.getSelectedRows().length) {
-            for(var i = 0; i < params.api.getSelectedRows().length; i++){
-                if(i != params.api.getSelectedRows().length - 1){
+        this.listForwarder = '';
+        this.listInvoice = '';
+        if (params.api.getSelectedRows().length) {
+            for (var i = 0; i < params.api.getSelectedRows().length; i++) {
+                if (i != params.api.getSelectedRows().length - 1) {
                     this.listCont += params.api.getSelectedRows()[i].id + ',';
-                }else{
+                    if (!this.listInvoice.includes(params.api.getSelectedRows()[i].invoiceNo)) {
+                        this.listInvoice += params.api.getSelectedRows()[i].invoiceNo + ' - ' + formatDate(new Date(params.api.getSelectedRows()[i].invoiceDate?.toString()), 'dd/MM/yyyy', 'en-US') + '; ';
+                    }
+                    if (!this.listForwarder.includes(params.api.getSelectedRows()[i].forwarder)) {
+                        this.listForwarder += params.api.getSelectedRows()[i].forwarder + '; ';
+                    }
+                } else {
                     this.listCont += params.api.getSelectedRows()[i].id;
+                    if (!this.listInvoice.includes(params.api.getSelectedRows()[i].invoiceNo)) {
+                        this.listInvoice += params.api.getSelectedRows()[i].invoiceNo + ' - ' + formatDate(new Date(params.api.getSelectedRows()[i].invoiceDate?.toString()), 'dd/MM/yyyy', 'en-US');
+                    }
+                    if (!this.listForwarder.includes(params.api.getSelectedRows()[i].forwarder)) {
+                        this.listForwarder += params.api.getSelectedRows()[i].forwarder;
+                    }
                 }
             }
         }
     }
 
     save(): void {
-        if(this._goodsReceived == null || this._goodsReceived == ''){
+        if (this._goodsReceived == null || this._goodsReceived == '') {
             this.notify.warn('Goods Received Note No is Required!');
             return;
         }
-        if(this._receiveDate == undefined){
+        if (this._receiveDate == undefined) {
             this.notify.warn('Receive Date is Required!');
             return;
         }
-        if(this._warehouse == null || this._warehouse == ''){
+        if (this._warehouse == null || this._warehouse == '') {
             this.notify.warn('Warehouse is Required!');
             return;
         }
-        if(!this.isExcel && !this.isPdf){
+        if (!this.isExcel && !this.isPdf) {
             this.notify.warn('Export is Required!');
             return;
         }
-        if(this.listCont.length < 1){
+        if (this.listCont.length < 1) {
             this.notify.warn('Need to choose at least 1 Container!');
             return;
+        }
+        let input = Object.assign(new GoodsReceivedNoteExportInput(), {
+            listContId: this.listCont,
+            receiveDate: formatDate(new Date(this._receiveDate.toString()), 'yyyyMMdd', 'en-US'),
+            goodsReceivedNoteNo: this._goodsReceived,
+            isExcel: this.isExcel,
+            warehouse: this._warehouse,
+            listForwarder: this.listForwarder,
+            listInvoice: this.listInvoice,
+            address: this.list.filter(e => e.value == this._warehouse)[0].address,
+        });
+
+        this.saving = true;
+        if(this.isExcel){
+            this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNoteExcel`, input, { responseType: 'blob' })
+            .pipe(finalize(() => this.saving = false))
+            .subscribe(blob => {
+                saveAs(blob, "GoodsReceivedNote_" + formatDate(new Date(this._receiveDate.toString()), 'yyyyMMdd', 'en-US') + ".xlsx");
+                this.notify.success(this.l('Save Successfully'));
+            });
+        }else{
+            this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNotePdf`, input, { responseType: 'blob' })
+            .pipe(finalize(() => this.saving = false))
+            .subscribe(blob => {
+                saveAs(blob, "GoodsReceivedNote_" + formatDate(new Date(this._receiveDate.toString()), 'yyyyMMdd', 'en-US') + ".pdf");
+                this.notify.success(this.l('Save Successfully'));
+            });
         }
 
     }
 
-    rowClickData: ProdContainerRentalWHPlanDto;
+    rowClickData: ProdInvoiceDto;
     onRowClick(params) {
 
         let _rows = document.querySelectorAll<HTMLElement>("body .ag-theme-alpine .ag-center-cols-container .ag-row.ag-row-level-0.ag-row-position-absolute");
@@ -197,20 +248,20 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
 
     }
 
-    onChangeToExcel(event){
-        if (event && this.isPdf){
+    onChangeToExcel(event) {
+        if (event && this.isPdf) {
             this.isExcel = event;
             this.isPdf = !event;
-        }else{
+        } else {
             this.isExcel = event;
         }
     }
 
-    onChangeToPdf(event){
-        if (event && this.isExcel){
+    onChangeToPdf(event) {
+        if (event && this.isExcel) {
             this.isPdf = event;
             this.isExcel = !event;
-        }else{
+        } else {
             this.isPdf = event;
         }
     }

@@ -1070,6 +1070,20 @@ BEGIN
     END
 
 END
+------------------------------------------------GoodsReceivedNote:
+CREATE OR ALTER PROCEDURE INV_PROD_EXPORT_GOODS_RECEIVED_NOTE
+    @p_ContId NVARCHAR(MAX)
+AS
+BEGIN
+    SELECT pid.PartNo, pid.PartName, pid.UsageQty, pi.Forwarder, pi.InvoiceNo,
+           pid.ContainerNo, mm.BaseUnitOfMeasure, mm.StandardPrice
+      FROM ProdInvoiceDetails pid
+INNER JOIN ProdContainerIntransit pci ON pid.ContainerNo = pci.ContainerNo
+INNER JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
+INNER JOIN MasterMaterial mm ON mpl.MaterialId = mm.Id
+INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
+     WHERE pci.Id IN (SELECT item FROM dbo.fnSplit(@p_ContId, ','))
+END
 ------------------------------------------------delete:
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_DELETE
     @p_Id INT

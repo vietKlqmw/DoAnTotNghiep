@@ -62,6 +62,18 @@ namespace tmss.ManagementOther
     {
         public virtual string StorageLocation { get; set; }
 
-        public virtual string AddressLanguageVn { get; set;}
+        public virtual string AddressLanguageVn { get; set; }
+    }
+
+    public class GoodsReceivedNoteExportInput
+    {
+        public virtual string ListContId { get; set; }
+        public virtual string ReceiveDate { get; set; }
+        public virtual string GoodsReceivedNoteNo { get; set; }
+        public virtual string ListForwarder { get; set; }
+        public virtual string ListInvoice { get; set; }
+        public virtual string Warehouse { get; set; }
+        public virtual string Address { get; set; }
+        public virtual bool IsExcel { get; set; }
     }
 }

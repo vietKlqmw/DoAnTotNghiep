@@ -13,6 +13,7 @@ import { finalize } from 'rxjs/operators';
 import { ViewMaterialModalComponent } from './view-material-modal.component';
 import { EditMaterialModalComponent } from './edit-material-modal.component';
 import { ImportMaterialComponent } from './import-material-modal.component';
+import { DataFormatService } from '@app/shared/common/services/data-format.service';
 
 @Component({
     selector: 'app-material',
@@ -72,7 +73,8 @@ export class MaterialComponent extends AppComponentBase implements OnInit {
         injector: Injector,
         private _service: MasterMaterialServiceProxy,
         private gridTableService: GridTableService,
-        private _fileDownloadService: FileDownloadService
+        private _fileDownloadService: FileDownloadService,
+        private _fm: DataFormatService
     ) {
         super(injector);
 
@@ -120,13 +122,17 @@ export class MaterialComponent extends AppComponentBase implements OnInit {
                 headerName: this.l('Standard Price'),
                 headerTooltip: this.l('Standard Price'),
                 field: 'standardPrice',
-                flex: 1
+                flex: 1,
+                type: 'rightAligned',
+                cellRenderer: (params) => (params.data?.standardPrice != null ? this._fm.formatMoney_decimal(params.data?.standardPrice) : 0)
             },
             {
                 headerName: this.l('Moving Price'),
                 headerTooltip: this.l('Moving Price'),
                 field: 'movingPrice',
-                flex: 1
+                flex: 1,
+                type: 'rightAligned',
+                cellRenderer: (params) => (params.data?.movingPrice != null ? this._fm.formatMoney_decimal(params.data?.movingPrice) : 0)
             },
             {
                 headerName: this.l('Material Origin'),

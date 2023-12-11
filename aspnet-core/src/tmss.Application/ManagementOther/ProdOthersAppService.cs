@@ -1,6 +1,10 @@
 ﻿using Abp.Dapper.Repositories;
+using Microsoft.Office.Interop.Excel;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using tmss.Master.Material;
 using tmss.MaterialManagement.Invoice;
@@ -125,6 +129,78 @@ namespace tmss.ManagementOther
             IEnumerable<GetListWarehouse> result = await _dapperRepo.QueryAsync<GetListWarehouse>(_sql);
 
             return result.ToList();
+        }
+
+
+        //excel to pdf
+        public string ConvertExcelToPdf(string filePathSource, string filePathSave, string nameSave)
+        {
+            //kiểm tra định dạng file
+            string name = Path.GetFileName(filePathSource);
+            if (!Regex.IsMatch(name, ".(\\.xlsx|\\.xls)"))
+            {
+                return null;
+            }
+
+            //lấy ra tên file
+            string nameFile = "";
+            if (string.IsNullOrEmpty(nameSave))
+            {
+                nameFile = Path.GetFileNameWithoutExtension(filePathSource);
+            }
+            else
+            {
+                nameFile = nameSave;
+            }
+
+            //đường dẫn lưu file convert
+            string pathToSave = "";
+            if (string.IsNullOrEmpty(filePathSave))//nếu filePathSave null thì lưu cùng vị trí với file source
+            {
+                pathToSave = Path.Combine(Path.GetDirectoryName(filePathSource), nameFile);
+            }
+            else
+            {
+                pathToSave = Path.Combine(filePathSave, nameFile);
+            }
+
+            string result;
+            ApplicationClass application = null;
+            Workbook workBook = null;
+            try
+            {
+                application = new ApplicationClass();
+                object target = pathToSave;
+                workBook = application.Workbooks.Open(filePathSource);//mở file cần convert
+
+                ((_Worksheet)workBook.ActiveSheet).PageSetup.Orientation = XlPageOrientation.xlLandscape;// landscape
+
+                workBook.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, target);//convert
+                result = pathToSave;
+            }
+            catch
+            {
+                result = null;
+            }
+            finally
+            {
+                if (workBook != null)
+                {
+                    workBook.Close(true);
+                    workBook = null;
+                }
+                if (application != null)
+                {
+                    application.Quit();
+                    application = null;
+                }
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+            return result;
+
         }
     }
 }
