@@ -118,7 +118,7 @@ namespace tmss.MaterialManagement.Invoice
         public async Task EditInvoice(ProdInvoiceDto input)
         {
             string _sql = "Exec INV_PROD_INVOICE_EDIT @p_InvoiceId, @p_InvoiceNo, @p_InvoiceDate, @p_Status, @p_Freight, " +
-                "@p_Insurance, @p_Tax, @p_Vat, @p_Thc, @p_Cif, @p_UserId";
+                "@p_Insurance, @p_Tax, @p_Vat, @p_Thc, @p_Cif, @p_ContainerNo, @p_UserId";
             await _dapperRepo.ExecuteAsync(_sql, new
             {
                 p_InvoiceId = input.Id,
@@ -131,6 +131,7 @@ namespace tmss.MaterialManagement.Invoice
                 p_Vat = input.Vat,
                 p_Thc = input.Thc,
                 p_Cif = input.Cif,
+                p_ContainerNo = input.ContainerNo,
                 p_UserId = AbpSession.UserId
             });
         }

@@ -891,6 +891,7 @@ CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_EDIT
     @p_Vat DECIMAL, 
     @p_Thc DECIMAL, 
     @p_Cif DECIMAL, 
+    @p_ContainerNo NVARCHAR(15),
     @p_UserId BIGINT
 )
 AS
@@ -911,7 +912,7 @@ BEGIN
            Cif = @p_Cif,
            Tax = @p_Tax,
            Vat = @p_Vat
-     WHERE InvoiceNo = @p_InvoiceNo
+     WHERE InvoiceNo = @p_InvoiceNo AND ContainerNo = @p_ContainerNo
 END
 ------------------------------------------------GetInvoiceCustomsDeclared:
 CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_CUSTOMS_DECLARED
