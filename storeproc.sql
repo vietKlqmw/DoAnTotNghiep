@@ -999,7 +999,8 @@ CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_SEARCH
 AS
 BEGIN 
     SELECT a.Id, a.ContainerNo, a.RequestDate, pi.InvoiceNo, pbol.BillofladingNo, a.ReceiveDate, 
-           a.SupplierNo, a.Transport, a.Status, a.DeliveryDate, a.Warehouse, a.BillId, a.InvoiceId
+           a.SupplierNo, a.Transport, a.Status, a.DeliveryDate, a.Warehouse, a.BillId, a.InvoiceId,
+           a.GoodsReceivedNoteNo, a.DevanningDate
       FROM ProdContainerRentalWHPlan a
 INNER JOIN ProdInvoice pi ON a.InvoiceId = pi.Id
 INNER JOIN ProdBillOfLading pbol ON a.BillId = pbol.Id
@@ -1086,6 +1087,7 @@ INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
 END
 ------------------------------------------------AddGoodsReceivedNote:
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_ADD_GOODS_RECEIVED_NOTE
+    @p_GrnNo NVARCHAR(10),
     @p_ReceiveDate DATE,
     @p_Warehouse NVARCHAR(2),
     @p_ListContId NVARCHAR(MAX),
@@ -1097,8 +1099,8 @@ BEGIN
                                       ELSE N'Miền Nam' END;
     INSERT INTO ProdContainerRentalWHPlan 
     (CreationTime, CreatorUserId, IsDeleted, 
-     ContainerNo, SupplierNo, Transport, BillId, InvoiceId, ReceiveDate, Warehouse)
-        SELECT GETDATE(), @p_UserId, 0, pci.ContainerNo, pci.SupplierNo, @Tranport, pi.BillId, pi.Id, @p_ReceiveDate, @p_Warehouse 
+     ContainerNo, SupplierNo, Transport, BillId, InvoiceId, ReceiveDate, Warehouse, GoodsReceivedNoteNo)
+        SELECT GETDATE(), @p_UserId, 0, pci.ContainerNo, pci.SupplierNo, @Tranport, pi.BillId, pi.Id, @p_ReceiveDate, @p_Warehouse, @p_GrnNo 
           FROM ProdContainerIntransit pci 
     INNER JOIN ProdInvoiceDetails pid ON pci.ContainerNo = pid.ContainerNo
     INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo

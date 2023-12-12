@@ -19,6 +19,8 @@ namespace tmss.MaterialManagement
 
         public const int MaxWarehouseLength = 2;
 
+        public const int MaxGoodsReceivedNoteNoLength = 10;
+
 
         [StringLength(MaxContainerNoLength)]
         public virtual string ContainerNo { get; set; }
@@ -44,5 +46,10 @@ namespace tmss.MaterialManagement
         public virtual long? InvoiceId { get; set; }
 
         public virtual long? BillId { get; set; }
+
+        [StringLength(MaxGoodsReceivedNoteNoLength)]
+        public virtual string GoodsReceivedNoteNo { get; set; }
+
+        public virtual DateTime? DevanningDate { get; set; }
     }
 }

@@ -17,6 +17,8 @@ namespace tmss.MaterialManagement.ContainerWH
         public virtual string Warehouse { get; set; }
         public virtual long? InvoiceId { get; set; }
         public virtual long? BillId { get; set; }
+        public virtual string GoodsReceivedNoteNo { get; set; }
+        public virtual DateTime? DevanningDate { get; set; }
     }
 
     public class GetProdContainerRentalWHPlanInput : PagedAndSortedResultRequestDto

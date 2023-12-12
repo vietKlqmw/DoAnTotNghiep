@@ -29458,6 +29458,8 @@ export class ProdContainerRentalWHPlanDto implements IProdContainerRentalWHPlanD
     warehouse!: string | undefined;
     invoiceId!: number | undefined;
     billId!: number | undefined;
+    goodsReceivedNoteNo!: string | undefined;
+    devanningDate!: moment.Moment | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdContainerRentalWHPlanDto) {
@@ -29483,6 +29485,8 @@ export class ProdContainerRentalWHPlanDto implements IProdContainerRentalWHPlanD
             this.warehouse = _data["warehouse"];
             this.invoiceId = _data["invoiceId"];
             this.billId = _data["billId"];
+            this.goodsReceivedNoteNo = _data["goodsReceivedNoteNo"];
+            this.devanningDate = _data["devanningDate"] ? moment(_data["devanningDate"].toString()) : <any>undefined;
             this.id = _data["id"];
         }
     }
@@ -29508,6 +29512,8 @@ export class ProdContainerRentalWHPlanDto implements IProdContainerRentalWHPlanD
         data["warehouse"] = this.warehouse;
         data["invoiceId"] = this.invoiceId;
         data["billId"] = this.billId;
+        data["goodsReceivedNoteNo"] = this.goodsReceivedNoteNo;
+        data["devanningDate"] = this.devanningDate ? this.devanningDate.toISOString() : <any>undefined;
         data["id"] = this.id;
         return data; 
     }
@@ -29526,6 +29532,8 @@ export interface IProdContainerRentalWHPlanDto {
     warehouse: string | undefined;
     invoiceId: number | undefined;
     billId: number | undefined;
+    goodsReceivedNoteNo: string | undefined;
+    devanningDate: moment.Moment | undefined;
     id: number | undefined;
 }
 

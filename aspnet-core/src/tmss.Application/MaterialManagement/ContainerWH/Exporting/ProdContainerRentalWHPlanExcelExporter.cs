@@ -19,30 +19,29 @@ namespace tmss.MaterialManagement.ContainerWH.Exporting
                     AddHeader(
                         sheet,
                         ("Container No"),
-                        ("Request Date"),
-                        ("Request Time"),
                         ("Invoice No"),
                         ("Bill Of Lading No"),
                         ("Supplier No"),
                         ("Receive Date"),
-                        ("Delivery Date"),
                         ("Transport"),
                         ("Status"),
-                        ("Warehouse")
+                        ("Warehouse"),
+                        ("Devanning Date"),
+                        ("Goods Received Note No")
                     );
 
                     AddObjects(
                         sheet, 1, listdata,
                         _ => _.ContainerNo,
-                        _ => _.RequestDate,
                         _ => _.InvoiceNo,
                         _ => _.BillofladingNo,
                         _ => _.SupplierNo,
                         _ => _.ReceiveDate,
-                        _ => _.DeliveryDate,
                         _ => _.Transport,
                         _ => _.Status,
-                        _ => _.Warehouse
+                        _ => _.Warehouse,
+                        _ => _.DevanningDate,
+                        _ => _.GoodsReceivedNoteNo
                     );
 
                     for (var i = 0; i < 10; i++)

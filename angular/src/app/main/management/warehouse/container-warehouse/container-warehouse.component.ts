@@ -62,6 +62,13 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
         { key: 'F', value: "CONFIRM" },
         { key: 'C', value: "CANCEL" }
     ];
+    listWarehouse = [
+        { label: 'A1', value: "A1" },
+        { label: 'A2', value: "A2" },
+        { label: 'B1', value: "B1" },
+        { label: 'C1', value: "C1" },
+        { label: 'C2', value: "C2" }
+    ];
     _selectrow;
 
     defaultColDef = {
@@ -114,6 +121,10 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
                 valueGetter: (params) => this.pipe.transform(params.data?.receiveDate, 'dd/MM/yyyy')
             },
             { headerName: this.l('Transport'), headerTooltip: this.l('Transport'), field: 'transport', flex: 1 },
+            {
+                headerName: this.l('Devanning Date'), headerTooltip: this.l('Devanning Date'), field: 'devanningDate', flex: 1,
+                valueGetter: (params) => this.pipe.transform(params.data?.devanningDate, 'dd/MM/yyyy')
+            },
             { headerName: this.l('Warehouse'), headerTooltip: this.l('Warehouse'), field: 'warehouse', flex: 1 },
             { headerName: this.l('Goods Received Note No'), headerTooltip: this.l('Goods Received Note No'), field: 'goodsReceivedNoteNo', flex: 1 }
         ];
