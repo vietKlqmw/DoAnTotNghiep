@@ -43,6 +43,13 @@ namespace tmss.MaterialManagement.StockReceiving
 
             var totalCount = result.ToList().Count();
 
+            if (listResult.Count > 0)
+            {
+                listResult[0].GrandQty = listResult.Sum(e => e.Qty);
+                listResult[0].GrandActualQty = listResult.Sum(e => e.ActualQty);
+                listResult[0].GrandOrderQty = listResult.Sum(e => e.OrderQty);
+            }
+
             return new PagedResultDto<ProdStockReceivingDto>(totalCount, pagedAndFiltered);
         }
 

@@ -17,8 +17,13 @@ namespace tmss.MaterialManagement.StockReceiving
         public virtual string Model { get; set; }
         public virtual string ContainerNo { get; set; }
         public virtual string InvoiceNo { get; set; }
+        public virtual int? ActualQty { get; set; }
+        public virtual int? OrderQty { get; set; }
+        public virtual string InvoiceNoOut { get; set; }
 
         public virtual int? GrandQty { get; set; }
+        public virtual int? GrandActualQty { get; set; }
+        public virtual int? GrandOrderQty { get; set; }
     }
 
     public class GetProdStockReceivingInput : PagedAndSortedResultRequestDto

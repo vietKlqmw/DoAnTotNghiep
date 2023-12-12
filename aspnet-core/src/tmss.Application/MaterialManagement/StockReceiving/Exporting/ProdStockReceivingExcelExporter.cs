@@ -19,14 +19,17 @@ namespace tmss.MaterialManagement.StockReceiving.Exporting
                     AddHeader(
                         sheet,
                         ("Part No"),
-                        ("Model"),
+                        ("Carfamily Code"),
                         ("Supplier No"),
                         ("Container No"),
                         ("Invoice No"),
                         ("Qty"),
-                        ("Par Name"),
+                        ("Actual Qty"),
+                        ("Order Qty"),
+                        ("Part Name"),
                         ("Transaction Datetime"),
-                        ("Working Date")
+                        ("Working Date"),
+                        ("Invoice No Out")
                     );
 
                     AddObjects(
@@ -37,12 +40,15 @@ namespace tmss.MaterialManagement.StockReceiving.Exporting
                          _ => _.ContainerNo,
                          _ => _.InvoiceNo,
                          _ => _.Qty,
+                         _ => _.ActualQty,
+                         _ => _.OrderQty,
                          _ => _.PartName,
                          _ => _.TransactionDatetime,
-                         _ => _.WorkingDate
+                         _ => _.WorkingDate,
+                         _ => _.InvoiceNoOut
                     );
 
-                    for (var i = 0; i < 9; i++)
+                    for (var i = 0; i < 12; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

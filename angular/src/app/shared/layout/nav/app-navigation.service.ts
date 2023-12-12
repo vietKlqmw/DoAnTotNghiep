@@ -49,7 +49,7 @@ export class AppNavigationService {
                 new AppMenuItem('WAREHOUSE', '', 'flaticon-user-settings', '',[],[
                     new AppMenuItem('Container At Warehouse', '', 'flaticon-car', '/app/main/management/warehouse/container-warehouse'),
                     new AppMenuItem('Container List', '', 'flaticon-car', '/app/main/management/warehouse/container-list'),
-                    new AppMenuItem('Stock Receiving', '', 'flaticon-car', '/app/main/management/warehouse/stock-receiving'),
+                    new AppMenuItem('Stock In Warehouse', '', 'flaticon-car', '/app/main/management/warehouse/stock-receiving'),
                 ]),
             ]),
             // new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),

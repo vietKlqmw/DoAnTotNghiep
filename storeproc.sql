@@ -1319,7 +1319,8 @@ AS
 BEGIN
 	  SELECT r.Id, r.PartNo, r.PartName, r.PartListId, r.MaterialId, 
            ISNULL(r.Qty, 0) Qty, r.TransactionDatetime, r.InvoiceDetailsId, r.WorkingDate, 
-		       r.SupplierNo, d.ContainerNo, d.InvoiceNo, r.Model
+		       r.SupplierNo, r.ContainerNo, d.InvoiceNo, r.Model, r.ActualQty, r.OrderQty, 
+           r.InvoiceNoOut
       FROM ProdStockReceiving r
 INNER JOIN ProdInvoiceDetails d
        	ON d.Id = r.InvoiceDetailsId

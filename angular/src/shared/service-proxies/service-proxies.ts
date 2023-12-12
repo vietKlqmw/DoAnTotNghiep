@@ -30670,7 +30670,12 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
     model!: string | undefined;
     containerNo!: string | undefined;
     invoiceNo!: string | undefined;
+    actualQty!: number | undefined;
+    orderQty!: number | undefined;
+    invoiceNoOut!: string | undefined;
     grandQty!: number | undefined;
+    grandActualQty!: number | undefined;
+    grandOrderQty!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdStockReceivingDto) {
@@ -30696,7 +30701,12 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
             this.model = _data["model"];
             this.containerNo = _data["containerNo"];
             this.invoiceNo = _data["invoiceNo"];
+            this.actualQty = _data["actualQty"];
+            this.orderQty = _data["orderQty"];
+            this.invoiceNoOut = _data["invoiceNoOut"];
             this.grandQty = _data["grandQty"];
+            this.grandActualQty = _data["grandActualQty"];
+            this.grandOrderQty = _data["grandOrderQty"];
             this.id = _data["id"];
         }
     }
@@ -30722,7 +30732,12 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
         data["model"] = this.model;
         data["containerNo"] = this.containerNo;
         data["invoiceNo"] = this.invoiceNo;
+        data["actualQty"] = this.actualQty;
+        data["orderQty"] = this.orderQty;
+        data["invoiceNoOut"] = this.invoiceNoOut;
         data["grandQty"] = this.grandQty;
+        data["grandActualQty"] = this.grandActualQty;
+        data["grandOrderQty"] = this.grandOrderQty;
         data["id"] = this.id;
         return data; 
     }
@@ -30741,7 +30756,12 @@ export interface IProdStockReceivingDto {
     model: string | undefined;
     containerNo: string | undefined;
     invoiceNo: string | undefined;
+    actualQty: number | undefined;
+    orderQty: number | undefined;
+    invoiceNoOut: string | undefined;
     grandQty: number | undefined;
+    grandActualQty: number | undefined;
+    grandOrderQty: number | undefined;
     id: number | undefined;
 }
 

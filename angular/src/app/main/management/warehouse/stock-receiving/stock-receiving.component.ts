@@ -85,7 +85,17 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
             { headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', flex: 1 },
             {
                 headerName: this.l('Qty'), headerTooltip: this.l('Qty'), field: 'qty', flex: 1, type: 'rightAligned',
-                valueGetter: (params) => this._fm.formatMoney_decimal(params.data?.qty),
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.qty),
+                aggFunc: this.calTotal
+            },
+            {
+                headerName: this.l('Actual Qty'), headerTooltip: this.l('Actual Qty'), field: 'actualQty', flex: 1, type: 'rightAligned',
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.actualQty),
+                aggFunc: this.calTotal
+            },
+            {
+                headerName: this.l('Order Qty'), headerTooltip: this.l('Order Qty'), field: 'orderQty', flex: 1, type: 'rightAligned',
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.orderQty),
                 aggFunc: this.calTotal
             },
             { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', flex: 1 },
@@ -97,6 +107,7 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
                 headerName: this.l('Working Date'), headerTooltip: this.l('Working Date'), field: 'workingDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.workingDate, 'dd/MM/yyyy')
             },
+            { headerName: this.l('Invoice No Out Warehouse'), headerTooltip: this.l('Invoice No Out Warehouse'), field: 'invoiceNoOut', flex: 1 },
             { headerName: this.l('Material Id'), headerTooltip: this.l('Material Id'), field: 'materialId', flex: 1 }
         ];
 
@@ -150,8 +161,12 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
                 this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
                 if (result.totalCount > 0) {
                     var _sumQty = 0;
+                    var _sumActualQty = 0;
+                    var _sumOrderQty = 0;
                     _sumQty = result.items[0].grandQty;
-                    var rows = this.createRow(1, _sumQty);
+                    _sumActualQty = result.items[0].grandActualQty;
+                    _sumOrderQty = result.items[0].grandOrderQty;
+                    var rows = this.createRow(1, _sumQty, _sumActualQty, _sumOrderQty);
                     this.dataParams!.api.setPinnedBottomRowData(rows);
                 } else {
                     this.dataParams!.api.setPinnedBottomRowData(null);
@@ -242,13 +257,15 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
             });
     }
 
-    createRow(count: number, sumQty: number): any[] {
+    createRow(count: number, sumQty: number, sumActualQty, sumOrderQty): any[] {
         let result: any[] = [];
 
         for (var i = 0; i < count; i++) {
             result.push({
                 partNo: 'Grand Total',
                 qty: sumQty,
+                actualQty: sumActualQty,
+                orderQty: sumOrderQty
             });
         }
         return result;
