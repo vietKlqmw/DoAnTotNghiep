@@ -1084,6 +1084,13 @@ INNER JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
 INNER JOIN MasterMaterial mm ON mpl.MaterialId = mm.Id
 INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
      WHERE pci.Id IN (SELECT item FROM dbo.fnSplit(@p_ContId, ','))
+
+    SELECT DISTINCT STRING_AGG(CONCAT(pid.InvoiceNo, ' - ', FORMAT(pi.InvoiceDate, 'dd/MM/yyyy')), '; ') InvoiceNo, 
+           STRING_AGG(pi.Forwarder, '; ') Forwarder
+      FROM ProdInvoiceDetails pid
+INNER JOIN ProdContainerIntransit pci ON pid.ContainerNo = pci.ContainerNo
+INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
+     WHERE pci.Id IN (SELECT item FROM dbo.fnSplit(@p_ContId, ','))
 END
 ------------------------------------------------AddGoodsReceivedNote:
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_ADD_GOODS_RECEIVED_NOTE
@@ -1097,27 +1104,77 @@ BEGIN
     DECLARE @Tranport NVARCHAR(MAX) = CASE WHEN @p_Warehouse LIKE 'A%' THEN N'Miền Bắc'
                                            WHEN @p_Warehouse LIKE 'B%' THEN N'Miền Trung'
                                       ELSE N'Miền Nam' END;
-    INSERT INTO ProdContainerRentalWHPlan 
-    (CreationTime, CreatorUserId, IsDeleted, 
-     ContainerNo, SupplierNo, Transport, BillId, InvoiceId, ReceiveDate, Warehouse, GoodsReceivedNoteNo)
-        SELECT GETDATE(), @p_UserId, 0, pci.ContainerNo, pci.SupplierNo, @Tranport, pi.BillId, pi.Id, @p_ReceiveDate, @p_Warehouse, @p_GrnNo 
-          FROM ProdContainerIntransit pci 
-    INNER JOIN ProdInvoiceDetails pid ON pci.ContainerNo = pid.ContainerNo
-    INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
-         WHERE pci.Id IN (SELECT item FROM dbo.fnSplit(@p_ListContId, ',')) 
+    PRINT 'INV_PROD_CONTAINER_WAREHOUSE_ADD_GOODS_RECEIVED_NOTE Start...';
+    BEGIN TRY
+    BEGIN TRANSACTION 
+        DECLARE @p_value_cursor VARCHAR(255);
+        DECLARE @p_id INT;
+        DECLARE @p_qty INT;
+        DECLARE @p_invoice_id INT;
 
-    UPDATE ProdContainerIntransit
-       SET IsDeleted = 1
-     WHERE Id IN (SELECT item FROM dbo.fnSplit(@p_ListContId, ','))
+        DECLARE cursor_value CURSOR FOR  
+         SELECT value FROM STRING_SPLIT(@p_ListContId, ';');
+
+           OPEN cursor_value 
+FETCH NEXT FROM cursor_value INTO @p_ListContId
+
+          WHILE @@FETCH_STATUS = 0  
+          BEGIN  
+            SET @p_id = SUBSTRING(@p_ListContId, 1, CHARINDEX('-', @p_ListContId) - 1);
+            SET @p_qty = SUBSTRING(@p_ListContId, CHARINDEX('-', @p_ListContId) + 1, LEN(@p_ListContId) - CHARINDEX('-', @p_ListContId));
+         
+    INSERT INTO ProdContainerRentalWHPlan 
+                (CreationTime, CreatorUserId, IsDeleted, 
+                ContainerNo, SupplierNo, Transport, BillId, InvoiceId, ReceiveDate, Warehouse, GoodsReceivedNoteNo)
+         SELECT GETDATE(), @p_UserId, 0, pci.ContainerNo, pci.SupplierNo, @Tranport, pi.BillId, pi.Id, @p_ReceiveDate, @p_Warehouse, @p_GrnNo 
+           FROM ProdContainerIntransit pci 
+     INNER JOIN ProdInvoiceDetails pid ON pci.ContainerNo = pid.ContainerNo
+     INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
+          WHERE pci.Id = @p_id
+
+         UPDATE ProdContainerIntransit
+            SET IsDeleted = 1
+          WHERE Id = @p_id
 
     INSERT INTO ProdStockReceiving 
-    (CreationTime, CreatorUserId, IsDeleted, 
-     PartNo, PartName, PartListId, MaterialId, Qty, InvoiceDetailsId, WorkingDate, SupplierNo, Model)
-        SELECT GETDATE(), @p_UserId, 0, pid.PartNo, pid.PartName, pci.PartListId, mpl.MaterialId, pid.UsageQty, pid.Id, @p_ReceiveDate, pid.SupplierNo, pid.CarfamilyCode 
-          FROM ProdInvoiceDetails pid
-    INNER JOIN ProdContainerIntransit pci ON pid.ContainerNo = pci.ContainerNo
-     LEFT JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
-         WHERE pci.Id IN (SELECT item FROM dbo.fnSplit(@p_ListContId, ',')) 
+                (CreationTime, CreatorUserId, IsDeleted, 
+                PartNo, PartName, PartListId, MaterialId, Qty, InvoiceDetailsId, 
+                SupplierNo, Model, ActualQty, ContainerNo)
+         SELECT GETDATE(), @p_UserId, 0, 
+                pid.PartNo, pid.PartName, pci.PartListId, mpl.MaterialId, pid.UsageQty, pid.Id, 
+                pid.SupplierNo, pid.CarfamilyCode, @p_qty, pid.ContainerNo 
+           FROM ProdInvoiceDetails pid
+     INNER JOIN ProdContainerIntransit pci ON pid.ContainerNo = pci.ContainerNo
+      LEFT JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
+          WHERE pci.Id = @p_id
+
+FETCH NEXT FROM cursor_value INTO @p_ListContId 
+            END  
+          CLOSE cursor_value  
+     DEALLOCATE cursor_value 
+    PRINT 'INV_PROD_CONTAINER_WAREHOUSE_ADD_GOODS_RECEIVED_NOTE End...';
+    COMMIT TRANSACTION;
+    END TRY	
+    BEGIN CATCH
+    		DECLARE @ErrorSeverity INT;
+    		DECLARE @ErrorState INT;
+    		DECLARE @ErrorMessage NVARCHAR(4000);
+      
+    		SELECT @ErrorMessage = ERROR_MESSAGE(),
+    			     @ErrorSeverity = ERROR_SEVERITY(), 
+    			     @ErrorState = ERROR_STATE();
+    
+    		ROLLBACK TRANSACTION		
+    		INSERT INTO ProCess_Log ([CATEGORY], [PROCESS_NAME], [ERROR_MESSAGE], [CREATED_DATE])
+    		VALUES ('ProdContainerRentalWHPlan', 'ProdContainerRentalWHPlan Import', 'ERROR :' + @ErrorMessage + 
+    															'//ERRORSTATE :' +  CAST(@ErrorState AS VARCHAR) + 
+    															'//ERRORPROCEDURE :' + ERROR_PROCEDURE() + 
+    															'//ERRORSEVERITY :' + CAST(@ErrorSeverity AS VARCHAR) + 
+    															'//ERRORNUMBER :' + CAST(ERROR_NUMBER() AS VARCHAR) + 
+    															'//ERRORLINE :' + CAST(ERROR_LINE() AS VARCHAR), GETDATE());
+    	   
+    	  RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH;
 END
 ------------------------------------------------delete:
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_DELETE

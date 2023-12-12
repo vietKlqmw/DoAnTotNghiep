@@ -97,9 +97,8 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
     isExcel: boolean = true;
     isPdf: boolean = false;
     _selectrow;
+    contId = '';
     listCont = '';
-    listInvoice = '';
-    listForwarder = '';
     listActualQty = [];
     datasEdit: ProdInvoiceDto[] = [];
     valueChange: string = '';
@@ -277,28 +276,17 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
 
         this._selectrow = this.saveSelectedRow.id;
 
+        this.contId = '';
         this.listCont = '';
-        this.listForwarder = '';
-        this.listInvoice = '';
         this.listActualQty = [];
         if (params.api.getSelectedRows().length) {
             for (var i = 0; i < params.api.getSelectedRows().length; i++) {
                 if (i != params.api.getSelectedRows().length - 1) {
-                    this.listCont += params.api.getSelectedRows()[i].id + ',';
-                    if (!this.listInvoice.includes(params.api.getSelectedRows()[i].invoiceNo)) {
-                        this.listInvoice += params.api.getSelectedRows()[i].invoiceNo + ' - ' + formatDate(new Date(params.api.getSelectedRows()[i].invoiceDate?.toString()), 'dd/MM/yyyy', 'en-US') + '; ';
-                    }
-                    if (!this.listForwarder.includes(params.api.getSelectedRows()[i].forwarder)) {
-                        this.listForwarder += params.api.getSelectedRows()[i].forwarder + '; ';
-                    }
+                    this.contId += params.api.getSelectedRows()[i].id + ',';
+                    this.listCont += params.api.getSelectedRows()[i].id + '-' + params.api.getSelectedRows()[i].actualQty + ';';
                 } else {
-                    this.listCont += params.api.getSelectedRows()[i].id;
-                    if (!this.listInvoice.includes(params.api.getSelectedRows()[i].invoiceNo)) {
-                        this.listInvoice += params.api.getSelectedRows()[i].invoiceNo + ' - ' + formatDate(new Date(params.api.getSelectedRows()[i].invoiceDate?.toString()), 'dd/MM/yyyy', 'en-US');
-                    }
-                    if (!this.listForwarder.includes(params.api.getSelectedRows()[i].forwarder)) {
-                        this.listForwarder += params.api.getSelectedRows()[i].forwarder;
-                    }
+                    this.contId += params.api.getSelectedRows()[i].id;
+                    this.listCont += params.api.getSelectedRows()[i].id + '-' + params.api.getSelectedRows()[i].actualQty;
                 }
                 this.listActualQty.push(params.api.getSelectedRows()[i].actualQty);
             }
@@ -327,20 +315,19 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
             return;
         }
         let input = Object.assign(new GoodsReceivedNoteExportInput(), {
+            contId: this.contId,
             listContId: this.listCont,
             receiveDate: formatDate(new Date(this._receiveDate.toString()), 'yyyyMMdd', 'en-US'),
             goodsReceivedNoteNo: this._goodsReceived,
             isExcel: this.isExcel,
             warehouse: this._warehouse,
-            listForwarder: this.listForwarder,
-            listInvoice: this.listInvoice,
             address: this.list.filter(e => e.value == this._warehouse)[0].address,
             workingDate: moment(this._receiveDate),
             listActualQty: this.listActualQty
         });
 
         this.saving = true;
-        //this._service.addGrn(input).subscribe(result => {
+        this._service.addGrn(input).subscribe(result => {
             if (this.isExcel) {
                 this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNoteExcel`, input, { responseType: 'blob' })
                     .pipe(finalize(() => this.saving = false))
@@ -356,9 +343,9 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
                         this.notify.success(this.l('Save Successfully'));
                     });
             }
-            //this._component.searchDatas();
-            //this.close();
-        //})
+            this._component.searchDatas();
+            this.close();
+        })
 
     }
 

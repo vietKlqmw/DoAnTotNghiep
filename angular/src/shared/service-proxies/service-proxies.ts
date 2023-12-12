@@ -29586,11 +29586,10 @@ export interface IPagedResultDtoOfProdContainerRentalWHPlanDto {
 }
 
 export class GoodsReceivedNoteExportInput implements IGoodsReceivedNoteExportInput {
+    contId!: string | undefined;
     listContId!: string | undefined;
     receiveDate!: string | undefined;
     goodsReceivedNoteNo!: string | undefined;
-    listForwarder!: string | undefined;
-    listInvoice!: string | undefined;
     warehouse!: string | undefined;
     address!: string | undefined;
     isExcel!: boolean;
@@ -29608,11 +29607,10 @@ export class GoodsReceivedNoteExportInput implements IGoodsReceivedNoteExportInp
 
     init(_data?: any) {
         if (_data) {
+            this.contId = _data["contId"];
             this.listContId = _data["listContId"];
             this.receiveDate = _data["receiveDate"];
             this.goodsReceivedNoteNo = _data["goodsReceivedNoteNo"];
-            this.listForwarder = _data["listForwarder"];
-            this.listInvoice = _data["listInvoice"];
             this.warehouse = _data["warehouse"];
             this.address = _data["address"];
             this.isExcel = _data["isExcel"];
@@ -29634,11 +29632,10 @@ export class GoodsReceivedNoteExportInput implements IGoodsReceivedNoteExportInp
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["contId"] = this.contId;
         data["listContId"] = this.listContId;
         data["receiveDate"] = this.receiveDate;
         data["goodsReceivedNoteNo"] = this.goodsReceivedNoteNo;
-        data["listForwarder"] = this.listForwarder;
-        data["listInvoice"] = this.listInvoice;
         data["warehouse"] = this.warehouse;
         data["address"] = this.address;
         data["isExcel"] = this.isExcel;
@@ -29653,11 +29650,10 @@ export class GoodsReceivedNoteExportInput implements IGoodsReceivedNoteExportInp
 }
 
 export interface IGoodsReceivedNoteExportInput {
+    contId: string | undefined;
     listContId: string | undefined;
     receiveDate: string | undefined;
     goodsReceivedNoteNo: string | undefined;
-    listForwarder: string | undefined;
-    listInvoice: string | undefined;
     warehouse: string | undefined;
     address: string | undefined;
     isExcel: boolean;

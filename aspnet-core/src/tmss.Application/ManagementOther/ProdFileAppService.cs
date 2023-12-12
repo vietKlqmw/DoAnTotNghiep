@@ -33,15 +33,16 @@ namespace tmss.ManagementOther
                 string _sql = "Exec INV_PROD_EXPORT_GOODS_RECEIVED_NOTE @p_ContId";
                 var reader = await conn.QueryMultipleAsync(_sql, new
                 {
-                    p_ContId = input.ListContId
+                    p_ContId = input.ContId
                 });
                 var listdata = reader.ReadAsync<ProdInvoiceDto>().Result.ToList();
+                var listother = reader.ReadAsync<ProdInvoiceDto>().Result.FirstOrDefault();
                 conn.Close();
 
                 xlWorkSheet.Cells[1, 3].Value = "Ngày " + input.ReceiveDate.Substring(6, 2) + " tháng " + input.ReceiveDate.Substring(4, 2) + " năm " + input.ReceiveDate.Substring(0, 4);
                 xlWorkSheet.Cells[2, 4].Value = input.GoodsReceivedNoteNo.ToUpper();
-                xlWorkSheet.Cells[4, 2].Value = input.ListForwarder;
-                xlWorkSheet.Cells[5, 2].Value = input.ListInvoice;
+                xlWorkSheet.Cells[4, 2].Value = listother.Forwarder;
+                xlWorkSheet.Cells[5, 2].Value = listother.InvoiceNo;
                 xlWorkSheet.Cells[6, 2].Value = input.Warehouse;
                 xlWorkSheet.Cells[6, 4].Value = input.Address;
 

@@ -1,6 +1,6 @@
 import { GridApi } from '@ag-grid-enterprise/all-modules';
 import { DatePipe } from '@angular/common';
-import { Component, Injector, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AgCellButtonRendererComponent } from '@app/shared/common/grid/ag-cell-button-renderer/ag-cell-button-renderer.component';
 import { CustomColDef, FrameworkComponent, GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
 import { GridTableService } from '@app/shared/common/services/grid-table.service';
@@ -12,6 +12,7 @@ import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
+import { ViewMaterialComponent } from '@app/main/master/other/view-material/view-material.component';
 
 @Component({
     selector: 'app-stock-receiving',
@@ -21,6 +22,8 @@ import { DataFormatService } from '@app/shared/common/services/data-format.servi
     animations: [appModuleAnimation()]
 })
 export class StockReceivingComponent extends AppComponentBase implements OnInit {
+    @ViewChild('viewMaterial', { static: true }) viewMaterial: ViewMaterialComponent;
+
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
     paginationParams: PaginationParamsModel = {
@@ -275,6 +278,11 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
         var sum = 0;
         values.forEach(function (value) { sum += Number(value); });
         return sum;
+    }
+
+
+    viewMaterialById(): void {
+        this.viewMaterial.show(this.saveSelectedRow.materialId);
     }
 }
 
