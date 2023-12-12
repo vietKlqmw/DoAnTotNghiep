@@ -76,5 +76,6 @@ namespace tmss.ManagementOther
         public virtual string Address { get; set; }
         public virtual bool IsExcel { get; set; }
         public virtual DateTime? WorkingDate { get; set; }
+        public virtual int? ListActualQty { get; set; }
     }
 }

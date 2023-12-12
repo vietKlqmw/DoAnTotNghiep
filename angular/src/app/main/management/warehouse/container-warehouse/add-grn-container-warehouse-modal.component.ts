@@ -13,6 +13,8 @@ import { HttpClient } from '@angular/common/http';
 import * as saveAs from 'file-saver';
 import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
+import { AgCellTextRendererComponent } from '@app/shared/common/grid/ag-cell-text-renderer/ag-cell-text-renderer.component';
+import { CellValueChangedEvent, EditableCallbackParams, GridOptions } from '@ag-grid-enterprise/all-modules';
 @Component({
     selector: 'addGrnContWarehouse',
     templateUrl: './add-grn-container-warehouse-modal.component.html'
@@ -39,6 +41,28 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
     pipe = new DatePipe('en-US');
     frameworkComponents: FrameworkComponent;
     dataParams: GridParams | undefined;
+    gridOptions: GridOptions = {
+        columnTypes: {
+            editableColumn: {
+
+                editable: (params: EditableCallbackParams) => { return true; },
+                valueParser: 'Number(newValue)',
+                cellRenderer: 'agAnimateShowChangeCellRenderer',
+                filter: 'agNumberColumnFilter',
+
+                cellClass: (params) => { return this.cellEditGetsClass(params); },
+                valueGetter: (params) => { return this.syncValidateValueGetter(params) },
+                valueSetter: (params) => { return this.syncValidateValueSetter(params) },
+            },
+            valueColumn: {
+                editable: true,
+                valueParser: 'Number(newValue)',
+                cellClass: 'number-cell',
+                cellRenderer: 'agAnimateShowChangeCellRenderer',
+                filter: 'agNumberColumnFilter',
+            },
+        },
+    };
     defaultColDef = {
         resizable: true,
         sortable: true,
@@ -51,6 +75,17 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
             return r.toLowerCase();
         },
         tooltip: (params) => params.value,
+        autoGroupColumnDef: {
+            minWidth: 400,
+            cellRendererParams: {
+                suppressCount: true,
+                checkbox: false,
+            },
+            pinned: true,
+        },
+        suppressAggFuncInHeader: true,
+        enableCellChangeFlash: true,
+        animateRows: true
     };
 
     saving = false;
@@ -65,6 +100,10 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
     listCont = '';
     listInvoice = '';
     listForwarder = '';
+    datasEdit: ProdInvoiceDto[] = [];
+    valueChange: string = '';
+    columnChange: string = '';
+    processNoUpdate: boolean = false;
 
     constructor(injector: Injector,
         private _service: ProdContainerRentalWHPlanServiceProxy,
@@ -89,6 +128,9 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
                 headerName: this.l('Qty'), headerTooltip: this.l('Qty'), field: 'usageQty', width: 100, type: 'rightAligned', pinned: true,
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.usageQty),
             },
+            //cột cần edit
+            { headerName: this.l('Actual Qty'), headerTooltip: this.l('Actual Qty'), field: 'actualQty', width: 110, type: 'editableColumn' },
+
             { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', width: 250 },
             { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', width: 130 },
             { headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', width: 130 },
@@ -123,14 +165,86 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
 
         this.frameworkComponents = {
             agCellButtonComponent: AgCellButtonRendererComponent,
+            AgCellTextComponent: AgCellTextRendererComponent
         };
     }
-    ngOnInit() {
-        this._other.getListContForWarehouse()
-            .subscribe((result) => {
-                this.data = result ?? [];
-            });
 
+    syncValidateValueGetter(params) {
+
+        try {
+            if (params.data == undefined) return 0;
+
+            let field = params.colDef.field;
+            let v = params.data[field];
+            if (v == null || v == undefined || Number.isNaN(v)) {    // không đúng định dạng
+                return 0;
+            }
+            else {   //hợp lệ
+                return v;
+            }
+        } catch (e) {
+            return 0;
+        }
+    }
+
+    syncValidateValueSetter(params) {
+        try {
+            if (params.data == undefined || params.data == null) return 0;
+            let field = params.colDef.field;
+            let v = params.newValue;
+
+            if (v == null || v == undefined || Number.isNaN(v)) {
+                params.data[field] = 0;
+                params.api.applyTransaction({ update: [params.data] });
+                return 0;
+            }
+            else {  //hợp lệ
+                params.newValue = ((params.newValue) < 0) ? params.oldValue : params.newValue;
+                params.data[field] = params.newValue;
+
+                // if (params.newValue > params.data['remainQty']) {
+                //     this.message.warn(this.l('Receive Qty không được vượt quá Remain Qty!'), 'Warning');
+                //     params.data[field] = params.oldValue;
+                // }
+                if (params.newValue == 0) params.data['actualQty'] = 0;
+
+                params.api.applyTransaction({ update: [params.data] });
+
+                return params.newValue;
+            }
+        } catch (e) {
+            return 0;
+        }
+    }
+
+
+    onCellValueChanged(params: CellValueChangedEvent) {
+        params.api.applyTransaction({ update: [params.data] });
+
+        if (params.newValue == null || Number.isNaN(params.newValue) || params.newValue == undefined) return;
+
+        let ischange = true;
+        this.datasEdit.forEach((item) => {  // kiểm tra row change đã tồn tại trong mảng edit chưa
+            if (item.keyRow == params.data.keyRow) ischange = false;
+        });
+        if (ischange && this.processNoUpdate != true) {
+            this.datasEdit.push(params.data);
+            this.valueChange = params.newValue;
+            this.columnChange = params.column.getId();
+        }
+    }
+
+    cellEditGetsClass(params) {
+        if (params.data == undefined || params.data == null) return ['cell-edit', 'number-cell',];
+        else return ['cell-edit', 'number-cell', 'cell-edit-edited'];
+    }
+
+    headerEditClass(params) {
+        if (params.data == undefined || params.data == null) return [''];
+        else return ['cell-edit', 'number-cell', 'cell-edit-edited'];
+    }
+
+    ngOnInit() {
         this._other.getListWarehouse()
             .subscribe(result => {
                 result.forEach(e => {
@@ -140,6 +254,10 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
     }
 
     show(): void {
+        this._other.getListContForWarehouse()
+            .subscribe((result) => {
+                this.data = result ?? [];
+            });
         this._warehouse = '';
         this._receiveDate = new Date();
         this._goodsReceived = '';

@@ -29595,6 +29595,7 @@ export class GoodsReceivedNoteExportInput implements IGoodsReceivedNoteExportInp
     address!: string | undefined;
     isExcel!: boolean;
     workingDate!: moment.Moment | undefined;
+    listActualQty!: number | undefined;
 
     constructor(data?: IGoodsReceivedNoteExportInput) {
         if (data) {
@@ -29616,6 +29617,7 @@ export class GoodsReceivedNoteExportInput implements IGoodsReceivedNoteExportInp
             this.address = _data["address"];
             this.isExcel = _data["isExcel"];
             this.workingDate = _data["workingDate"] ? moment(_data["workingDate"].toString()) : <any>undefined;
+            this.listActualQty = _data["listActualQty"];
         }
     }
 
@@ -29637,6 +29639,7 @@ export class GoodsReceivedNoteExportInput implements IGoodsReceivedNoteExportInp
         data["address"] = this.address;
         data["isExcel"] = this.isExcel;
         data["workingDate"] = this.workingDate ? this.workingDate.toISOString() : <any>undefined;
+        data["listActualQty"] = this.listActualQty;
         return data; 
     }
 }
@@ -29651,6 +29654,7 @@ export interface IGoodsReceivedNoteExportInput {
     address: string | undefined;
     isExcel: boolean;
     workingDate: moment.Moment | undefined;
+    listActualQty: number | undefined;
 }
 
 export class ProdContainerRentalWHPlanImportDto implements IProdContainerRentalWHPlanImportDto {
@@ -29970,6 +29974,8 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
     grandTax!: number | undefined;
     grandVat!: number | undefined;
     grandThc!: number | undefined;
+    keyRow!: string | undefined;
+    actualQty!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdInvoiceDto) {
@@ -30015,6 +30021,8 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
             this.grandTax = _data["grandTax"];
             this.grandVat = _data["grandVat"];
             this.grandThc = _data["grandThc"];
+            this.keyRow = _data["keyRow"];
+            this.actualQty = _data["actualQty"];
             this.id = _data["id"];
         }
     }
@@ -30060,6 +30068,8 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
         data["grandTax"] = this.grandTax;
         data["grandVat"] = this.grandVat;
         data["grandThc"] = this.grandThc;
+        data["keyRow"] = this.keyRow;
+        data["actualQty"] = this.actualQty;
         data["id"] = this.id;
         return data; 
     }
@@ -30098,6 +30108,8 @@ export interface IProdInvoiceDto {
     grandTax: number | undefined;
     grandVat: number | undefined;
     grandThc: number | undefined;
+    keyRow: string | undefined;
+    actualQty: number | undefined;
     id: number | undefined;
 }
 

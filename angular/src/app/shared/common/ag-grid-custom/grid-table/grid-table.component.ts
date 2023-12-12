@@ -43,6 +43,7 @@ export class GridTableComponent extends AppComponentBase implements OnInit {
     @Input() animateRows: boolean = false;
     @Input() detailRowHeight: number = 100;
     @Input() textPagination: string = 'trong tổng số';
+    @Input() gridOptions: {};
 
     //Grid and pagintion
     @Input() paginationParams?: PaginationModel;

@@ -6,6 +6,7 @@ import { AgCellButtonRendererComponent } from '../grid/ag-cell-button-renderer/a
 import { AgDropdownRendererComponent } from '../grid/ag-dropdown-renderer/ag-dropdown-renderer.component';
 import { AgDatepickerRendererComponent } from '../grid/ag-datepicker-renderer/ag-datepicker-renderer.component';
 import { AgHeaderButtonGridComponent } from '../grid/ag-header-button-grid/ag-header-button-grid.component';
+import { AgCellTextRendererComponent } from '../grid/ag-cell-text-renderer/ag-cell-text-renderer.component';
 
 export interface PaginationParamsModel {
   totalCount?: number | undefined;
@@ -116,6 +117,7 @@ export interface AgColumn extends Column {
 export interface FrameworkComponent {
   agSelectRendererComponent?: typeof AgDropdownRendererComponent,
   agCellButtonComponent?: typeof AgCellButtonRendererComponent,
+  AgCellTextComponent?: typeof AgCellTextRendererComponent,
   agCheckboxRendererComponent?: typeof AgCheckboxRendererComponent,
   agDatepickerRendererComponent?: typeof AgDatepickerRendererComponent,
   agFloatingFilterGridComponent?: typeof AgFloatingFilterGridComponent,

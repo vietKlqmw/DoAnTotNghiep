@@ -65,6 +65,10 @@
                         [rowSelection]="rowSelection"
                         (rowClicked)="onRowClick($event)"
                         [frameworkComponents]="frameworkComponents"
+
+                        (callBackEvent)="callBackDataGrid($event)"
+                        (cellValueChanged)="onCellValueChanged($event)"
+                        [gridOptions]="gridOptions"
                         >
                     </grid-table>
                 </div>

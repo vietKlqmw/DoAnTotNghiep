@@ -43,6 +43,18 @@ namespace tmss.MaterialManagement.Invoice
         public virtual decimal? GrandTax { get; set; }
         public virtual decimal? GrandVat { get; set; }
         public virtual decimal? GrandThc { get; set; }
+
+        //other
+        public virtual string KeyRow
+        {
+            get { return string.Format("{0}_{1}", PartNo, PartName); }
+            set { }
+        }
+        public virtual int? ActualQty
+        {
+            get { return UsageQty; }
+            set { }
+        }
     }
 
     public class GetProdInvoiceInput : PagedAndSortedResultRequestDto

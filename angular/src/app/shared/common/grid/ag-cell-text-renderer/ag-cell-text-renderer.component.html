@@ -1,0 +1,6 @@
+<div class="ui-g-12 ph-0" id="text-cell-container" *ngIf="textCellDef">
+    <div class="ui-g-6 ph-0 ui-md-6 ag-in-cell-text {{ _ClassName }}" (click)="customFunction()">
+        <i *ngIf="textCellDef.iconName" class="ag-in-cell-text-icon" class="{{ textCellDef.iconName }} tmss-fa"></i>
+        <span class="ag-in-cell-text-val disable_{{_DisableText}}">{{ _Text }}</span>
+    </div>
+</div>
