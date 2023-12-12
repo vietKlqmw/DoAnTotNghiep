@@ -100,6 +100,7 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
     listCont = '';
     listInvoice = '';
     listForwarder = '';
+    listActualQty = [];
     datasEdit: ProdInvoiceDto[] = [];
     valueChange: string = '';
     columnChange: string = '';
@@ -279,6 +280,7 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
         this.listCont = '';
         this.listForwarder = '';
         this.listInvoice = '';
+        this.listActualQty = [];
         if (params.api.getSelectedRows().length) {
             for (var i = 0; i < params.api.getSelectedRows().length; i++) {
                 if (i != params.api.getSelectedRows().length - 1) {
@@ -298,6 +300,7 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
                         this.listForwarder += params.api.getSelectedRows()[i].forwarder;
                     }
                 }
+                this.listActualQty.push(params.api.getSelectedRows()[i].actualQty);
             }
         }
     }
@@ -332,11 +335,12 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
             listForwarder: this.listForwarder,
             listInvoice: this.listInvoice,
             address: this.list.filter(e => e.value == this._warehouse)[0].address,
-            workingDate: moment(this._receiveDate)
+            workingDate: moment(this._receiveDate),
+            listActualQty: this.listActualQty
         });
 
         this.saving = true;
-        this._service.addGrn(input).subscribe(result => {
+        //this._service.addGrn(input).subscribe(result => {
             if (this.isExcel) {
                 this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNoteExcel`, input, { responseType: 'blob' })
                     .pipe(finalize(() => this.saving = false))
@@ -352,9 +356,9 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
                         this.notify.success(this.l('Save Successfully'));
                     });
             }
-            this._component.searchDatas();
-            this.close();
-        })
+            //this._component.searchDatas();
+            //this.close();
+        //})
 
     }
 

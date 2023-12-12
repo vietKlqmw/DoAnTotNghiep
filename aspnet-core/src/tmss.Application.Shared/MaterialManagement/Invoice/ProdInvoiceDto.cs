@@ -44,6 +44,10 @@ namespace tmss.MaterialManagement.Invoice
         public virtual decimal? GrandVat { get; set; }
         public virtual decimal? GrandThc { get; set; }
 
+        //for Export
+        public virtual string BaseUnitOfMeasure { get; set; }
+        public virtual decimal? StandardPrice { get; set; }
+
         //other
         public virtual string KeyRow
         {

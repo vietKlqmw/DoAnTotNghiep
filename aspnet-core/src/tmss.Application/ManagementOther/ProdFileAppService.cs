@@ -44,7 +44,29 @@ namespace tmss.ManagementOther
                 xlWorkSheet.Cells[5, 2].Value = input.ListInvoice;
                 xlWorkSheet.Cells[6, 2].Value = input.Warehouse;
                 xlWorkSheet.Cells[6, 4].Value = input.Address;
-                xlWorkSheet.Cells[30, 1].Value = AbpSession.UserId;
+
+                var currentRow = xlWorkSheet.Rows[12];
+                int addrow = 1;
+                if (input.ListActualQty != null)
+                {
+                    if (input.ListActualQty.Length > 9) addrow = input.ListActualQty.Length - 8;
+                }
+                currentRow.InsertCopy(addrow, xlWorkSheet.Rows[12]);
+
+                int startrow = 11;
+                decimal? sum = 0;
+
+                for (int i = 0;i < listdata.Count;i++)
+                {
+                    xlWorkSheet.Cells[startrow + i, 0].Value = i + "-" + listdata[i].ContainerNo;
+                    xlWorkSheet.Cells[startrow + i, 1].Value = listdata[i].PartName;
+                    xlWorkSheet.Cells[startrow + i, 3].Value = listdata[i].PartNo;
+                    xlWorkSheet.Cells[startrow + i, 4].Value = listdata[i].BaseUnitOfMeasure;
+                    xlWorkSheet.Cells[startrow + i, 5].Value = listdata[i].UsageQty;
+                    xlWorkSheet.Cells[startrow + i, 6].Value = int.Parse(input.ListActualQty[i]);
+                    xlWorkSheet.Cells[startrow + i, 7].Value = listdata[i].StandardPrice;
+                    xlWorkSheet.Cells[startrow + i, 8].Value = int.Parse(input.ListActualQty[i]) * listdata[i].StandardPrice;
+                }
             }
             var tempFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".xlsx");
             xlWorkBook.Save(tempFile);
