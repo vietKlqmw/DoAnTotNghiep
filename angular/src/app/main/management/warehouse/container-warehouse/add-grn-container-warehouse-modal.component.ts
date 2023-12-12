@@ -336,6 +336,8 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
                     .subscribe(blob => {
                         saveAs(blob, "GoodsReceivedNote_" + formatDate(new Date(this._receiveDate.toString()), 'yyyyMMdd', 'en-US') + ".xlsx");
                         this.notify.success(this.l('Save Successfully'));
+                        this._component.searchDatas();
+                        this.close();
                     });
             } else {
                 this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNotePdf`, input, { responseType: 'blob' })
@@ -343,10 +345,10 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
                     .subscribe(blob => {
                         saveAs(blob, "GoodsReceivedNote_" + formatDate(new Date(this._receiveDate.toString()), 'yyyyMMdd', 'en-US') + ".pdf");
                         this.notify.success(this.l('Save Successfully'));
+                        this._component.searchDatas();
+                        this.close();
                     });
             }
-            this._component.searchDatas();
-            this.close();
         })
 
     }
