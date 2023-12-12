@@ -232,6 +232,8 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
             this.valueChange = params.newValue;
             this.columnChange = params.column.getId();
         }
+
+        params.api.deselectAll();
     }
 
     cellEditGetsClass(params) {
@@ -383,6 +385,9 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
     }
 
     close(): void {
+        this.datasEdit = [];
+        this.valueChange = "";
+        this.columnChange = "";
         this.modal.hide();
         this.modalClose.emit(null);
     }

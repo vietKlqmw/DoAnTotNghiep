@@ -231,6 +231,18 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
                 this.paginationParams.totalCount = result.totalCount;
                 this.rowData = result.items ?? [];
                 this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
+                if (result.totalCount > 0) {
+                    var _sumQty = 0;
+                    var _sumActualQty = 0;
+                    var _sumOrderQty = 0;
+                    _sumQty = result.items[0].grandQty;
+                    _sumActualQty = result.items[0].grandActualQty;
+                    _sumOrderQty = result.items[0].grandOrderQty;
+                    var rows = this.createRow(1, _sumQty, _sumActualQty, _sumOrderQty);
+                    this.dataParams!.api.setPinnedBottomRowData(rows);
+                } else {
+                    this.dataParams!.api.setPinnedBottomRowData(null);
+                }
                 this.resetGridView();
                 this.isLoading = false;
             });
