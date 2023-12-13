@@ -11348,15 +11348,15 @@ export class ProdContainerRentalWHPlanServiceProxy {
      * @param invoiceNo (optional) 
      * @param billofladingNo (optional) 
      * @param supplierNo (optional) 
-     * @param requestDateFrom (optional) 
-     * @param requestDateTo (optional) 
+     * @param receiveDateFrom (optional) 
+     * @param receiveDateTo (optional) 
      * @param warehouse (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getProdContainerRentalWHPlanSearch(containerNo: string | null | undefined, invoiceNo: string | null | undefined, billofladingNo: string | null | undefined, supplierNo: string | null | undefined, requestDateFrom: moment.Moment | null | undefined, requestDateTo: moment.Moment | null | undefined, warehouse: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdContainerRentalWHPlanDto> {
+    getProdContainerRentalWHPlanSearch(containerNo: string | null | undefined, invoiceNo: string | null | undefined, billofladingNo: string | null | undefined, supplierNo: string | null | undefined, receiveDateFrom: moment.Moment | null | undefined, receiveDateTo: moment.Moment | null | undefined, warehouse: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdContainerRentalWHPlanDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdContainerRentalWHPlan/GetProdContainerRentalWHPlanSearch?";
         if (containerNo !== undefined)
             url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
@@ -11366,10 +11366,10 @@ export class ProdContainerRentalWHPlanServiceProxy {
             url_ += "BillofladingNo=" + encodeURIComponent("" + billofladingNo) + "&"; 
         if (supplierNo !== undefined)
             url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
-        if (requestDateFrom !== undefined)
-            url_ += "RequestDateFrom=" + encodeURIComponent(requestDateFrom ? "" + requestDateFrom.toJSON() : "") + "&"; 
-        if (requestDateTo !== undefined)
-            url_ += "RequestDateTo=" + encodeURIComponent(requestDateTo ? "" + requestDateTo.toJSON() : "") + "&"; 
+        if (receiveDateFrom !== undefined)
+            url_ += "ReceiveDateFrom=" + encodeURIComponent(receiveDateFrom ? "" + receiveDateFrom.toJSON() : "") + "&"; 
+        if (receiveDateTo !== undefined)
+            url_ += "ReceiveDateTo=" + encodeURIComponent(receiveDateTo ? "" + receiveDateTo.toJSON() : "") + "&"; 
         if (warehouse !== undefined)
             url_ += "Warehouse=" + encodeURIComponent("" + warehouse) + "&"; 
         if (sorting !== undefined)
@@ -11433,12 +11433,12 @@ export class ProdContainerRentalWHPlanServiceProxy {
      * @param invoiceNo (optional) 
      * @param billofladingNo (optional) 
      * @param supplierNo (optional) 
-     * @param requestDateFrom (optional) 
-     * @param requestDateTo (optional) 
+     * @param receiveDateFrom (optional) 
+     * @param receiveDateTo (optional) 
      * @param warehouse (optional) 
      * @return Success
      */
-    getProdContainerRentalWHPlanToExcel(containerNo: string | null | undefined, invoiceNo: string | null | undefined, billofladingNo: string | null | undefined, supplierNo: string | null | undefined, requestDateFrom: moment.Moment | null | undefined, requestDateTo: moment.Moment | null | undefined, warehouse: string | null | undefined): Observable<FileDto> {
+    getProdContainerRentalWHPlanToExcel(containerNo: string | null | undefined, invoiceNo: string | null | undefined, billofladingNo: string | null | undefined, supplierNo: string | null | undefined, receiveDateFrom: moment.Moment | null | undefined, receiveDateTo: moment.Moment | null | undefined, warehouse: string | null | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdContainerRentalWHPlan/GetProdContainerRentalWHPlanToExcel?";
         if (containerNo !== undefined)
             url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
@@ -11448,10 +11448,10 @@ export class ProdContainerRentalWHPlanServiceProxy {
             url_ += "BillofladingNo=" + encodeURIComponent("" + billofladingNo) + "&"; 
         if (supplierNo !== undefined)
             url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
-        if (requestDateFrom !== undefined)
-            url_ += "RequestDateFrom=" + encodeURIComponent(requestDateFrom ? "" + requestDateFrom.toJSON() : "") + "&"; 
-        if (requestDateTo !== undefined)
-            url_ += "RequestDateTo=" + encodeURIComponent(requestDateTo ? "" + requestDateTo.toJSON() : "") + "&"; 
+        if (receiveDateFrom !== undefined)
+            url_ += "ReceiveDateFrom=" + encodeURIComponent(receiveDateFrom ? "" + receiveDateFrom.toJSON() : "") + "&"; 
+        if (receiveDateTo !== undefined)
+            url_ += "ReceiveDateTo=" + encodeURIComponent(receiveDateTo ? "" + receiveDateTo.toJSON() : "") + "&"; 
         if (warehouse !== undefined)
             url_ += "Warehouse=" + encodeURIComponent("" + warehouse) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
@@ -13893,33 +13893,30 @@ export class ProdStockReceivingServiceProxy {
 
     /**
      * @param partNo (optional) 
-     * @param workingDateFrom (optional) 
-     * @param workingDateTo (optional) 
+     * @param requestDateFrom (optional) 
+     * @param requestDateTo (optional) 
      * @param supplierNo (optional) 
-     * @param containerNo (optional) 
-     * @param invoiceNo (optional) 
      * @param model (optional) 
+     * @param warehouse (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getProdStockReceivingSearch(partNo: string | null | undefined, workingDateFrom: moment.Moment | null | undefined, workingDateTo: moment.Moment | null | undefined, supplierNo: string | null | undefined, containerNo: string | null | undefined, invoiceNo: string | null | undefined, model: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdStockReceivingDto> {
+    getProdStockReceivingSearch(partNo: string | null | undefined, requestDateFrom: moment.Moment | null | undefined, requestDateTo: moment.Moment | null | undefined, supplierNo: string | null | undefined, model: string | null | undefined, warehouse: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdStockReceivingDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdStockReceiving/GetProdStockReceivingSearch?";
         if (partNo !== undefined)
             url_ += "PartNo=" + encodeURIComponent("" + partNo) + "&"; 
-        if (workingDateFrom !== undefined)
-            url_ += "WorkingDateFrom=" + encodeURIComponent(workingDateFrom ? "" + workingDateFrom.toJSON() : "") + "&"; 
-        if (workingDateTo !== undefined)
-            url_ += "WorkingDateTo=" + encodeURIComponent(workingDateTo ? "" + workingDateTo.toJSON() : "") + "&"; 
+        if (requestDateFrom !== undefined)
+            url_ += "RequestDateFrom=" + encodeURIComponent(requestDateFrom ? "" + requestDateFrom.toJSON() : "") + "&"; 
+        if (requestDateTo !== undefined)
+            url_ += "RequestDateTo=" + encodeURIComponent(requestDateTo ? "" + requestDateTo.toJSON() : "") + "&"; 
         if (supplierNo !== undefined)
             url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
-        if (containerNo !== undefined)
-            url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
-        if (invoiceNo !== undefined)
-            url_ += "InvoiceNo=" + encodeURIComponent("" + invoiceNo) + "&"; 
         if (model !== undefined)
             url_ += "Model=" + encodeURIComponent("" + model) + "&"; 
+        if (warehouse !== undefined)
+            url_ += "Warehouse=" + encodeURIComponent("" + warehouse) + "&"; 
         if (sorting !== undefined)
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         if (skipCount === null)
@@ -13978,30 +13975,27 @@ export class ProdStockReceivingServiceProxy {
 
     /**
      * @param partNo (optional) 
-     * @param workingDateFrom (optional) 
-     * @param workingDateTo (optional) 
+     * @param requestDateFrom (optional) 
+     * @param requestDateTo (optional) 
      * @param supplierNo (optional) 
-     * @param containerNo (optional) 
-     * @param invoiceNo (optional) 
      * @param model (optional) 
+     * @param warehouse (optional) 
      * @return Success
      */
-    getProdStockReceivingToExcel(partNo: string | null | undefined, workingDateFrom: moment.Moment | null | undefined, workingDateTo: moment.Moment | null | undefined, supplierNo: string | null | undefined, containerNo: string | null | undefined, invoiceNo: string | null | undefined, model: string | null | undefined): Observable<FileDto> {
+    getProdStockReceivingToExcel(partNo: string | null | undefined, requestDateFrom: moment.Moment | null | undefined, requestDateTo: moment.Moment | null | undefined, supplierNo: string | null | undefined, model: string | null | undefined, warehouse: string | null | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdStockReceiving/GetProdStockReceivingToExcel?";
         if (partNo !== undefined)
             url_ += "PartNo=" + encodeURIComponent("" + partNo) + "&"; 
-        if (workingDateFrom !== undefined)
-            url_ += "WorkingDateFrom=" + encodeURIComponent(workingDateFrom ? "" + workingDateFrom.toJSON() : "") + "&"; 
-        if (workingDateTo !== undefined)
-            url_ += "WorkingDateTo=" + encodeURIComponent(workingDateTo ? "" + workingDateTo.toJSON() : "") + "&"; 
+        if (requestDateFrom !== undefined)
+            url_ += "RequestDateFrom=" + encodeURIComponent(requestDateFrom ? "" + requestDateFrom.toJSON() : "") + "&"; 
+        if (requestDateTo !== undefined)
+            url_ += "RequestDateTo=" + encodeURIComponent(requestDateTo ? "" + requestDateTo.toJSON() : "") + "&"; 
         if (supplierNo !== undefined)
             url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
-        if (containerNo !== undefined)
-            url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
-        if (invoiceNo !== undefined)
-            url_ += "InvoiceNo=" + encodeURIComponent("" + invoiceNo) + "&"; 
         if (model !== undefined)
             url_ += "Model=" + encodeURIComponent("" + model) + "&"; 
+        if (warehouse !== undefined)
+            url_ += "Warehouse=" + encodeURIComponent("" + warehouse) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -29282,6 +29276,7 @@ export class ProdContainerListDto implements IProdContainerListDto {
     status!: string | undefined;
     requestStatus!: string | undefined;
     billDate!: moment.Moment | undefined;
+    warehouse!: string | undefined;
     grandFreight!: number | undefined;
     grandInsurance!: number | undefined;
     grandCif!: number | undefined;
@@ -29320,6 +29315,7 @@ export class ProdContainerListDto implements IProdContainerListDto {
             this.status = _data["status"];
             this.requestStatus = _data["requestStatus"];
             this.billDate = _data["billDate"] ? moment(_data["billDate"].toString()) : <any>undefined;
+            this.warehouse = _data["warehouse"];
             this.grandFreight = _data["grandFreight"];
             this.grandInsurance = _data["grandInsurance"];
             this.grandCif = _data["grandCif"];
@@ -29358,6 +29354,7 @@ export class ProdContainerListDto implements IProdContainerListDto {
         data["status"] = this.status;
         data["requestStatus"] = this.requestStatus;
         data["billDate"] = this.billDate ? this.billDate.toISOString() : <any>undefined;
+        data["warehouse"] = this.warehouse;
         data["grandFreight"] = this.grandFreight;
         data["grandInsurance"] = this.grandInsurance;
         data["grandCif"] = this.grandCif;
@@ -29389,6 +29386,7 @@ export interface IProdContainerListDto {
     status: string | undefined;
     requestStatus: string | undefined;
     billDate: moment.Moment | undefined;
+    warehouse: string | undefined;
     grandFreight: number | undefined;
     grandInsurance: number | undefined;
     grandCif: number | undefined;
@@ -30697,6 +30695,10 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
     actualQty!: number | undefined;
     orderQty!: number | undefined;
     invoiceNoOut!: string | undefined;
+    requestStatus!: string | undefined;
+    requestDate!: moment.Moment | undefined;
+    deliveryDate!: moment.Moment | undefined;
+    warehouse!: string | undefined;
     grandQty!: number | undefined;
     grandActualQty!: number | undefined;
     grandOrderQty!: number | undefined;
@@ -30728,6 +30730,10 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
             this.actualQty = _data["actualQty"];
             this.orderQty = _data["orderQty"];
             this.invoiceNoOut = _data["invoiceNoOut"];
+            this.requestStatus = _data["requestStatus"];
+            this.requestDate = _data["requestDate"] ? moment(_data["requestDate"].toString()) : <any>undefined;
+            this.deliveryDate = _data["deliveryDate"] ? moment(_data["deliveryDate"].toString()) : <any>undefined;
+            this.warehouse = _data["warehouse"];
             this.grandQty = _data["grandQty"];
             this.grandActualQty = _data["grandActualQty"];
             this.grandOrderQty = _data["grandOrderQty"];
@@ -30759,6 +30765,10 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
         data["actualQty"] = this.actualQty;
         data["orderQty"] = this.orderQty;
         data["invoiceNoOut"] = this.invoiceNoOut;
+        data["requestStatus"] = this.requestStatus;
+        data["requestDate"] = this.requestDate ? this.requestDate.toISOString() : <any>undefined;
+        data["deliveryDate"] = this.deliveryDate ? this.deliveryDate.toISOString() : <any>undefined;
+        data["warehouse"] = this.warehouse;
         data["grandQty"] = this.grandQty;
         data["grandActualQty"] = this.grandActualQty;
         data["grandOrderQty"] = this.grandOrderQty;
@@ -30783,6 +30793,10 @@ export interface IProdStockReceivingDto {
     actualQty: number | undefined;
     orderQty: number | undefined;
     invoiceNoOut: string | undefined;
+    requestStatus: string | undefined;
+    requestDate: moment.Moment | undefined;
+    deliveryDate: moment.Moment | undefined;
+    warehouse: string | undefined;
     grandQty: number | undefined;
     grandActualQty: number | undefined;
     grandOrderQty: number | undefined;

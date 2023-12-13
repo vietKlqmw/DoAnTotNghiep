@@ -25,6 +25,7 @@ namespace tmss.MaterialManagement.ContainerList
         public virtual string Status { get; set; }
         public virtual string RequestStatus { get; set; }
         public virtual DateTime? BillDate { get; set; }
+        public virtual string Warehouse { get; set; }
 
         public virtual decimal? GrandFreight { get; set; }
         public virtual decimal? GrandInsurance { get; set; }

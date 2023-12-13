@@ -19,32 +19,28 @@ namespace tmss.MaterialManagement.ContainerWH.Exporting
                     AddHeader(
                         sheet,
                         ("Container No"),
+                        ("Warehouse"),
+                        ("Supplier No"),
                         ("Invoice No"),
                         ("Bill Of Lading No"),
-                        ("Supplier No"),
                         ("Receive Date"),
                         ("Transport"),
-                        ("Status"),
-                        ("Warehouse"),
-                        ("Devanning Date"),
                         ("Goods Received Note No")
                     );
 
                     AddObjects(
                         sheet, 1, listdata,
                         _ => _.ContainerNo,
+                        _ => _.Warehouse,
+                        _ => _.SupplierNo,
                         _ => _.InvoiceNo,
                         _ => _.BillofladingNo,
-                        _ => _.SupplierNo,
                         _ => _.ReceiveDate,
                         _ => _.Transport,
-                        _ => _.Status,
-                        _ => _.Warehouse,
-                        _ => _.DevanningDate,
                         _ => _.GoodsReceivedNoteNo
                     );
 
-                    for (var i = 0; i < 10; i++)
+                    for (var i = 0; i < 8; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

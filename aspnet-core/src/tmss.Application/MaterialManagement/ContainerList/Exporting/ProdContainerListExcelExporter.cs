@@ -18,7 +18,6 @@ namespace tmss.MaterialManagement.ContainerList.Exporting
 
                     AddHeader(
                         sheet,
-                        ("Request Status"),
                         ("Container No"),
                         ("Supplier No"),
                         ("Status"),
@@ -34,12 +33,12 @@ namespace tmss.MaterialManagement.ContainerList.Exporting
                         ("C.I.F"),
                         ("TAX"),
                         ("Amount"),
+                        ("Warehouse"),
                         ("Remark")
                     );
 
                     AddObjects(
                         sheet, 1, listdata,
-                        _ => _.RequestStatus,
                         _ => _.ContainerNo,
                         _ => _.SupplierNo,
                         _ => _.Status,
@@ -55,10 +54,11 @@ namespace tmss.MaterialManagement.ContainerList.Exporting
                         _ => _.Cif,
                         _ => _.Tax,
                         _ => _.Amount,
+                        _ => _.Warehouse,
                         _ => _.Remark
                     );
 
-                    for (var i = 0; i < 17; i++)
+                    for (var i = 0; i < 18; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

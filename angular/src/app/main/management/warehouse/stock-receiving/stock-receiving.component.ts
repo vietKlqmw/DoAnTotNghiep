@@ -46,14 +46,20 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
     frameworkComponents: FrameworkComponent;
     isLoading: boolean = false;
 
-    containerNo: string = '';
     partNo: string = '';
-    invoiceNo: string = '';
     supplierNo: string = '';
     model: string = '';
-    workingDateFrom: any;
-    workingDateTo: any;
+    requestDateFrom: any;
+    requestDateTo: any;
+    warehouse: string = '';
     _selectrow;
+    listWarehouse = [
+        { label: 'A1', value: "A1" },
+        { label: 'A2', value: "A2" },
+        { label: 'B1', value: "B1" },
+        { label: 'C1', value: "C1" },
+        { label: 'C2', value: "C2" }
+    ];
 
     defaultColDef = {
         resizable: true,
@@ -81,11 +87,12 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
         this.colDefs = [
             { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 60 },
             { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'partNo', flex: 1 },
-            //{ headerName: this.l('Color Sfx'), headerTooltip: this.l('Color Sfx'), field: 'colorSfx', flex: 1 },
+            { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', flex: 1 },
             { headerName: this.l('Carfamily Code'), headerTooltip: this.l('Cfc'), field: 'model', flex: 1 },
+            { headerName: this.l('Warehouse'), headerTooltip: this.l('Warehouse'), field: 'warehouse', flex: 1 },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
             { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', flex: 1 },
-            { headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', flex: 1 },
+            //{ headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', flex: 1 },
             {
                 headerName: this.l('Qty'), headerTooltip: this.l('Qty'), field: 'qty', flex: 1, type: 'rightAligned',
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.qty),
@@ -101,15 +108,19 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.orderQty),
                 aggFunc: this.calTotal
             },
-            { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', flex: 1 },
             {
-                headerName: this.l('Transaction Datetime'), headerTooltip: this.l('Transaction Datetime'), field: 'transactionDatetime', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.transactionDatetime, 'dd/MM/yyyy')
+                headerName: this.l('Request Date'), headerTooltip: this.l('Request Date'), field: 'requestDate', flex: 1,
+                valueGetter: (params) => this.pipe.transform(params.data?.requestDate, 'dd/MM/yyyy')
             },
+            { headerName: this.l('Request Status'), headerTooltip: this.l('Request Status'), field: 'requestStatus', flex: 1 },
             {
-                headerName: this.l('Working Date'), headerTooltip: this.l('Working Date'), field: 'workingDate', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.workingDate, 'dd/MM/yyyy')
+                headerName: this.l('Delivery Date'), headerTooltip: this.l('Delivery Date'), field: 'deliveryDate', flex: 1,
+                valueGetter: (params) => this.pipe.transform(params.data?.deliveryDate, 'dd/MM/yyyy')
             },
+            // {
+            //     headerName: this.l('Working Date'), headerTooltip: this.l('Working Date'), field: 'workingDate', flex: 1,
+            //     valueGetter: (params) => this.pipe.transform(params.data?.workingDate, 'dd/MM/yyyy')
+            // },
             { headerName: this.l('Invoice No Out Warehouse'), headerTooltip: this.l('Invoice No Out Warehouse'), field: 'invoiceNoOut', flex: 1 },
             { headerName: this.l('Material Id'), headerTooltip: this.l('Material Id'), field: 'materialId', flex: 1 }
         ];
@@ -147,12 +158,11 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
         this.isLoading = true;
         this._service.getProdStockReceivingSearch(
             this.partNo,
-            this.workingDateFrom ? moment(this.workingDateFrom) : undefined,
-            this.workingDateTo ? moment(this.workingDateTo) : undefined,
+            this.requestDateFrom ? moment(this.requestDateFrom) : undefined,
+            this.requestDateTo ? moment(this.requestDateTo) : undefined,
             this.supplierNo,
-            this.containerNo,
-            this.invoiceNo,
             this.model,
+            this.warehouse,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -181,24 +191,22 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
 
     clearTextSearch() {
         this.partNo = '';
-        this.containerNo = '';
-        this.invoiceNo = '';
+        this.warehouse = '';
         this.model = '';
         this.supplierNo = '';
-        this.workingDateFrom = '';
-        this.workingDateTo = '';
+        this.requestDateFrom = '';
+        this.requestDateTo = '';
         this.searchDatas();
     }
 
     getDatas(paginationParams?: PaginationParamsModel) {
         return this._service.getProdStockReceivingSearch(
             this.partNo,
-            this.workingDateFrom ? moment(this.workingDateFrom) : undefined,
-            this.workingDateTo ? moment(this.workingDateTo) : undefined,
+            this.requestDateFrom ? moment(this.requestDateFrom) : undefined,
+            this.requestDateTo ? moment(this.requestDateTo) : undefined,
             this.supplierNo,
-            this.containerNo,
-            this.invoiceNo,
             this.model,
+            this.warehouse,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -259,12 +267,11 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
         this.isLoading = true;
         this._service.getProdStockReceivingToExcel(
             this.partNo,
-            this.workingDateFrom ? moment(this.workingDateFrom) : undefined,
-            this.workingDateTo ? moment(this.workingDateTo) : undefined,
+            this.requestDateFrom ? moment(this.requestDateFrom) : undefined,
+            this.requestDateTo ? moment(this.requestDateTo) : undefined,
             this.supplierNo,
-            this.containerNo,
-            this.invoiceNo,
-            this.model)
+            this.model,
+            this.warehouse)
             .pipe(finalize(() => this.isLoading = false))
             .subscribe(result => {
                 this._fileDownloadService.downloadTempFile(result);

@@ -7,8 +7,8 @@
                         <div class="col-md-customize">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type='text' class="form-control m-input" name='requestDateFrom' [placeholder]="l('Request Date From')"
-                                        #datepicker='bsDatepicker' [(ngModel)]='requestDateFrom' bsDatepicker
+                                    <input type='text' class="form-control m-input" name='receiveDateFrom' [placeholder]="l('Receive Date From')"
+                                        #datepicker='bsDatepicker' [(ngModel)]='receiveDateFrom' bsDatepicker
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
                                     <span class="input-group-text right-text">
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
@@ -21,8 +21,8 @@
                         <div class="col-md-customize">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type='text' class="form-control m-input" name='requestDateTo' [placeholder]="l('Request Date To')"
-                                        #datepicker2='bsDatepicker' [(ngModel)]='requestDateTo' bsDatepicker
+                                    <input type='text' class="form-control m-input" name='receiveDateTo' [placeholder]="l('Receive Date To')"
+                                        #datepicker2='bsDatepicker' [(ngModel)]='receiveDateTo' bsDatepicker
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
                                     <span class="input-group-text right-text">
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker2.toggle()"></i>
@@ -83,8 +83,6 @@
                     <div class="col-sm-12 text-right">
                         <button type="button" class="btn btn-primary" (click)="addGoodsReceivedNote()">
                             <i class="fa fa-plus"></i> {{"Add Goods Received Note" | localize}}</button>
-                        <button type="button" class="btn btn-primary" (click)="edit('Add Goods Delivery Note')" [disabled]="!saveSelectedRow.id">
-                            <i class="fa fa-plus"></i> {{"Add Goods Delivery Note" | localize}}</button>
                         <button type="button" class="btn btn-primary" (click)="edit('Edit')" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-edit"></i> {{"Edit" | localize}}</button>
                         <!-- <button type="button" class="btn btn-success" (click)="importFromExcel()">

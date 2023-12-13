@@ -992,24 +992,26 @@ CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_SEARCH
     @p_InvoiceNo NVARCHAR(20),
     @p_BillOfLadingNo NVARCHAR(20),
     @p_SupplierNo NVARCHAR(10),
-    @p_RequestDateFrom DATE,
-    @p_RequestDateTo DATE,
+    @p_ReceiveDateFrom DATE,
+    @p_ReceiveDateTo DATE,
     @p_Warehouse NVARCHAR(2)
 )
 AS
 BEGIN 
     SELECT a.Id, a.ContainerNo, a.RequestDate, pi.InvoiceNo, pbol.BillofladingNo, a.ReceiveDate, 
-           a.SupplierNo, a.Transport, a.Status, a.DeliveryDate, a.Warehouse, a.BillId, a.InvoiceId,
+           a.SupplierNo, a.Transport, a.Status, a.DeliveryDate, a.BillId, a.InvoiceId,
+           (a.Warehouse + '/' + msl.AddressLanguageVn) Warehouse, 
            a.GoodsReceivedNoteNo, a.DevanningDate
       FROM ProdContainerRentalWHPlan a
 INNER JOIN ProdInvoice pi ON a.InvoiceId = pi.Id
 INNER JOIN ProdBillOfLading pbol ON a.BillId = pbol.Id
+ LEFT JOIN MasterStorageLocation msl ON a.Warehouse = msl.StorageLocation
      WHERE (@p_ContainerNo IS NULL OR a.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
        AND (@p_InvoiceNo IS NULL OR pi.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
        AND (@p_BillOfLadingNo IS NULL OR pbol.BillofladingNo LIKE CONCAT('%', @p_BillOfLadingNo, '%'))
        AND (@p_SupplierNo IS NULL OR a.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
-       AND (@p_RequestDateFrom IS NULL OR a.RequestDate >= @p_RequestDateFrom)
-       AND (@p_RequestDateTo IS NULL OR a.RequestDate <= @p_RequestDateTo)
+       AND (@p_ReceiveDateFrom IS NULL OR a.ReceiveDate >= @p_ReceiveDateFrom)
+       AND (@p_ReceiveDateTo IS NULL OR a.ReceiveDate <= @p_ReceiveDateTo)
        AND (@p_Warehouse IS NULL OR a.Warehouse = @p_Warehouse)
        AND a.IsDeleted = 0
   ORDER BY a.RequestDate DESC
@@ -1139,10 +1141,10 @@ FETCH NEXT FROM cursor_value INTO @p_ListContId
     INSERT INTO ProdStockReceiving 
                 (CreationTime, CreatorUserId, IsDeleted, 
                 PartNo, PartName, PartListId, MaterialId, Qty, InvoiceDetailsId, 
-                SupplierNo, Model, ActualQty, ContainerNo)
+                SupplierNo, Model, ActualQty, ContainerNo, Warehouse)
          SELECT GETDATE(), @p_UserId, 0, 
                 pid.PartNo, pid.PartName, pci.PartListId, mpl.MaterialId, pid.UsageQty, pid.Id, 
-                pid.SupplierNo, pid.CarfamilyCode, @p_qty, pid.ContainerNo 
+                pid.SupplierNo, pid.CarfamilyCode, @p_qty, pid.ContainerNo, @p_Warehouse 
            FROM ProdInvoiceDetails pid
      INNER JOIN ProdContainerIntransit pci ON pid.ContainerNo = pci.ContainerNo
       LEFT JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
@@ -1365,31 +1367,30 @@ END
 CREATE OR ALTER PROCEDURE INV_PROD_STOCK_RECEIVING_SEARCH 
 (
 	  @p_PartNo NVARCHAR(12),
-	  @p_WorkingDateFrom DATE,
-	  @p_WorkingDateTo DATE,
+	  @p_RequestDateFrom DATE,
+	  @p_RequestDateTo DATE,
     @p_SupplierNo NVARCHAR(15),
-	  @p_ContainerNo NVARCHAR(15),
-	  @p_InvoiceNo NVARCHAR(20),
-    @p_Model NVARCHAR(4)
+    @p_Model NVARCHAR(4),
+    @p_Warehouse NVARCHAR(2)
 )
 AS
 BEGIN
 	  SELECT r.Id, r.PartNo, r.PartName, r.PartListId, r.MaterialId, 
-           ISNULL(r.Qty, 0) Qty, r.TransactionDatetime, r.InvoiceDetailsId, r.WorkingDate, 
-		       r.SupplierNo, r.ContainerNo, d.InvoiceNo, r.Model, r.ActualQty, r.OrderQty, 
-           r.InvoiceNoOut
+           ISNULL(r.Qty, 0) Qty, r.InvoiceDetailsId, r.RequestDate,
+		       r.SupplierNo, r.ContainerNo, d.InvoiceNo, r.Model, 
+           r.ActualQty, r.OrderQty, r.InvoiceNoOut, r.RequestStatus,
+           r.DeliveryDate, (r.Warehouse + '/' + msl.AddressLanguageVn) Warehouse
       FROM ProdStockReceiving r
-INNER JOIN ProdInvoiceDetails d
-       	ON d.Id = r.InvoiceDetailsId
+INNER JOIN ProdInvoiceDetails d ON d.Id = r.InvoiceDetailsId
+ LEFT JOIN MasterStorageLocation msl ON r.Warehouse = msl.StorageLocation
 	   WHERE (ISNULL(@p_PartNo, '') = '' OR r.PartNo LIKE CONCAT('%', @p_PartNo, '%'))
-		   AND (ISNULL(@p_WorkingDateFrom, '')= '' OR  r.WorkingDate >= @p_WorkingDateFrom)
-       AND (ISNULL(@p_WorkingDateTo, '')= '' OR r.WorkingDate <= @p_WorkingDateTo)
+		   AND (ISNULL(@p_RequestDateFrom, '')= '' OR  r.RequestDate >= @p_RequestDateFrom)
+       AND (ISNULL(@p_RequestDateTo, '')= '' OR r.RequestDate <= @p_RequestDateTo)
        AND (ISNULL(@p_SupplierNo, '') = '' OR r.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
-       AND (ISNULL(@p_ContainerNo, '') = '' OR d.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
-       AND (ISNULL(@p_InvoiceNo, '') = '' OR d.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
+       AND (ISNULL(@p_Warehouse, '') = '' OR r.Warehouse LIKE CONCAT('%', @p_Warehouse, '%'))
        AND (ISNULL(@p_Model, '') = '' OR r.Model LIKE CONCAT('%', @p_Model, '%'))
        AND r.IsDeleted = 0
-  ORDER BY r.Model, r.WorkingDate DESC, r.PartNo
+  ORDER BY r.Model, r.PartNo, r.RequestDate DESC, r.DeliveryDate DESC
 END
 ------------------------------------------------CustomsDeclare------------------------------------------------
 ------------------------------------------------Search:

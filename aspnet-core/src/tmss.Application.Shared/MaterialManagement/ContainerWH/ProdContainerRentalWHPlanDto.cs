@@ -27,8 +27,8 @@ namespace tmss.MaterialManagement.ContainerWH
         public virtual string InvoiceNo { get; set; }
         public virtual string BillofladingNo { get; set; }
         public virtual string SupplierNo { get; set; }
-        public virtual DateTime? RequestDateFrom { get; set; }
-        public virtual DateTime? RequestDateTo { get; set; }
+        public virtual DateTime? ReceiveDateFrom { get; set; }
+        public virtual DateTime? ReceiveDateTo { get; set; }
         public virtual string Warehouse { get; set; }
     }
 
@@ -38,8 +38,8 @@ namespace tmss.MaterialManagement.ContainerWH
         public virtual string InvoiceNo { get; set; }
         public virtual string BillofladingNo { get; set; }
         public virtual string SupplierNo { get; set; }
-        public virtual DateTime? RequestDateFrom { get; set; }
-        public virtual DateTime? RequestDateTo { get; set; }
+        public virtual DateTime? ReceiveDateFrom { get; set; }
+        public virtual DateTime? ReceiveDateTo { get; set; }
         public virtual string Warehouse { get; set; }
     }
 

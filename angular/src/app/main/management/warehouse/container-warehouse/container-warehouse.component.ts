@@ -54,8 +54,8 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
     invoiceNo: string = '';
     supplierNo: string = '';
     warehouse: string = '';
-    requestDateFrom: any;
-    requestDateTo: any;
+    receiveDateFrom: any;
+    receiveDateTo: any;
     listStatus = [
         { key: 'R', value: "REQUESTED" },
         { key: 'P', value: "PENDING" },
@@ -94,38 +94,21 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
         super(injector);
 
         this.colDefs = [
-            {
-                headerName: "", headerTooltip: "", field: "checked", width: 30, pinned: true,
-                headerClass: ["align-checkbox-header"],
-                cellClass: ["check-box-center"],
-                checkboxSelection: true,
-                headerCheckboxSelection: true,
-                headerCheckboxSelectionFilteredOnly: true
-            },
-            {
-                headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1, pinned: true,
-                cellRenderer: 'agSelectRendererComponent',
-                list: this.listStatus,
-                cellClass: ['RendererCombobox', 'text-center']
-            },
-            { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', flex: 1, pinned: true },
-            {
-                headerName: this.l('Request Date'), headerTooltip: this.l('Request Date'), field: 'requestDate', flex: 1, pinned: true,
-                valueGetter: (params) => this.pipe.transform(params.data?.requestDate, 'dd/MM/yyyy')
-            },
+            { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 80 },
+            { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', flex: 1 },
+            { headerName: this.l('Warehouse'), headerTooltip: this.l('Warehouse'), field: 'warehouse', flex: 1 },
+            { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
             { headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', flex: 1 },
             { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('Bill Of Lading No'), field: 'billofladingNo', flex: 1 },
-            { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
             {
                 headerName: this.l('Receive Date'), headerTooltip: this.l('Receive Date'), field: 'receiveDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.receiveDate, 'dd/MM/yyyy')
             },
             { headerName: this.l('Transport'), headerTooltip: this.l('Transport'), field: 'transport', flex: 1 },
-            {
-                headerName: this.l('Devanning Date'), headerTooltip: this.l('Devanning Date'), field: 'devanningDate', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.devanningDate, 'dd/MM/yyyy')
-            },
-            { headerName: this.l('Warehouse'), headerTooltip: this.l('Warehouse'), field: 'warehouse', flex: 1 },
+            // {
+            //     headerName: this.l('Devanning Date'), headerTooltip: this.l('Devanning Date'), field: 'devanningDate', flex: 1,
+            //     valueGetter: (params) => this.pipe.transform(params.data?.devanningDate, 'dd/MM/yyyy')
+            // },
             { headerName: this.l('Goods Received Note No'), headerTooltip: this.l('Goods Received Note No'), field: 'goodsReceivedNoteNo', flex: 1 }
         ];
 
@@ -166,8 +149,8 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
             this.invoiceNo,
             this.billOfLadingNo,
             this.supplierNo,
-            this.requestDateFrom ? moment(this.requestDateFrom) : undefined,
-            this.requestDateTo ? moment(this.requestDateTo) : undefined,
+            this.receiveDateFrom ? moment(this.receiveDateFrom) : undefined,
+            this.receiveDateTo ? moment(this.receiveDateTo) : undefined,
             this.warehouse,
             '',
             this.paginationParams.skipCount,
@@ -189,8 +172,8 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
         this.invoiceNo = '';
         this.warehouse = '';
         this.supplierNo = '';
-        this.requestDateFrom = '';
-        this.requestDateTo = '';
+        this.receiveDateFrom = '';
+        this.receiveDateTo = '';
         this.searchDatas();
     }
 
@@ -200,8 +183,8 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
             this.invoiceNo,
             this.billOfLadingNo,
             this.supplierNo,
-            this.requestDateFrom ? moment(this.requestDateFrom) : undefined,
-            this.requestDateTo ? moment(this.requestDateTo) : undefined,
+            this.receiveDateFrom ? moment(this.receiveDateFrom) : undefined,
+            this.receiveDateTo ? moment(this.receiveDateTo) : undefined,
             this.warehouse,
             '',
             this.paginationParams.skipCount,
@@ -254,8 +237,8 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
             this.invoiceNo,
             this.billOfLadingNo,
             this.supplierNo,
-            this.requestDateFrom ? moment(this.requestDateFrom) : undefined,
-            this.requestDateTo ? moment(this.requestDateTo) : undefined,
+            this.receiveDateFrom ? moment(this.receiveDateFrom) : undefined,
+            this.receiveDateTo ? moment(this.receiveDateTo) : undefined,
             this.warehouse)
             .pipe(finalize(() => this.isLoading = false))
             .subscribe(result => {

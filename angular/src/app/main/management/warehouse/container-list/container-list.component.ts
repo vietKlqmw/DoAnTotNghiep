@@ -79,56 +79,28 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
 
         this.colDefs = [
             { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 60, pinned: true },
-            { headerName: this.l('Request Status'), headerTooltip: this.l('Request Status'), field: 'requestStatus', flex: 1, pinned: true },
             { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', flex: 1, pinned: true },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1, pinned: true },
-            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
+            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1, pinned: true },
             { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('Bill Of Lading No'), field: 'billOfLadingNo', flex: 1 },
             {
                 headerName: this.l('Bill Date'), headerTooltip: this.l('Bill Date'), field: 'billDate', flex: 1,
                 valueFormatter: (params) => this.pipe.transform(params.data?.billDate, 'dd/MM/yyyy'),
             },
-            { headerName: this.l('Seal No'), headerTooltip: this.l('Seal No'), field: 'sealNo', flex: 1 },
-            { headerName: this.l('Container Size'), headerTooltip: this.l('Container Size'), field: 'containerSize', flex: 1 },
             {
-                headerName: this.l('Shipping Date (ETD)'), headerTooltip: this.l('Shipping Date (ETD)'), field: 'shippingDate', flex: 1,
+                headerName: this.l('Shipping Date'), headerTooltip: this.l('Shipping Date (ETD)'), field: 'shippingDate', flex: 1,
                 valueFormatter: (params) => this.pipe.transform(params.data?.shippingDate, 'dd/MM/yyyy')
             },
             {
-                headerName: this.l('Port Date (ETA)'), headerTooltip: this.l('Port Date (ETA)'), field: 'portDate', flex: 1,
+                headerName: this.l('Port Date'), headerTooltip: this.l('Port Date (ETA)'), field: 'portDate', flex: 1,
                 valueFormatter: (params) => this.pipe.transform(params.data?.portDate, 'dd/MM/yyyy')
             },
             {
                 headerName: this.l('Receive Date'), headerTooltip: this.l('Receive Date'), field: 'receiveDate', flex: 1,
                 valueFormatter: (params) => this.pipe.transform(params.data?.receiveDate, 'dd/MM/yyyy')
             },
-            {
-                headerName: this.l('Port Date Actual (ATA)'), headerTooltip: this.l('Port Date Actual (ATA)'), field: 'portDateActual', flex: 1,
-                valueFormatter: (params) => this.pipe.transform(params.data?.portDateActual, 'dd/MM/yyyy'),
-            },
-            {
-                headerName: this.l('Port Transit Date'), headerTooltip: this.l('Port Transit Date'), field: 'portTransitDate', flex: 1,
-                valueFormatter: (params) => this.pipe.transform(params.data?.portTransitDate, 'dd/MM/yyyy')
-            },
             { headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', flex: 1 },
             { headerName: this.l('Transport'), headerTooltip: this.l('Transport'), field: 'transport', flex: 1 },
-            {
-                headerName: this.l('Devanning Date'), headerTooltip: this.l('Devanning Date'), field: 'devanningDate', flex: 1,
-                valueFormatter: (params) => this.pipe.transform(params.data?.devanningDate, 'dd/MM/yyyy')
-            },
-            { headerName: this.l('Devanning Time'), headerTooltip: this.l('Devanning Time'), field: 'devanningTime', flex: 1 },
-            { headerName: this.l('Remark'), headerTooltip: this.l('Remark'), field: 'remark', flex: 1 },
-            { headerName: this.l('Warehouse Location'), headerTooltip: this.l('Warehouse Location'), field: 'whLocation', flex: 1 },
-            {
-                headerName: this.l('Gate In Date'), headerTooltip: this.l('Gate In Date'), field: 'gateInDate', flex: 1,
-                valueFormatter: (params) => this.pipe.transform(params.data?.gateInDate, 'dd/MM/yyyy')
-            },
-            { headerName: this.l('Gate In Time'), headerTooltip: this.l('Gate In Time'), field: 'gateInTime', flex: 1 },
-            {
-                headerName: this.l('Transit Port Request Date'), headerTooltip: this.l('Transit Port Request Date'), field: 'transitPortReqDate', flex: 1,
-                valueFormatter: (params) => this.pipe.transform(params.data?.transitPortReqDate, 'dd/MM/yyyy')
-            },
-            { headerName: this.l('Transit Port Request Time'), headerTooltip: this.l('Transit Port Request Time'), field: 'transitPortReqTime', flex: 1 },
             {
                 headerName: this.l('Freight'), headerTooltip: this.l('Freight'), field: 'freight', flex: 1,
                 type: 'rightAligned', aggFunc: this.calTotal,
@@ -154,11 +126,8 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
                 type: 'rightAligned', aggFunc: this.calTotal,
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.amount, 4)
             },
-            { headerName: this.l('Location Code'), headerTooltip: this.l('Location Code'), field: 'locationCode', flex: 1 },
-            {
-                headerName: this.l('Location Date'), headerTooltip: this.l('Location Date'), field: 'locationDate', flex: 1,
-                valueFormatter: (params) => this.pipe.transform(params.data?.locationDate, 'dd/MM/yyyy')
-            }
+            { headerName: this.l('Warehouse'), headerTooltip: this.l('Warehouse'), field: 'warehouse', flex: 1 },
+            { headerName: this.l('Remark'), headerTooltip: this.l('Remark'), field: 'remark', flex: 1 }
         ];
 
         this.frameworkComponents = {

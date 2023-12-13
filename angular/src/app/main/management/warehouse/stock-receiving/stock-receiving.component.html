@@ -8,32 +8,18 @@
                             <div class="form-group">
                                 <input [(ngModel)]="partNo" name="partNo" class="form-control m-input"
                                     [placeholder]="l('Part No')" type="text" (keyup.enter)="searchDatas()">
-                                <input [(ngModel)]="invoiceNo" name="invoiceNo" class="form-control m-input"
-                                    [placeholder]="l('Invoice No')" type="text" (keyup.enter)="searchDatas()">
+                                <tmss-combobox [items]="listWarehouse" name="warehouse"
+                                    [(ngModel)]="warehouse" (keyup.enter)="searchDatas()"></tmss-combobox>
                             </div>
                         </div>
                         <div class="col-md-customize">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type='text' class="form-control m-input" name='workingDateFrom' [placeholder]="l('Working Date From')"
-                                        #datepicker='bsDatepicker' [(ngModel)]='workingDateFrom' bsDatepicker
+                                    <input type='text' class="form-control m-input" name='requestDateFrom' [placeholder]="l('Request Date From')"
+                                        #datepicker='bsDatepicker' [(ngModel)]='requestDateFrom' bsDatepicker
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
                                     <span class="input-group-text right-text">
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
-                                    </span>
-                                </div>
-                                <input [(ngModel)]="model" name="model" class="form-control m-input"
-                                    [placeholder]="l('Carfamily Code')" type="text" (keyup.enter)="searchDatas()">
-                            </div>
-                        </div>
-                        <div class="col-md-customize">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <input type='text' class="form-control m-input" name='workingDateTo' [placeholder]="l('Working Date To')"
-                                        #datepicker2='bsDatepicker' [(ngModel)]='workingDateTo' bsDatepicker
-                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
-                                    <span class="input-group-text right-text">
-                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker2.toggle()"></i>
                                     </span>
                                 </div>
                                 <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
@@ -44,14 +30,26 @@
                         </div>
                         <div class="col-md-customize">
                             <div class="form-group">
+                                <div class="input-group">
+                                    <input type='text' class="form-control m-input" name='requestDateTo' [placeholder]="l('Request Date To')"
+                                        #datepicker2='bsDatepicker' [(ngModel)]='requestDateTo' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker2.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-customize">
+                            <div class="form-group">
                                 <input [(ngModel)]="supplierNo" name="supplierNo" class="form-control m-input"
                                     [placeholder]="l('Supplier No')" type="text" (keyup.enter)="searchDatas()">
                             </div>
                         </div>
                         <div class="col-md-customize">
                             <div class="form-group">
-                                <input [(ngModel)]="containerNo" name="containerNo" class="form-control m-input"
-                                    [placeholder]="l('Container No')" type="text" (keyup.enter)="searchDatas()">
+                                <input [(ngModel)]="model" name="model" class="form-control m-input"
+                                    [placeholder]="l('Carfamily Code')" type="text" (keyup.enter)="searchDatas()">
                             </div>
                         </div>
                     </div>
@@ -81,6 +79,8 @@
                     <div class="col-sm-12 text-right">
                         <button type="button" class="btn btn-view" (click)="viewMaterialById()" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-regular fa-eye"></i> {{"View Material" | localize}}</button>
+                        <button type="button" class="btn btn-primary" [disabled]="!saveSelectedRow.id">
+                            <i class="fa fa-plus"></i> {{"Add Goods Delivery Note" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
                             <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>
                     </div>

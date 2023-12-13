@@ -32,7 +32,7 @@ namespace tmss.MaterialManagement.ContainerWH
 
         public async Task<PagedResultDto<ProdContainerRentalWHPlanDto>> GetProdContainerRentalWHPlanSearch(GetProdContainerRentalWHPlanInput input)
         {
-            string _sql = "Exec INV_PROD_CONTAINER_WAREHOUSE_SEARCH @p_ContainerNo, @p_InvoiceNo, @p_BillOfLadingNo, @p_SupplierNo, @p_RequestDateFrom, @p_RequestDateTo, @p_Warehouse";
+            string _sql = "Exec INV_PROD_CONTAINER_WAREHOUSE_SEARCH @p_ContainerNo, @p_InvoiceNo, @p_BillOfLadingNo, @p_SupplierNo, @p_ReceiveDateFrom, @p_ReceiveDateTo, @p_Warehouse";
 
             IEnumerable<ProdContainerRentalWHPlanDto> result = await _dapperRepo.QueryAsync<ProdContainerRentalWHPlanDto>(_sql, new
             {
@@ -40,8 +40,8 @@ namespace tmss.MaterialManagement.ContainerWH
                 p_InvoiceNo = input.InvoiceNo,
                 p_BillOfLadingNo = input.BillofladingNo,
                 p_SupplierNo = input.SupplierNo,
-                p_RequestDateFrom = input.RequestDateFrom,
-                p_RequestDateTo = input.RequestDateTo,
+                p_ReceiveDateFrom = input.ReceiveDateFrom,
+                p_ReceiveDateTo = input.ReceiveDateTo,
                 p_Warehouse = input.Warehouse
             });
 
@@ -56,7 +56,7 @@ namespace tmss.MaterialManagement.ContainerWH
 
         public async Task<FileDto> GetProdContainerRentalWHPlanToExcel(GetProdContainerRentalWHPlanExportInput input)
         {
-            string _sql = "Exec INV_PROD_CONTAINER_WAREHOUSE_SEARCH @p_ContainerNo, @p_InvoiceNo, @p_BillOfLadingNo, @p_SupplierNo, @p_RequestDateFrom, @p_RequestDateTo, @p_Warehouse";
+            string _sql = "Exec INV_PROD_CONTAINER_WAREHOUSE_SEARCH @p_ContainerNo, @p_InvoiceNo, @p_BillOfLadingNo, @p_SupplierNo, @p_ReceiveDateFrom, @p_ReceiveDateTo, @p_Warehouse";
 
             IEnumerable<ProdContainerRentalWHPlanDto> result = await _dapperRepo.QueryAsync<ProdContainerRentalWHPlanDto>(_sql, new
             {
@@ -64,8 +64,8 @@ namespace tmss.MaterialManagement.ContainerWH
                 p_InvoiceNo = input.InvoiceNo,
                 p_BillOfLadingNo = input.BillofladingNo,
                 p_SupplierNo = input.SupplierNo,
-                p_RequestDateFrom = input.RequestDateFrom,
-                p_RequestDateTo = input.RequestDateTo,
+                p_ReceiveDateFrom = input.ReceiveDateFrom,
+                p_ReceiveDateTo = input.ReceiveDateTo,
                 p_Warehouse = input.Warehouse
             });
 

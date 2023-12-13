@@ -24,17 +24,16 @@ namespace tmss.MaterialManagement.StockReceiving
 
         public async Task<PagedResultDto<ProdStockReceivingDto>> GetProdStockReceivingSearch(GetProdStockReceivingInput input)
         {
-            string _sql = "Exec INV_PROD_STOCK_RECEIVING_SEARCH @p_PartNo, @p_WorkingDateFrom, @p_WorkingDateTo, @p_SupplierNo, @p_ContainerNo, @p_InvoiceNo, @p_Model";
+            string _sql = "Exec INV_PROD_STOCK_RECEIVING_SEARCH @p_PartNo, @p_RequestDateFrom, @p_RequestDateTo, @p_SupplierNo, @p_Model, @p_Warehouse";
 
             IEnumerable<ProdStockReceivingDto> result = await _dapperRepo.QueryAsync<ProdStockReceivingDto>(_sql, new
             {
                 p_PartNo = input.PartNo,
-                p_WorkingDateFrom = input.WorkingDateFrom,
-                p_WorkingDateTo = input.WorkingDateTo,
+                p_RequestDateFrom = input.RequestDateFrom,
+                p_RequestDateTo = input.RequestDateTo,
                 p_SupplierNo = input.SupplierNo,
-                p_ContainerNo = input.ContainerNo,
-                p_InvoiceNo = input.InvoiceNo,
-                p_Model = input.Model
+                p_Model = input.Model,
+                p_Warehouse = input.Warehouse
             });
 
             var listResult = result.ToList();
@@ -55,17 +54,16 @@ namespace tmss.MaterialManagement.StockReceiving
 
         public async Task<FileDto> GetProdStockReceivingToExcel(GetProdStockReceivingExportInput input)
         {
-            string _sql = "Exec INV_PROD_STOCK_RECEIVING_SEARCH @p_PartNo, @p_WorkingDateFrom, @p_WorkingDateTo, @p_SupplierNo, @p_ContainerNo, @p_InvoiceNo, @p_Model";
+            string _sql = "Exec INV_PROD_STOCK_RECEIVING_SEARCH @p_PartNo, @p_RequestDateFrom, @p_RequestDateTo, @p_SupplierNo, @p_Model, @p_Warehouse";
 
             IEnumerable<ProdStockReceivingDto> result = await _dapperRepo.QueryAsync<ProdStockReceivingDto>(_sql, new
             {
                 p_PartNo = input.PartNo,
-                p_WorkingDateFrom = input.WorkingDateFrom,
-                p_WorkingDateTo = input.WorkingDateTo,
+                p_RequestDateFrom = input.RequestDateFrom,
+                p_RequestDateTo = input.RequestDateTo,
                 p_SupplierNo = input.SupplierNo,
-                p_ContainerNo = input.ContainerNo,
-                p_InvoiceNo = input.InvoiceNo,
-                p_Model = input.Model
+                p_Model = input.Model,
+                p_Warehouse = input.Warehouse
             });
 
             var exportToExcel = result.ToList();

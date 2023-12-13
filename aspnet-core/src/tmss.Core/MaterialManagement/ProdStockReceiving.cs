@@ -21,6 +21,9 @@ namespace tmss.MaterialManagement
 
         public const int MaxInvoiceNoOutLength = 10;
 
+        public const int MaxRequestStatusLength = 20;
+        public const int MaxWarehouseLength = 2;
+
         [StringLength(MaxPartNoLength)]
         public virtual string PartNo { get; set; }
 
@@ -33,11 +36,7 @@ namespace tmss.MaterialManagement
 
         public virtual int? Qty { get; set; }
 
-        public virtual DateTime? TransactionDatetime { get; set; }
-
         public virtual long? InvoiceDetailsId { get; set; }
-
-        public virtual DateTime? WorkingDate { get; set; }
 
         [StringLength(MaxSupplierNoLength)]
         public virtual string SupplierNo { get; set; }
@@ -54,5 +53,16 @@ namespace tmss.MaterialManagement
 
         [StringLength(MaxInvoiceNoOutLength)]
         public virtual string InvoiceNoOut { get; set; }
+
+        [StringLength(MaxRequestStatusLength)]
+        public virtual string RequestStatus { get; set; }
+
+        public virtual DateTime? RequestDate { get; set; }
+
+        public virtual DateTime? DeliveryDate { get; set; }
+
+        [StringLength(MaxWarehouseLength)]
+        public virtual string Warehouse { get; set; }
+
     }
 }

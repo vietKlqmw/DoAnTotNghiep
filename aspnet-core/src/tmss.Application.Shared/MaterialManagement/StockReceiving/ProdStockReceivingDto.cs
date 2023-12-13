@@ -20,6 +20,10 @@ namespace tmss.MaterialManagement.StockReceiving
         public virtual int? ActualQty { get; set; }
         public virtual int? OrderQty { get; set; }
         public virtual string InvoiceNoOut { get; set; }
+        public virtual string RequestStatus { get; set; }
+        public virtual DateTime? RequestDate { get; set; }
+        public virtual DateTime? DeliveryDate { get; set; }
+        public virtual string Warehouse { get; set; }
 
         public virtual int? GrandQty { get; set; }
         public virtual int? GrandActualQty { get; set; }
@@ -29,22 +33,20 @@ namespace tmss.MaterialManagement.StockReceiving
     public class GetProdStockReceivingInput : PagedAndSortedResultRequestDto
     {
         public virtual string PartNo { get; set; }
-        public virtual DateTime? WorkingDateFrom { get; set; }
-        public virtual DateTime? WorkingDateTo { get; set; }
+        public virtual DateTime? RequestDateFrom { get; set; }
+        public virtual DateTime? RequestDateTo { get; set; }
         public virtual string SupplierNo { get; set; }
-        public virtual string ContainerNo { get; set; }
-        public virtual string InvoiceNo { get; set; }
         public virtual string Model { get; set; }
+        public virtual string Warehouse { get; set; }
     }
 
     public class GetProdStockReceivingExportInput
     {
         public virtual string PartNo { get; set; }
-        public virtual DateTime? WorkingDateFrom { get; set; }
-        public virtual DateTime? WorkingDateTo { get; set; }
+        public virtual DateTime? RequestDateFrom { get; set; }
+        public virtual DateTime? RequestDateTo { get; set; }
         public virtual string SupplierNo { get; set; }
-        public virtual string ContainerNo { get; set; }
-        public virtual string InvoiceNo { get; set; }
         public virtual string Model { get; set; }
+        public virtual string Warehouse { get; set; }
     }
 }
