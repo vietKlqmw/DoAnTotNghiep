@@ -38,6 +38,7 @@ namespace tmss.MaterialManagement.StockReceiving
         public virtual string SupplierNo { get; set; }
         public virtual string Model { get; set; }
         public virtual string Warehouse { get; set; }
+        public virtual string StockStatus { get; set; }
     }
 
     public class GetProdStockReceivingExportInput
@@ -48,5 +49,6 @@ namespace tmss.MaterialManagement.StockReceiving
         public virtual string SupplierNo { get; set; }
         public virtual string Model { get; set; }
         public virtual string Warehouse { get; set; }
+        public virtual string StockStatus { get; set; }
     }
 }

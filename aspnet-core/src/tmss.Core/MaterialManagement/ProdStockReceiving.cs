@@ -19,9 +19,10 @@ namespace tmss.MaterialManagement
 
         public const int MaxContainerNoLength = 15;
 
-        public const int MaxInvoiceNoOutLength = 10;
+        public const int MaxInvoiceNoOutLength = 20;
 
         public const int MaxRequestStatusLength = 20;
+
         public const int MaxWarehouseLength = 2;
 
         [StringLength(MaxPartNoLength)]
@@ -63,6 +64,8 @@ namespace tmss.MaterialManagement
 
         [StringLength(MaxWarehouseLength)]
         public virtual string Warehouse { get; set; }
+
+        public virtual int? OrderedQty { get; set; }
 
     }
 }

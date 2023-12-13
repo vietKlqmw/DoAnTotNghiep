@@ -24,7 +24,7 @@ namespace tmss.MaterialManagement.StockReceiving
 
         public async Task<PagedResultDto<ProdStockReceivingDto>> GetProdStockReceivingSearch(GetProdStockReceivingInput input)
         {
-            string _sql = "Exec INV_PROD_STOCK_RECEIVING_SEARCH @p_PartNo, @p_RequestDateFrom, @p_RequestDateTo, @p_SupplierNo, @p_Model, @p_Warehouse";
+            string _sql = "Exec INV_PROD_STOCK_RECEIVING_SEARCH @p_PartNo, @p_RequestDateFrom, @p_RequestDateTo, @p_SupplierNo, @p_Model, @p_Warehouse, @p_StockStatus";
 
             IEnumerable<ProdStockReceivingDto> result = await _dapperRepo.QueryAsync<ProdStockReceivingDto>(_sql, new
             {
@@ -33,7 +33,8 @@ namespace tmss.MaterialManagement.StockReceiving
                 p_RequestDateTo = input.RequestDateTo,
                 p_SupplierNo = input.SupplierNo,
                 p_Model = input.Model,
-                p_Warehouse = input.Warehouse
+                p_Warehouse = input.Warehouse,
+                p_StockStatus = input.StockStatus
             });
 
             var listResult = result.ToList();
@@ -54,7 +55,7 @@ namespace tmss.MaterialManagement.StockReceiving
 
         public async Task<FileDto> GetProdStockReceivingToExcel(GetProdStockReceivingExportInput input)
         {
-            string _sql = "Exec INV_PROD_STOCK_RECEIVING_SEARCH @p_PartNo, @p_RequestDateFrom, @p_RequestDateTo, @p_SupplierNo, @p_Model, @p_Warehouse";
+            string _sql = "Exec INV_PROD_STOCK_RECEIVING_SEARCH @p_PartNo, @p_RequestDateFrom, @p_RequestDateTo, @p_SupplierNo, @p_Model, @p_Warehouse, @p_StockStatus";
 
             IEnumerable<ProdStockReceivingDto> result = await _dapperRepo.QueryAsync<ProdStockReceivingDto>(_sql, new
             {
@@ -63,7 +64,8 @@ namespace tmss.MaterialManagement.StockReceiving
                 p_RequestDateTo = input.RequestDateTo,
                 p_SupplierNo = input.SupplierNo,
                 p_Model = input.Model,
-                p_Warehouse = input.Warehouse
+                p_Warehouse = input.Warehouse,
+                p_StockStatus = input.StockStatus
             });
 
             var exportToExcel = result.ToList();

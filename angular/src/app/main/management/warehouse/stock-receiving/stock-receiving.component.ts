@@ -55,6 +55,7 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
     requestDateTo: any;
     warehouse: string = '';
     listPartId: string = '';
+    stockStatus: string = '1';
     _selectrow;
     listWarehouse = [
         { label: 'A1', value: "A1" },
@@ -142,6 +143,7 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
 
     ngOnInit() {
         this.paginationParams = { pageNum: 1, pageSize: 500, totalCount: 0 };
+        this.setvalradio('1');
     }
 
     autoSizeAll() {
@@ -173,6 +175,7 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
             this.supplierNo,
             this.model,
             this.warehouse,
+            this.stockStatus,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -206,6 +209,7 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
         this.supplierNo = '';
         this.requestDateFrom = '';
         this.requestDateTo = '';
+        this.stockStatus = '1';
         this.searchDatas();
     }
 
@@ -217,6 +221,7 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
             this.supplierNo,
             this.model,
             this.warehouse,
+            this.stockStatus,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -292,7 +297,8 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
             this.requestDateTo ? moment(this.requestDateTo) : undefined,
             this.supplierNo,
             this.model,
-            this.warehouse)
+            this.warehouse,
+            this.stockStatus)
             .pipe(finalize(() => this.isLoading = false))
             .subscribe(result => {
                 this._fileDownloadService.downloadTempFile(result);
@@ -331,7 +337,7 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
             let objbtn = document.querySelectorAll('.groupBtn');
             for (let i = 0; objbtn[i]; i++) { objbtn[i].classList.remove('active'); }
 
-            //this.containerStatus = '';
+            this.stockStatus = '';
         }
         else {
             let objbtn = document.querySelectorAll('.groupBtn');
@@ -339,7 +345,7 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
 
             let _btn = document.querySelector('.actionButton_w' + i);
             if (_btn) _btn.classList.add('active');
-            //this.containerStatus = i;
+            this.stockStatus = i;
         }
         this.searchDatas();
     }

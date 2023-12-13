@@ -1386,7 +1386,8 @@ CREATE OR ALTER PROCEDURE INV_PROD_STOCK_RECEIVING_SEARCH
 	  @p_RequestDateTo DATE,
     @p_SupplierNo NVARCHAR(15),
     @p_Model NVARCHAR(4),
-    @p_Warehouse NVARCHAR(2)
+    @p_Warehouse NVARCHAR(2),
+    @p_StockStatus NVARCHAR(1)
 )
 AS
 BEGIN
@@ -1394,7 +1395,8 @@ BEGIN
            ISNULL(r.Qty, 0) Qty, r.InvoiceDetailsId, r.RequestDate,
 		       r.SupplierNo, r.ContainerNo, d.InvoiceNo, r.Model, 
            r.ActualQty, r.OrderQty, r.InvoiceNoOut, r.RequestStatus,
-           r.DeliveryDate, (r.Warehouse + '/' + msl.AddressLanguageVn) Warehouse
+           r.DeliveryDate, (r.Warehouse + '/' + msl.AddressLanguageVn) Warehouse,
+           r.OrderedQty, (r.ActualQty - r.OrderedQty) RemainQty
       FROM ProdStockReceiving r
 INNER JOIN ProdInvoiceDetails d ON d.Id = r.InvoiceDetailsId
  LEFT JOIN MasterStorageLocation msl ON r.Warehouse = msl.StorageLocation
@@ -1404,6 +1406,10 @@ INNER JOIN ProdInvoiceDetails d ON d.Id = r.InvoiceDetailsId
        AND (ISNULL(@p_SupplierNo, '') = '' OR r.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
        AND (ISNULL(@p_Warehouse, '') = '' OR r.Warehouse LIKE CONCAT('%', @p_Warehouse, '%'))
        AND (ISNULL(@p_Model, '') = '' OR r.Model LIKE CONCAT('%', @p_Model, '%'))
+       AND (ISNULL(@p_StockStatus, '') = '' OR (@p_StockStatus = '1' AND r.RequestDate IS NULL) 
+                                            OR (@p_StockStatus = '2' AND r.RequestDate IS NOT NULL AND r.DeliveryDate IS NULL)
+                                            OR (@p_StockStatus = '3' AND r.DeliveryDate IS NOT NULL)
+           )
        AND r.IsDeleted = 0
   ORDER BY r.Model, r.PartNo, r.RequestDate DESC, r.DeliveryDate DESC
 END
@@ -1418,6 +1424,69 @@ BEGIN
       FROM ProdStockReceiving psr
  LEFT JOIN MasterMaterial mm ON psr.MaterialId = mm.Id
      WHERE psr.Id IN (SELECT item FROM dbo.fnSplit(@p_ListPartId, ','))
+END
+------------------------------------------------PurchaseOrder
+CREATE PROCEDURE INV_PROD_CONFIRM_PURCHASE_ORDER
+    @p_InvoiceOut NVARCHAR(20),
+    @p_RequestDate DATE,
+    @p_ListOrder NVARCHAR(MAX),
+    @p_UserId BIGINT
+AS
+BEGIN
+    PRINT 'INV_PROD_CONFIRM_PURCHASE_ORDER Start...';
+    BEGIN TRY
+    BEGIN TRANSACTION 
+        DECLARE @p_value_cursor VARCHAR(255);
+        DECLARE @p_id INT;
+        DECLARE @p_qty INT;
+
+        DECLARE cursor_value CURSOR FOR  
+         SELECT value FROM STRING_SPLIT(@p_ListOrder, ';');
+
+           OPEN cursor_value 
+FETCH NEXT FROM cursor_value INTO @p_ListOrder
+
+          WHILE @@FETCH_STATUS = 0  
+          BEGIN  
+            SET @p_id = SUBSTRING(@p_ListOrder, 1, CHARINDEX('-', @p_ListOrder) - 1);
+            SET @p_qty = SUBSTRING(@p_ListOrder, CHARINDEX('-', @p_ListOrder) + 1, LEN(@p_ListOrder) - CHARINDEX('-', @p_ListOrder));
+         
+         UPDATE ProdStockReceiving
+            SET LastModificationTime = GETDATE(), 
+                LastModifierUserId = @p_UserId, 
+                RequestDate = @p_RequestDate,
+                InvoiceNoOut = @p_InvoiceOut,
+                OrderQty = @p_qty,
+                RequestStatus = 'NEW'
+          WHERE Id = @p_id
+
+FETCH NEXT FROM cursor_value INTO @p_ListOrder 
+            END  
+          CLOSE cursor_value  
+     DEALLOCATE cursor_value 
+    PRINT 'INV_PROD_CONFIRM_PURCHASE_ORDER End...';
+    COMMIT TRANSACTION;
+    END TRY	
+    BEGIN CATCH
+    		DECLARE @ErrorSeverity INT;
+    		DECLARE @ErrorState INT;
+    		DECLARE @ErrorMessage NVARCHAR(4000);
+      
+    		SELECT @ErrorMessage = ERROR_MESSAGE(),
+    			     @ErrorSeverity = ERROR_SEVERITY(), 
+    			     @ErrorState = ERROR_STATE();
+    
+    		ROLLBACK TRANSACTION		
+    		INSERT INTO ProCess_Log ([CATEGORY], [PROCESS_NAME], [ERROR_MESSAGE], [CREATED_DATE])
+    		VALUES ('INV_PROD_CONFIRM_PURCHASE_ORDER', 'INV_PROD_CONFIRM_PURCHASE_ORDER', 'ERROR :' + @ErrorMessage + 
+    															'//ERRORSTATE :' +  CAST(@ErrorState AS VARCHAR) + 
+    															'//ERRORPROCEDURE :' + ERROR_PROCEDURE() + 
+    															'//ERRORSEVERITY :' + CAST(@ErrorSeverity AS VARCHAR) + 
+    															'//ERRORNUMBER :' + CAST(ERROR_NUMBER() AS VARCHAR) + 
+    															'//ERRORLINE :' + CAST(ERROR_LINE() AS VARCHAR), GETDATE());
+    	   
+    	  RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH;
 END
 ------------------------------------------------CustomsDeclare------------------------------------------------
 ------------------------------------------------Search:

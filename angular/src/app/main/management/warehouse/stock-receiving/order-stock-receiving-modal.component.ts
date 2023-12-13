@@ -90,10 +90,8 @@ export class AddPurchaseOrderModalComponent extends AppComponentBase {
 
     saving = false;
 
-    list = [{ value: '', label: '', address: '' }];
-    _warehouse;
-    _goodsReceived;
-    _receiveDate = new Date();
+    _purchaseOrder;
+    _requestDate = new Date();
     _selectrow;
     contId = '';
     listCont = '';
@@ -233,14 +231,7 @@ export class AddPurchaseOrderModalComponent extends AppComponentBase {
         else return ['cell-edit', 'number-cell', 'cell-edit-edited'];
     }
 
-    ngOnInit() {
-        this._other.getListWarehouse()
-            .subscribe(result => {
-                result.forEach(e => {
-                    this.list.push({ value: e.storageLocation, label: e.storageLocation, address: e.addressLanguageVn })
-                })
-            })
-    }
+    ngOnInit() { }
 
     show(listId: any): void {
         this._other.getListPartForOrder(listId)
@@ -257,9 +248,8 @@ export class AddPurchaseOrderModalComponent extends AppComponentBase {
                     this.dataParams!.api.setPinnedBottomRowData(null);
                 }
             });
-        this._warehouse = '';
-        this._receiveDate = new Date();
-        this._goodsReceived = '';
+        this._requestDate = new Date();
+        this._purchaseOrder = 'PO' + formatDate(new Date(), 'yyMMddHHmmss', 'en-US');
         this.modal.show();
 
     }
@@ -269,7 +259,13 @@ export class AddPurchaseOrderModalComponent extends AppComponentBase {
     }
 
     save(): void {
-
+        if (this._requestDate == undefined) {
+            this.notify.warn('Request Date is Required!');
+            return;
+        }
+        let input = Object.assign(new ListPartForOrderDto(), {
+            requestDate: moment(this._requestDate)
+        });
     }
 
     rowClickData: ListPartForOrderDto;

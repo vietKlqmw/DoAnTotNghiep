@@ -13956,12 +13956,13 @@ export class ProdStockReceivingServiceProxy {
      * @param supplierNo (optional) 
      * @param model (optional) 
      * @param warehouse (optional) 
+     * @param stockStatus (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getProdStockReceivingSearch(partNo: string | null | undefined, requestDateFrom: moment.Moment | null | undefined, requestDateTo: moment.Moment | null | undefined, supplierNo: string | null | undefined, model: string | null | undefined, warehouse: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdStockReceivingDto> {
+    getProdStockReceivingSearch(partNo: string | null | undefined, requestDateFrom: moment.Moment | null | undefined, requestDateTo: moment.Moment | null | undefined, supplierNo: string | null | undefined, model: string | null | undefined, warehouse: string | null | undefined, stockStatus: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdStockReceivingDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdStockReceiving/GetProdStockReceivingSearch?";
         if (partNo !== undefined)
             url_ += "PartNo=" + encodeURIComponent("" + partNo) + "&"; 
@@ -13975,6 +13976,8 @@ export class ProdStockReceivingServiceProxy {
             url_ += "Model=" + encodeURIComponent("" + model) + "&"; 
         if (warehouse !== undefined)
             url_ += "Warehouse=" + encodeURIComponent("" + warehouse) + "&"; 
+        if (stockStatus !== undefined)
+            url_ += "StockStatus=" + encodeURIComponent("" + stockStatus) + "&"; 
         if (sorting !== undefined)
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         if (skipCount === null)
@@ -14038,9 +14041,10 @@ export class ProdStockReceivingServiceProxy {
      * @param supplierNo (optional) 
      * @param model (optional) 
      * @param warehouse (optional) 
+     * @param stockStatus (optional) 
      * @return Success
      */
-    getProdStockReceivingToExcel(partNo: string | null | undefined, requestDateFrom: moment.Moment | null | undefined, requestDateTo: moment.Moment | null | undefined, supplierNo: string | null | undefined, model: string | null | undefined, warehouse: string | null | undefined): Observable<FileDto> {
+    getProdStockReceivingToExcel(partNo: string | null | undefined, requestDateFrom: moment.Moment | null | undefined, requestDateTo: moment.Moment | null | undefined, supplierNo: string | null | undefined, model: string | null | undefined, warehouse: string | null | undefined, stockStatus: string | null | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdStockReceiving/GetProdStockReceivingToExcel?";
         if (partNo !== undefined)
             url_ += "PartNo=" + encodeURIComponent("" + partNo) + "&"; 
@@ -14054,6 +14058,8 @@ export class ProdStockReceivingServiceProxy {
             url_ += "Model=" + encodeURIComponent("" + model) + "&"; 
         if (warehouse !== undefined)
             url_ += "Warehouse=" + encodeURIComponent("" + warehouse) + "&"; 
+        if (stockStatus !== undefined)
+            url_ += "StockStatus=" + encodeURIComponent("" + stockStatus) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
