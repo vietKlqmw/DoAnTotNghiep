@@ -81,13 +81,9 @@
                             <div class="separator"></div>
                             <div class="label">Intransit</div>
                         </div>
-                        <div class="segmented-picker-option groupBtn actionButton_w3" (click)="setvalradio('2')">
+                        <div class="segmented-picker-option groupBtn actionButton_w2" (click)="setvalradio('2')">
                             <div class="separator"></div>
                             <div class="label">In Warehouse</div>
-                        </div>
-                        <div class="segmented-picker-option groupBtn actionButton_w4" (click)="setvalradio('3')">
-                            <div class="separator"></div>
-                            <div class="label">To Factory</div>
                         </div>
                     </div>
                 </div>
@@ -102,7 +98,7 @@
                         (changePaginationParams)="changePage($event)"
                         (onChangeSelection)="onChangeRowSelection($event)"
                         [frameworkComponents]="frameworkComponents"
-                        [height]="'49vh'"
+                        [height]="'55vh'"
                         >
                     </grid-table>
                 </div>

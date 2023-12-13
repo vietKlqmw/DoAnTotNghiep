@@ -80,8 +80,8 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
         this.colDefs = [
             { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 60, pinned: true },
             { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', flex: 1, pinned: true },
-            { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1, pinned: true },
             { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1, pinned: true },
+            { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
             { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('Bill Of Lading No'), field: 'billOfLadingNo', flex: 1 },
             {
                 headerName: this.l('Bill Date'), headerTooltip: this.l('Bill Date'), field: 'billDate', flex: 1,
@@ -104,27 +104,27 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
             {
                 headerName: this.l('Freight'), headerTooltip: this.l('Freight'), field: 'freight', flex: 1,
                 type: 'rightAligned', aggFunc: this.calTotal,
-                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.freight, 4)
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.freight)
             },
             {
                 headerName: this.l('Insurance'), headerTooltip: this.l('Insurance'), field: 'insurance', flex: 1,
                 type: 'rightAligned', aggFunc: this.calTotal,
-                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.insurance, 4)
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.insurance)
             },
             {
                 headerName: this.l('C.I.F'), headerTooltip: this.l('C.I.F'), field: 'cif', flex: 1,
                 type: 'rightAligned', aggFunc: this.calTotal,
-                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.cif, 4)
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.cif)
             },
             {
                 headerName: this.l('TAX'), headerTooltip: this.l('TAX'), field: 'tax', flex: 1,
                 type: 'rightAligned', aggFunc: this.calTotal,
-                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.tax, 4)
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.tax)
             },
             {
                 headerName: this.l('Amount'), headerTooltip: this.l('Amount'), field: 'amount', flex: 1,
                 type: 'rightAligned', aggFunc: this.calTotal,
-                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.amount, 4)
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.amount)
             },
             { headerName: this.l('Warehouse'), headerTooltip: this.l('Warehouse'), field: 'warehouse', flex: 1 },
             { headerName: this.l('Remark'), headerTooltip: this.l('Remark'), field: 'remark', flex: 1 }
@@ -257,6 +257,22 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
                 this.paginationParams.totalCount = result.totalCount;
                 this.rowData = result.items ?? [];
                 this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
+                if (result.totalCount > 0) {
+                    var _sumFreight = 0;
+                    var _sumInsurance = 0;
+                    var _sumTax = 0;
+                    var _sumCif = 0;
+                    var _sumAmount = 0;
+                    _sumFreight = result.items[0].grandFreight;
+                    _sumInsurance = result.items[0].grandInsurance;
+                    _sumTax = result.items[0].grandTax;
+                    _sumCif = result.items[0].grandCif;
+                    _sumAmount = result.items[0].grandAmount;
+                    var rows = this.createRow(1, _sumFreight, _sumInsurance, _sumTax, _sumCif, _sumAmount);
+                    this.dataParams!.api.setPinnedBottomRowData(rows);
+                } else {
+                    this.dataParams!.api.setPinnedBottomRowData(null);
+                }
                 this.resetGridView();
                 this.isLoading = false;
             });
@@ -294,7 +310,7 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
 
         for (var i = 0; i < count; i++) {
             result.push({
-                requestStatus: 'Grand Total',
+                containerNo: 'Grand Total',
                 freight: sumFreight,
                 insurance: sumInsurance,
                 tax: sumTax,

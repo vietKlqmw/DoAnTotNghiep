@@ -89,9 +89,8 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
             { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'partNo', flex: 1 },
             { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', flex: 1 },
             { headerName: this.l('Carfamily Code'), headerTooltip: this.l('Cfc'), field: 'model', flex: 1 },
-            { headerName: this.l('Warehouse'), headerTooltip: this.l('Warehouse'), field: 'warehouse', flex: 1 },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
-            { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', flex: 1 },
+            //{ headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', flex: 1 },
             //{ headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', flex: 1 },
             {
                 headerName: this.l('Qty'), headerTooltip: this.l('Qty'), field: 'qty', flex: 1, type: 'rightAligned',
@@ -122,7 +121,8 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
             //     valueGetter: (params) => this.pipe.transform(params.data?.workingDate, 'dd/MM/yyyy')
             // },
             { headerName: this.l('Invoice No Out Warehouse'), headerTooltip: this.l('Invoice No Out Warehouse'), field: 'invoiceNoOut', flex: 1 },
-            { headerName: this.l('Material Id'), headerTooltip: this.l('Material Id'), field: 'materialId', flex: 1 }
+            //{ headerName: this.l('Material Id'), headerTooltip: this.l('Material Id'), field: 'materialId', flex: 1 }
+            { headerName: this.l('Warehouse'), headerTooltip: this.l('Warehouse'), field: 'warehouse', flex: 1 }
         ];
 
         this.frameworkComponents = {
@@ -302,6 +302,25 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
 
     viewMaterialById(): void {
         this.viewMaterial.show(this.saveSelectedRow.materialId);
+    }
+
+    setvalradio(i: string) {
+        let _btnUncheck = document.querySelector('.actionButton_w' + i + '.active');
+        if (_btnUncheck) {
+            let objbtn = document.querySelectorAll('.groupBtn');
+            for (let i = 0; objbtn[i]; i++) { objbtn[i].classList.remove('active'); }
+
+            //this.containerStatus = '';
+        }
+        else {
+            let objbtn = document.querySelectorAll('.groupBtn');
+            for (let i = 0; objbtn[i]; i++) { objbtn[i].classList.remove('active'); }
+
+            let _btn = document.querySelector('.actionButton_w' + i);
+            if (_btn) _btn.classList.add('active');
+            //this.containerStatus = i;
+        }
+        this.searchDatas();
     }
 }
 

@@ -956,20 +956,13 @@ CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_LIST_SEARCH
 )
 AS
 BEGIN 
-    SELECT DISTINCT a.Id, a.ContainerNo, a.SupplierNo, pbol.BillofladingNo, a.BillId, 
-                    a.InvoiceId, a.ShipmentId, a.ShippingDate, a.PortDate, pbol.BillDate, 
-                    a.ReceiveDate, d.InvoiceNo, a.Transport, a.Remark, a.Freight, 
-                    a.Insurance, a.Cif, a.Tax, a.Amount, b.Description Status, 
-                    CASE WHEN a.RequestStatus = 0 THEN 'New'
-                         WHEN a.RequestStatus = 1 THEN 'Pending'
-                         WHEN a.RequestStatus = 2 THEN 'Confirmed'
-                         WHEN a.RequestStatus = 3 THEN 'Canceled'
-                    ELSE a.RequestStatus END RequestStatus
-               FROM ProdContainerList a
-         INNER JOIN ProdContainerIntransit c ON c.ContainerNo = a.ContainerNo 
-         INNER JOIN ProdInvoice d ON d.Id = a.InvoiceId
-         INNER JOIN ProdBillOfLading pbol ON a.BillId = pbol.Id
-	        LEFT JOIN MasterContainerStatus b ON a.Status = b.Code
+    SELECT DISTINCT a.ContainerNo, a.SupplierNo, pbol.BillofladingNo, a.ShippingDate, a.PortDate, pbol.BillDate, 
+                    NULL ReceiveDate, pid.InvoiceNo, NULL Transport, NULL Remark, pid.Freight, 
+                    pid.Insurance, pid.Cif, pid.Tax, (pid.Cif + pid.Tax) Amount, a.Status, NULL Warehouse
+               FROM ProdContainerIntransit a
+          LEFT JOIN ProdInvoiceDetails pid ON a.ContainerNo = pid.ContainerNo
+          LEFT JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
+          LEFT JOIN ProdBillOfLading pbol on pi.BillId = pbol.Id
               WHERE (@p_ContainerNo IS NULL OR a.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%') 
                      OR a.ContainerNo IN (SELECT item FROM dbo.fnSplit(@p_ContainerNo, ';')) 
                     )
@@ -977,12 +970,33 @@ BEGIN
     		        AND (@p_BillOfLadingNo IS NULL OR pbol.BillofladingNo LIKE CONCAT('%', @p_BillOfLadingNo, '%'))
                 AND (@p_PortDateFrom IS NULL OR a.PortDate >= @p_PortDateFrom)
                 AND (@p_PortDateTo IS NULL OR a.PortDate <= @p_PortDateTo)
-                AND (@p_ReceiveDateFrom IS NULL OR a.ReceiveDate >= @p_ReceiveDateFrom)
-                --AND (@p_ContainerStatus IN ('1','2') OR @p_ReceiveDateTo IS NULL OR a.ReceiveDate <= @p_ReceiveDateTo)
-                AND (@p_InvoiceNo IS NULL OR d.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
-    		        --AND @p_ContainerStatus IS NULL 
+                AND (@p_InvoiceNo IS NULL OR pid.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
+    		        AND (ISNULL(@p_ContainerStatus, '') = '' OR @p_ContainerStatus = '1') 
                 AND a.IsDeleted = 0
-           ORDER BY a.ShippingDate DESC, a.PortDate DESC, a.ReceiveDate DESC
+
+    UNION ALL
+    
+    SELECT DISTINCT pcrw.ContainerNo, pcrw.SupplierNo, pbol.BillofladingNo, ps.ShipmentDate ShippingDate, ps.Atd PortDate, pbol.BillDate, 
+                    pcrw.ReceiveDate, pid.InvoiceNo, pcrw.Transport, NULL Remark, pid.Freight, 
+                    pid.Insurance, pid.Cif, pid.Tax, (pid.Cif + pid.Tax) Amount, 'DEVANNING' Status, pcrw.Warehouse 
+               FROM ProdContainerRentalWHPlan pcrw
+         INNER JOIN ProdBillOfLading pbol ON pcrw.BillId = pbol.Id
+         INNER JOIN ProdShipment ps ON pbol.ShipmentId = ps.Id
+         INNER JOIN ProdInvoiceDetails pid ON pid.InvoiceNo = (SELECT pi.InvoiceNo FROM ProdInvoice pi WHERE pcrw.InvoiceId = pi.Id) AND pcrw.ContainerNo = pid.ContainerNo
+              WHERE (@p_ContainerNo IS NULL OR pcrw.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%') 
+                     OR pcrw.ContainerNo IN (SELECT item FROM dbo.fnSplit(@p_ContainerNo, ';')) 
+                    )
+    		        AND (@p_SupplierNo IS NULL OR pcrw.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
+    		        AND (@p_BillOfLadingNo IS NULL OR pbol.BillofladingNo LIKE CONCAT('%', @p_BillOfLadingNo, '%'))
+                AND (@p_PortDateFrom IS NULL OR ps.Atd >= @p_PortDateFrom)
+                AND (@p_PortDateTo IS NULL OR ps.Atd <= @p_PortDateTo)
+                AND (@p_ReceiveDateFrom IS NULL OR pcrw.ReceiveDate >= @p_ReceiveDateFrom)
+                AND (@p_ReceiveDateTo IS NULL OR pcrw.ReceiveDate <= @p_ReceiveDateTo)
+                AND (@p_InvoiceNo IS NULL OR pid.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
+                AND (ISNULL(@p_ContainerStatus, '') = '' OR @p_ContainerStatus = '2') 
+                AND pcrw.IsDeleted = 0
+
+    ORDER BY a.ShippingDate DESC, a.PortDate DESC, ReceiveDate DESC;
 END
 ------------------------------------------------ContainerWarehouse------------------------------------------------
 ------------------------------------------------search:

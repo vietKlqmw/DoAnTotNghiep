@@ -59,6 +59,18 @@
                 <span>
                     <h6 class="card-header"> {{ 'Stock In Warehouse' }} </h6>
                 </span>
+                <div class="ui-g-12 input-group">
+                    <div class="ui-g-12 ui-md-12 frame-1000006298">
+                        <div class="segmented-picker-option groupBtn actionButton_w1" (click)="setvalradio('1')">
+                            <div class="separator"></div>
+                            <div class="label">In Warehouse</div>
+                        </div>
+                        <div class="segmented-picker-option groupBtn actionButton_w2" (click)="setvalradio('2')">
+                            <div class="separator"></div>
+                            <div class="label">To Factory</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="">
                     <grid-table
                         [columnDefs]="colDefs"
