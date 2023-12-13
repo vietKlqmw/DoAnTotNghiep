@@ -1378,6 +1378,7 @@ BEGIN
            AND pci.IsDeleted = 0
 END
 ------------------------------------------------StockReceving------------------------------------------------
+------------------------------------------------Search
 CREATE OR ALTER PROCEDURE INV_PROD_STOCK_RECEIVING_SEARCH 
 (
 	  @p_PartNo NVARCHAR(12),
@@ -1405,6 +1406,18 @@ INNER JOIN ProdInvoiceDetails d ON d.Id = r.InvoiceDetailsId
        AND (ISNULL(@p_Model, '') = '' OR r.Model LIKE CONCAT('%', @p_Model, '%'))
        AND r.IsDeleted = 0
   ORDER BY r.Model, r.PartNo, r.RequestDate DESC, r.DeliveryDate DESC
+END
+------------------------------------------------GetListForOrder
+CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_ORDER_BY_ID
+    @p_ListPartId NVARCHAR(MAX)
+AS
+BEGIN
+    SELECT psr.Id, psr.PartNo, psr.PartName, psr.SupplierNo, psr.Model Cfc, 
+           psr.ActualQty Qty, mm.StandardPrice, ISNULL(mm.MovingPrice, 0) MovingPrice,
+           (psr.ActualQty * mm.StandardPrice + ISNULL(mm.MovingPrice, 0)) Amount
+      FROM ProdStockReceiving psr
+ LEFT JOIN MasterMaterial mm ON psr.MaterialId = mm.Id
+     WHERE psr.Id IN (SELECT item FROM dbo.fnSplit(@p_ListPartId, ','))
 END
 ------------------------------------------------CustomsDeclare------------------------------------------------
 ------------------------------------------------Search:

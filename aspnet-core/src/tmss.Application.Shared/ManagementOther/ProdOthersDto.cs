@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Abp.Application.Services.Dto;
+using System;
 
 namespace tmss.ManagementOther
 {
@@ -76,5 +77,36 @@ namespace tmss.ManagementOther
         public virtual bool IsExcel { get; set; }
         public virtual DateTime? WorkingDate { get; set; }
         public virtual string[] ListActualQty { get; set; }
+    }
+
+    public class ListPartForOrderDto : EntityDto<long?>
+    {
+        public virtual string PartNo { get; set; }
+        public virtual string PartName { get; set;}
+        public virtual string SupplierNo { get; set; }
+        public virtual string Cfc { get; set; }
+        public virtual int? Qty { get; set; }
+        public virtual decimal? StandardPrice { get; set; }
+        public virtual decimal? MovingPrice { get; set; }
+        public virtual decimal? Amount { get; set; }
+
+        public virtual string KeyRow
+        {
+            get { return string.Format("{0}_{1}", PartNo, PartName); }
+            set { }
+        }
+        public virtual int? OrderQty
+        {
+            get { return Qty; }
+            set { }
+        }
+        public virtual decimal? OrderAmount
+        {
+            get { return OrderQty == null ? Amount : OrderQty * StandardPrice + MovingPrice; }
+            set { }
+        }
+
+        public virtual int? GrandOrderQty { get; set; }
+        public virtual decimal? GrandOrderAmount { get; set; }
     }
 }

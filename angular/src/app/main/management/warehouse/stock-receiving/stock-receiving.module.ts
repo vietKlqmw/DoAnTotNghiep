@@ -3,6 +3,7 @@ import { AppSharedModule } from '@app/shared/app-shared.module';
 import { StockReceivingRoutingModule } from './stock-receiving-routing.module';
 import { StockReceivingComponent } from './stock-receiving.component';
 import { ViewMaterialModule } from '@app/main/master/other/view-material/view-material.module';
+import { AddPurchaseOrderModalComponent } from './order-stock-receiving-modal.component';
 
 @NgModule({
     imports: [
@@ -10,6 +11,9 @@ import { ViewMaterialModule } from '@app/main/master/other/view-material/view-ma
         StockReceivingRoutingModule,
         ViewMaterialModule
     ],
-    declarations: [StockReceivingComponent]
+    declarations: [
+        StockReceivingComponent,
+        AddPurchaseOrderModalComponent
+    ]
 })
 export class StockReceivingModule { }

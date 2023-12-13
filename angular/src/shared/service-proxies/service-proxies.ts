@@ -13388,6 +13388,64 @@ export class ProdOthersServiceProxy {
     }
 
     /**
+     * @param listpart (optional) 
+     * @return Success
+     */
+    getListPartForOrder(listpart: string | null | undefined): Observable<ListPartForOrderDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetListPartForOrder?";
+        if (listpart !== undefined)
+            url_ += "listpart=" + encodeURIComponent("" + listpart) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListPartForOrder(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListPartForOrder(<any>response_);
+                } catch (e) {
+                    return <Observable<ListPartForOrderDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ListPartForOrderDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetListPartForOrder(response: HttpResponseBase): Observable<ListPartForOrderDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ListPartForOrderDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ListPartForOrderDto[]>(<any>null);
+    }
+
+    /**
      * @param filePathSource (optional) 
      * @param filePathSave (optional) 
      * @param nameSave (optional) 
@@ -30537,6 +30595,94 @@ export class GetListWarehouse implements IGetListWarehouse {
 export interface IGetListWarehouse {
     storageLocation: string | undefined;
     addressLanguageVn: string | undefined;
+}
+
+export class ListPartForOrderDto implements IListPartForOrderDto {
+    partNo!: string | undefined;
+    partName!: string | undefined;
+    supplierNo!: string | undefined;
+    cfc!: string | undefined;
+    qty!: number | undefined;
+    standardPrice!: number | undefined;
+    movingPrice!: number | undefined;
+    amount!: number | undefined;
+    keyRow!: string | undefined;
+    orderQty!: number | undefined;
+    orderAmount!: number | undefined;
+    grandOrderQty!: number | undefined;
+    grandOrderAmount!: number | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IListPartForOrderDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.partNo = _data["partNo"];
+            this.partName = _data["partName"];
+            this.supplierNo = _data["supplierNo"];
+            this.cfc = _data["cfc"];
+            this.qty = _data["qty"];
+            this.standardPrice = _data["standardPrice"];
+            this.movingPrice = _data["movingPrice"];
+            this.amount = _data["amount"];
+            this.keyRow = _data["keyRow"];
+            this.orderQty = _data["orderQty"];
+            this.orderAmount = _data["orderAmount"];
+            this.grandOrderQty = _data["grandOrderQty"];
+            this.grandOrderAmount = _data["grandOrderAmount"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): ListPartForOrderDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListPartForOrderDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["partNo"] = this.partNo;
+        data["partName"] = this.partName;
+        data["supplierNo"] = this.supplierNo;
+        data["cfc"] = this.cfc;
+        data["qty"] = this.qty;
+        data["standardPrice"] = this.standardPrice;
+        data["movingPrice"] = this.movingPrice;
+        data["amount"] = this.amount;
+        data["keyRow"] = this.keyRow;
+        data["orderQty"] = this.orderQty;
+        data["orderAmount"] = this.orderAmount;
+        data["grandOrderQty"] = this.grandOrderQty;
+        data["grandOrderAmount"] = this.grandOrderAmount;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IListPartForOrderDto {
+    partNo: string | undefined;
+    partName: string | undefined;
+    supplierNo: string | undefined;
+    cfc: string | undefined;
+    qty: number | undefined;
+    standardPrice: number | undefined;
+    movingPrice: number | undefined;
+    amount: number | undefined;
+    keyRow: string | undefined;
+    orderQty: number | undefined;
+    orderAmount: number | undefined;
+    grandOrderQty: number | undefined;
+    grandOrderAmount: number | undefined;
+    id: number | undefined;
 }
 
 export class ProdShipmentDto implements IProdShipmentDto {

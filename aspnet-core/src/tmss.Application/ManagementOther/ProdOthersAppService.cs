@@ -131,6 +131,25 @@ namespace tmss.ManagementOther
             return result.ToList();
         }
 
+        public async Task<List<ListPartForOrderDto>> GetListPartForOrder(string listpart)
+        {
+            string _sql = "Exec INV_PROD_GET_LIST_ORDER_BY_ID @p_ListPartId";
+
+            IEnumerable<ListPartForOrderDto> result = await _dapperRepo.QueryAsync<ListPartForOrderDto>(_sql, new
+            {
+                p_ListPartId = listpart
+            });
+
+            var listResult = result.ToList();
+
+            if (listResult.Count > 0)
+            {
+                listResult[0].GrandOrderQty = listResult.Sum(e => e.OrderQty);
+                listResult[0].GrandOrderAmount = listResult.Sum(e => e.OrderAmount);
+            }
+
+            return listResult;
+        }
 
         //excel to pdf
         public string ConvertExcelToPdf(string filePathSource, string filePathSave, string nameSave)

@@ -13,6 +13,7 @@ import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { ViewMaterialComponent } from '@app/main/master/other/view-material/view-material.component';
+import { AddPurchaseOrderModalComponent } from './order-stock-receiving-modal.component';
 
 @Component({
     selector: 'app-stock-receiving',
@@ -23,6 +24,7 @@ import { ViewMaterialComponent } from '@app/main/master/other/view-material/view
 })
 export class StockReceivingComponent extends AppComponentBase implements OnInit {
     @ViewChild('viewMaterial', { static: true }) viewMaterial: ViewMaterialComponent;
+    @ViewChild('addPurchaseOrder', { static: true }) addPurchaseOrder: AddPurchaseOrderModalComponent;
 
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
@@ -52,6 +54,7 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
     requestDateFrom: any;
     requestDateTo: any;
     warehouse: string = '';
+    listPartId: string = '';
     _selectrow;
     listWarehouse = [
         { label: 'A1', value: "A1" },
@@ -85,7 +88,14 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
         super(injector);
 
         this.colDefs = [
-            { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 60 },
+            {
+                headerName: "", headerTooltip: "", field: "checked", width: 30, pinned: true,
+                headerClass: ["align-checkbox-header"],
+                cellClass: ["check-box-center"],
+                checkboxSelection: true,
+                headerCheckboxSelection: true,
+                headerCheckboxSelectionFilteredOnly: true
+            },
             { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'partNo', flex: 1 },
             { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', flex: 1 },
             { headerName: this.l('Carfamily Code'), headerTooltip: this.l('Cfc'), field: 'model', flex: 1 },
@@ -120,7 +130,7 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
             //     headerName: this.l('Working Date'), headerTooltip: this.l('Working Date'), field: 'workingDate', flex: 1,
             //     valueGetter: (params) => this.pipe.transform(params.data?.workingDate, 'dd/MM/yyyy')
             // },
-            { headerName: this.l('Invoice No Out Warehouse'), headerTooltip: this.l('Invoice No Out Warehouse'), field: 'invoiceNoOut', flex: 1 },
+            { headerName: this.l('Invoice Delivery'), headerTooltip: this.l('Invoice Delivery'), field: 'invoiceNoOut', flex: 1 },
             //{ headerName: this.l('Material Id'), headerTooltip: this.l('Material Id'), field: 'materialId', flex: 1 }
             { headerName: this.l('Warehouse'), headerTooltip: this.l('Warehouse'), field: 'warehouse', flex: 1 }
         ];
@@ -261,6 +271,17 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
         this.selectedRow = Object.assign({}, this.saveSelectedRow);
 
         this._selectrow = this.saveSelectedRow.id;
+
+        this.listPartId = '';
+        if (params.api.getSelectedRows().length) {
+            for (var i = 0; i < params.api.getSelectedRows().length; i++) {
+                if (i != params.api.getSelectedRows().length - 1) {
+                    this.listPartId += params.api.getSelectedRows()[i].id + ',';
+                } else {
+                    this.listPartId += params.api.getSelectedRows()[i].id;
+                }
+            }
+        }
     }
 
     exportToExcel(): void {
@@ -321,6 +342,25 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
             //this.containerStatus = i;
         }
         this.searchDatas();
+    }
+
+    rowClickData: ProdStockReceivingDto;
+    onRowClick(params) {
+
+        let _rows = document.querySelectorAll<HTMLElement>("body .ag-theme-alpine .ag-center-cols-container .ag-row.ag-row-level-0.ag-row-position-absolute");
+        for (let i = 0; _rows[i]; i++) { _rows[i].classList.remove("setcolor_background_rowclick"); }
+
+        if (this.rowClickData && this.rowClickData.id == params.data.id) this.rowClickData = undefined;
+        else {
+            this.rowClickData = params.data;
+            let _row = document.querySelector<HTMLElement>("body .ag-theme-alpine .ag-center-cols-container div[row-id='" + params.node.rowIndex + "'].ag-row.ag-row-level-0.ag-row-position-absolute");
+            if (_row) _row.classList.add("setcolor_background_rowclick");
+        }
+
+    }
+
+    addOrder(): void {
+        this.addPurchaseOrder.show(this.listPartId);
     }
 }
 

@@ -67,6 +67,10 @@
                         </div>
                         <div class="segmented-picker-option groupBtn actionButton_w2" (click)="setvalradio('2')">
                             <div class="separator"></div>
+                            <div class="label">Order Request</div>
+                        </div>
+                        <div class="segmented-picker-option groupBtn actionButton_w3" (click)="setvalradio('3')">
+                            <div class="separator"></div>
                             <div class="label">To Factory</div>
                         </div>
                     </div>
@@ -83,6 +87,8 @@
                         (onChangeSelection)="onChangeRowSelection($event)"
                         [frameworkComponents]="frameworkComponents"
                         [height]="'56vh'"
+                        [rowSelection]="rowSelection"
+                        (rowClicked)="onRowClick($event)"
                         >
                     </grid-table>
                 </div>
@@ -93,6 +99,8 @@
                             <i class="far fa-regular fa-eye"></i> {{"View Material" | localize}}</button>
                         <button type="button" class="btn btn-primary" [disabled]="!saveSelectedRow.id">
                             <i class="fa fa-plus"></i> {{"Add Goods Delivery Note" | localize}}</button>
+                        <button type="button" class="btn btn-warning" (click)="addOrder()" [disabled]="!saveSelectedRow.id">
+                            <i class="fa fa-plus"></i> {{"Purchase Order" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
                             <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>
                     </div>
@@ -102,3 +110,4 @@
     </div>
 </div>
 <viewMaterial #viewMaterial></viewMaterial>
+<addPurchaseOrder #addPurchaseOrder></addPurchaseOrder>
