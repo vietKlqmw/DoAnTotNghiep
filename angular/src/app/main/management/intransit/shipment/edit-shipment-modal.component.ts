@@ -6,6 +6,7 @@ import { finalize } from "rxjs/operators";
 import { BsDatepickerDirective } from "ngx-bootstrap/datepicker";
 import * as moment from 'moment';
 import { ShipmentComponent } from "./shipment.component";
+import { formatDate } from "@angular/common";
 
 @Component({
     selector: 'editModal',
@@ -77,6 +78,8 @@ export class EditShipmentModalComponent extends AppComponentBase {
                 this._forwarder = this.rowData.forwarder;
             })
         });
+
+        if(type != 'Edit') this.rowData.shipmentNo = 'S' + formatDate(new Date(), 'HH', 'en-US') + 'H' + formatDate(new Date(), 'mm', 'en-US') + 'I' + formatDate(new Date(), 'ss', 'en-US') + 'P';
 
         setTimeout(() => {
             this.modal.show();

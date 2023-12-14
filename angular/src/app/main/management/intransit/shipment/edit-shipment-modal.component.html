@@ -16,7 +16,7 @@
                         <div class="ui-g-12 ph-0">
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Shipment No'" [(ngModel)]="rowData.shipmentNo"
-                                    name='shipmentNo' [isReadonly]="isEdit"></tmss-text-input>
+                                    name='shipmentNo' [isReadonly]="true"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
                                 <tmss-text-input [text]="'Supplier No'" [(ngModel)]="rowData.supplierNo"

@@ -29,5 +29,19 @@ namespace tmss.Web.Controllers
             string fileName = "GoodsReceivedNote_" + input.ReceiveDate + ".pdf";
             return File(await _prodFileAppService.ExportGoodsReceivedNote(input), MimeTypeNames.ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet, fileName);
         }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult> ExportGoodsDeliveryNoteExcel([FromBody] GoodsReceivedNoteExportInput input)
+        {
+            string fileName = "GoodsDeliveryNote_" + input.ReceiveDate + ".xlsx";
+            return File(await _prodFileAppService.ExportGoodsDeliveryNote(input), MimeTypeNames.ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet, fileName);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult> ExportGoodsDeliveryNotePdf([FromBody] GoodsReceivedNoteExportInput input)
+        {
+            string fileName = "GoodsDeliveryNote_" + input.ReceiveDate + ".pdf";
+            return File(await _prodFileAppService.ExportGoodsDeliveryNote(input), MimeTypeNames.ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet, fileName);
+        }
     }
 }

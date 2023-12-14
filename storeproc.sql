@@ -683,7 +683,7 @@ BEGIN
 
     IF @p_Status = 'ORDERED'
         BEGIN
-        DECLARE @p_BillofladingNo NVARCHAR(20) = (SELECT ShipmentNo + SupplierNo FROM ProdShipment WHERE Id = @p_ShipmentId);
+        DECLARE @p_BillofladingNo NVARCHAR(20) = 'BOL/' + FORMAT(GETDATE(), 'yyMMddHHmmss');
         IF EXISTS (SELECT 1 FROM ProdBillOfLading WHERE BillofladingNo = @p_BillofladingNo)
         BEGIN
             UPDATE ProdBillOfLading SET IsDeleted = 1 WHERE BillofladingNo = @p_BillofladingNo
@@ -691,7 +691,7 @@ BEGIN
         INSERT INTO ProdBillOfLading (CreationTime, CreatorUserId, IsDeleted, BillofladingNo, ShipmentId, StatusCode)
                               VALUES (GETDATE(), @p_UserId, 0, @p_BillofladingNo, @p_ShipmentId, 'NEW');
 
-        DECLARE @InvoiceNo NVARCHAR(20) = (SELECT (ShipmentNo + FORMAT(ShipmentDate, 'yyMMdd')) FROM ProdShipment WHERE Id = @p_ShipmentId); 
+        DECLARE @InvoiceNo NVARCHAR(20) = 'INVSH' + FORMAT(GETDATE(), 'yyMMddHHmmss'); 
         DECLARE @BillId INT = (SELECT Id FROM ProdBillOfLading WHERE BillofladingNo = @p_BillofladingNo);
         INSERT INTO ProdInvoice (CreationTime, CreatorUserId, IsDeleted, InvoiceNo, BillId, Status, Forwarder)
             SELECT GETDATE(), @p_UserId, 0, @InvoiceNo, @BillId, 'NEW', @p_Forwarder
@@ -724,7 +724,7 @@ BEGIN
 
     IF @p_Status = 'ORDERED'
         BEGIN
-        DECLARE @p_BillofladingNo NVARCHAR(20) = (SELECT ShipmentNo + SupplierNo FROM ProdShipment WHERE Id = @p_ShipmentId);
+        DECLARE @p_BillofladingNo NVARCHAR(20) = 'BOL/' + FORMAT(GETDATE(), 'yyMMddHHmmss');
         IF EXISTS (SELECT 1 FROM ProdBillOfLading WHERE BillofladingNo = @p_BillofladingNo)
         BEGIN
             UPDATE ProdBillOfLading SET IsDeleted = 1 WHERE BillofladingNo = @p_BillofladingNo
@@ -732,7 +732,7 @@ BEGIN
         INSERT INTO ProdBillOfLading (CreationTime, CreatorUserId, IsDeleted, BillofladingNo, ShipmentId, StatusCode)
                               VALUES (GETDATE(), @p_UserId, 0, @p_BillofladingNo, @p_ShipmentId, 'NEW');
 
-        DECLARE @InvoiceNo NVARCHAR(20) = (SELECT (ShipmentNo + FORMAT(ShipmentDate, 'yyMMdd')) FROM ProdShipment WHERE Id = @p_ShipmentId); 
+        DECLARE @InvoiceNo NVARCHAR(20) = 'INVSH' + FORMAT(GETDATE(), 'yyMMddHHmmss'); 
         DECLARE @BillId INT = (SELECT Id FROM ProdBillOfLading WHERE BillofladingNo = @p_BillofladingNo);
         INSERT INTO ProdInvoice (CreationTime, CreatorUserId, IsDeleted, InvoiceNo, BillId, Status, Forwarder)
             SELECT GETDATE(), @p_UserId, 0, @InvoiceNo, @BillId, 'NEW', Forwarder
@@ -1406,7 +1406,7 @@ INNER JOIN ProdInvoiceDetails d ON d.Id = r.InvoiceDetailsId
        AND (ISNULL(@p_SupplierNo, '') = '' OR r.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
        AND (ISNULL(@p_Warehouse, '') = '' OR r.Warehouse LIKE CONCAT('%', @p_Warehouse, '%'))
        AND (ISNULL(@p_Model, '') = '' OR r.Model LIKE CONCAT('%', @p_Model, '%'))
-       AND (ISNULL(@p_StockStatus, '') = '' OR (@p_StockStatus = '1' AND r.RequestDate IS NULL) 
+       AND (ISNULL(@p_StockStatus, '') = '' OR (@p_StockStatus = '1' AND (r.RequestDate IS NULL OR (r.OrderQty < (r.ActualQty - ISNULL(r.OrderedQty, 0))))) 
                                             OR (@p_StockStatus = '2' AND r.RequestDate IS NOT NULL AND r.DeliveryDate IS NULL)
                                             OR (@p_StockStatus = '3' AND r.DeliveryDate IS NOT NULL)
            )
@@ -1463,7 +1463,7 @@ FETCH NEXT FROM cursor_value INTO @p_ListOrder
          INSERT INTO ProdInvoiceStockOut 
                 (CreationTime, CreatorUserId, IsDeleted, 
                 InvoiceNoOut, Status, ListPartNo, ListPartName, ListCfc, ListStockId, TotalOrderQty, TotalAmount)
-         SELECT GETDATE(), @p_UserId, 0, @p_InvoiceOut, 'NEW', a.PartNo, a.PartName, a.Model, a.Id, @p_qty, (@p_qty * mm.StandardPrice + mm.MovingPrice)
+         SELECT GETDATE(), @p_UserId, 0, @p_InvoiceOut, 'NEW', a.PartNo, a.PartName, a.Model, a.Id, @p_qty, (@p_qty * mm.StandardPrice + ISNULL(mm.MovingPrice, 0))
            FROM ProdStockReceiving a
       LEFT JOIN MasterMaterial mm ON a.MaterialId = mm.Id
           WHERE a.Id = @p_id

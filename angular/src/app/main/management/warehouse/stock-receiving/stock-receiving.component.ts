@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { ViewMaterialComponent } from '@app/main/master/other/view-material/view-material.component';
 import { AddPurchaseOrderModalComponent } from './order-stock-receiving-modal.component';
+import { AddGdnStockModalComponent } from './add-gdn-stock-modal.component';
 
 @Component({
     selector: 'app-stock-receiving',
@@ -25,6 +26,7 @@ import { AddPurchaseOrderModalComponent } from './order-stock-receiving-modal.co
 export class StockReceivingComponent extends AppComponentBase implements OnInit {
     @ViewChild('viewMaterial', { static: true }) viewMaterial: ViewMaterialComponent;
     @ViewChild('addPurchaseOrder', { static: true }) addPurchaseOrder: AddPurchaseOrderModalComponent;
+    @ViewChild('addGdnStock', { static: true }) addGdnStock: AddGdnStockModalComponent;
 
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
@@ -393,6 +395,10 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
 
     addOrder(): void {
         this.addPurchaseOrder.show(this.listPartId);
+    }
+
+    addGoodsDeliveryNote(): void {
+        this.addGdnStock.show(this.listPartId);
     }
 }
 

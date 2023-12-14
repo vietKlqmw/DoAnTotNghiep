@@ -11,6 +11,7 @@ import { FileDownloadService } from '@shared/utils/file-download.service';
 import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
+import { DataFormatService } from '@app/shared/common/services/data-format.service';
 
 @Component({
     selector: 'app-invoiceStockOut',
@@ -75,7 +76,8 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
         injector: Injector,
         private _service: ProdInvoiceStockOutServiceProxy,
         private gridTableService: GridTableService,
-        private _fileDownloadService: FileDownloadService
+        private _fileDownloadService: FileDownloadService,
+        private _fm: DataFormatService
     ) {
         super(injector);
 
@@ -86,10 +88,19 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
                 headerName: this.l('Invoice Date'), headerTooltip: this.l('Invoice Date'), field: 'invoiceDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.invoiceDate, 'dd/MM/yyyy')
             },
-            { headerName: this.l('Cfc'), headerTooltip: this.l('Cfc'), field: 'listCfc', flex: 1 },
+            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
+            { headerName: this.l('Carfamily Code'), headerTooltip: this.l('Cfc'), field: 'listCfc', flex: 1 },
             { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'listPartNo', flex: 1 },
-            { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'ListPartName', flex: 1 },
-            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 }
+            { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'listPartName', flex: 1 },
+            {
+                headerName: this.l('Total Order Qty'), headerTooltip: this.l('Total Order Qty'), field: 'totalOrderQty', flex: 1, type: 'rightAligned', aggFunc: this.calTotal,
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.totalOrderQty)
+            },
+            {
+                headerName: this.l('Total Amount'), headerTooltip: this.l('Total Amount'), field: 'totalAmount', flex: 1, type: 'rightAligned', aggFunc: this.calTotal,
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.totalAmount)
+            },
+            { headerName: this.l('Warehouse'), headerTooltip: this.l('Warehouse'), field: 'warehouse', flex: 1 }
         ];
 
         this.frameworkComponents = {
@@ -99,6 +110,26 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
 
     ngOnInit() {
         this.paginationParams = { pageNum: 1, pageSize: 500, totalCount: 0 };
+    }
+
+    autoSizeAll() {
+        const allColumnIds: string[] = [];
+        this.dataParams.columnApi!.getAllColumns()!.forEach((column) => {
+            if (column.getId().toString() != "stt") {
+                allColumnIds.push(column.getId());
+            }
+        });
+        this.dataParams.columnApi!.autoSizeColumns(allColumnIds);
+    }
+
+    resetGridView() {
+
+        setTimeout(() => {
+            this.dataParams.columnApi!.sizeColumnsToFit({
+                suppressColumnVirtualisation: true,
+            });
+            this.autoSizeAll();
+        })
     }
 
     searchDatas(): void {
@@ -118,6 +149,17 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
                 this.paginationParams.totalCount = result.totalCount;
                 this.rowData = result.items;
                 this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
+                if (result.totalCount > 0) {
+                    var _sumOrderQty = 0;
+                    var _sumOrderAmount = 0;
+                    _sumOrderQty = result.items[0].grandTotalOrderQty;
+                    _sumOrderAmount = result.items[0].grandTotalAmount;
+                    var rows = this.createRow(1, _sumOrderQty, _sumOrderAmount);
+                    this.dataParams!.api.setPinnedBottomRowData(rows);
+                } else {
+                    this.dataParams!.api.setPinnedBottomRowData(null);
+                }
+                this.resetGridView();
                 this.isLoading = false;
             });
     }
@@ -152,6 +194,7 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
             this.paginationParams.totalCount = result.totalCount;
             this.rowData = result.items;
             this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
+            this.resetGridView();
             this.isLoading = false;
         });
     }
@@ -169,6 +212,17 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
                 this.paginationParams.totalCount = result.totalCount;
                 this.rowData = result.items ?? [];
                 this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
+                if (result.totalCount > 0) {
+                    var _sumOrderQty = 0;
+                    var _sumOrderAmount = 0;
+                    _sumOrderQty = result.items[0].grandTotalOrderQty;
+                    _sumOrderAmount = result.items[0].grandTotalAmount;
+                    var rows = this.createRow(1, _sumOrderQty, _sumOrderAmount);
+                    this.dataParams!.api.setPinnedBottomRowData(rows);
+                } else {
+                    this.dataParams!.api.setPinnedBottomRowData(null);
+                }
+                this.resetGridView();
                 this.isLoading = false;
             });
     }
@@ -193,6 +247,25 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
                 this._fileDownloadService.downloadTempFile(result);
                 this.notify.success(this.l('Download Excel Successfully'));
             });
+    }
+
+    createRow(count: number, sumTotalOrderQty: number, sumTotalOrderAmount: number): any[] {
+        let result: any[] = [];
+
+        for (var i = 0; i < count; i++) {
+            result.push({
+                invoiceNoOut: 'Grand Total',
+                totalOrderQty: sumTotalOrderQty,
+                totalAmount: sumTotalOrderAmount
+            });
+        }
+        return result;
+    }
+
+    calTotal(values) {
+        var sum = 0;
+        values.forEach(function (value) { sum += Number(value); });
+        return sum;
     }
 }
 

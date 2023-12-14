@@ -78,6 +78,8 @@ export class EditCustomsDeclareModalComponent extends AppComponentBase {
         if (this.rowData.vat == undefined) this._vat = 0;
         else this._vat = this._fm.formatMoney(this.rowData.vat);
 
+        if(type != 'Edit') this.rowData.customsDeclareNo = 'CD' + formatDate(new Date(), 'yyMMddHHmmss', 'en-US');
+
         this.modal.show();
     }
 

@@ -6,7 +6,6 @@ import { DataFormatService } from '@app/shared/common/services/data-format.servi
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { GoodsReceivedNoteExportInput, ProdContainerRentalWHPlanServiceProxy, ProdInvoiceDto, ProdOthersServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { ContainerWarehouseComponent } from './container-warehouse.component';
 import { BsDatepickerDirective } from 'ngx-bootstrap/datepicker';
 import { AppConsts } from '@shared/AppConsts';
 import { HttpClient } from '@angular/common/http';
@@ -15,12 +14,13 @@ import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
 import { AgCellTextRendererComponent } from '@app/shared/common/grid/ag-cell-text-renderer/ag-cell-text-renderer.component';
 import { CellValueChangedEvent, EditableCallbackParams, GridOptions } from '@ag-grid-enterprise/all-modules';
+import { StockReceivingComponent } from './stock-receiving.component';
 @Component({
-    selector: 'addGrnContWarehouse',
-    templateUrl: './add-grn-container-warehouse-modal.component.html'
+    selector: 'addGdnStock',
+    templateUrl: './add-gdn-stock-modal.component.html'
 })
-export class AddGrnContWarehouseModalComponent extends AppComponentBase {
-    @ViewChild('addGrnContWarehouse', { static: true }) modal: ModalDirective;
+export class AddGdnStockModalComponent extends AppComponentBase {
+    @ViewChild('addGdnStock', { static: true }) modal: ModalDirective;
     @ViewChild('datepicker', { static: false }) datepicker!: BsDatepickerDirective;
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
     @Output() modalClose: EventEmitter<any> = new EventEmitter<any>();
@@ -92,8 +92,8 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
 
     list = [{ value: '', label: '', address: '' }];
     _warehouse;
-    _goodsReceived;
-    _receiveDate = new Date();
+    _goodsDelivery;
+    _deliveryDate = new Date();
     isExcel: boolean = true;
     isPdf: boolean = false;
     _selectrow;
@@ -107,7 +107,7 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
 
     constructor(injector: Injector,
         private _service: ProdContainerRentalWHPlanServiceProxy,
-        private _component: ContainerWarehouseComponent,
+        private _component: StockReceivingComponent,
         private _other: ProdOthersServiceProxy,
         private _httpClient: HttpClient,
         private _fm: DataFormatService
@@ -253,16 +253,16 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
                     this.list.push({ value: e.storageLocation, label: e.storageLocation, address: e.addressLanguageVn })
                 })
             })
-    }
+     }
 
-    show(): void {
+    show(listId): void {
         this._other.getListContForWarehouse()
             .subscribe((result) => {
                 this.data = result ?? [];
             });
         this._warehouse = '';
-        this._receiveDate = new Date();
-        this._goodsReceived = 'GRN/' + formatDate(new Date(), 'HHmmss', 'en-US');
+        this._deliveryDate = new Date();
+        this._goodsDelivery = 'GDN/' + formatDate(new Date(), 'yyMMddHHmmss', 'en-US');
         this.onChangeToExcel(true);
         this.modal.show();
 
@@ -296,7 +296,7 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
     }
 
     save(): void {
-        if (this._receiveDate == undefined) {
+        if (this._deliveryDate == undefined) {
             this.notify.warn('Receive Date is Required!');
             return;
         }
@@ -315,37 +315,37 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
         let input = Object.assign(new GoodsReceivedNoteExportInput(), {
             contId: this.contId,
             listContId: this.listCont,
-            receiveDate: formatDate(new Date(this._receiveDate.toString()), 'yyyyMMdd', 'en-US'),
-            goodsReceivedNoteNo: this._goodsReceived,
+            receiveDate: formatDate(new Date(this._deliveryDate.toString()), 'yyyyMMdd', 'en-US'),
+            goodsReceivedNoteNo: this._goodsDelivery,
             isExcel: this.isExcel,
             warehouse: this._warehouse,
             address: this.list.filter(e => e.value == this._warehouse)[0].address,
-            workingDate: moment(this._receiveDate),
+            workingDate: moment(this._deliveryDate),
             listActualQty: this.listActualQty
         });
 
-        this.saving = true;
-        this._service.addGrn(input).subscribe(result => {
-            if (this.isExcel) {
-                this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNoteExcel`, input, { responseType: 'blob' })
-                    .pipe(finalize(() => this.saving = false))
-                    .subscribe(blob => {
-                        saveAs(blob, "GoodsReceivedNote_" + formatDate(new Date(this._receiveDate.toString()), 'yyyyMMdd', 'en-US') + ".xlsx");
-                        this.notify.success(this.l('Save Successfully'));
-                        this._component.searchDatas();
-                        this.close();
-                    });
-            } else {
-                this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNotePdf`, input, { responseType: 'blob' })
-                    .pipe(finalize(() => this.saving = false))
-                    .subscribe(blob => {
-                        saveAs(blob, "GoodsReceivedNote_" + formatDate(new Date(this._receiveDate.toString()), 'yyyyMMdd', 'en-US') + ".pdf");
-                        this.notify.success(this.l('Save Successfully'));
-                        this._component.searchDatas();
-                        this.close();
-                    });
-            }
-        })
+        // this.saving = true;
+        // this._service.addGrn(input).subscribe(result => {
+        //     if (this.isExcel) {
+        //         this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNoteExcel`, input, { responseType: 'blob' })
+        //             .pipe(finalize(() => this.saving = false))
+        //             .subscribe(blob => {
+        //                 saveAs(blob, "GoodsReceivedNote_" + formatDate(new Date(this._deliveryDate.toString()), 'yyyyMMdd', 'en-US') + ".xlsx");
+        //                 this.notify.success(this.l('Save Successfully'));
+        //                 this._component.searchDatas();
+        //                 this.close();
+        //             });
+        //     } else {
+        //         this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNotePdf`, input, { responseType: 'blob' })
+        //             .pipe(finalize(() => this.saving = false))
+        //             .subscribe(blob => {
+        //                 saveAs(blob, "GoodsReceivedNote_" + formatDate(new Date(this._deliveryDate.toString()), 'yyyyMMdd', 'en-US') + ".pdf");
+        //                 this.notify.success(this.l('Save Successfully'));
+        //                 this._component.searchDatas();
+        //                 this.close();
+        //             });
+        //     }
+        // })
 
     }
 

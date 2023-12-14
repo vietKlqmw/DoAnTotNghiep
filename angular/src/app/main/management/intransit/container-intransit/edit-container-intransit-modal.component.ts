@@ -76,6 +76,8 @@ export class EditContainerIntransitModalComponent extends AppComponentBase {
         this._shippingDate = this.rowData.shippingDate ? formatDate(new Date(this.rowData.shippingDate?.toString()), 'dd/MM/yyyy', 'en-US') : undefined;
         this._shippingDateSub = this.rowData.shippingDate ? formatDate(new Date(this.rowData.shippingDate?.toString()), 'MM/dd/yyyy', 'en-US') : undefined;
 
+        if(type != 'Edit') this.rowData.containerNo = 'CONT' + formatDate(new Date(), 'yyMMddmmss', 'en-US');
+
         setTimeout(() => {
             this.modal.show();
         }, 300)

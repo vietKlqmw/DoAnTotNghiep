@@ -4,6 +4,7 @@ import { StockReceivingRoutingModule } from './stock-receiving-routing.module';
 import { StockReceivingComponent } from './stock-receiving.component';
 import { ViewMaterialModule } from '@app/main/master/other/view-material/view-material.module';
 import { AddPurchaseOrderModalComponent } from './order-stock-receiving-modal.component';
+import { AddGdnStockModalComponent } from './add-gdn-stock-modal.component';
 
 @NgModule({
     imports: [
@@ -13,7 +14,8 @@ import { AddPurchaseOrderModalComponent } from './order-stock-receiving-modal.co
     ],
     declarations: [
         StockReceivingComponent,
-        AddPurchaseOrderModalComponent
+        AddPurchaseOrderModalComponent,
+        AddGdnStockModalComponent
     ]
 })
 export class StockReceivingModule { }
