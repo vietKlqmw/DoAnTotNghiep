@@ -275,7 +275,9 @@ export class AddPurchaseOrderModalComponent extends AppComponentBase {
         });
 
         this.saving = true;
-        this._service.confirmPurchaseOrder(input).subscribe(result => {
+        this._service.confirmPurchaseOrder(input)
+        .pipe(finalize(() => this.saving = false))
+        .subscribe(result => {
             this.notify.success(this.l('Order Successfully'));
             this._component.searchDatas();
             this.close();

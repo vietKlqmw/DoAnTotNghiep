@@ -1418,7 +1418,7 @@ CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_ORDER_BY_ID
     @p_ListPartId NVARCHAR(MAX)
 AS
 BEGIN
-    SELECT psr.Id, psr.PartNo, psr.PartName, psr.SupplierNo, psr.Model Cfc, 
+    SELECT psr.Id, psr.PartNo, psr.PartName, psr.SupplierNo, psr.Model Cfc, psr.Warehouse,
            (psr.ActualQty - ISNULL(psr.OrderedQty, 0)) Qty, mm.StandardPrice, ISNULL(mm.MovingPrice, 0) MovingPrice,
            ((psr.ActualQty - ISNULL(psr.OrderedQty, 0)) * mm.StandardPrice + ISNULL(mm.MovingPrice, 0)) Amount
       FROM ProdStockReceiving psr
@@ -1459,6 +1459,14 @@ FETCH NEXT FROM cursor_value INTO @p_ListOrder
                 OrderQty = @p_qty,
                 RequestStatus = 'NEW'
           WHERE Id = @p_id
+
+         INSERT INTO ProdInvoiceStockOut 
+                (CreationTime, CreatorUserId, IsDeleted, 
+                InvoiceNoOut, Status, ListPartNo, ListPartName, ListCfc, ListStockId, TotalOrderQty, TotalAmount)
+         SELECT GETDATE(), @p_UserId, 0, @p_InvoiceOut, 'NEW', a.PartNo, a.PartName, a.Model, a.Id, @p_qty, (@p_qty * mm.StandardPrice + mm.MovingPrice)
+           FROM ProdStockReceiving a
+      LEFT JOIN MasterMaterial mm ON a.MaterialId = mm.Id
+          WHERE a.Id = @p_id
 
 FETCH NEXT FROM cursor_value INTO @p_ListOrder 
             END  
@@ -1571,6 +1579,32 @@ BEGIN
          WHERE Id IN (SELECT ps.Id FROM ProdContainerIntransit ps 
                       WHERE ps.ShipmentId = (SELECT ShipmentId FROM ProdBillOfLading WHERE Id = @p_BillId))
     END
+END
+------------------------------------------------InvoiceStockOut------------------------------------------------
+CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_STOCK_OUT_SEARCH
+(
+    @p_InvoiceNoOut NVARCHAR(20),
+    @p_InvoiceDateFrom DATE,
+    @p_InvoiceDateTo DATE,
+    @p_Status NVARCHAR(50),
+    @p_Warehouse NVARCHAR(1)
+)
+AS
+BEGIN
+    SELECT piso.Id, piso.ListStockId, piso.InvoiceNoOut, piso.InvoiceDate, 
+           piso.Status, piso.ListPartNo, piso.ListPartName, piso.ListCfc, 
+           piso.ListStockId, piso.TotalOrderQty, piso.TotalAmount, 
+           (psr.Warehouse + '/' + msl.AddressLanguageVn) Warehouse
+      FROM ProdInvoiceStockOut piso
+INNER JOIN ProdStockReceiving psr ON psr.Id = piso.ListStockId
+ LEFT JOIN MasterStorageLocation msl ON psr.Warehouse = msl.StorageLocation
+     WHERE (@p_InvoiceNoOut IS NULL OR piso.InvoiceNoOut LIKE CONCAT('%', @p_InvoiceNoOut, '%'))
+       AND (@p_InvoiceDateFrom IS NULL OR piso.InvoiceDate >= @p_InvoiceDateFrom)
+       AND (@p_InvoiceDateTo IS NULL OR piso.InvoiceDate <= @p_InvoiceDateTo)
+       AND (@p_Status IS NULL OR piso.Status LIKE CONCAT('%', @p_Status, '%'))
+       AND (@p_Warehouse IS NULL OR psr.Warehouse = @p_Warehouse)
+       AND piso.IsDeleted = 0
+  ORDER BY piso.InvoiceDate DESC
 END
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (
