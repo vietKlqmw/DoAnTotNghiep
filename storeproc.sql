@@ -1396,7 +1396,7 @@ BEGIN
 		       r.SupplierNo, r.ContainerNo, d.InvoiceNo, r.Model, 
            r.ActualQty, r.OrderQty, r.InvoiceNoOut, r.RequestStatus,
            r.DeliveryDate, (r.Warehouse + '/' + msl.AddressLanguageVn) Warehouse,
-           r.OrderedQty, (r.ActualQty - r.OrderedQty) RemainQty
+           ISNULL(r.OrderedQty, 0) OrderedQty, (r.ActualQty - ISNULL(r.OrderedQty, 0)) RemainQty
       FROM ProdStockReceiving r
 INNER JOIN ProdInvoiceDetails d ON d.Id = r.InvoiceDetailsId
  LEFT JOIN MasterStorageLocation msl ON r.Warehouse = msl.StorageLocation
@@ -1419,14 +1419,14 @@ CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_ORDER_BY_ID
 AS
 BEGIN
     SELECT psr.Id, psr.PartNo, psr.PartName, psr.SupplierNo, psr.Model Cfc, 
-           psr.ActualQty Qty, mm.StandardPrice, ISNULL(mm.MovingPrice, 0) MovingPrice,
-           (psr.ActualQty * mm.StandardPrice + ISNULL(mm.MovingPrice, 0)) Amount
+           (psr.ActualQty - ISNULL(psr.OrderedQty, 0)) Qty, mm.StandardPrice, ISNULL(mm.MovingPrice, 0) MovingPrice,
+           ((psr.ActualQty - ISNULL(psr.OrderedQty, 0)) * mm.StandardPrice + ISNULL(mm.MovingPrice, 0)) Amount
       FROM ProdStockReceiving psr
  LEFT JOIN MasterMaterial mm ON psr.MaterialId = mm.Id
      WHERE psr.Id IN (SELECT item FROM dbo.fnSplit(@p_ListPartId, ','))
 END
 ------------------------------------------------PurchaseOrder
-CREATE PROCEDURE INV_PROD_CONFIRM_PURCHASE_ORDER
+CREATE OR ALTER PROCEDURE INV_PROD_CONFIRM_PURCHASE_ORDER
     @p_InvoiceOut NVARCHAR(20),
     @p_RequestDate DATE,
     @p_ListOrder NVARCHAR(MAX),

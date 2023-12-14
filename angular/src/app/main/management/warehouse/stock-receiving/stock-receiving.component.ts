@@ -64,6 +64,8 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
         { label: 'C1', value: "C1" },
         { label: 'C2', value: "C2" }
     ];
+    btnGDN: boolean = false;
+    btnPO: boolean = false;
 
     defaultColDef = {
         resizable: true,
@@ -111,6 +113,16 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
             {
                 headerName: this.l('Actual Qty'), headerTooltip: this.l('Actual Qty'), field: 'actualQty', flex: 1, type: 'rightAligned',
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.actualQty),
+                aggFunc: this.calTotal
+            },
+            {
+                headerName: this.l('Ordered Qty'), headerTooltip: this.l('Ordered Qty'), field: 'orderedQty', flex: 1, type: 'rightAligned',
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.orderedQty),
+                aggFunc: this.calTotal
+            },
+            {
+                headerName: this.l('Remain Qty'), headerTooltip: this.l('Remain Qty'), field: 'remainQty', flex: 1, type: 'rightAligned',
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.remainQty),
                 aggFunc: this.calTotal
             },
             {
@@ -189,10 +201,14 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
                     var _sumQty = 0;
                     var _sumActualQty = 0;
                     var _sumOrderQty = 0;
+                    var _sumRemainQty = 0;
+                    var _sumOrderedQty = 0;
                     _sumQty = result.items[0].grandQty;
                     _sumActualQty = result.items[0].grandActualQty;
                     _sumOrderQty = result.items[0].grandOrderQty;
-                    var rows = this.createRow(1, _sumQty, _sumActualQty, _sumOrderQty);
+                    _sumRemainQty = result.items[0].grandRemainQty;
+                    _sumOrderedQty = result.items[0].grandOrderedQty;
+                    var rows = this.createRow(1, _sumQty, _sumActualQty, _sumOrderQty, _sumRemainQty, _sumOrderedQty);
                     this.dataParams!.api.setPinnedBottomRowData(rows);
                 } else {
                     this.dataParams!.api.setPinnedBottomRowData(null);
@@ -258,10 +274,14 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
                     var _sumQty = 0;
                     var _sumActualQty = 0;
                     var _sumOrderQty = 0;
+                    var _sumRemainQty = 0;
+                    var _sumOrderedQty = 0;
                     _sumQty = result.items[0].grandQty;
                     _sumActualQty = result.items[0].grandActualQty;
                     _sumOrderQty = result.items[0].grandOrderQty;
-                    var rows = this.createRow(1, _sumQty, _sumActualQty, _sumOrderQty);
+                    _sumRemainQty = result.items[0].grandRemainQty;
+                    _sumOrderedQty = result.items[0].grandOrderedQty;
+                    var rows = this.createRow(1, _sumQty, _sumActualQty, _sumOrderQty, _sumRemainQty, _sumOrderedQty);
                     this.dataParams!.api.setPinnedBottomRowData(rows);
                 } else {
                     this.dataParams!.api.setPinnedBottomRowData(null);
@@ -306,7 +326,7 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
             });
     }
 
-    createRow(count: number, sumQty: number, sumActualQty, sumOrderQty): any[] {
+    createRow(count: number, sumQty: number, sumActualQty: number, sumOrderQty: number, sumRemainQty: number, sumOrderedQty: number): any[] {
         let result: any[] = [];
 
         for (var i = 0; i < count; i++) {
@@ -314,7 +334,9 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
                 partNo: 'Grand Total',
                 qty: sumQty,
                 actualQty: sumActualQty,
-                orderQty: sumOrderQty
+                orderQty: sumOrderQty,
+                remainQty: sumRemainQty,
+                orderedQty: sumOrderedQty
             });
         }
         return result;
@@ -332,6 +354,10 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
     }
 
     setvalradio(i: string) {
+        if(i == '2') this.btnGDN = true;
+        else this.btnGDN = false;
+        if(i == '1') this.btnPO = true;
+        else this.btnPO = false;
         let _btnUncheck = document.querySelector('.actionButton_w' + i + '.active');
         if (_btnUncheck) {
             let objbtn = document.querySelectorAll('.groupBtn');

@@ -4,7 +4,7 @@ import { AgCellButtonRendererComponent } from '@app/shared/common/grid/ag-cell-b
 import { FrameworkComponent, GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { ProdContainerRentalWHPlanServiceProxy, ListPartForOrderDto, ProdOthersServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ProdStockReceivingServiceProxy, ListPartForOrderDto, ProdOthersServiceProxy, GetPurchaseOrderInputDto } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { BsDatepickerDirective } from 'ngx-bootstrap/datepicker';
 import { AppConsts } from '@shared/AppConsts';
@@ -92,17 +92,14 @@ export class AddPurchaseOrderModalComponent extends AppComponentBase {
 
     _purchaseOrder;
     _requestDate = new Date();
-    _selectrow;
-    contId = '';
-    listCont = '';
-    listActualQty = [];
+    listOrder = '';
     datasEdit: ListPartForOrderDto[] = [];
     valueChange: string = '';
     columnChange: string = '';
     processNoUpdate: boolean = false;
 
     constructor(injector: Injector,
-        private _service: ProdContainerRentalWHPlanServiceProxy,
+        private _service: ProdStockReceivingServiceProxy,
         private _component: StockReceivingComponent,
         private _other: ProdOthersServiceProxy,
         private _httpClient: HttpClient,
@@ -263,9 +260,26 @@ export class AddPurchaseOrderModalComponent extends AppComponentBase {
             this.notify.warn('Request Date is Required!');
             return;
         }
-        let input = Object.assign(new ListPartForOrderDto(), {
-            requestDate: moment(this._requestDate)
+        this.listOrder = '';
+        for(var i = 0; i < this.data.length; i++){
+            if (i != this.data.length - 1) {
+                this.listOrder += this.data[i].id + '-' + this.data[i].orderQty + ';';
+            } else {
+                this.listOrder += this.data[i].id + '-' + this.data[i].orderQty;
+            }
+        }
+        let input = Object.assign(new GetPurchaseOrderInputDto(), {
+            requestDate: moment(this._requestDate),
+            invoiceNoOut: this._purchaseOrder,
+            listOrder: this.listOrder
         });
+
+        this.saving = true;
+        this._service.confirmPurchaseOrder(input).subscribe(result => {
+            this.notify.success(this.l('Order Successfully'));
+            this._component.searchDatas();
+            this.close();
+        })
     }
 
     rowClickData: ListPartForOrderDto;

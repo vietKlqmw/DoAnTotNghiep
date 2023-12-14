@@ -97,9 +97,9 @@
                     <div class="col-sm-12 text-right">
                         <button type="button" class="btn btn-view" (click)="viewMaterialById()" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-regular fa-eye"></i> {{"View Material" | localize}}</button>
-                        <button type="button" class="btn btn-primary" [disabled]="!saveSelectedRow.id">
+                        <button type="button" class="btn btn-primary" [disabled]="!saveSelectedRow.id" *ngIf="btnGDN">
                             <i class="fa fa-plus"></i> {{"Add Goods Delivery Note" | localize}}</button>
-                        <button type="button" class="btn btn-warning" (click)="addOrder()" [disabled]="!saveSelectedRow.id">
+                        <button type="button" class="btn btn-warning" (click)="addOrder()" [disabled]="!saveSelectedRow.id" *ngIf="btnPO">
                             <i class="fa fa-plus"></i> {{"Purchase Order" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
                             <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>

@@ -48,6 +48,8 @@ namespace tmss.MaterialManagement.StockReceiving
                 listResult[0].GrandQty = listResult.Sum(e => e.Qty);
                 listResult[0].GrandActualQty = listResult.Sum(e => e.ActualQty);
                 listResult[0].GrandOrderQty = listResult.Sum(e => e.OrderQty);
+                listResult[0].GrandRemainQty = listResult.Sum(e => e.RemainQty);
+                listResult[0].GrandOrderedQty = listResult.Sum(e => e.OrderedQty);
             }
 
             return new PagedResultDto<ProdStockReceivingDto>(totalCount, pagedAndFiltered);
@@ -71,6 +73,19 @@ namespace tmss.MaterialManagement.StockReceiving
             var exportToExcel = result.ToList();
 
             return _excelExporter.ExportToFile(exportToExcel);
+        }
+
+        public async Task ConfirmPurchaseOrder(GetPurchaseOrderInputDto input)
+        {
+            string _sql = "Exec INV_PROD_CONFIRM_PURCHASE_ORDER @p_InvoiceOut, @p_RequestDate, @p_ListOrder, @p_UserId";
+
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_InvoiceOut = input.InvoiceNoOut,
+                p_RequestDate = input.RequestDate,
+                p_ListOrder = input.ListOrder,
+                p_UserId = AbpSession.UserId
+            });
         }
     }
 }

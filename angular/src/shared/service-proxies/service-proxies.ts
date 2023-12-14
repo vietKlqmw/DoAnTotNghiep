@@ -14105,6 +14105,58 @@ export class ProdStockReceivingServiceProxy {
         }
         return _observableOf<FileDto>(<any>null);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    confirmPurchaseOrder(body: GetPurchaseOrderInputDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdStockReceiving/ConfirmPurchaseOrder";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processConfirmPurchaseOrder(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processConfirmPurchaseOrder(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processConfirmPurchaseOrder(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -30851,9 +30903,13 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
     requestDate!: moment.Moment | undefined;
     deliveryDate!: moment.Moment | undefined;
     warehouse!: string | undefined;
+    orderedQty!: number | undefined;
+    remainQty!: number | undefined;
     grandQty!: number | undefined;
     grandActualQty!: number | undefined;
     grandOrderQty!: number | undefined;
+    grandOrderedQty!: number | undefined;
+    grandRemainQty!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdStockReceivingDto) {
@@ -30886,9 +30942,13 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
             this.requestDate = _data["requestDate"] ? moment(_data["requestDate"].toString()) : <any>undefined;
             this.deliveryDate = _data["deliveryDate"] ? moment(_data["deliveryDate"].toString()) : <any>undefined;
             this.warehouse = _data["warehouse"];
+            this.orderedQty = _data["orderedQty"];
+            this.remainQty = _data["remainQty"];
             this.grandQty = _data["grandQty"];
             this.grandActualQty = _data["grandActualQty"];
             this.grandOrderQty = _data["grandOrderQty"];
+            this.grandOrderedQty = _data["grandOrderedQty"];
+            this.grandRemainQty = _data["grandRemainQty"];
             this.id = _data["id"];
         }
     }
@@ -30921,9 +30981,13 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
         data["requestDate"] = this.requestDate ? this.requestDate.toISOString() : <any>undefined;
         data["deliveryDate"] = this.deliveryDate ? this.deliveryDate.toISOString() : <any>undefined;
         data["warehouse"] = this.warehouse;
+        data["orderedQty"] = this.orderedQty;
+        data["remainQty"] = this.remainQty;
         data["grandQty"] = this.grandQty;
         data["grandActualQty"] = this.grandActualQty;
         data["grandOrderQty"] = this.grandOrderQty;
+        data["grandOrderedQty"] = this.grandOrderedQty;
+        data["grandRemainQty"] = this.grandRemainQty;
         data["id"] = this.id;
         return data; 
     }
@@ -30949,9 +31013,13 @@ export interface IProdStockReceivingDto {
     requestDate: moment.Moment | undefined;
     deliveryDate: moment.Moment | undefined;
     warehouse: string | undefined;
+    orderedQty: number | undefined;
+    remainQty: number | undefined;
     grandQty: number | undefined;
     grandActualQty: number | undefined;
     grandOrderQty: number | undefined;
+    grandOrderedQty: number | undefined;
+    grandRemainQty: number | undefined;
     id: number | undefined;
 }
 
@@ -31001,6 +31069,50 @@ export class PagedResultDtoOfProdStockReceivingDto implements IPagedResultDtoOfP
 export interface IPagedResultDtoOfProdStockReceivingDto {
     totalCount: number;
     items: ProdStockReceivingDto[] | undefined;
+}
+
+export class GetPurchaseOrderInputDto implements IGetPurchaseOrderInputDto {
+    invoiceNoOut!: string | undefined;
+    requestDate!: moment.Moment | undefined;
+    listOrder!: string | undefined;
+
+    constructor(data?: IGetPurchaseOrderInputDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.invoiceNoOut = _data["invoiceNoOut"];
+            this.requestDate = _data["requestDate"] ? moment(_data["requestDate"].toString()) : <any>undefined;
+            this.listOrder = _data["listOrder"];
+        }
+    }
+
+    static fromJS(data: any): GetPurchaseOrderInputDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPurchaseOrderInputDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["invoiceNoOut"] = this.invoiceNoOut;
+        data["requestDate"] = this.requestDate ? this.requestDate.toISOString() : <any>undefined;
+        data["listOrder"] = this.listOrder;
+        return data; 
+    }
+}
+
+export interface IGetPurchaseOrderInputDto {
+    invoiceNoOut: string | undefined;
+    requestDate: moment.Moment | undefined;
+    listOrder: string | undefined;
 }
 
 export class CurrentUserProfileEditDto implements ICurrentUserProfileEditDto {

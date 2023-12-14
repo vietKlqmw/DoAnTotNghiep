@@ -25,7 +25,9 @@ namespace tmss.MaterialManagement.StockReceiving.Exporting
                         ("Supplier No"),
                         ("Qty"),
                         ("Actual Qty"),
+                        ("Remain Qty"),
                         ("Order Qty"),
+                        ("Ordered Qty"),
                         ("Request Date"),
                         ("Request Status"),
                         ("Delivery Date"),
@@ -41,14 +43,16 @@ namespace tmss.MaterialManagement.StockReceiving.Exporting
                          _ => _.SupplierNo,
                          _ => _.Qty,
                          _ => _.ActualQty,
+                         _ => _.RemainQty,
                          _ => _.OrderQty,
+                         _ => _.OrderedQty,
                          _ => _.RequestDate,
                          _ => _.RequestStatus,
                          _ => _.DeliveryDate,
                          _ => _.InvoiceNoOut
                     );
 
-                    for (var i = 0; i < 13; i++)
+                    for (var i = 0; i < 15; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }
