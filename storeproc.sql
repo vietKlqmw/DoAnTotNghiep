@@ -1512,6 +1512,24 @@ BEGIN
            OrderQty = @p_OrderQty
      WHERE Id = @p_StockId;
 END
+------------------------------------------------GetListForDelivery------------>continue
+CREATE OR ALTER PROCEDURE INV_PROD_GET_STOCK_FOR_DELIVERY_BY_WAREHOUSE
+    @p_Warehouse NVARCHAR(2)
+AS
+BEGIN
+    SELECT r.Id, r.PartNo, r.PartName, mm.BaseUnitOfMeasure, r.Model, 
+           r.OrderQty, r.InvoiceNoOut, r.DeliveryDate, r.Warehouse,
+           ISNULL(r.OrderedQty, 0) OrderedQty, (r.ActualQty - ISNULL(r.OrderedQty, 0)) RemainQty,
+           mm.StandardPrice, ISNULL(mm.MovingPrice, 0) MovingPrice, 
+           (mm.StandardPrice * r.OrderQty + ISNULL(mm.MovingPrice, 0)) AmountOrder
+      FROM ProdStockReceiving r
+ LEFT JOIN MasterStorageLocation msl ON r.Warehouse = msl.StorageLocation
+ LEFT JOIN MasterMaterial mm ON r.MaterialId = mm.Id
+	   WHERE r.RequestDate IS NOT NULL 
+       AND r.DeliveryDate IS NULL
+       AND r.IsDeleted = 0
+       AND r.Warehouse = @p_Warehouse
+END
 ------------------------------------------------CustomsDeclare------------------------------------------------
 ------------------------------------------------Search:
 CREATE OR ALTER PROCEDURE INV_PROD_CUSTOMS_DECLARE_SEARCH 
