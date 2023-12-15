@@ -9,7 +9,7 @@ namespace tmss.MaterialManagement
     [Table("ProdShipment")]
     public class ProdShipment : FullAuditedEntity<long>, IEntity<long> // lô hàng
     {
-        public const int MaxShipmentNoLength = 10;
+        public const int MaxShipmentNoLength = 20;
 
         public const int MaxSupplierNoLength = 10;
 

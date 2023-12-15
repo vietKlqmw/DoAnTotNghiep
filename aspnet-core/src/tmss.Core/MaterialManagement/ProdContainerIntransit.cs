@@ -9,7 +9,7 @@ namespace tmss.MaterialManagement
     [Table("ProdContainerIntransit")]
     public class ProdContainerIntransit : FullAuditedEntity<long>, IEntity<long>
     {
-        public const int MaxContainerNoLength = 15;
+        public const int MaxContainerNoLength = 20;
 
         public const int MaxSupplierNoLength = 10;
 

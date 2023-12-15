@@ -608,7 +608,7 @@ END
 ------------------------------------------------Search:
 CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_SEARCH
 (
-    @p_ShipmentNo NVARCHAR(10),
+    @p_ShipmentNo NVARCHAR(20),
     @p_SupplierNo NVARCHAR(10),
     @p_FromPort NVARCHAR(50),
     @p_ToPort NVARCHAR(50),
@@ -631,7 +631,7 @@ AS
 ------------------------------------------------Add:
 CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_ADD
 (
-    @p_ShipmentNo NVARCHAR(10),
+    @p_ShipmentNo NVARCHAR(20),
     @p_SupplierNo NVARCHAR(10),
     @p_FromPort NVARCHAR(50),
     @p_ToPort NVARCHAR(50),
@@ -847,7 +847,7 @@ CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_SEARCH
     @p_InvoiceDateTo DATE,
     @p_BillNo NVARCHAR(20),
     @p_ShipmentNo NVARCHAR(10),
-    @p_ContainerNo NVARCHAR(15),
+    @p_ContainerNo NVARCHAR(20),
     @p_BillDateFrom DATE,
     @p_BillDateTo DATE,
     @p_SupplierNo NVARCHAR(10)
@@ -891,7 +891,7 @@ CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_EDIT
     @p_Vat DECIMAL, 
     @p_Thc DECIMAL, 
     @p_Cif DECIMAL, 
-    @p_ContainerNo NVARCHAR(15),
+    @p_ContainerNo NVARCHAR(20),
     @p_UserId BIGINT
 )
 AS
@@ -944,7 +944,7 @@ END
 ------------------------------------------------ContainerList------------------------------------------------
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_LIST_SEARCH 
 (
-	  @p_ContainerNo NVARCHAR(15),
+	  @p_ContainerNo NVARCHAR(20),
 	  @p_SupplierNo NVARCHAR(10),
 	  @p_BillOfLadingNo NVARCHAR(20),
 	  @p_PortDateFrom DATE,
@@ -1002,7 +1002,7 @@ END
 ------------------------------------------------search:
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_SEARCH
 (
-    @p_ContainerNo NVARCHAR(15),
+    @p_ContainerNo NVARCHAR(20),
     @p_InvoiceNo NVARCHAR(20),
     @p_BillOfLadingNo NVARCHAR(20),
     @p_SupplierNo NVARCHAR(10),
@@ -1033,7 +1033,7 @@ END
 ------------------------------------------------edit:
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_EDIT
 @p_Id INT, 
-@p_ContainerNo NVARCHAR(15),
+@p_ContainerNo NVARCHAR(20),
 @p_RequestDate DATE, 
 @p_RequestTime TIME, 
 @p_InvoiceNo NVARCHAR(20), 
@@ -1110,7 +1110,7 @@ INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
 END
 ------------------------------------------------AddGoodsReceivedNote:
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_ADD_GOODS_RECEIVED_NOTE
-    @p_GrnNo NVARCHAR(10),
+    @p_GrnNo NVARCHAR(20),
     @p_ReceiveDate DATE,
     @p_Warehouse NVARCHAR(2),
     @p_ListContId NVARCHAR(MAX),
@@ -1304,7 +1304,7 @@ GO
 ------------------------------------------------Search:
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_SEARCH
 (
-	  @p_ContainerNo NVARCHAR(15),
+	  @p_ContainerNo NVARCHAR(20),
 	  @p_ShippingDate DATE,
 	  @p_PortDate DATE,
 	  @p_TransactionDate DATE
@@ -1325,7 +1325,7 @@ GO
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_EDIT
 (
     @p_ContId INT,
-    @p_ContainerNo NVARCHAR(15),
+    @p_ContainerNo NVARCHAR(20),
     @p_SupplierNo NVARCHAR(10),
 	  @p_ShippingDate DATE,
 	  @p_PortDate DATE,
@@ -1502,7 +1502,7 @@ CREATE OR ALTER PROCEDURE INV_PROD_CUSTOMS_DECLARE_SEARCH
 (
     @p_CustomsDeclareNo NVARCHAR(20),
     @p_DeclareDate DATE,
-    @p_BillOfLadingNo NVARCHAR(10),
+    @p_BillOfLadingNo NVARCHAR(20),
     @p_InvoiceNo NVARCHAR(20)
 )
 AS

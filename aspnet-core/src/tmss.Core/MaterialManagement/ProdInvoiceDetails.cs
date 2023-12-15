@@ -12,7 +12,7 @@ namespace tmss.MaterialManagement
 
         public const int MaxPartNoLength = 12;
 
-        public const int MaxContainerNoLength = 15;
+        public const int MaxContainerNoLength = 20;
 
         public const int MaxSupplierNoLength = 50;
 

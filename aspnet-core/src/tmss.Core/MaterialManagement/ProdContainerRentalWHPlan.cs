@@ -9,7 +9,7 @@ namespace tmss.MaterialManagement
     [Table("ProdContainerRentalWHPlan")]
     public class ProdContainerRentalWHPlan : FullAuditedEntity<long>, IEntity<long>
     {
-        public const int MaxContainerNoLength = 15;
+        public const int MaxContainerNoLength = 20;
 
         public const int MaxSupplierNoLength = 10;
 
@@ -19,7 +19,7 @@ namespace tmss.MaterialManagement
 
         public const int MaxWarehouseLength = 2;
 
-        public const int MaxGoodsReceivedNoteNoLength = 10;
+        public const int MaxGoodsReceivedNoteNoLength = 20;
 
 
         [StringLength(MaxContainerNoLength)]

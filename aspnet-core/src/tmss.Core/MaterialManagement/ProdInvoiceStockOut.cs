@@ -21,6 +21,8 @@ namespace tmss.MaterialManagement
 
         public const int MaxStockIdLength = 1000;
 
+        public const int MaxGoodsDeliveryNoteLength = 20;
+
         [StringLength(MaxInvoiceNoOutLength)]
         public virtual string InvoiceNoOut { get; set; }
 
@@ -44,5 +46,8 @@ namespace tmss.MaterialManagement
         public virtual int? TotalOrderQty { get; set; }
 
         public virtual decimal? TotalAmount { get; set; }
+
+        [StringLength(MaxGoodsDeliveryNoteLength)]
+        public virtual string GoodsDeliveryNoteNo { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace tmss.MaterialManagement
 
         public const int MaxModelLength = 4;
 
-        public const int MaxContainerNoLength = 15;
+        public const int MaxContainerNoLength = 20;
 
         public const int MaxInvoiceNoOutLength = 20;
 
