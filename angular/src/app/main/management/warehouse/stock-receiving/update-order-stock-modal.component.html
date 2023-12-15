@@ -1,0 +1,60 @@
+<div appBsModal #editModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="editModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{"Update Order Qty"}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="ui-g-12 p-0">
+                    <fieldset class="fieldset-border ui-g-12 pl-0 pr-0  mt-2" style="height: auto;">
+                        <div class="ui-g-12 ph-0">
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Cfc'" [(ngModel)]="rowData.model" name='cfc' [isReadonly]="true"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Part No'" [(ngModel)]="rowData.partNo"
+                                    name='partNo' [isReadonly]="true"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Part Name'" [(ngModel)]="rowData.partName"
+                                    name='partName' [isReadonly]="true"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Remain Qty'" [(ngModel)]="rowData.remainQty"
+                                    name='remainQty' [isReadonly]="true"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Order Qty'" [(ngModel)]="_orderQty"
+                                    name='orderQty' (ngModelChange)="changeOrderQty($event)"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Standard Price'" [(ngModel)]="_standardPrice"
+                                    name='standardPrice' [isReadonly]="true"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Moving Price'" [(ngModel)]="_movingPrice"
+                                    name='movingPrice' [isReadonly]="true"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'Amount'" [(ngModel)]="_amount"
+                                    name='amount' [isReadonly]="true"></tmss-text-input>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-primary" (click)="save()" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
+                    <i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                <button type="button" class="btn btn-outline-danger" (click)="close()">
+                    <i class="fa tmss-fa fa-times mr-1"></i>{{"Cancel" | localize}}</button>
+            </div>
+        </div>
+    </div>
+</div>

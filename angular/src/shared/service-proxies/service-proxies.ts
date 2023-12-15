@@ -14438,6 +14438,59 @@ export class ProdStockReceivingServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param stockId (optional) 
+     * @param orderQty (optional) 
+     * @return Success
+     */
+    updateOrderQtyStock(stockId: number | null | undefined, orderQty: number | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdStockReceiving/UpdateOrderQtyStock?";
+        if (stockId !== undefined)
+            url_ += "StockId=" + encodeURIComponent("" + stockId) + "&"; 
+        if (orderQty !== undefined)
+            url_ += "OrderQty=" + encodeURIComponent("" + orderQty) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateOrderQtyStock(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateOrderQtyStock(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateOrderQtyStock(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -31318,6 +31371,9 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
     warehouse!: string | undefined;
     orderedQty!: number | undefined;
     remainQty!: number | undefined;
+    standardPrice!: number | undefined;
+    movingPrice!: number | undefined;
+    amountOrder!: number | undefined;
     grandQty!: number | undefined;
     grandActualQty!: number | undefined;
     grandOrderQty!: number | undefined;
@@ -31357,6 +31413,9 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
             this.warehouse = _data["warehouse"];
             this.orderedQty = _data["orderedQty"];
             this.remainQty = _data["remainQty"];
+            this.standardPrice = _data["standardPrice"];
+            this.movingPrice = _data["movingPrice"];
+            this.amountOrder = _data["amountOrder"];
             this.grandQty = _data["grandQty"];
             this.grandActualQty = _data["grandActualQty"];
             this.grandOrderQty = _data["grandOrderQty"];
@@ -31396,6 +31455,9 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
         data["warehouse"] = this.warehouse;
         data["orderedQty"] = this.orderedQty;
         data["remainQty"] = this.remainQty;
+        data["standardPrice"] = this.standardPrice;
+        data["movingPrice"] = this.movingPrice;
+        data["amountOrder"] = this.amountOrder;
         data["grandQty"] = this.grandQty;
         data["grandActualQty"] = this.grandActualQty;
         data["grandOrderQty"] = this.grandOrderQty;
@@ -31428,6 +31490,9 @@ export interface IProdStockReceivingDto {
     warehouse: string | undefined;
     orderedQty: number | undefined;
     remainQty: number | undefined;
+    standardPrice: number | undefined;
+    movingPrice: number | undefined;
+    amountOrder: number | undefined;
     grandQty: number | undefined;
     grandActualQty: number | undefined;
     grandOrderQty: number | undefined;

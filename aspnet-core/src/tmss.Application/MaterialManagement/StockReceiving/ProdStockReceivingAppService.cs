@@ -87,5 +87,18 @@ namespace tmss.MaterialManagement.StockReceiving
                 p_UserId = AbpSession.UserId
             });
         }
+
+
+        public async Task UpdateOrderQtyStock(int? StockId, int? OrderQty)
+        {
+            string _sql = "Exec INV_PROD_UPDATE_ORDER_QTY_STOCK @p_StockId, @p_OrderQty, @p_UserId";
+
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_StockId = StockId,
+                p_OrderQty = OrderQty,
+                p_UserId = AbpSession.UserId
+            });
+        }
     }
 }

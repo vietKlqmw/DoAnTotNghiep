@@ -1396,17 +1396,20 @@ BEGIN
 		       r.SupplierNo, r.ContainerNo, d.InvoiceNo, r.Model, 
            r.ActualQty, r.OrderQty, r.InvoiceNoOut, r.RequestStatus,
            r.DeliveryDate, (r.Warehouse + '/' + msl.AddressLanguageVn) Warehouse,
-           ISNULL(r.OrderedQty, 0) OrderedQty, (r.ActualQty - ISNULL(r.OrderedQty, 0)) RemainQty
+           ISNULL(r.OrderedQty, 0) OrderedQty, (r.ActualQty - ISNULL(r.OrderedQty, 0)) RemainQty,
+           mm.StandardPrice, ISNULL(mm.MovingPrice, 0) MovingPrice, 
+           (mm.StandardPrice * r.OrderQty + ISNULL(mm.MovingPrice, 0)) AmountOrder
       FROM ProdStockReceiving r
 INNER JOIN ProdInvoiceDetails d ON d.Id = r.InvoiceDetailsId
  LEFT JOIN MasterStorageLocation msl ON r.Warehouse = msl.StorageLocation
+ LEFT JOIN MasterMaterial mm ON r.MaterialId = mm.Id
 	   WHERE (ISNULL(@p_PartNo, '') = '' OR r.PartNo LIKE CONCAT('%', @p_PartNo, '%'))
 		   AND (ISNULL(@p_RequestDateFrom, '')= '' OR  r.RequestDate >= @p_RequestDateFrom)
        AND (ISNULL(@p_RequestDateTo, '')= '' OR r.RequestDate <= @p_RequestDateTo)
        AND (ISNULL(@p_SupplierNo, '') = '' OR r.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
        AND (ISNULL(@p_Warehouse, '') = '' OR r.Warehouse LIKE CONCAT('%', @p_Warehouse, '%'))
        AND (ISNULL(@p_Model, '') = '' OR r.Model LIKE CONCAT('%', @p_Model, '%'))
-       AND (ISNULL(@p_StockStatus, '') = '' OR (@p_StockStatus = '1' AND (r.RequestDate IS NULL OR (r.OrderQty < (r.ActualQty - ISNULL(r.OrderedQty, 0))))) 
+       AND (ISNULL(@p_StockStatus, '') = '' OR (@p_StockStatus = '1' AND (r.DeliveryDate IS NULL OR (r.OrderQty < (r.ActualQty - ISNULL(r.OrderedQty, 0))))) 
                                             OR (@p_StockStatus = '2' AND r.RequestDate IS NOT NULL AND r.DeliveryDate IS NULL)
                                             OR (@p_StockStatus = '3' AND r.DeliveryDate IS NOT NULL)
            )
@@ -1495,6 +1498,19 @@ FETCH NEXT FROM cursor_value INTO @p_ListOrder
     	   
     	  RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
     END CATCH;
+END
+------------------------------------------------UpdateOrderQty:
+CREATE OR ALTER PROCEDURE INV_PROD_UPDATE_ORDER_QTY_STOCK
+    @p_StockId INT, 
+    @p_OrderQty INT, 
+    @p_UserId BIGINT
+AS
+BEGIN
+    UPDATE ProdStockReceiving 
+       SET LastModificationTime = GETDATE(),
+           LastModifierUserId = @p_UserId,
+           OrderQty = @p_OrderQty
+     WHERE Id = @p_StockId;
 END
 ------------------------------------------------CustomsDeclare------------------------------------------------
 ------------------------------------------------Search:

@@ -26,6 +26,9 @@ namespace tmss.MaterialManagement.StockReceiving
         public virtual string Warehouse { get; set; }
         public virtual int? OrderedQty { get; set; }
         public virtual int? RemainQty { get; set; }
+        public virtual decimal? StandardPrice { get; set; }//Giá chuẩn
+        public virtual decimal? MovingPrice { get; set; }//Giá vận chuyển
+        public virtual decimal? AmountOrder { get; set; }
 
         public virtual int? GrandQty { get; set; }
         public virtual int? GrandActualQty { get; set; }

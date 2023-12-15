@@ -15,6 +15,7 @@ import { DataFormatService } from '@app/shared/common/services/data-format.servi
 import { ViewMaterialComponent } from '@app/main/master/other/view-material/view-material.component';
 import { AddPurchaseOrderModalComponent } from './order-stock-receiving-modal.component';
 import { AddGdnStockModalComponent } from './add-gdn-stock-modal.component';
+import { UpdateOrderStockModalComponent } from './update-order-stock-modal.component';
 
 @Component({
     selector: 'app-stock-receiving',
@@ -27,6 +28,7 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
     @ViewChild('viewMaterial', { static: true }) viewMaterial: ViewMaterialComponent;
     @ViewChild('addPurchaseOrder', { static: true }) addPurchaseOrder: AddPurchaseOrderModalComponent;
     @ViewChild('addGdnStock', { static: true }) addGdnStock: AddGdnStockModalComponent;
+    @ViewChild('editModal', { static: true }) editModal: UpdateOrderStockModalComponent;
 
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
@@ -68,6 +70,8 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
     ];
     btnGDN: boolean = false;
     btnPO: boolean = false;
+    isDisable: boolean = false;
+    isEdit: boolean = false;
 
     defaultColDef = {
         resizable: true,
@@ -309,6 +313,19 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
                 }
             }
         }
+
+        if(this.saveSelectedRow.id){
+            if(this.saveSelectedRow.orderQty > 0){
+                this.isDisable = true;
+                this.isEdit = false;
+            }else{
+                this.isDisable = false;
+                this.isEdit = true;
+            }
+        }else{
+            this.isDisable = true;
+            this.isEdit = true;
+        }
     }
 
     exportToExcel(): void {
@@ -399,6 +416,10 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
 
     addGoodsDeliveryNote(): void {
         this.addGdnStock.show(this.listPartId);
+    }
+
+    editOrderQty(): void {
+        this.editModal.show(this.saveSelectedRow)
     }
 }
 
