@@ -1409,8 +1409,8 @@ INNER JOIN ProdInvoiceDetails d ON d.Id = r.InvoiceDetailsId
        AND (ISNULL(@p_SupplierNo, '') = '' OR r.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
        AND r.Warehouse = @p_Warehouse
        AND (ISNULL(@p_Model, '') = '' OR r.Model LIKE CONCAT('%', @p_Model, '%'))
-       AND (ISNULL(@p_StockStatus, '') = '' OR (@p_StockStatus = '1' AND (r.DeliveryDate IS NULL OR (r.OrderQty < (r.ActualQty - ISNULL(r.OrderedQty, 0))))) 
-                                            OR (@p_StockStatus = '2' AND r.RequestDate IS NOT NULL AND r.DeliveryDate IS NULL)
+       AND (ISNULL(@p_StockStatus, '') = '' OR (@p_StockStatus = '1' AND (r.DeliveryDate IS NULL OR (0 < (r.ActualQty - ISNULL(r.OrderedQty, 0)))))  
+                                            OR (@p_StockStatus = '2' AND r.RequestStatus = 'NEW')
                                             OR (@p_StockStatus = '3' AND r.DeliveryDate IS NOT NULL)
            )
        AND r.IsDeleted = 0
@@ -1454,22 +1454,45 @@ FETCH NEXT FROM cursor_value INTO @p_ListOrder
             SET @p_id = SUBSTRING(@p_ListOrder, 1, CHARINDEX('-', @p_ListOrder) - 1);
             SET @p_qty = SUBSTRING(@p_ListOrder, CHARINDEX('-', @p_ListOrder) + 1, LEN(@p_ListOrder) - CHARINDEX('-', @p_ListOrder));
          
-         UPDATE ProdStockReceiving
-            SET LastModificationTime = GETDATE(), 
-                LastModifierUserId = @p_UserId, 
-                RequestDate = @p_RequestDate,
-                InvoiceNoOut = @p_InvoiceOut,
-                OrderQty = @p_qty,
-                RequestStatus = 'NEW'
-          WHERE Id = @p_id
-
-         INSERT INTO ProdInvoiceStockOut 
-                (CreationTime, CreatorUserId, IsDeleted, 
-                InvoiceNoOut, Status, ListPartNo, ListPartName, ListCfc, ListStockId, TotalOrderQty, TotalAmount)
-         SELECT GETDATE(), @p_UserId, 0, @p_InvoiceOut, 'NEW', a.PartNo, a.PartName, a.Model, a.Id, @p_qty, (@p_qty * mm.StandardPrice + ISNULL(mm.MovingPrice, 0))
-           FROM ProdStockReceiving a
-      LEFT JOIN MasterMaterial mm ON a.MaterialId = mm.Id
-          WHERE a.Id = @p_id
+          DECLARE @InvoiceOutNo NVARCHAR(20) = (SELECT InvoiceNoOut FROM ProdStockReceiving WHERE Id = @p_id);
+         IF @InvoiceOutNo IS NULL
+         BEGIN
+             UPDATE ProdStockReceiving
+                SET LastModificationTime = GETDATE(), 
+                    LastModifierUserId = @p_UserId, 
+                    RequestDate = @p_RequestDate,
+                    InvoiceNoOut = @p_InvoiceOut,
+                    OrderQty = @p_qty,
+                    RequestStatus = 'NEW'
+              WHERE Id = @p_id
+    
+             INSERT INTO ProdInvoiceStockOut 
+                    (CreationTime, CreatorUserId, IsDeleted, 
+                    InvoiceNoOut, Status, ListPartNo, ListPartName, ListCfc, ListStockId, TotalOrderQty, TotalAmount)
+             SELECT GETDATE(), @p_UserId, 0, @p_InvoiceOut, 'NEW', a.PartNo, a.PartName, a.Model, a.Id, @p_qty, (@p_qty * mm.StandardPrice + ISNULL(mm.MovingPrice, 0))
+               FROM ProdStockReceiving a
+          LEFT JOIN MasterMaterial mm ON a.MaterialId = mm.Id
+              WHERE a.Id = @p_id
+         END
+         ELSE
+         BEGIN
+             DECLARE @Count INT = (SELECT COUNT(*) FROM ProdInvoiceStockOut WHERE InvoiceNoOut LIKE CONCAT(@InvoiceOutNo, '%'));
+             UPDATE ProdStockReceiving
+                SET LastModificationTime = GETDATE(), 
+                    LastModifierUserId = @p_UserId, 
+                    RequestDate = @p_RequestDate,
+                    OrderQty = @p_qty,
+                    RequestStatus = 'NEW'
+              WHERE Id = @p_id
+    
+             INSERT INTO ProdInvoiceStockOut 
+                    (CreationTime, CreatorUserId, IsDeleted, 
+                    InvoiceNoOut, Status, ListPartNo, ListPartName, ListCfc, ListStockId, TotalOrderQty, TotalAmount)
+             SELECT GETDATE(), @p_UserId, 0, (@InvoiceOutNo + '/' + CONVERT(NVARCHAR, @Count)), 'NEW', a.PartNo, a.PartName, a.Model, a.Id, @p_qty, (@p_qty * mm.StandardPrice + ISNULL(mm.MovingPrice, 0))
+               FROM ProdStockReceiving a
+          LEFT JOIN MasterMaterial mm ON a.MaterialId = mm.Id
+              WHERE a.Id = @p_id
+         END
 
 FETCH NEXT FROM cursor_value INTO @p_ListOrder 
             END  
@@ -1527,7 +1550,7 @@ BEGIN
  LEFT JOIN MasterStorageLocation msl ON r.Warehouse = msl.StorageLocation
  LEFT JOIN MasterMaterial mm ON r.MaterialId = mm.Id
 	   WHERE r.RequestDate IS NOT NULL 
-       AND r.DeliveryDate IS NULL
+       AND r.RequestStatus = 'NEW'
        AND r.IsDeleted = 0
        AND r.Warehouse = @p_Warehouse
        AND r.RequestDate <= GETDATE()
@@ -1546,6 +1569,89 @@ INNER JOIN MasterMaterial mm ON psr.MaterialId = mm.Id
     SELECT DISTINCT CONCAT(psr.InvoiceNoOut, ' - ', FORMAT(psr.RequestDate, 'dd/MM/yyyy')) InvoiceNoOut
       FROM ProdStockReceiving psr
      WHERE psr.Id IN (SELECT item FROM dbo.fnSplit(@p_StockId, ','))
+END
+------------------------------------------------Final
+CREATE OR ALTER PROCEDURE INV_PROD_STOCK_ADD_GOODS_DELIVERY_NOTE
+    @p_GdnNo NVARCHAR(20),
+    @p_InvoiceOutDate DATE,
+    @p_ListStockId NVARCHAR(MAX),
+    @p_UserId BIGINT
+AS
+BEGIN
+    PRINT 'INV_PROD_STOCK_ADD_GOODS_DELIVERY_NOTE Start...';
+    BEGIN TRY
+    BEGIN TRANSACTION 
+        DECLARE @p_value_cursor VARCHAR(255);
+        DECLARE @p_id INT;
+        DECLARE @p_qty INT;
+
+        DECLARE cursor_value CURSOR FOR  
+         SELECT value FROM STRING_SPLIT(@p_ListStockId, ';');
+
+           OPEN cursor_value 
+FETCH NEXT FROM cursor_value INTO @p_ListStockId
+
+          WHILE @@FETCH_STATUS = 0  
+          BEGIN  
+            SET @p_id = SUBSTRING(@p_ListStockId, 1, CHARINDEX('-', @p_ListStockId) - 1);
+            SET @p_qty = SUBSTRING(@p_ListStockId, CHARINDEX('-', @p_ListStockId) + 1, LEN(@p_ListStockId) - CHARINDEX('-', @p_ListStockId));
+         
+         UPDATE ProdStockReceiving
+            SET LastModificationTime = GETDATE(),
+                LastModifierUserId = @p_UserId,
+                OrderedQty = OrderedQty + @p_qty,
+                OrderQty = 0,
+                RequestStatus = 'DELIVERED',
+                DeliveryDate = @p_InvoiceOutDate
+          WHERE Id = @p_id
+
+        DECLARE @InvoiceStockOut NVARCHAR(20) = (SELECT psr.InvoiceNoOut FROM ProdStockReceiving psr WHERE psr.Id = @p_id);
+        DECLARE @Amount DECIMAL;
+        DECLARE @PartNo NVARCHAR(12);
+        DECLARE @Cfc NVARCHAR(4);
+         SELECT @Amount = (@p_qty * mm.StandardPrice + ISNULL(mm.MovingPrice, 0)), 
+                @PartNo = psr.PartNo, @Cfc = psr.Model
+           FROM ProdStockReceiving psr 
+      LEFT JOIN MasterMaterial mm ON psr.MaterialId = mm.Id 
+          WHERE psr.Id = @p_id
+
+         UPDATE ProdInvoiceStockOut
+            SET LastModificationTime = GETDATE(),
+                LastModifierUserId = @p_UserId,
+                InvoiceDate = @p_InvoiceOutDate,
+                STATUS = 'NOT PAID (REQUESTED)',
+                GoodsDeliveryNoteNo = @p_GdnNo,
+                TotalOrderQty = @p_qty,
+                TotalAmount = @Amount
+          WHERE InvoiceNoOut LIKE CONCAT(@InvoiceStockOut, '%') AND ListPartNo = @PartNo AND ListCfc = @Cfc AND InvoiceDate IS NULL
+
+FETCH NEXT FROM cursor_value INTO @p_ListStockId 
+            END  
+          CLOSE cursor_value  
+     DEALLOCATE cursor_value 
+    PRINT 'INV_PROD_STOCK_ADD_GOODS_DELIVERY_NOTE End...';
+    COMMIT TRANSACTION;
+    END TRY	
+    BEGIN CATCH
+    		DECLARE @ErrorSeverity INT;
+    		DECLARE @ErrorState INT;
+    		DECLARE @ErrorMessage NVARCHAR(4000);
+      
+    		SELECT @ErrorMessage = ERROR_MESSAGE(),
+    			     @ErrorSeverity = ERROR_SEVERITY(), 
+    			     @ErrorState = ERROR_STATE();
+    
+    		ROLLBACK TRANSACTION		
+    		INSERT INTO ProCess_Log ([CATEGORY], [PROCESS_NAME], [ERROR_MESSAGE], [CREATED_DATE])
+    		VALUES ('INV_PROD_STOCK_ADD_GOODS_DELIVERY_NOTE', 'INV_PROD_STOCK_ADD_GOODS_DELIVERY_NOTE', 'ERROR :' + @ErrorMessage + 
+    															'//ERRORSTATE :' +  CAST(@ErrorState AS VARCHAR) + 
+    															'//ERRORPROCEDURE :' + ERROR_PROCEDURE() + 
+    															'//ERRORSEVERITY :' + CAST(@ErrorSeverity AS VARCHAR) + 
+    															'//ERRORNUMBER :' + CAST(ERROR_NUMBER() AS VARCHAR) + 
+    															'//ERRORLINE :' + CAST(ERROR_LINE() AS VARCHAR), GETDATE());
+    	   
+    	  RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH;
 END
 ------------------------------------------------CustomsDeclare------------------------------------------------
 ------------------------------------------------Search:
@@ -1638,7 +1744,7 @@ CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_STOCK_OUT_SEARCH
     @p_InvoiceDateFrom DATE,
     @p_InvoiceDateTo DATE,
     @p_Status NVARCHAR(50),
-    @p_Warehouse NVARCHAR(1)
+    @p_Warehouse NVARCHAR(2)
 )
 AS
 BEGIN

@@ -84,11 +84,13 @@ namespace tmss.ManagementOther
         public virtual string StockId { get; set; }
         public virtual string ListStockId { get; set; }
         public virtual string DeliveryDate { get; set; }
+        public virtual DateTime? InvoiceDate { get; set; }
         public virtual string GoodsDeliveryNoteNo { get; set; }
         public virtual string Warehouse { get; set; }
         public virtual string Address { get; set; }
         public virtual bool IsExcel { get; set; }
         public virtual string[] ListActualDeliveryQty { get; set; }
+        public virtual string[] ListDeliveryQty { get; set; }
     }
 
     public class ListPartForOrderDto : EntityDto<long?>

@@ -50,11 +50,12 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
     _selectrow;
     status: string = '';
     listWarehouse = [
-        { label: 'A1', value: "A1" },
-        { label: 'A2', value: "A2" },
-        { label: 'B1', value: "B1" },
-        { label: 'C1', value: "C1" },
-        { label: 'C2', value: "C2" }
+        { label: 'Select Warehouse', value: "" },
+        { label: 'Warehouse A1', value: "A1" },
+        { label: 'Warehouse A2', value: "A2" },
+        { label: 'Warehouse B1', value: "B1" },
+        { label: 'Warehouse C1', value: "C1" },
+        { label: 'Warehouse C2', value: "C2" }
     ];
     warehouse: string = '';
 
@@ -89,7 +90,7 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
                 valueGetter: (params) => this.pipe.transform(params.data?.invoiceDate, 'dd/MM/yyyy')
             },
             { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
-            { headerName: this.l('Carfamily Code'), headerTooltip: this.l('Cfc'), field: 'listCfc', flex: 1 },
+            { headerName: this.l('Cfc'), headerTooltip: this.l('Cfc'), field: 'listCfc', flex: 1 },
             { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'listPartNo', flex: 1 },
             { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'listPartName', flex: 1 },
             {

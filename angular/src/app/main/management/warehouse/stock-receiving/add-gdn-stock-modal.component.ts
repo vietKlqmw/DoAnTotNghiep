@@ -4,9 +4,8 @@ import { AgCellButtonRendererComponent } from '@app/shared/common/grid/ag-cell-b
 import { FrameworkComponent, GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { GoodsReceivedNoteExportInput, ProdContainerRentalWHPlanServiceProxy, ProdStockReceivingDto, ProdOthersServiceProxy, GoodsDeliveryNoteExportInput } from '@shared/service-proxies/service-proxies';
+import { ProdStockReceivingServiceProxy, ProdStockReceivingDto, ProdOthersServiceProxy, GoodsDeliveryNoteExportInput } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { BsDatepickerDirective } from 'ngx-bootstrap/datepicker';
 import { AppConsts } from '@shared/AppConsts';
 import { HttpClient } from '@angular/common/http';
 import * as saveAs from 'file-saver';
@@ -97,6 +96,7 @@ export class AddGdnStockModalComponent extends AppComponentBase {
     contId = '';
     listCont = '';
     listActualQty = [];
+    listOrderQty = [];
     _address;
     datasEdit: ProdStockReceivingDto[] = [];
     valueChange: string = '';
@@ -104,7 +104,7 @@ export class AddGdnStockModalComponent extends AppComponentBase {
     processNoUpdate: boolean = false;
 
     constructor(injector: Injector,
-        private _service: ProdContainerRentalWHPlanServiceProxy,
+        private _service: ProdStockReceivingServiceProxy,
         private _component: StockReceivingComponent,
         private _other: ProdOthersServiceProxy,
         private _httpClient: HttpClient,
@@ -263,16 +263,18 @@ export class AddGdnStockModalComponent extends AppComponentBase {
         this.contId = '';
         this.listCont = '';
         this.listActualQty = [];
+        this.listOrderQty = [];
         if (params.api.getSelectedRows().length) {
             for (var i = 0; i < params.api.getSelectedRows().length; i++) {
                 if (i != params.api.getSelectedRows().length - 1) {
                     this.contId += params.api.getSelectedRows()[i].id + ',';
-                    this.listCont += params.api.getSelectedRows()[i].id + '-' + params.api.getSelectedRows()[i].actualQty + ';';
+                    this.listCont += params.api.getSelectedRows()[i].id + '-' + params.api.getSelectedRows()[i].actualDeliveryQty + ';';
                 } else {
                     this.contId += params.api.getSelectedRows()[i].id;
-                    this.listCont += params.api.getSelectedRows()[i].id + '-' + params.api.getSelectedRows()[i].actualQty;
+                    this.listCont += params.api.getSelectedRows()[i].id + '-' + params.api.getSelectedRows()[i].actualDeliveryQty;
                 }
                 this.listActualQty.push(params.api.getSelectedRows()[i].actualDeliveryQty);
+                this.listOrderQty.push(params.api.getSelectedRows()[i].orderQty);
             }
         }
     }
@@ -288,24 +290,27 @@ export class AddGdnStockModalComponent extends AppComponentBase {
         }
         let input = Object.assign(new GoodsDeliveryNoteExportInput(), {
             stockId: this.contId,
+            listStockId: this.listCont,
+            listDeliveryQty: this.listOrderQty,
             deliveryDate: formatDate(new Date(), 'yyyyMMdd', 'en-US'),
+            invoiceDate: moment(new Date()),
             goodsDeliveryNoteNo: this._goodsDelivery,
             isExcel: this.isExcel,
             warehouse: this._warehouse,
             address: this._address,
             listActualDeliveryQty: this.listActualQty
         });
-
+        
         this.saving = true;
-        // this._service.addGrn(input).subscribe(result => {
+        this._service.addGdn(input).subscribe(result => {
             if (this.isExcel) {
                 this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsDeliveryNoteExcel`, input, { responseType: 'blob' })
                     .pipe(finalize(() => this.saving = false))
                     .subscribe(blob => {
                         saveAs(blob, "GoodsDeliveryNote_" + formatDate(new Date(), 'yyyyMMdd', 'en-US') + ".xlsx");
                         this.notify.success(this.l('Save Successfully'));
-                        // this._component.searchDatas();
-                        // this.close();
+                        this._component.searchDatas();
+                        this.close();
                     });
             } else {
                 this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsDeliveryNotePdf`, input, { responseType: 'blob' })
@@ -313,11 +318,11 @@ export class AddGdnStockModalComponent extends AppComponentBase {
                     .subscribe(blob => {
                         saveAs(blob, "GoodsDeliveryNote_" + formatDate(new Date(), 'yyyyMMdd', 'en-US') + ".pdf");
                         this.notify.success(this.l('Save Successfully'));
-                        // this._component.searchDatas();
-                        // this.close();
+                        this._component.searchDatas();
+                        this.close();
                     });
             }
-        // })
+        })
 
     }
 

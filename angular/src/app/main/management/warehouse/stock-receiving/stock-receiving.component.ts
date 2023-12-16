@@ -70,8 +70,8 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
     ];
     btnGDN: boolean = false;
     btnPO: boolean = false;
-    isDisable: boolean = false;
-    isEdit: boolean = false;
+    isDisable: boolean = true;
+    isEdit: boolean = true;
 
     defaultColDef = {
         resizable: true,
@@ -162,6 +162,8 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
 
     ngOnInit() {
         this.paginationParams = { pageNum: 1, pageSize: 500, totalCount: 0 };
+        this.isDisable = true;
+        this.isEdit = true;
         this.setvalradio('1');
     }
 
@@ -219,6 +221,8 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
                     this.dataParams!.api.setPinnedBottomRowData(rows);
                 } else {
                     this.dataParams!.api.setPinnedBottomRowData(null);
+                    this.isDisable = true;
+                    this.isEdit = true;
                 }
                 this.resetGridView();
                 this.isLoading = false;

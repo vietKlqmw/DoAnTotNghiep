@@ -136,7 +136,7 @@ namespace tmss.ManagementOther
                     xlWorkSheet.Cells[startrow + i, 1].Value = listdata[i].PartName;
                     xlWorkSheet.Cells[startrow + i, 3].Value = listdata[i].PartNo;
                     xlWorkSheet.Cells[startrow + i, 4].Value = listdata[i].BaseUnitOfMeasure;
-                    xlWorkSheet.Cells[startrow + i, 5].Value = listdata[i].OrderQty;
+                    xlWorkSheet.Cells[startrow + i, 5].Value = int.Parse(input.ListDeliveryQty[i]);
                     xlWorkSheet.Cells[startrow + i, 6].Value = int.Parse(input.ListActualDeliveryQty[i]);
                     xlWorkSheet.Cells[startrow + i, 7].Value = listdata[i].StandardPrice;
                     xlWorkSheet.Cells[startrow + i, 8].Value = int.Parse(input.ListActualDeliveryQty[i]) * listdata[i].StandardPrice + listdata[i].MovingPrice;

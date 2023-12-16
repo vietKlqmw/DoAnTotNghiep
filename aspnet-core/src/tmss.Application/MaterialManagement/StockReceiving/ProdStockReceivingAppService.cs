@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using tmss.Dto;
+using tmss.ManagementOther;
 using tmss.MaterialManagement.StockReceiving.Exporting;
 
 namespace tmss.MaterialManagement.StockReceiving
@@ -97,6 +98,19 @@ namespace tmss.MaterialManagement.StockReceiving
             {
                 p_StockId = StockId,
                 p_OrderQty = OrderQty,
+                p_UserId = AbpSession.UserId
+            });
+        }
+
+
+        public async Task AddGdn(GoodsDeliveryNoteExportInput input)
+        {
+            string _sql = "Exec INV_PROD_STOCK_ADD_GOODS_DELIVERY_NOTE @p_GdnNo, @p_InvoiceOutDate, @p_ListStockId, @p_UserId";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_GdnNo = input.GoodsDeliveryNoteNo,
+                p_InvoiceOutDate = input.InvoiceDate,
+                p_ListStockId = input.ListStockId,
                 p_UserId = AbpSession.UserId
             });
         }
