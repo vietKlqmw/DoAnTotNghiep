@@ -4,7 +4,7 @@ import { AgCellButtonRendererComponent } from '@app/shared/common/grid/ag-cell-b
 import { FrameworkComponent, GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { GoodsReceivedNoteExportInput, ProdContainerRentalWHPlanServiceProxy, ProdInvoiceDto, ProdOthersServiceProxy } from '@shared/service-proxies/service-proxies';
+import { GoodsReceivedNoteExportInput, ProdContainerRentalWHPlanServiceProxy, ProdStockReceivingDto, ProdOthersServiceProxy, GoodsDeliveryNoteExportInput } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { BsDatepickerDirective } from 'ngx-bootstrap/datepicker';
 import { AppConsts } from '@shared/AppConsts';
@@ -21,7 +21,6 @@ import { StockReceivingComponent } from './stock-receiving.component';
 })
 export class AddGdnStockModalComponent extends AppComponentBase {
     @ViewChild('addGdnStock', { static: true }) modal: ModalDirective;
-    @ViewChild('datepicker', { static: false }) datepicker!: BsDatepickerDirective;
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
     @Output() modalClose: EventEmitter<any> = new EventEmitter<any>();
 
@@ -35,8 +34,8 @@ export class AddGdnStockModalComponent extends AppComponentBase {
         sorting: '',
         totalPage: 1,
     };
-    selectedRow: ProdInvoiceDto = new ProdInvoiceDto();
-    saveSelectedRow: ProdInvoiceDto = new ProdInvoiceDto();
+    selectedRow: ProdStockReceivingDto = new ProdStockReceivingDto();
+    saveSelectedRow: ProdStockReceivingDto = new ProdStockReceivingDto();
     rowSelection = 'multiple';
     pipe = new DatePipe('en-US');
     frameworkComponents: FrameworkComponent;
@@ -89,18 +88,17 @@ export class AddGdnStockModalComponent extends AppComponentBase {
     };
 
     saving = false;
-
-    list = [{ value: '', label: '', address: '' }];
     _warehouse;
     _goodsDelivery;
-    _deliveryDate = new Date();
+    _deliveryDate;
     isExcel: boolean = true;
     isPdf: boolean = false;
     _selectrow;
     contId = '';
     listCont = '';
     listActualQty = [];
-    datasEdit: ProdInvoiceDto[] = [];
+    _address;
+    datasEdit: ProdStockReceivingDto[] = [];
     valueChange: string = '';
     columnChange: string = '';
     processNoUpdate: boolean = false;
@@ -125,42 +123,30 @@ export class AddGdnStockModalComponent extends AppComponentBase {
             },
             { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'partNo', width: 120, pinned: true },
             {
-                headerName: this.l('Qty'), headerTooltip: this.l('Qty'), field: 'usageQty', width: 100, type: 'rightAligned', pinned: true,
-                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.usageQty),
+                headerName: this.l('Remain Qty'), headerTooltip: this.l('Qty'), field: 'remainQty', width: 120, type: 'rightAligned', pinned: true,
+                valueGetter: (params) => this._fm.formatMoney_decimal(params.data?.remainQty),
+            },
+            {
+                headerName: this.l('Order Qty'), headerTooltip: this.l('Order Qty'), field: 'orderQty', width: 110, type: 'rightAligned', pinned: true,
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.orderQty),
             },
             //cột cần edit
-            { headerName: this.l('Actual Qty'), headerTooltip: this.l('Actual Qty'), field: 'actualQty', width: 110, type: 'editableColumn' },
+            { headerName: this.l('Actual Delivery Qty'), headerTooltip: this.l('Actual Delivery Qty'), field: 'actualDeliveryQty', width: 140, type: 'editableColumn' },
 
-            { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', width: 250 },
-            { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', width: 130 },
-            { headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', width: 130 },
-            { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', width: 120 },
-            { headerName: this.l('Forwarder'), headerTooltip: this.l('Forwarder'), field: 'forwarder', width: 120 },
             {
-                headerName: this.l('Freight'), headerTooltip: this.l('Freight'), field: 'freight', width: 100, type: 'rightAligned',
-                cellRenderer: (params) => (params.data?.freight != null ? this._fm.formatMoney_decimal(params.data?.freight) : 0),
+                headerName: this.l('Standard Price'), headerTooltip: this.l('Standard Price'), field: 'standardPrice', width: 130, type: 'rightAligned',
+                valueGetter: (params) => this._fm.formatMoney_decimal(params.data?.standardPrice)
             },
             {
-                headerName: this.l('Insurance'), headerTooltip: this.l('Insurance'), field: 'insurance', width: 110, type: 'rightAligned',
-                cellRenderer: (params) => (params.data?.insurance != null ? this._fm.formatMoney_decimal(params.data?.insurance) : 0),
+                headerName: this.l('Moving Price'), headerTooltip: this.l('Moving Price'), field: 'movingPrice', width: 130, type: 'rightAligned',
+                valueGetter: (params) => this._fm.formatMoney_decimal(params.data?.movingPrice)
             },
             {
-                headerName: this.l('C.I.F'), headerTooltip: this.l('Cif'), field: 'cif', width: 100, type: 'rightAligned',
-                cellRenderer: (params) => (params.data?.cif != null ? this._fm.formatMoney_decimal(params.data?.cif) : 0),
+                headerName: this.l('Amount'), headerTooltip: this.l('Amount'), field: 'amountOrder', width: 130, type: 'rightAligned',
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.amountOrder)
             },
-            {
-                headerName: this.l('THC'), headerTooltip: this.l('THC'), field: 'thc', width: 100, type: 'rightAligned',
-                cellRenderer: (params) => (params.data?.thc != null ? this._fm.formatMoney_decimal(params.data?.thc) : 0),
-            },
-            {
-                headerName: this.l('TAX'), headerTooltip: this.l('Tax'), field: 'tax', width: 100, type: 'rightAligned',
-                cellRenderer: (params) => (params.data?.tax != null ? this._fm.formatMoney_decimal(params.data?.tax) : 0),
-            },
-            {
-                headerName: this.l('VAT'), headerTooltip: this.l('Vat'), field: 'vat', width: 100, type: 'rightAligned',
-                cellRenderer: (params) => (params.data?.vat != null ? this._fm.formatMoney_decimal(params.data?.vat) : 0),
-            },
-            { headerName: this.l('Currency'), headerTooltip: this.l('Currency'), field: 'currency', width: 100 }
+            { headerName: this.l('Cfc'), headerTooltip: this.l('Cfc'), field: 'model', width: 70 },
+            { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', width: 250 }
         ];
 
         this.frameworkComponents = {
@@ -195,6 +181,7 @@ export class AddGdnStockModalComponent extends AppComponentBase {
 
             if (v == null || v == undefined || Number.isNaN(v)) {
                 params.data[field] = 0;
+                params.data['amountOrder'] = params.data['actualDeliveryQty'] * params.data['standardPrice'] + params.data['movingPrice'];
                 params.api.applyTransaction({ update: [params.data] });
                 return 0;
             }
@@ -202,12 +189,12 @@ export class AddGdnStockModalComponent extends AppComponentBase {
                 params.newValue = ((params.newValue) < 0) ? params.oldValue : params.newValue;
                 params.data[field] = params.newValue;
 
-                // if (params.newValue > params.data['remainQty']) {
-                //     this.message.warn(this.l('Receive Qty không được vượt quá Remain Qty!'), 'Warning');
-                //     params.data[field] = params.oldValue;
-                // }
-                if (params.newValue == 0) params.data['actualQty'] = 0;
-
+                if (params.newValue > params.data['remainQty']) {
+                    this.message.warn(this.l('Actual Order Qty không được vượt quá Remain Qty!'), 'Warning');
+                    params.data[field] = params.oldValue;
+                }
+                if (params.newValue == 0) params.data['actualDeliveryQty'] = 0;
+                params.data['amountOrder'] = params.data['actualDeliveryQty'] * params.data['standardPrice'] + params.data['movingPrice'];
                 params.api.applyTransaction({ update: [params.data] });
 
                 return params.newValue;
@@ -219,6 +206,7 @@ export class AddGdnStockModalComponent extends AppComponentBase {
 
 
     onCellValueChanged(params: CellValueChangedEvent) {
+        params.data['amountOrder'] = params.data['actualDeliveryQty'] * params.data['standardPrice'] + params.data['movingPrice'];
         params.api.applyTransaction({ update: [params.data] });
 
         if (params.newValue == null || Number.isNaN(params.newValue) || params.newValue == undefined) return;
@@ -246,24 +234,18 @@ export class AddGdnStockModalComponent extends AppComponentBase {
         else return ['cell-edit', 'number-cell', 'cell-edit-edited'];
     }
 
-    ngOnInit() {
-        this._other.getListWarehouse()
-            .subscribe(result => {
-                result.forEach(e => {
-                    this.list.push({ value: e.storageLocation, label: e.storageLocation, address: e.addressLanguageVn })
-                })
-            })
-     }
+    ngOnInit() { }
 
-    show(listId): void {
-        this._other.getListContForWarehouse()
+    show(listId, warehouse): void {
+        this._warehouse = warehouse;
+        this._deliveryDate = formatDate(new Date(), 'dd/MM/yyyy', 'en-US');
+        this._goodsDelivery = warehouse + 'GDN/' + formatDate(new Date(), 'yyMMddHHmmss', 'en-US');
+        this.onChangeToExcel(true);
+        this._other.getListStockForDeliveryByWarehouse(warehouse)
             .subscribe((result) => {
                 this.data = result ?? [];
+                this._address = result[0].location;
             });
-        this._warehouse = '';
-        this._deliveryDate = new Date();
-        this._goodsDelivery = 'GDN/' + formatDate(new Date(), 'yyMMddHHmmss', 'en-US');
-        this.onChangeToExcel(true);
         this.modal.show();
 
     }
@@ -272,8 +254,8 @@ export class AddGdnStockModalComponent extends AppComponentBase {
         this.dataParams = params;
     }
 
-    onChangeRowSelection(params: { api: { getSelectedRows: () => ProdInvoiceDto[] } }) {
-        this.saveSelectedRow = params.api.getSelectedRows()[0] ?? new ProdInvoiceDto();
+    onChangeRowSelection(params: { api: { getSelectedRows: () => ProdStockReceivingDto[] } }) {
+        this.saveSelectedRow = params.api.getSelectedRows()[0] ?? new ProdStockReceivingDto();
         this.selectedRow = Object.assign({}, this.saveSelectedRow);
 
         this._selectrow = this.saveSelectedRow.id;
@@ -290,66 +272,56 @@ export class AddGdnStockModalComponent extends AppComponentBase {
                     this.contId += params.api.getSelectedRows()[i].id;
                     this.listCont += params.api.getSelectedRows()[i].id + '-' + params.api.getSelectedRows()[i].actualQty;
                 }
-                this.listActualQty.push(params.api.getSelectedRows()[i].actualQty);
+                this.listActualQty.push(params.api.getSelectedRows()[i].actualDeliveryQty);
             }
         }
     }
 
     save(): void {
-        if (this._deliveryDate == undefined) {
-            this.notify.warn('Receive Date is Required!');
-            return;
-        }
-        if (this._warehouse == null || this._warehouse == '') {
-            this.notify.warn('Warehouse is Required!');
-            return;
-        }
         if (!this.isExcel && !this.isPdf) {
             this.notify.warn('Export is Required!');
             return;
         }
         if (this.listCont.length < 1) {
-            this.notify.warn('Need to choose at least 1 Container!');
+            this.notify.warn('Need to choose at least 1 Stock!');
             return;
         }
-        let input = Object.assign(new GoodsReceivedNoteExportInput(), {
-            contId: this.contId,
-            listContId: this.listCont,
-            receiveDate: formatDate(new Date(this._deliveryDate.toString()), 'yyyyMMdd', 'en-US'),
-            goodsReceivedNoteNo: this._goodsDelivery,
+        let input = Object.assign(new GoodsDeliveryNoteExportInput(), {
+            stockId: this.contId,
+            deliveryDate: formatDate(new Date(), 'yyyyMMdd', 'en-US'),
+            goodsDeliveryNoteNo: this._goodsDelivery,
             isExcel: this.isExcel,
             warehouse: this._warehouse,
-            address: this.list.filter(e => e.value == this._warehouse)[0].address,
-            workingDate: moment(this._deliveryDate),
-            listActualQty: this.listActualQty
+            address: this._address,
+            listActualDeliveryQty: this.listActualQty
         });
 
-        // this.saving = true;
+        this.saving = true;
         // this._service.addGrn(input).subscribe(result => {
-        //     if (this.isExcel) {
-        //         this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNoteExcel`, input, { responseType: 'blob' })
-        //             .pipe(finalize(() => this.saving = false))
-        //             .subscribe(blob => {
-        //                 saveAs(blob, "GoodsReceivedNote_" + formatDate(new Date(this._deliveryDate.toString()), 'yyyyMMdd', 'en-US') + ".xlsx");
-        //                 this.notify.success(this.l('Save Successfully'));
-        //                 this._component.searchDatas();
-        //                 this.close();
-        //             });
-        //     } else {
-        //         this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNotePdf`, input, { responseType: 'blob' })
-        //             .pipe(finalize(() => this.saving = false))
-        //             .subscribe(blob => {
-        //                 saveAs(blob, "GoodsReceivedNote_" + formatDate(new Date(this._deliveryDate.toString()), 'yyyyMMdd', 'en-US') + ".pdf");
-        //                 this.notify.success(this.l('Save Successfully'));
-        //                 this._component.searchDatas();
-        //                 this.close();
-        //             });
-        //     }
+            if (this.isExcel) {
+                this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsDeliveryNoteExcel`, input, { responseType: 'blob' })
+                    .pipe(finalize(() => this.saving = false))
+                    .subscribe(blob => {
+                        saveAs(blob, "GoodsDeliveryNote_" + formatDate(new Date(), 'yyyyMMdd', 'en-US') + ".xlsx");
+                        this.notify.success(this.l('Save Successfully'));
+                        // this._component.searchDatas();
+                        // this.close();
+                    });
+            } else {
+                this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsDeliveryNotePdf`, input, { responseType: 'blob' })
+                    .pipe(finalize(() => this.saving = false))
+                    .subscribe(blob => {
+                        saveAs(blob, "GoodsDeliveryNote_" + formatDate(new Date(), 'yyyyMMdd', 'en-US') + ".pdf");
+                        this.notify.success(this.l('Save Successfully'));
+                        // this._component.searchDatas();
+                        // this.close();
+                    });
+            }
         // })
 
     }
 
-    rowClickData: ProdInvoiceDto;
+    rowClickData: ProdStockReceivingDto;
     onRowClick(params) {
 
         let _rows = document.querySelectorAll<HTMLElement>("body .ag-theme-alpine .ag-center-cols-container .ag-row.ag-row-level-0.ag-row-position-absolute");

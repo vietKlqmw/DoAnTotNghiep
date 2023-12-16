@@ -12232,7 +12232,7 @@ export class ProdFileServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    exportGoodsDeliveryNote(body: GoodsReceivedNoteExportInput | undefined): Observable<string> {
+    exportGoodsDeliveryNote(body: GoodsDeliveryNoteExportInput | undefined): Observable<string> {
         let url_ = this.baseUrl + "/api/services/app/ProdFile/ExportGoodsDeliveryNote";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -13611,6 +13611,64 @@ export class ProdOthersServiceProxy {
             }));
         }
         return _observableOf<ProdInvoiceDto[]>(<any>null);
+    }
+
+    /**
+     * @param warehouse (optional) 
+     * @return Success
+     */
+    getListStockForDeliveryByWarehouse(warehouse: string | null | undefined): Observable<ProdStockReceivingDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetListStockForDeliveryByWarehouse?";
+        if (warehouse !== undefined)
+            url_ += "warehouse=" + encodeURIComponent("" + warehouse) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListStockForDeliveryByWarehouse(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListStockForDeliveryByWarehouse(<any>response_);
+                } catch (e) {
+                    return <Observable<ProdStockReceivingDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ProdStockReceivingDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetListStockForDeliveryByWarehouse(response: HttpResponseBase): Observable<ProdStockReceivingDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ProdStockReceivingDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ProdStockReceivingDto[]>(<any>null);
     }
 
     /**
@@ -30393,6 +30451,78 @@ export interface IPagedResultDtoOfProdCustomsDeclareDto {
     items: ProdCustomsDeclareDto[] | undefined;
 }
 
+export class GoodsDeliveryNoteExportInput implements IGoodsDeliveryNoteExportInput {
+    stockId!: string | undefined;
+    listStockId!: string | undefined;
+    deliveryDate!: string | undefined;
+    goodsDeliveryNoteNo!: string | undefined;
+    warehouse!: string | undefined;
+    address!: string | undefined;
+    isExcel!: boolean;
+    listActualDeliveryQty!: string[] | undefined;
+
+    constructor(data?: IGoodsDeliveryNoteExportInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.stockId = _data["stockId"];
+            this.listStockId = _data["listStockId"];
+            this.deliveryDate = _data["deliveryDate"];
+            this.goodsDeliveryNoteNo = _data["goodsDeliveryNoteNo"];
+            this.warehouse = _data["warehouse"];
+            this.address = _data["address"];
+            this.isExcel = _data["isExcel"];
+            if (Array.isArray(_data["listActualDeliveryQty"])) {
+                this.listActualDeliveryQty = [] as any;
+                for (let item of _data["listActualDeliveryQty"])
+                    this.listActualDeliveryQty!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): GoodsDeliveryNoteExportInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GoodsDeliveryNoteExportInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["stockId"] = this.stockId;
+        data["listStockId"] = this.listStockId;
+        data["deliveryDate"] = this.deliveryDate;
+        data["goodsDeliveryNoteNo"] = this.goodsDeliveryNoteNo;
+        data["warehouse"] = this.warehouse;
+        data["address"] = this.address;
+        data["isExcel"] = this.isExcel;
+        if (Array.isArray(this.listActualDeliveryQty)) {
+            data["listActualDeliveryQty"] = [];
+            for (let item of this.listActualDeliveryQty)
+                data["listActualDeliveryQty"].push(item);
+        }
+        return data; 
+    }
+}
+
+export interface IGoodsDeliveryNoteExportInput {
+    stockId: string | undefined;
+    listStockId: string | undefined;
+    deliveryDate: string | undefined;
+    goodsDeliveryNoteNo: string | undefined;
+    warehouse: string | undefined;
+    address: string | undefined;
+    isExcel: boolean;
+    listActualDeliveryQty: string[] | undefined;
+}
+
 export class ProdInvoiceDto implements IProdInvoiceDto {
     invoiceNo!: string | undefined;
     billId!: number | undefined;
@@ -31081,6 +31211,174 @@ export interface IGetListPartDto {
     partName: string | undefined;
 }
 
+export class ProdStockReceivingDto implements IProdStockReceivingDto {
+    partNo!: string | undefined;
+    partName!: string | undefined;
+    partListId!: number | undefined;
+    materialId!: number | undefined;
+    qty!: number | undefined;
+    transactionDatetime!: moment.Moment | undefined;
+    invoiceDetailsId!: number | undefined;
+    workingDate!: moment.Moment | undefined;
+    supplierNo!: string | undefined;
+    model!: string | undefined;
+    containerNo!: string | undefined;
+    invoiceNo!: string | undefined;
+    actualQty!: number | undefined;
+    orderQty!: number | undefined;
+    invoiceNoOut!: string | undefined;
+    requestStatus!: string | undefined;
+    requestDate!: moment.Moment | undefined;
+    deliveryDate!: moment.Moment | undefined;
+    warehouse!: string | undefined;
+    orderedQty!: number | undefined;
+    remainQty!: number | undefined;
+    standardPrice!: number | undefined;
+    movingPrice!: number | undefined;
+    amountOrder!: number | undefined;
+    grandQty!: number | undefined;
+    grandActualQty!: number | undefined;
+    grandOrderQty!: number | undefined;
+    grandOrderedQty!: number | undefined;
+    grandRemainQty!: number | undefined;
+    baseUnitOfMeasure!: string | undefined;
+    location!: string | undefined;
+    keyRow!: string | undefined;
+    actualDeliveryQty!: number | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IProdStockReceivingDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.partNo = _data["partNo"];
+            this.partName = _data["partName"];
+            this.partListId = _data["partListId"];
+            this.materialId = _data["materialId"];
+            this.qty = _data["qty"];
+            this.transactionDatetime = _data["transactionDatetime"] ? moment(_data["transactionDatetime"].toString()) : <any>undefined;
+            this.invoiceDetailsId = _data["invoiceDetailsId"];
+            this.workingDate = _data["workingDate"] ? moment(_data["workingDate"].toString()) : <any>undefined;
+            this.supplierNo = _data["supplierNo"];
+            this.model = _data["model"];
+            this.containerNo = _data["containerNo"];
+            this.invoiceNo = _data["invoiceNo"];
+            this.actualQty = _data["actualQty"];
+            this.orderQty = _data["orderQty"];
+            this.invoiceNoOut = _data["invoiceNoOut"];
+            this.requestStatus = _data["requestStatus"];
+            this.requestDate = _data["requestDate"] ? moment(_data["requestDate"].toString()) : <any>undefined;
+            this.deliveryDate = _data["deliveryDate"] ? moment(_data["deliveryDate"].toString()) : <any>undefined;
+            this.warehouse = _data["warehouse"];
+            this.orderedQty = _data["orderedQty"];
+            this.remainQty = _data["remainQty"];
+            this.standardPrice = _data["standardPrice"];
+            this.movingPrice = _data["movingPrice"];
+            this.amountOrder = _data["amountOrder"];
+            this.grandQty = _data["grandQty"];
+            this.grandActualQty = _data["grandActualQty"];
+            this.grandOrderQty = _data["grandOrderQty"];
+            this.grandOrderedQty = _data["grandOrderedQty"];
+            this.grandRemainQty = _data["grandRemainQty"];
+            this.baseUnitOfMeasure = _data["baseUnitOfMeasure"];
+            this.location = _data["location"];
+            this.keyRow = _data["keyRow"];
+            this.actualDeliveryQty = _data["actualDeliveryQty"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): ProdStockReceivingDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProdStockReceivingDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["partNo"] = this.partNo;
+        data["partName"] = this.partName;
+        data["partListId"] = this.partListId;
+        data["materialId"] = this.materialId;
+        data["qty"] = this.qty;
+        data["transactionDatetime"] = this.transactionDatetime ? this.transactionDatetime.toISOString() : <any>undefined;
+        data["invoiceDetailsId"] = this.invoiceDetailsId;
+        data["workingDate"] = this.workingDate ? this.workingDate.toISOString() : <any>undefined;
+        data["supplierNo"] = this.supplierNo;
+        data["model"] = this.model;
+        data["containerNo"] = this.containerNo;
+        data["invoiceNo"] = this.invoiceNo;
+        data["actualQty"] = this.actualQty;
+        data["orderQty"] = this.orderQty;
+        data["invoiceNoOut"] = this.invoiceNoOut;
+        data["requestStatus"] = this.requestStatus;
+        data["requestDate"] = this.requestDate ? this.requestDate.toISOString() : <any>undefined;
+        data["deliveryDate"] = this.deliveryDate ? this.deliveryDate.toISOString() : <any>undefined;
+        data["warehouse"] = this.warehouse;
+        data["orderedQty"] = this.orderedQty;
+        data["remainQty"] = this.remainQty;
+        data["standardPrice"] = this.standardPrice;
+        data["movingPrice"] = this.movingPrice;
+        data["amountOrder"] = this.amountOrder;
+        data["grandQty"] = this.grandQty;
+        data["grandActualQty"] = this.grandActualQty;
+        data["grandOrderQty"] = this.grandOrderQty;
+        data["grandOrderedQty"] = this.grandOrderedQty;
+        data["grandRemainQty"] = this.grandRemainQty;
+        data["baseUnitOfMeasure"] = this.baseUnitOfMeasure;
+        data["location"] = this.location;
+        data["keyRow"] = this.keyRow;
+        data["actualDeliveryQty"] = this.actualDeliveryQty;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IProdStockReceivingDto {
+    partNo: string | undefined;
+    partName: string | undefined;
+    partListId: number | undefined;
+    materialId: number | undefined;
+    qty: number | undefined;
+    transactionDatetime: moment.Moment | undefined;
+    invoiceDetailsId: number | undefined;
+    workingDate: moment.Moment | undefined;
+    supplierNo: string | undefined;
+    model: string | undefined;
+    containerNo: string | undefined;
+    invoiceNo: string | undefined;
+    actualQty: number | undefined;
+    orderQty: number | undefined;
+    invoiceNoOut: string | undefined;
+    requestStatus: string | undefined;
+    requestDate: moment.Moment | undefined;
+    deliveryDate: moment.Moment | undefined;
+    warehouse: string | undefined;
+    orderedQty: number | undefined;
+    remainQty: number | undefined;
+    standardPrice: number | undefined;
+    movingPrice: number | undefined;
+    amountOrder: number | undefined;
+    grandQty: number | undefined;
+    grandActualQty: number | undefined;
+    grandOrderQty: number | undefined;
+    grandOrderedQty: number | undefined;
+    grandRemainQty: number | undefined;
+    baseUnitOfMeasure: string | undefined;
+    location: string | undefined;
+    keyRow: string | undefined;
+    actualDeliveryQty: number | undefined;
+    id: number | undefined;
+}
+
 export class GetListWarehouse implements IGetListWarehouse {
     storageLocation!: string | undefined;
     addressLanguageVn!: string | undefined;
@@ -31347,158 +31645,6 @@ export class PagedResultDtoOfProdShipmentDto implements IPagedResultDtoOfProdShi
 export interface IPagedResultDtoOfProdShipmentDto {
     totalCount: number;
     items: ProdShipmentDto[] | undefined;
-}
-
-export class ProdStockReceivingDto implements IProdStockReceivingDto {
-    partNo!: string | undefined;
-    partName!: string | undefined;
-    partListId!: number | undefined;
-    materialId!: number | undefined;
-    qty!: number | undefined;
-    transactionDatetime!: moment.Moment | undefined;
-    invoiceDetailsId!: number | undefined;
-    workingDate!: moment.Moment | undefined;
-    supplierNo!: string | undefined;
-    model!: string | undefined;
-    containerNo!: string | undefined;
-    invoiceNo!: string | undefined;
-    actualQty!: number | undefined;
-    orderQty!: number | undefined;
-    invoiceNoOut!: string | undefined;
-    requestStatus!: string | undefined;
-    requestDate!: moment.Moment | undefined;
-    deliveryDate!: moment.Moment | undefined;
-    warehouse!: string | undefined;
-    orderedQty!: number | undefined;
-    remainQty!: number | undefined;
-    standardPrice!: number | undefined;
-    movingPrice!: number | undefined;
-    amountOrder!: number | undefined;
-    grandQty!: number | undefined;
-    grandActualQty!: number | undefined;
-    grandOrderQty!: number | undefined;
-    grandOrderedQty!: number | undefined;
-    grandRemainQty!: number | undefined;
-    id!: number | undefined;
-
-    constructor(data?: IProdStockReceivingDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.partNo = _data["partNo"];
-            this.partName = _data["partName"];
-            this.partListId = _data["partListId"];
-            this.materialId = _data["materialId"];
-            this.qty = _data["qty"];
-            this.transactionDatetime = _data["transactionDatetime"] ? moment(_data["transactionDatetime"].toString()) : <any>undefined;
-            this.invoiceDetailsId = _data["invoiceDetailsId"];
-            this.workingDate = _data["workingDate"] ? moment(_data["workingDate"].toString()) : <any>undefined;
-            this.supplierNo = _data["supplierNo"];
-            this.model = _data["model"];
-            this.containerNo = _data["containerNo"];
-            this.invoiceNo = _data["invoiceNo"];
-            this.actualQty = _data["actualQty"];
-            this.orderQty = _data["orderQty"];
-            this.invoiceNoOut = _data["invoiceNoOut"];
-            this.requestStatus = _data["requestStatus"];
-            this.requestDate = _data["requestDate"] ? moment(_data["requestDate"].toString()) : <any>undefined;
-            this.deliveryDate = _data["deliveryDate"] ? moment(_data["deliveryDate"].toString()) : <any>undefined;
-            this.warehouse = _data["warehouse"];
-            this.orderedQty = _data["orderedQty"];
-            this.remainQty = _data["remainQty"];
-            this.standardPrice = _data["standardPrice"];
-            this.movingPrice = _data["movingPrice"];
-            this.amountOrder = _data["amountOrder"];
-            this.grandQty = _data["grandQty"];
-            this.grandActualQty = _data["grandActualQty"];
-            this.grandOrderQty = _data["grandOrderQty"];
-            this.grandOrderedQty = _data["grandOrderedQty"];
-            this.grandRemainQty = _data["grandRemainQty"];
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): ProdStockReceivingDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProdStockReceivingDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["partNo"] = this.partNo;
-        data["partName"] = this.partName;
-        data["partListId"] = this.partListId;
-        data["materialId"] = this.materialId;
-        data["qty"] = this.qty;
-        data["transactionDatetime"] = this.transactionDatetime ? this.transactionDatetime.toISOString() : <any>undefined;
-        data["invoiceDetailsId"] = this.invoiceDetailsId;
-        data["workingDate"] = this.workingDate ? this.workingDate.toISOString() : <any>undefined;
-        data["supplierNo"] = this.supplierNo;
-        data["model"] = this.model;
-        data["containerNo"] = this.containerNo;
-        data["invoiceNo"] = this.invoiceNo;
-        data["actualQty"] = this.actualQty;
-        data["orderQty"] = this.orderQty;
-        data["invoiceNoOut"] = this.invoiceNoOut;
-        data["requestStatus"] = this.requestStatus;
-        data["requestDate"] = this.requestDate ? this.requestDate.toISOString() : <any>undefined;
-        data["deliveryDate"] = this.deliveryDate ? this.deliveryDate.toISOString() : <any>undefined;
-        data["warehouse"] = this.warehouse;
-        data["orderedQty"] = this.orderedQty;
-        data["remainQty"] = this.remainQty;
-        data["standardPrice"] = this.standardPrice;
-        data["movingPrice"] = this.movingPrice;
-        data["amountOrder"] = this.amountOrder;
-        data["grandQty"] = this.grandQty;
-        data["grandActualQty"] = this.grandActualQty;
-        data["grandOrderQty"] = this.grandOrderQty;
-        data["grandOrderedQty"] = this.grandOrderedQty;
-        data["grandRemainQty"] = this.grandRemainQty;
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface IProdStockReceivingDto {
-    partNo: string | undefined;
-    partName: string | undefined;
-    partListId: number | undefined;
-    materialId: number | undefined;
-    qty: number | undefined;
-    transactionDatetime: moment.Moment | undefined;
-    invoiceDetailsId: number | undefined;
-    workingDate: moment.Moment | undefined;
-    supplierNo: string | undefined;
-    model: string | undefined;
-    containerNo: string | undefined;
-    invoiceNo: string | undefined;
-    actualQty: number | undefined;
-    orderQty: number | undefined;
-    invoiceNoOut: string | undefined;
-    requestStatus: string | undefined;
-    requestDate: moment.Moment | undefined;
-    deliveryDate: moment.Moment | undefined;
-    warehouse: string | undefined;
-    orderedQty: number | undefined;
-    remainQty: number | undefined;
-    standardPrice: number | undefined;
-    movingPrice: number | undefined;
-    amountOrder: number | undefined;
-    grandQty: number | undefined;
-    grandActualQty: number | undefined;
-    grandOrderQty: number | undefined;
-    grandOrderedQty: number | undefined;
-    grandRemainQty: number | undefined;
-    id: number | undefined;
 }
 
 export class PagedResultDtoOfProdStockReceivingDto implements IPagedResultDtoOfProdStockReceivingDto {

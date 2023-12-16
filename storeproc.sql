@@ -1407,7 +1407,7 @@ INNER JOIN ProdInvoiceDetails d ON d.Id = r.InvoiceDetailsId
 		   AND (ISNULL(@p_RequestDateFrom, '')= '' OR  r.RequestDate >= @p_RequestDateFrom)
        AND (ISNULL(@p_RequestDateTo, '')= '' OR r.RequestDate <= @p_RequestDateTo)
        AND (ISNULL(@p_SupplierNo, '') = '' OR r.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
-       AND (ISNULL(@p_Warehouse, '') = '' OR r.Warehouse LIKE CONCAT('%', @p_Warehouse, '%'))
+       AND r.Warehouse = @p_Warehouse
        AND (ISNULL(@p_Model, '') = '' OR r.Model LIKE CONCAT('%', @p_Model, '%'))
        AND (ISNULL(@p_StockStatus, '') = '' OR (@p_StockStatus = '1' AND (r.DeliveryDate IS NULL OR (r.OrderQty < (r.ActualQty - ISNULL(r.OrderedQty, 0))))) 
                                             OR (@p_StockStatus = '2' AND r.RequestDate IS NOT NULL AND r.DeliveryDate IS NULL)
@@ -1512,16 +1512,17 @@ BEGIN
            OrderQty = @p_OrderQty
      WHERE Id = @p_StockId;
 END
-------------------------------------------------GetListForDelivery------------>continue
+------------------------------------------------GetListForDelivery
 CREATE OR ALTER PROCEDURE INV_PROD_GET_STOCK_FOR_DELIVERY_BY_WAREHOUSE
     @p_Warehouse NVARCHAR(2)
 AS
 BEGIN
     SELECT r.Id, r.PartNo, r.PartName, mm.BaseUnitOfMeasure, r.Model, 
-           r.OrderQty, r.InvoiceNoOut, r.DeliveryDate, r.Warehouse,
-           ISNULL(r.OrderedQty, 0) OrderedQty, (r.ActualQty - ISNULL(r.OrderedQty, 0)) RemainQty,
+           r.OrderQty, r.InvoiceNoOut, r.Warehouse, r.RequestDate,
+           (r.ActualQty - ISNULL(r.OrderedQty, 0)) RemainQty,
            mm.StandardPrice, ISNULL(mm.MovingPrice, 0) MovingPrice, 
-           (mm.StandardPrice * r.OrderQty + ISNULL(mm.MovingPrice, 0)) AmountOrder
+           (mm.StandardPrice * r.OrderQty + ISNULL(mm.MovingPrice, 0)) AmountOrder,
+           msl.AddressLanguageVn Location
       FROM ProdStockReceiving r
  LEFT JOIN MasterStorageLocation msl ON r.Warehouse = msl.StorageLocation
  LEFT JOIN MasterMaterial mm ON r.MaterialId = mm.Id
@@ -1529,6 +1530,22 @@ BEGIN
        AND r.DeliveryDate IS NULL
        AND r.IsDeleted = 0
        AND r.Warehouse = @p_Warehouse
+       AND r.RequestDate <= GETDATE()
+END
+------------------------------------------------ExportListForDelivery
+CREATE PROCEDURE INV_PROD_EXPORT_GOODS_DELIVERY_NOTE
+    @p_StockId NVARCHAR(MAX)
+AS
+BEGIN
+    SELECT psr.PartNo, psr.PartName, mm.BaseUnitOfMeasure, mm.StandardPrice, 
+           ISNULL(mm.MovingPrice, 0) MovingPrice, psr.OrderQty
+      FROM ProdStockReceiving psr
+INNER JOIN MasterMaterial mm ON psr.MaterialId = mm.Id
+     WHERE psr.Id IN (SELECT item FROM dbo.fnSplit(@p_StockId, ','))
+
+    SELECT DISTINCT CONCAT(psr.InvoiceNoOut, ' - ', FORMAT(psr.RequestDate, 'dd/MM/yyyy')) InvoiceNoOut
+      FROM ProdStockReceiving psr
+     WHERE psr.Id IN (SELECT item FROM dbo.fnSplit(@p_StockId, ','))
 END
 ------------------------------------------------CustomsDeclare------------------------------------------------
 ------------------------------------------------Search:

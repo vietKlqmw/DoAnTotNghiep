@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using tmss.Master.Material;
 using tmss.MaterialManagement.Invoice;
+using tmss.MaterialManagement.StockReceiving;
 
 namespace tmss.ManagementOther
 {
@@ -118,6 +119,18 @@ namespace tmss.ManagementOther
             string _sql = "Exec INV_PROD_GET_LIST_CONTAINER_TO_WAREHOUSE";
 
             IEnumerable<ProdInvoiceDto> result = await _dapperRepo.QueryAsync<ProdInvoiceDto>(_sql);
+
+            return result.ToList();
+        }
+
+        public async Task<List<ProdStockReceivingDto>> GetListStockForDeliveryByWarehouse(string warehouse)
+        {
+            string _sql = "Exec INV_PROD_GET_STOCK_FOR_DELIVERY_BY_WAREHOUSE @p_Warehouse";
+
+            IEnumerable<ProdStockReceivingDto> result = await _dapperRepo.QueryAsync<ProdStockReceivingDto>(_sql, new
+            {
+                p_Warehouse = warehouse
+            });
 
             return result.ToList();
         }

@@ -29,7 +29,7 @@
                                     </span>
                                 </div>
                                 <tmss-combobox [items]="listWarehouse" name="warehouse"
-                                    [(ngModel)]="warehouse" (keyup.enter)="searchDatas()"></tmss-combobox>
+                                    [(ngModel)]="warehouse" (ngModelChange)="searchDatas()"></tmss-combobox>
                             </div>
                         </div>
                         <div class="col-md-customize">

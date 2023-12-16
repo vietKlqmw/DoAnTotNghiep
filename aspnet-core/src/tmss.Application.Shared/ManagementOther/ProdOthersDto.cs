@@ -79,6 +79,18 @@ namespace tmss.ManagementOther
         public virtual string[] ListActualQty { get; set; }
     }
 
+    public class GoodsDeliveryNoteExportInput
+    {
+        public virtual string StockId { get; set; }
+        public virtual string ListStockId { get; set; }
+        public virtual string DeliveryDate { get; set; }
+        public virtual string GoodsDeliveryNoteNo { get; set; }
+        public virtual string Warehouse { get; set; }
+        public virtual string Address { get; set; }
+        public virtual bool IsExcel { get; set; }
+        public virtual string[] ListActualDeliveryQty { get; set; }
+    }
+
     public class ListPartForOrderDto : EntityDto<long?>
     {
         public virtual string PartNo { get; set; }

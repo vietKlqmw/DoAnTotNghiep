@@ -31,16 +31,16 @@ namespace tmss.Web.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult> ExportGoodsDeliveryNoteExcel([FromBody] GoodsReceivedNoteExportInput input)
+        public async Task<ActionResult> ExportGoodsDeliveryNoteExcel([FromBody] GoodsDeliveryNoteExportInput input)
         {
-            string fileName = "GoodsDeliveryNote_" + input.ReceiveDate + ".xlsx";
+            string fileName = "GoodsDeliveryNote_" + input.DeliveryDate + ".xlsx";
             return File(await _prodFileAppService.ExportGoodsDeliveryNote(input), MimeTypeNames.ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet, fileName);
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult> ExportGoodsDeliveryNotePdf([FromBody] GoodsReceivedNoteExportInput input)
+        public async Task<ActionResult> ExportGoodsDeliveryNotePdf([FromBody] GoodsDeliveryNoteExportInput input)
         {
-            string fileName = "GoodsDeliveryNote_" + input.ReceiveDate + ".pdf";
+            string fileName = "GoodsDeliveryNote_" + input.DeliveryDate + ".pdf";
             return File(await _prodFileAppService.ExportGoodsDeliveryNote(input), MimeTypeNames.ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet, fileName);
         }
     }

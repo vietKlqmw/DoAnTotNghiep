@@ -57,16 +57,16 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
     model: string = '';
     requestDateFrom: any;
     requestDateTo: any;
-    warehouse: string = '';
+    warehouse: string = 'A1';
     listPartId: string = '';
     stockStatus: string = '1';
     _selectrow;
     listWarehouse = [
-        { label: 'A1', value: "A1" },
-        { label: 'A2', value: "A2" },
-        { label: 'B1', value: "B1" },
-        { label: 'C1', value: "C1" },
-        { label: 'C2', value: "C2" }
+        { label: 'Warehouse A1', value: "A1" },
+        { label: 'Warehouse A2', value: "A2" },
+        { label: 'Warehouse B1', value: "B1" },
+        { label: 'Warehouse C1', value: "C1" },
+        { label: 'Warehouse C2', value: "C2" }
     ];
     btnGDN: boolean = false;
     btnPO: boolean = false;
@@ -105,6 +105,7 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
                 headerCheckboxSelection: true,
                 headerCheckboxSelectionFilteredOnly: true
             },
+            { headerName: this.l('Warehouse'), headerTooltip: this.l('Warehouse'), field: 'warehouse', flex: 1, pinned: true },
             { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'partNo', flex: 1 },
             { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', flex: 1 },
             { headerName: this.l('Carfamily Code'), headerTooltip: this.l('Cfc'), field: 'model', flex: 1 },
@@ -149,9 +150,9 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
             //     headerName: this.l('Working Date'), headerTooltip: this.l('Working Date'), field: 'workingDate', flex: 1,
             //     valueGetter: (params) => this.pipe.transform(params.data?.workingDate, 'dd/MM/yyyy')
             // },
-            { headerName: this.l('Invoice Delivery'), headerTooltip: this.l('Invoice Delivery'), field: 'invoiceNoOut', flex: 1 },
+            { headerName: this.l('Invoice Delivery'), headerTooltip: this.l('Invoice Delivery'), field: 'invoiceNoOut', flex: 1 }
             //{ headerName: this.l('Material Id'), headerTooltip: this.l('Material Id'), field: 'materialId', flex: 1 }
-            { headerName: this.l('Warehouse'), headerTooltip: this.l('Warehouse'), field: 'warehouse', flex: 1 }
+            
         ];
 
         this.frameworkComponents = {
@@ -226,7 +227,7 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
 
     clearTextSearch() {
         this.partNo = '';
-        this.warehouse = '';
+        this.warehouse = 'A1';
         this.model = '';
         this.supplierNo = '';
         this.requestDateFrom = '';
@@ -350,7 +351,7 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
 
         for (var i = 0; i < count; i++) {
             result.push({
-                partNo: 'Grand Total',
+                warehouse: 'Grand Total',
                 qty: sumQty,
                 actualQty: sumActualQty,
                 orderQty: sumOrderQty,
@@ -415,11 +416,15 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
     }
 
     addGoodsDeliveryNote(): void {
-        this.addGdnStock.show(this.listPartId);
+        this.addGdnStock.show(this.listPartId, this.warehouse);
     }
 
     editOrderQty(): void {
         this.editModal.show(this.saveSelectedRow)
+    }
+
+    onChangeWarehouse(){
+        this.searchDatas();
     }
 }
 

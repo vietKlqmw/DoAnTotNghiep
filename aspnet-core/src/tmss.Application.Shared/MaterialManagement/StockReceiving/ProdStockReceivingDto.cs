@@ -35,6 +35,21 @@ namespace tmss.MaterialManagement.StockReceiving
         public virtual int? GrandOrderQty { get; set; }
         public virtual int? GrandOrderedQty { get; set; }
         public virtual int? GrandRemainQty { get; set; }
+
+        //for delivery
+        public virtual string BaseUnitOfMeasure { get; set; }
+        public virtual string Location { get; set; }
+
+        public virtual string KeyRow
+        {
+            get { return string.Format("{0}_{1}", PartNo, PartName); }
+            set { }
+        }
+        public virtual int? ActualDeliveryQty
+        {
+            get { return OrderQty; }
+            set { }
+        }
     }
 
     public class GetProdStockReceivingInput : PagedAndSortedResultRequestDto

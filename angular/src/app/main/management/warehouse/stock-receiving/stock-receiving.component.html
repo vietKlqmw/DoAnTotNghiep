@@ -9,7 +9,7 @@
                                 <input [(ngModel)]="partNo" name="partNo" class="form-control m-input"
                                     [placeholder]="l('Part No')" type="text" (keyup.enter)="searchDatas()">
                                 <tmss-combobox [items]="listWarehouse" name="warehouse"
-                                    [(ngModel)]="warehouse" (keyup.enter)="searchDatas()"></tmss-combobox>
+                                    [(ngModel)]="warehouse" (ngModelChange)="searchDatas()"></tmss-combobox>
                             </div>
                         </div>
                         <div class="col-md-customize">

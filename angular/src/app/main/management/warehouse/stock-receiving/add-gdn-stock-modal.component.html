@@ -15,23 +15,19 @@
                     <fieldset class="fieldset-border ui-g-12 pl-0 pr-0  mt-2" style="height: auto;">
                         <div class="ui-g-12 ph-0">
                             <div class="ui-g-12 ui-md-4">
-                                <tmss-text-input [text]="'Goods Delivery Note No'" [(ngModel)]="_goodsDelivery"
+                                <tmss-text-input [text]="'Goods Delivery Note'" [(ngModel)]="_goodsDelivery"
                                     name='goodsDelivery' [isReadonly]="true"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-4">
                                 <div class="input-group">
                                     <span class="input-group-text left-text">Delivery Date</span>
                                     <input type='text' class="form-control tmss-form-control" name='deliveryDate'
-						                #datepicker='bsDatepicker' [(ngModel)]='_deliveryDate' bsDatepicker
-                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
-                                    <span class="input-group-text right-text">
-                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
-                                    </span>
+						                [(ngModel)]='_deliveryDate' readonly>
                                 </div>
                             </div>
                             <div class="ui-g-12 ui-md-4">
-                                <tmss-combobox [items]="list" name="warehouse" [text]="'Warehouse'"
-                                    [(ngModel)]="_warehouse"></tmss-combobox>
+                                <tmss-text-input [text]="'Warehouse'" [(ngModel)]="_warehouse"
+                                    name='warehouse' [isReadonly]="true"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-4" style="display: flex;">
                                 <label>Export By: </label>

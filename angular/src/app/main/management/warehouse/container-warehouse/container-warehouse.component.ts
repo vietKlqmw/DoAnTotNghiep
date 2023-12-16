@@ -63,11 +63,12 @@ export class ContainerWarehouseComponent extends AppComponentBase implements OnI
         { key: 'C', value: "CANCEL" }
     ];
     listWarehouse = [
-        { label: 'A1', value: "A1" },
-        { label: 'A2', value: "A2" },
-        { label: 'B1', value: "B1" },
-        { label: 'C1', value: "C1" },
-        { label: 'C2', value: "C2" }
+        { label: 'Select Warehouse', value: "" },
+        { label: 'Warehouse A1', value: "A1" },
+        { label: 'Warehouse A2', value: "A2" },
+        { label: 'Warehouse B1', value: "B1" },
+        { label: 'Warehouse C1', value: "C1" },
+        { label: 'Warehouse C2', value: "C2" }
     ];
     _selectrow;
 
