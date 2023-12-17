@@ -32,6 +32,9 @@ namespace tmss.MaterialManagement.Shipment
         public virtual int? IsEmptyShipment { get; set; }
 
         public virtual string Forwarder { get; set; }
+
+        //new
+        public virtual string ListCont { get; set; }
     }
 
     public class GetProdShipmentInput : PagedAndSortedResultRequestDto

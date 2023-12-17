@@ -628,61 +628,64 @@ AS
        AND (@p_ShipmentDate IS NULL OR a.ShipmentDate = @p_ShipmentDate)
        AND a.IsDeleted = 0
   ORDER BY a.Status , a.ShipmentDate DESC 
-------------------------------------------------Add:
-CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_ADD
-(
-    @p_ShipmentNo NVARCHAR(20),
-    @p_SupplierNo NVARCHAR(10),
-    @p_FromPort NVARCHAR(50),
-    @p_ToPort NVARCHAR(50),
-    @p_Buyer NVARCHAR(50),
-    @p_Forwarder NVARCHAR(10),
-    @p_Etd DATE,
-    @p_Eta DATE,
-    @p_OceanVesselName NVARCHAR(30),
-    @p_ShipmentDate DATE,
-    @p_UserId BIGINT
-)
-AS
-BEGIN
-    INSERT INTO ProdShipment (CreationTime, CreatorUserId, IsDeleted, 
-    ShipmentNo, SupplierNo, FromPort, ToPort, Status, Buyer, Forwarder, Etd, Eta, OceanVesselName, ShipmentDate)
-                      VALUES (GETDATE(), @p_UserId, 0, 
-    UPPER(@p_ShipmentNo), @p_SupplierNo, @p_FromPort, @p_ToPort, 'NEW', @p_Buyer, @p_Forwarder, @p_Etd, @p_Eta, @p_OceanVesselName, @p_ShipmentDate);
-END
 ------------------------------------------------Edit:
 CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_EDIT
 (
     @p_ShipmentId INT,
-    @p_Buyer NVARCHAR(50), 
+    @p_ShipmentNo NVARCHAR(20),
+    @p_SupplierNo NVARCHAR(10),
     @p_FromPort NVARCHAR(50),
     @p_ToPort NVARCHAR(50),
-    @p_ShipmentDate DATE,
+    @p_Forwarder NVARCHAR(10),
     @p_Etd DATE,
     @p_Eta DATE,
     @p_OceanVesselName NVARCHAR(30),
+    @p_ShipmentDate DATE,
     @p_Status NVARCHAR(50),
-    @p_Forwarder NVARCHAR(10),
+    @p_ListCont NVARCHAR(MAX),
+    @p_UnListCont NVARCHAR(MAX),
     @p_UserId BIGINT
 )
 AS
 BEGIN
-    UPDATE ProdShipment 
-       SET LastModificationTime = GETDATE(), 
-           LastModifierUserId = @p_UserId, 
-           Buyer = @p_Buyer, 
-           FromPort = @p_FromPort, 
-           ToPort = @p_ToPort, 
-           ShipmentDate = @p_ShipmentDate, 
-           Etd = @p_Etd, 
-           Eta = @p_Eta,
-           OceanVesselName = @p_OceanVesselName,
-           Status = @p_Status,
-           Forwarder = @p_Forwarder
-     WHERE Id = @p_ShipmentId;
+    IF @p_ShipmentId IS NOT NULL
+    BEGIN
+        UPDATE ProdShipment 
+           SET LastModificationTime = GETDATE(), 
+               LastModifierUserId = @p_UserId, 
+               FromPort = @p_FromPort, 
+               ToPort = @p_ToPort, 
+               ShipmentDate = @p_ShipmentDate, 
+               Etd = @p_Etd, 
+               Eta = @p_Eta,
+               OceanVesselName = @p_OceanVesselName,
+               Status = @p_Status
+         WHERE Id = @p_ShipmentId;
+    END
+    ELSE
+    BEGIN
+        INSERT INTO ProdShipment (CreationTime, CreatorUserId, IsDeleted, 
+                                  ShipmentNo, SupplierNo, FromPort, ToPort, Status, 
+                                  Forwarder, Etd, Eta, OceanVesselName, ShipmentDate)
+                          VALUES (GETDATE(), @p_UserId, 0, 
+                                  @p_ShipmentNo, @p_SupplierNo, @p_FromPort, @p_ToPort, @p_Status, 
+                                  @p_Forwarder, @p_Etd, @p_Eta, @p_OceanVesselName, @p_ShipmentDate);
+
+        UPDATE ProdContainerIntransit
+           SET LastModificationTime = GETDATE(), 
+               LastModifierUserId = @p_UserId,
+               ShipmentId = @p_ShipmentId,
+               ShippingDate = @p_ShipmentDate
+         WHERE Id IN (SELECT item FROM dbo.fnSplit(@p_ListCont, ','))
+    END
 
     IF @p_Status = 'ORDERED'
+    BEGIN
+        IF @p_ShipmentId IS NULL 
         BEGIN
+            SET @p_ShipmentId = (SELECT Id FROM ProdShipment WHERE ShipmentNo = @p_ShipmentNo);
+        END
+
         DECLARE @p_BillofladingNo NVARCHAR(20) = 'BOL/' + FORMAT(GETDATE(), 'yyMMddHHmmss');
         IF EXISTS (SELECT 1 FROM ProdBillOfLading WHERE BillofladingNo = @p_BillofladingNo)
         BEGIN
@@ -695,47 +698,6 @@ BEGIN
         DECLARE @BillId INT = (SELECT Id FROM ProdBillOfLading WHERE BillofladingNo = @p_BillofladingNo);
         INSERT INTO ProdInvoice (CreationTime, CreatorUserId, IsDeleted, InvoiceNo, BillId, Status, Forwarder)
             SELECT GETDATE(), @p_UserId, 0, @InvoiceNo, @BillId, 'NEW', @p_Forwarder
-              FROM ProdShipment 
-             WHERE Id = @p_ShipmentId
-
-        INSERT INTO ProdInvoiceDetails 
-                    (CreationTime, CreatorUserId, IsDeleted, 
-                     PartNo, ContainerNo, InvoiceNo, SupplierNo, UsageQty, PartName, CarfamilyCode, Currency)
-            SELECT GETDATE(), @p_UserId, 0, mpl.PartNo, pci.ContainerNo, @InvoiceNo, pci.SupplierNo, pci.UsageQty, mpl.PartName, mpl.CarfamilyCode, 'VND'
-              FROM ProdContainerIntransit pci
-         LEFT JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
-             WHERE pci.Id IN (SELECT Id FROM ProdContainerIntransit WHERE ShipmentId = @p_ShipmentId)
-    END
-END
-------------------------------------------------UpdateStatus:
-CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_UPDATE_STATUS
-(
-    @p_ShipmentId INT,
-    @p_Status NVARCHAR(50),
-    @p_UserId BIGINT
-)
-AS
-BEGIN
-    UPDATE ProdShipment 
-       SET LastModificationTime = GETDATE(), 
-           LastModifierUserId = @p_UserId, 
-           Status = @p_Status
-     WHERE Id = @p_ShipmentId;
-
-    IF @p_Status = 'ORDERED'
-        BEGIN
-        DECLARE @p_BillofladingNo NVARCHAR(20) = 'BOL/' + FORMAT(GETDATE(), 'yyMMddHHmmss');
-        IF EXISTS (SELECT 1 FROM ProdBillOfLading WHERE BillofladingNo = @p_BillofladingNo)
-        BEGIN
-            UPDATE ProdBillOfLading SET IsDeleted = 1 WHERE BillofladingNo = @p_BillofladingNo
-        END
-        INSERT INTO ProdBillOfLading (CreationTime, CreatorUserId, IsDeleted, BillofladingNo, ShipmentId, StatusCode)
-                              VALUES (GETDATE(), @p_UserId, 0, @p_BillofladingNo, @p_ShipmentId, 'NEW');
-
-        DECLARE @InvoiceNo NVARCHAR(20) = 'INVSH' + FORMAT(GETDATE(), 'yyMMddHHmmss'); 
-        DECLARE @BillId INT = (SELECT Id FROM ProdBillOfLading WHERE BillofladingNo = @p_BillofladingNo);
-        INSERT INTO ProdInvoice (CreationTime, CreatorUserId, IsDeleted, InvoiceNo, BillId, Status, Forwarder)
-            SELECT GETDATE(), @p_UserId, 0, @InvoiceNo, @BillId, 'NEW', Forwarder
               FROM ProdShipment 
              WHERE Id = @p_ShipmentId
 
@@ -766,6 +728,21 @@ BEGIN
            a.Etd, a.Eta, a.Ata, a.OceanVesselName, a.Atd, a.Status
       FROM ProdShipment a
      WHERE a.Id = @p_Id
+END
+
+------------------------------------------------listcont:
+CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_CONTAINER_FOR_SHIPMENT
+    @p_SupplierNo NVARCHAR(10)
+AS
+BEGIN
+    SELECT a.Id, a.ContainerNo, mpl.CarfamilyCode, a.UsageQty, mpl.PartNo, mpl.PartName
+      FROM ProdContainerIntransit a
+ LEFT JOIN MasterPartList mpl ON a.PartListId = mpl.Id
+     WHERE a.SupplierNo = @p_SupplierNo
+       AND a.Status = 'NEW'
+		   AND a.ShipmentId IS NULL
+       AND a.IsDeleted = 0
+	ORDER BY a.ShippingDate DESC, a.PortDate DESC
 END
 ------------------------------------------------BillOfLading------------------------------------------------
 ------------------------------------------------Search:
@@ -1838,7 +1815,7 @@ INNER JOIN ProdStockReceiving psr ON psr.Id = piso.ListStockId
        AND (@p_Status IS NULL OR piso.Status LIKE CONCAT('%', @p_Status, '%'))
        AND (@p_Warehouse IS NULL OR psr.Warehouse = @p_Warehouse)
        AND piso.IsDeleted = 0
-  ORDER BY piso.InvoiceDate DESC
+  ORDER BY psr.Warehouse, piso.InvoiceNoOut
 END
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (

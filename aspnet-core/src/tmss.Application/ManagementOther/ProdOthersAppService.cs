@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using tmss.Master.Material;
+using tmss.MaterialManagement.ContainerIntransit;
 using tmss.MaterialManagement.Invoice;
 using tmss.MaterialManagement.StockReceiving;
 
@@ -91,6 +92,18 @@ namespace tmss.ManagementOther
             IEnumerable<ListShipmentNewOrPendingDto> result = await _dapperRepo.QueryAsync<ListShipmentNewOrPendingDto>(_sql, new
             {
                 p_Id = Id
+            });
+
+            return result.ToList();
+        }
+
+        public async Task<List<ProdContainerIntransitDto>> GetListContainerForShipment(string SupplierNo)
+        {
+            string _sql = "Exec INV_PROD_GET_LIST_CONTAINER_FOR_SHIPMENT @p_SupplierNo";
+
+            IEnumerable<ProdContainerIntransitDto> result = await _dapperRepo.QueryAsync<ProdContainerIntransitDto>(_sql, new
+            {
+                p_SupplierNo = SupplierNo
             });
 
             return result.ToList();

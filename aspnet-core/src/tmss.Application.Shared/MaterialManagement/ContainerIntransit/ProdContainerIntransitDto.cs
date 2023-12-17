@@ -18,6 +18,7 @@ namespace tmss.MaterialManagement.ContainerIntransit
         public virtual string PartNo { get; set; }
         public virtual string ShipmentNo { get; set; }
         public virtual string CarfamilyCode { get; set; }
+        public virtual string PartName { get; set; }
     }
 
     public class GetProdContainerIntransitInput : PagedAndSortedResultRequestDto

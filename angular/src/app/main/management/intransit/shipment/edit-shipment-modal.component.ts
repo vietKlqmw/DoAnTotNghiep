@@ -7,6 +7,9 @@ import { BsDatepickerDirective } from "ngx-bootstrap/datepicker";
 import * as moment from 'moment';
 import { ShipmentComponent } from "./shipment.component";
 import { formatDate } from "@angular/common";
+import { FrameworkComponent, GridParams, PaginationParamsModel } from "@app/shared/common/models/base.model";
+import { AgCellButtonRendererComponent } from "@app/shared/common/grid/ag-cell-button-renderer/ag-cell-button-renderer.component";
+import { DataFormatService } from "@app/shared/common/services/data-format.service";
 
 @Component({
     selector: 'editModal',
@@ -20,6 +23,21 @@ export class EditShipmentModalComponent extends AppComponentBase {
 
     rowData: ProdShipmentDto = new ProdShipmentDto();
     saving = false;
+    rowSelection = 'multiple';
+    data: any[] = [];
+    viewColDefs: any;
+    paginationParams: PaginationParamsModel = {
+        pageNum: 1,
+        pageSize: 1000000000,
+        totalCount: 0,
+        skipCount: 0,
+        sorting: '',
+        totalPage: 1,
+    };
+    frameworkComponents: FrameworkComponent;
+    dataParams: GridParams | undefined;
+    selectedRow: ProdShipmentDto = new ProdShipmentDto();
+    saveSelectedRow: ProdShipmentDto = new ProdShipmentDto();
 
     isEdit: boolean = false;
     header: string = '';
@@ -35,14 +53,53 @@ export class EditShipmentModalComponent extends AppComponentBase {
         { value: 'ORDERED', label: "ORDERED" }
     ];
     isOrder: boolean = false;
+    listCont = '';
+
+    defaultColDef = {
+        resizable: true,
+        sortable: true,
+        floatingFilterComponentParams: { suppressFilterButton: true },
+        filter: true,
+        floatingFilter: true,
+        suppressHorizontalScroll: true,
+        textFormatter: function (r: any) {
+            if (r == null) return null;
+            return r.toLowerCase();
+        },
+        tooltip: (params) => params.value,
+    };
 
     constructor(
         private injector: Injector,
         private _service: ProdShipmentServiceProxy,
         private _other: ProdOthersServiceProxy,
-        private _component: ShipmentComponent
+        private _component: ShipmentComponent,
+        private _fm: DataFormatService
     ) {
         super(injector);
+
+        this.viewColDefs = [
+            {
+                headerName: "", headerTooltip: "", field: "checked", width: 30, pinned: true,
+                headerClass: ["align-checkbox-header"],
+                cellClass: ["check-box-center"],
+                checkboxSelection: true,
+                headerCheckboxSelection: true,
+                headerCheckboxSelectionFilteredOnly: true
+            },
+            { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', flex: 1 },
+            { headerName: this.l('Cfc'), headerTooltip: this.l('cfc'), field: 'carfamilyCode', flex: 1 },
+            { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'partNo', flex: 1 },
+            { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', width: 310 },
+            {
+                headerName: this.l('Qty'), headerTooltip: this.l('Qty'), field: 'usageQty', width: 90, type: 'rightAligned',
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.usageQty)
+            }
+        ];
+
+        this.frameworkComponents = {
+            agCellButtonComponent: AgCellButtonRendererComponent
+        };
     }
 
     ngOnInit() {
@@ -67,9 +124,6 @@ export class EditShipmentModalComponent extends AppComponentBase {
         const dateValue3 = this.rowData.eta ? new Date(this.rowData.eta?.toString()) : undefined;
         this.datepicker3?.bsValueChange.emit(dateValue3);
 
-        // if(this.rowData.status == 'ORDERED') this.isOrder = true;
-        // else this.isOrder = false;
-
         this.listForwarder = [{ label: '', value: '' }];
         this._forwarder = '';
         this._other.getListForwarder(this.rowData.supplierNo).subscribe(result => {
@@ -79,7 +133,12 @@ export class EditShipmentModalComponent extends AppComponentBase {
             })
         });
 
-        if(type != 'Edit') this.rowData.shipmentNo = 'S' + formatDate(new Date(), 'HH', 'en-US') + 'H' + formatDate(new Date(), 'mm', 'en-US') + 'I' + formatDate(new Date(), 'ss', 'en-US') + 'P';
+        this._other.getListContainerForShipment(this.rowData.supplierNo)
+            .subscribe(result => {
+                this.data = result ?? [];
+            })
+
+        if (type != 'Edit') this.rowData.shipmentNo = 'S' + formatDate(new Date(), 'HH', 'en-US') + 'H' + formatDate(new Date(), 'mm', 'en-US') + 'I' + formatDate(new Date(), 'ss', 'en-US') + 'P' + formatDate(new Date(), 'yyMMdd', 'en-US');
 
         setTimeout(() => {
             this.modal.show();
@@ -91,17 +150,10 @@ export class EditShipmentModalComponent extends AppComponentBase {
         this.rowData.etd = this._etd ? moment(this._etd) : undefined;
         this.rowData.eta = this._eta ? moment(this._eta) : undefined;
         this.rowData.forwarder = this._forwarder;
+        this.rowData.listCont = this.listCont;        
 
-        if (this.rowData.shipmentNo == null) {
-            this.notify.warn('ShipmentNo is Required!');
-            return;
-        }
         if (this.rowData.supplierNo == null) {
             this.notify.warn('SupplierNo is Required!');
-            return;
-        }
-        if (this.rowData.buyer == null) {
-            this.notify.warn('Buyer is Required!');
             return;
         }
         if (this.rowData.fromPort == null) {
@@ -116,35 +168,53 @@ export class EditShipmentModalComponent extends AppComponentBase {
             this.notify.warn('ShipmentDate is Required!');
             return;
         }
-
-        if (!this.isEdit) {
-            this.saving = true;
-            this._service.addShipment(this.rowData)
-                .pipe(finalize(() => { this.saving = false; }))
-                .subscribe(() => {
-                    this.notify.info(this.l('SavedSuccessfully'));
-                    this._component.searchDatas();
-                    this.close();
-                });
-        } else {
-            this.saving = true;
-            this._service.editShipment(this.rowData)
-                .pipe(finalize(() => { this.saving = false; }))
-                .subscribe(() => {
-                    this.notify.info(this.l('SavedSuccessfully'));
-                    this._component.searchDatas();
-                    this.close();
-                });
+        if (this.rowData.status == 'ORDERED' && this.listCont.length == 0) {
+            this.notify.warn('Shipment does not contain any containers!');
+            return;
         }
+
+        this.saving = true;
+        this._service.editShipment(this.rowData)
+            .pipe(finalize(() => { this.saving = false; }))
+            .subscribe(() => {
+                this.notify.info(this.l('SavedSuccessfully'));
+                this._component.searchDatas();
+                this.close();
+            });
     }
 
     changeSupplier(event) {
+        this._other.getListContainerForShipment(event)
+            .subscribe(result => {
+                this.data = result ?? [];
+            })
+
         this.listForwarder = [{ label: '', value: '' }];
         this._other.getListForwarder(event).subscribe(result => {
             result.forEach(e => {
                 this.listForwarder.push({ label: e.name, value: e.code })
             })
         });
+    }
+
+    callBackDataGrid(params: GridParams) {
+        this.dataParams = params;
+    }
+
+    onChangeRowSelection(params: { api: { getSelectedRows: () => ProdShipmentDto[] } }) {
+        this.saveSelectedRow = params.api.getSelectedRows()[0] ?? new ProdShipmentDto();
+        this.selectedRow = Object.assign({}, this.saveSelectedRow);
+
+        this.listCont = '';
+        if (params.api.getSelectedRows().length) {
+            for (var i = 0; i < params.api.getSelectedRows().length; i++) {
+                if (i != params.api.getSelectedRows().length - 1) {
+                    this.listCont += params.api.getSelectedRows()[i].id + ',';
+                } else {
+                    this.listCont += params.api.getSelectedRows()[i].id;
+                }
+            }
+        }
     }
 
     close(): void {

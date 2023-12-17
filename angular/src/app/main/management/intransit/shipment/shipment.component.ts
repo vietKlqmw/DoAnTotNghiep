@@ -12,7 +12,6 @@ import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 import { EditShipmentModalComponent } from './edit-shipment-modal.component';
-import { AgDropdownRendererComponent } from '@app/shared/common/grid/ag-dropdown-renderer/ag-dropdown-renderer.component';
 
 @Component({
     selector: 'app-shipment',
@@ -88,14 +87,8 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
         this.colDefs = [
             { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 60, pinned: true },
             { headerName: this.l('Shipment No'), headerTooltip: this.l('Shipment No'), field: 'shipmentNo', flex: 1, pinned: true },
-            {
-                headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1, pinned: true,
-                cellRenderer: 'agSelectRendererComponent',
-                list: this.listStatus,
-                cellClass: ['RendererCombobox', 'text-center']
-            },
+            {headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1, pinned: true},
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
-            { headerName: this.l('Buyer'), headerTooltip: this.l('Buyer'), field: 'buyer', flex: 1 },
             { headerName: this.l('From Port'), headerTooltip: this.l('From Port'), field: 'fromPort', flex: 1 },
             { headerName: this.l('To Port'), headerTooltip: this.l('To Port'), field: 'toPort', flex: 1 },
             { headerName: this.l('Forwarder'), headerTooltip: this.l('Forwarder'), field: 'forwarder', flex: 1 },
@@ -111,10 +104,6 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
                 headerName: this.l('ETA'), headerTooltip: this.l('Eta'), field: 'eta', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.eta, 'dd/MM/yyyy')
             },
-            {
-                headerName: this.l('ATA'), headerTooltip: this.l('Ata'), field: 'ata', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.ata, 'dd/MM/yyyy')
-            },
             { headerName: this.l('Oceanvessel Name'), headerTooltip: this.l('Oceanvessel Name'), field: 'oceanvesselName', flex: 1 },
             {
                 headerName: this.l('ATD'), headerTooltip: this.l('Atd'), field: 'atd', flex: 1,
@@ -123,8 +112,7 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
         ];
 
         this.frameworkComponents = {
-            agCellButtonComponent: AgCellButtonRendererComponent,
-            agSelectRendererComponent: AgDropdownRendererComponent
+            agCellButtonComponent: AgCellButtonRendererComponent
         };
     }
 
@@ -257,7 +245,7 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
     }
 
     deleteShipment() {
-        this.message.confirm(this.l('Bạn có chắc chắn muốn xóa?'), 'Delete Shipment', (isConfirmed) => {
+        this.message.confirm(this.l('Are you sure Delete?'), 'Delete Shipment', (isConfirmed) => {
             if (isConfirmed) {
                 this._service.deleteShipment(this._selectrow).subscribe(() => {
                     this.callBackDataGrid(this.dataParams!);
@@ -285,21 +273,6 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
             this.rowClickData = params.data;
             let _row = document.querySelector<HTMLElement>("body .ag-theme-alpine .ag-center-cols-container div[row-id='" + params.node.rowIndex + "'].ag-row.ag-row-level-0.ag-row-position-absolute");
             if (_row) _row.classList.add("setcolor_background_rowclick");
-        }
-    }
-
-    onCellValueChanged(ev) {
-        if(ev.data.isEmptyShipment == 1){
-            this.message.warn('Shipment does not contain any containers!');
-            this.callBackDataGrid(this.dataParams!);
-        }else if(ev.oldValue == 'ORDERED (ON SEA)' || ev.oldValue == 'ORDERED (ON PORT)'){
-            this.message.warn('Shipment Already Ordered and On the Sea, Can not change Status to NEW or PENDING');
-            this.callBackDataGrid(this.dataParams!);
-        }else{
-            this._service.updateStatusShipment(ev.data.id.toString(), ev.newValue).subscribe(() => {
-                this.callBackDataGrid(this.dataParams!);
-                this.notify.success(this.l('SavedSuccessfully'));
-            });
         }
     }
 }

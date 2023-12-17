@@ -1,6 +1,6 @@
 <div appBsModal #editModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="editModal" aria-hidden="true" [config]="{backdrop: 'static'}">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog prod-small-modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
@@ -14,35 +14,11 @@
                 <div class="ui-g-12 p-0">
                     <fieldset class="fieldset-border ui-g-12 pl-0 pr-0  mt-2" style="height: auto;">
                         <div class="ui-g-12 ph-0">
-                            <div class="ui-g-12 ui-md-6">
+                            <div class="ui-g-12 ui-md-4">
                                 <tmss-text-input [text]="'Shipment No'" [(ngModel)]="rowData.shipmentNo"
                                     name='shipmentNo' [isReadonly]="true"></tmss-text-input>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
-                                <tmss-text-input [text]="'Supplier No'" [(ngModel)]="rowData.supplierNo"
-                                    name='supplierNo' [isReadonly]="isEdit"></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="!isEdit">
-                                <p-dropdown [options]="listSupplier" [filter]="true" [virtualScroll]="true" [itemSize]="30" placeholder="Select Supplier"
-                                    name="supplierNo" [(ngModel)]="rowData.supplierNo" [style]="{'width':'100%'}"
-                                    (ngModelChange)="changeSupplier($event)"></p-dropdown>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Buyer'" [(ngModel)]="rowData.buyer"
-                                    name='buyer'></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-combobox [items]="listForwarder" name="forwarder" [text]="'Forwarder'" [(ngModel)]="_forwarder"></tmss-combobox>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'From Port'" [(ngModel)]="rowData.fromPort"
-                                    name='fromPort'></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'To Port'" [(ngModel)]="rowData.toPort"
-                                    name='toPort'></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
+                            <div class="ui-g-12 ui-md-4">
                                 <div class="input-group">
                                     <span class="input-group-text left-text">Shipment Date</span>
                                     <input type='text' class="form-control tmss-form-control" name='shipmentDate'
@@ -53,7 +29,31 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="ui-g-12 ui-md-6">
+                            <div class="ui-g-12 ui-md-4" *ngIf="!isEdit">
+                                <p-dropdown [options]="listSupplier" [filter]="true" [virtualScroll]="true" [itemSize]="30" placeholder="Select Supplier"
+                                    name="supplierNo" [(ngModel)]="rowData.supplierNo" [style]="{'width':'100%'}"
+                                    (ngModelChange)="changeSupplier($event)"></p-dropdown>
+                            </div>
+                            <div class="ui-g-12 ui-md-4" *ngIf="isEdit">
+                                <tmss-text-input [text]="'Supplier No'" [(ngModel)]="rowData.supplierNo"
+                                    name='supplierNo' [isReadonly]="true"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-4" *ngIf="!isEdit">
+                                <tmss-combobox [items]="listForwarder" name="forwarder" [text]="'Forwarder'" [(ngModel)]="_forwarder"></tmss-combobox>
+                            </div>
+                            <div class="ui-g-12 ui-md-4" *ngIf="isEdit">
+                                <tmss-text-input [text]="'Forwarder'" [(ngModel)]="rowData.forwarder"
+                                    name='forwarder' [isReadonly]="true"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-4">
+                                <tmss-text-input [text]="'From Port'" [(ngModel)]="rowData.fromPort"
+                                    name='fromPort'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-4">
+                                <tmss-text-input [text]="'To Port'" [(ngModel)]="rowData.toPort"
+                                    name='toPort'></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-4">
                                 <div class="input-group">
                                     <span class="input-group-text left-text">ETD</span>
                                     <input type='text' class="form-control tmss-form-control" name='etd'
@@ -64,7 +64,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="ui-g-12 ui-md-6">
+                            <div class="ui-g-12 ui-md-4">
                                 <div class="input-group">
                                     <span class="input-group-text left-text">ETA</span>
                                     <input type='text' class="form-control tmss-form-control" name='eta'
@@ -75,38 +75,28 @@
                                     </span>
                                 </div>
                             </div>
-                            <!-- <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
-                                <div class="input-group">
-                                    <span class="input-group-text left-text">ATA</span>
-                                    <input type='text' class="form-control tmss-form-control" name='ata'
-						                #datepicker4='bsDatepicker' [(ngModel)]='_ata' bsDatepicker
-                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
-                                    <span class="input-group-text right-text">
-                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker4.toggle()"></i>
-                                    </span>
-                                </div>
-                            </div> -->
-                            <div class="ui-g-12 ui-md-6">
+                            <div class="ui-g-12 ui-md-4">
                                 <tmss-text-input [text]="'Ocean Vessel Name'" [(ngModel)]="rowData.oceanVesselName"
                                     name='oceanVesselName'></tmss-text-input>
                             </div>
-                            <!-- <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
-                                <div class="input-group">
-                                    <span class="input-group-text left-text">ATD</span>
-                                    <input type='text' class="form-control tmss-form-control" name='atd'
-						                #datepicker5='bsDatepicker' [(ngModel)]='_atd' bsDatepicker
-                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
-                                    <span class="input-group-text right-text">
-                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker5.toggle()"></i>
-                                    </span>
-                                </div>
-                            </div> -->
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
-                                <tmss-combobox *ngIf="!isOrder" [items]="list" name="status" [text]="'Status'" [(ngModel)]="rowData.status"></tmss-combobox>
-                                <!-- <tmss-text-input *ngIf="isOrder" [text]="'Status'" [(ngModel)]="rowData.status" name='status' [isReadonly]="true"></tmss-text-input> -->
+                            <div class="ui-g-12 ui-md-4">
+                                <tmss-combobox [items]="list" name="status" [text]="'Status'" [(ngModel)]="rowData.status"></tmss-combobox>
                             </div>
                         </div>
                     </fieldset>
+                </div>
+                <div class="ui-g-12 p-0" *ngIf="!isEdit">
+                    <grid-table
+                        [columnDefs]="viewColDefs"
+                        [paginationParams]="paginationParams"
+                        [showPagination]="false"
+                        [rowData]="data"
+                        [defaultColDef]="defaultColDef"
+                        (callBackEvent)="callBackDataGrid($event)"
+                        [frameworkComponents]="frameworkComponents"
+                        (onChangeSelection)="onChangeRowSelection($event)"
+                        >
+                    </grid-table>
                 </div>
             </div>
             <div class="modal-footer">
