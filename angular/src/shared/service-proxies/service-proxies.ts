@@ -10776,6 +10776,173 @@ export class ProdContainerIntransitServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param fileName (optional) 
+     * @param body (optional) 
+     * @return Success
+     */
+    importProdContainerIntransitFromExcel(fileName: string | null | undefined, body: string | null | undefined): Observable<ProdContainerIntransitImportDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdContainerIntransit/ImportProdContainerIntransitFromExcel?";
+        if (fileName !== undefined)
+            url_ += "fileName=" + encodeURIComponent("" + fileName) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processImportProdContainerIntransitFromExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processImportProdContainerIntransitFromExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<ProdContainerIntransitImportDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ProdContainerIntransitImportDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processImportProdContainerIntransitFromExcel(response: HttpResponseBase): Observable<ProdContainerIntransitImportDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ProdContainerIntransitImportDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ProdContainerIntransitImportDto[]>(<any>null);
+    }
+
+    /**
+     * @param v_Guid (optional) 
+     * @return Success
+     */
+    mergeData(v_Guid: string | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdContainerIntransit/MergeData?";
+        if (v_Guid !== undefined)
+            url_ += "v_Guid=" + encodeURIComponent("" + v_Guid) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMergeData(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMergeData(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processMergeData(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param v_Guid (optional) 
+     * @return Success
+     */
+    getListErrorImport(v_Guid: string | null | undefined): Observable<PagedResultDtoOfProdContainerIntransitImportDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProdContainerIntransit/GetListErrorImport?";
+        if (v_Guid !== undefined)
+            url_ += "v_Guid=" + encodeURIComponent("" + v_Guid) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListErrorImport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListErrorImport(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfProdContainerIntransitImportDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfProdContainerIntransitImportDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetListErrorImport(response: HttpResponseBase): Observable<PagedResultDtoOfProdContainerIntransitImportDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfProdContainerIntransitImportDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfProdContainerIntransitImportDto>(<any>null);
+    }
 }
 
 @Injectable()
@@ -29526,6 +29693,7 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
     usageQty!: number | undefined;
     partNo!: string | undefined;
     shipmentNo!: string | undefined;
+    carfamilyCode!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdContainerIntransitDto) {
@@ -29551,6 +29719,7 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
             this.usageQty = _data["usageQty"];
             this.partNo = _data["partNo"];
             this.shipmentNo = _data["shipmentNo"];
+            this.carfamilyCode = _data["carfamilyCode"];
             this.id = _data["id"];
         }
     }
@@ -29576,6 +29745,7 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
         data["usageQty"] = this.usageQty;
         data["partNo"] = this.partNo;
         data["shipmentNo"] = this.shipmentNo;
+        data["carfamilyCode"] = this.carfamilyCode;
         data["id"] = this.id;
         return data; 
     }
@@ -29594,6 +29764,7 @@ export interface IProdContainerIntransitDto {
     usageQty: number | undefined;
     partNo: string | undefined;
     shipmentNo: string | undefined;
+    carfamilyCode: string | undefined;
     id: number | undefined;
 }
 
@@ -29643,6 +29814,118 @@ export class PagedResultDtoOfProdContainerIntransitDto implements IPagedResultDt
 export interface IPagedResultDtoOfProdContainerIntransitDto {
     totalCount: number;
     items: ProdContainerIntransitDto[] | undefined;
+}
+
+export class ProdContainerIntransitImportDto implements IProdContainerIntransitImportDto {
+    guid!: string | undefined;
+    containerNo!: string | undefined;
+    supplierNo!: string | undefined;
+    usageQty!: number | undefined;
+    partNo!: string | undefined;
+    carfamilyCode!: string | undefined;
+    errorDescription!: string | undefined;
+    creatorUserId!: number | undefined;
+
+    constructor(data?: IProdContainerIntransitImportDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.guid = _data["guid"];
+            this.containerNo = _data["containerNo"];
+            this.supplierNo = _data["supplierNo"];
+            this.usageQty = _data["usageQty"];
+            this.partNo = _data["partNo"];
+            this.carfamilyCode = _data["carfamilyCode"];
+            this.errorDescription = _data["errorDescription"];
+            this.creatorUserId = _data["creatorUserId"];
+        }
+    }
+
+    static fromJS(data: any): ProdContainerIntransitImportDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProdContainerIntransitImportDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["guid"] = this.guid;
+        data["containerNo"] = this.containerNo;
+        data["supplierNo"] = this.supplierNo;
+        data["usageQty"] = this.usageQty;
+        data["partNo"] = this.partNo;
+        data["carfamilyCode"] = this.carfamilyCode;
+        data["errorDescription"] = this.errorDescription;
+        data["creatorUserId"] = this.creatorUserId;
+        return data; 
+    }
+}
+
+export interface IProdContainerIntransitImportDto {
+    guid: string | undefined;
+    containerNo: string | undefined;
+    supplierNo: string | undefined;
+    usageQty: number | undefined;
+    partNo: string | undefined;
+    carfamilyCode: string | undefined;
+    errorDescription: string | undefined;
+    creatorUserId: number | undefined;
+}
+
+export class PagedResultDtoOfProdContainerIntransitImportDto implements IPagedResultDtoOfProdContainerIntransitImportDto {
+    totalCount!: number;
+    items!: ProdContainerIntransitImportDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfProdContainerIntransitImportDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ProdContainerIntransitImportDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfProdContainerIntransitImportDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfProdContainerIntransitImportDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfProdContainerIntransitImportDto {
+    totalCount: number;
+    items: ProdContainerIntransitImportDto[] | undefined;
 }
 
 export class ProdContainerInvoiceDto implements IProdContainerInvoiceDto {

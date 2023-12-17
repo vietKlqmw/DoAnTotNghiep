@@ -1312,7 +1312,7 @@ CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_SEARCH
 )
 AS
 BEGIN
-    SELECT a.Id, a.ContainerNo, a.SupplierNo, a.ShippingDate, a.PortDate, 
+    SELECT a.Id, a.ContainerNo, a.SupplierNo, a.ShippingDate, a.PortDate, mpl.CarfamilyCode,
            a.ShipmentId, a.Status, a.UsageQty, a.PartListId, ps.ShipmentNo, mpl.PartNo
       FROM ProdContainerIntransit a
  LEFT JOIN ProdShipment ps ON a.ShipmentId = ps.Id
@@ -1355,6 +1355,90 @@ BEGIN
                SupplierNo = @p_SupplierNo
          WHERE Id = @p_ContId;
     END
+END
+------------------------------------------------import:
+CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_MERGE
+    @Guid VARCHAR(MAX)
+AS
+BEGIN
+    BEGIN TRY 
+	  BEGIN TRANSACTION
+
+	  -- FOR BUG CHECK-
+		INSERT INTO ProcessLog(CATEGORY, PROCESS_NAME, ERROR_MESSAGE, CREATED_BY, CREATED_DATE)
+		VALUES ('INV_PROD_CONTAINER_INTRANSIT_MERGE', 'INV_PROD_CONTAINER_INTRANSIT_MERGE Import', 'START:', 'SYSTEM', GETDATE());
+
+		UPDATE t1 
+		   SET ErrorDescription = CONCAT(ISNULL(ErrorDescription, ''), N' Đã tồn tại ContainerNo: ', t1.ContainerNo, N' trong kho! ')
+		  FROM ProdContainerIntransit_T t1
+		 WHERE Guid = @Guid 
+       AND EXISTS (SELECT 1 FROM ProdContainerIntransit t2 WHERE t2.ContainerNo = t1.ContainerNo AND t2.IsDeleted = 1);
+
+    UPDATE t1 
+		   SET ErrorDescription = CONCAT(ISNULL(ErrorDescription, ''), N' Không tồn tại PartNo - Cfc - SupplierNo: ', t1.PartNo, '-',t1.CarfamilyCode, '-', t1.SupplierNo)
+		  FROM ProdContainerIntransit_T t1
+		 WHERE Guid = @Guid 
+       AND NOT EXISTS (SELECT 1 FROM MasterPartList t2 WHERE t2.PartNo = t1.PartNo AND t2.SupplierNo = t1.SupplierNo AND t2.CarfamilyCode = t1.CarfamilyCode);
+
+		IF NOT EXISTS (SELECT 1 FROM ProdContainerIntransit_T WHERE Guid = @Guid AND ErrorDescription != '')
+		BEGIN			
+	  	
+		MERGE INTO ProdContainerIntransit AS P
+		USING (
+        	SELECT t1.ContainerNo, t2.Id PartListId, t1.SupplierNo, t1.CreatorUserId, t1.UsageQty, t1.CarfamilyCode
+        		FROM ProdContainerIntransit_T t1
+      INNER JOIN MasterPartList t2 ON t1.PartNo = t2.PartNo AND t1.SupplierNo = t2.SupplierNo AND t2.CarfamilyCode = t1.CarfamilyCode
+        	 WHERE Guid = @Guid 
+		  ) AS DT ON (P.ContainerNo = DT.ContainerNo)				    
+		WHEN MATCHED THEN
+		    UPDATE SET 
+					P.PartListId = DT.PartListId,
+					P.SupplierNo = DT.SupplierNo,
+          P.UsageQty = DT.UsageQty,
+          P.LastModifierUserId = DT.CreatorUserId,
+					P.LastModificationTime = GETDATE()
+		WHEN NOT MATCHED THEN
+		    INSERT (ContainerNo, SupplierNo, PartListId, UsageQty, Status, 
+                CreationTime, CreatorUserId, IsDeleted)				
+		  	VALUES (DT.ContainerNo, DT.SupplierNo, DT.PartListId, DT.UsageQty, 'NEW', 
+                GETDATE(), CreatorUserId, 0);
+		END
+
+		-- FOR BUG CHECK-
+		INSERT INTO ProcessLog (CATEGORY, PROCESS_NAME, ERROR_MESSAGE, CREATED_BY, CREATED_DATE)
+		VALUES ('INV_PROD_CONTAINER_INTRANSIT_MERGE', 'INV_PROD_CONTAINER_INTRANSIT_MERGE Import', 'END:', 'SYSTEM', GETDATE());
+
+		COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+		DECLARE @ErrorSeverity INT;
+		DECLARE @ErrorState INT;
+		DECLARE @ErrorMessage NVARCHAR(4000);
+  
+		SELECT @ErrorMessage = ERROR_MESSAGE(),
+			     @ErrorSeverity = ERROR_SEVERITY(), 
+			     @ErrorState = ERROR_STATE();
+
+		ROLLBACK TRANSACTION		
+		INSERT INTO ProCess_Log ([CATEGORY], [PROCESS_NAME], [ERROR_MESSAGE], [CREATED_DATE])
+		VALUES ('INV_PROD_CONTAINER_INTRANSIT_MERGE', 'INV_PROD_CONTAINER_INTRANSIT_MERGE Import', 'ERROR :' + @ErrorMessage + 
+															'//ERRORSTATE :' +  CAST(@ErrorState AS VARCHAR) + 
+															'//ERRORPROCEDURE :' + ERROR_PROCEDURE() + 
+															'//ERRORSEVERITY :' + CAST(@ErrorSeverity AS VARCHAR) + 
+															'//ERRORNUMBER :' + CAST(ERROR_NUMBER() AS VARCHAR) + 
+															'//ERRORLINE :' + CAST(ERROR_LINE() AS VARCHAR), GETDATE());
+	   
+	  RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+	  END CATCH;
+END
+------------------------------------------------ListErrorImport:
+CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_GET_LIST_ERROR_IMPORT
+    @Guid NVARCHAR(MAX)
+AS 
+BEGIN
+    SELECT DISTINCT Guid, ContainerNo, SupplierNo, PartNo, UsageQty, CarfamilyCode, ErrorDescription
+      FROM ProdContainerIntransit_T
+     WHERE Guid = @Guid AND ISNULL(ErrorDescription, '') <> '' 
 END
 ------------------------------------------------GetListToWarehouse:
 CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_CONTAINER_TO_WAREHOUSE

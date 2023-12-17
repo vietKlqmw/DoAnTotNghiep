@@ -17,6 +17,7 @@ namespace tmss.MaterialManagement.ContainerIntransit
         public virtual int? UsageQty { get; set; }
         public virtual string PartNo { get; set; }
         public virtual string ShipmentNo { get; set; }
+        public virtual string CarfamilyCode { get; set; }
     }
 
     public class GetProdContainerIntransitInput : PagedAndSortedResultRequestDto
@@ -37,5 +38,18 @@ namespace tmss.MaterialManagement.ContainerIntransit
         public virtual DateTime? PortDateFrom { get; set; }
         public virtual DateTime? PortDateTo { get; set; }
 
+    }
+
+
+    public class ProdContainerIntransitImportDto
+    {
+        public virtual string Guid { get; set; }
+        public virtual string ContainerNo { get; set; }
+        public virtual string SupplierNo { get; set; }
+        public virtual int? UsageQty { get; set; }
+        public virtual string PartNo { get; set; }
+        public virtual string CarfamilyCode { get; set; }
+        public virtual string ErrorDescription { get; set; }
+        public virtual long? CreatorUserId { get; set; }
     }
 }

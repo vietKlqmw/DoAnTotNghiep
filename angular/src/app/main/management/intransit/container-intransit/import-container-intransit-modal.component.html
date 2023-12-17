@@ -1,0 +1,51 @@
+<div appBsModal #importExcelModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="importExcelModal"
+    aria-hidden="true" [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog tmss-modal-lg">
+        <div class="modal-content">
+            <div
+                class="modal-header content-modal import-title  ui-md-12 d-flex justify-content-start align-items-center">
+                <h2>{{ l('Import Container At Warehouse') }}</h2>
+            </div>
+            <div class="modal-body justify-content-center align-items-center flex-column">
+                <div class="input-upload-file col-9 d-flex justify-content-center align-items-center flex-column">
+                    <i class="fa fa-cloud-upload"></i>
+                    <p>Drag & drop file here <br>or <b>Browser</b></p>
+                    <span>Support format: Xlsx</span>
+                    <input #imgInput type="file" (change)="onUpload($event)"
+                        accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        class="input-file">
+                </div>
+                <div class="input-file-name col-9 d-flex justify-content-center align-items-center" [ngClass]="vissbleInputName">
+                    <img src="/assets/common/images/Icon/file-icons_microsoft-excel.png" alt="">
+                    <div class="file-name-progress col-10 d-flex justify-content-center align-items-center flex-column">
+                        <div class="change-file-name col-12">
+                            <span id="viewNameFileImport"></span>
+                        </div>
+                        <div class="progress progress-bar" [ngClass]="vissibleProgess">
+                            <div class="bar-progress"></div>
+                        </div>
+                    </div>
+
+                </div>
+                <button class="btn-upload-file col-9"  (click)="upload()" [disabled]="disabled">
+                    <i class="fa fa-upload mr-1"></i>
+                    <span>{{ l('Upload') }}</span>
+                </button>
+            </div>
+            <div class="modal-footer d-flex justify-content-end align-items-center">
+                <button type="button" class="btn btn-success d-flex justify-content-end align-items-center"
+                    onclick="document.getElementById('linkSellDealerPlanExample').click()">
+                    <img src="/assets/common/images/Icon/file-icons_microsoft-excel2.png" alt="">
+                    <span>{{ l('Download Template') }}</span>
+                    <a id="linkSellDealerPlanExample" hidden
+                        href="/assets/sampleFiles/ContainerIntransit_Template.xlsx"></a>
+                </button>
+                <button (click)="close()" type="button" class="btn btn-outline-danger">
+                    <i class="fa tmss-fa fa-times mr-1"></i>
+                    <span>{{ l('Cancel') }}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<listErrorImport #listErrorImport></listErrorImport>

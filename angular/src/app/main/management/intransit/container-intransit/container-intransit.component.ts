@@ -13,6 +13,7 @@ import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { EditContainerIntransitModalComponent } from './edit-container-intransit-modal.component';
+import { ImportContainerIntransitComponent } from './import-container-intransit-modal.component';
 
 @Component({
     selector: 'app-container-intransit',
@@ -23,6 +24,7 @@ import { EditContainerIntransitModalComponent } from './edit-container-intransit
 })
 export class ContainerIntransitComponent extends AppComponentBase implements OnInit {
     @ViewChild('editModal', { static: true }) editModal: EditContainerIntransitModalComponent;
+    @ViewChild('importExcelModal', { static: true }) importExcelModal: ImportContainerIntransitComponent;
 
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
@@ -96,7 +98,8 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.usageQty)
             },
             { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
-            { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'partNo', flex: 1 }
+            { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'partNo', flex: 1 },
+            { headerName: this.l('Cfc'), headerTooltip: this.l('cfc'), field: 'carfamilyCode', flex: 1 }
         ];
 
         this.frameworkComponents = {
@@ -226,6 +229,10 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
     editContIntransit(e): void {
         if (e == 'Edit') this.editModal.show(e, this.saveSelectedRow);
         else this.editModal.show(e);
+    }
+
+    importFromExcel(){
+        this.importExcelModal.show();
     }
 }
 

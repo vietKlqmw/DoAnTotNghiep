@@ -1,5 +1,6 @@
 ﻿using tmss.Master.Material;
 using tmss.Master.PartList;
+using tmss.MaterialManagement.ContainerIntransit;
 using tmss.MaterialManagement.ContainerWH;
 
 namespace tmss.Web.Controllers
@@ -9,11 +10,13 @@ namespace tmss.Web.Controllers
         public ProductController(
             IMasterMaterialAppService importMasterMaterial,
             IProdContainerRentalWHPlanAppService importContainerWarehouse,
-            IMasterPartListAppService importMasterPartList
+            IMasterPartListAppService importMasterPartList,
+            IProdContainerIntransitAppService importContainerIntransit
         ) : base(
             importMasterMaterial,
             importContainerWarehouse,
-            importMasterPartList
+            importMasterPartList,
+            importContainerIntransit
         )
         { }
     }
