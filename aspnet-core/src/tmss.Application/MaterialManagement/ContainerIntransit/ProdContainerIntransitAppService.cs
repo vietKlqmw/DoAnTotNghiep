@@ -23,14 +23,15 @@ namespace tmss.MaterialManagement.ContainerIntransit
         }
         public async Task<PagedResultDto<ProdContainerIntransitDto>> GetProdContainerIntransitSearch(GetProdContainerIntransitInput input)
         {
-            string _sql = "Exec INV_PROD_CONTAINER_INTRANSIT_SEARCH @p_ContainerNo, @p_ShippingDate, @p_PortDate, @p_TransactionDate";
+            string _sql = "Exec INV_PROD_CONTAINER_INTRANSIT_SEARCH @p_ContainerNo, @p_ShippingDateFrom, @p_ShippingDateTo, @p_PortDateFrom, @p_PortDateTo";
 
             IEnumerable<ProdContainerIntransitDto> result = await _dapperRepo.QueryAsync<ProdContainerIntransitDto>(_sql, new
             {
                 p_ContainerNo = input.ContainerNo,
-                p_ShippingDate = input.ShippingDate,
-                p_PortDate = input.PortDate,
-                p_TransactionDate = input.TransactionDate
+                p_ShippingDateFrom = input.ShippingDateFrom,
+                p_ShippingDateTo = input.ShippingDateTo,
+                p_PortDateFrom = input.PortDateFrom,
+                p_PortDateTo = input.PortDateTo
             });
 
             var listResult = result.ToList();
@@ -44,14 +45,15 @@ namespace tmss.MaterialManagement.ContainerIntransit
 
         public async Task<FileDto> GetProdContainerIntransitToExcel(GetProdContainerIntransitExportInput input)
         {
-            string _sql = "Exec INV_PROD_CONTAINER_INTRANSIT_SEARCH @p_ContainerNo, @p_ShippingDate, @p_PortDate, @p_TransactionDate";
+            string _sql = "Exec INV_PROD_CONTAINER_INTRANSIT_SEARCH @p_ContainerNo, @p_ShippingDateFrom, @p_ShippingDateTo, @p_PortDateFrom, @p_PortDateTo";
 
             IEnumerable<ProdContainerIntransitDto> result = await _dapperRepo.QueryAsync<ProdContainerIntransitDto>(_sql, new
             {
                 p_ContainerNo = input.ContainerNo,
-                p_ShippingDate = input.ShippingDate,
-                p_PortDate = input.PortDate,
-                p_TransactionDate = input.TransactionDate
+                p_ShippingDateFrom = input.ShippingDateFrom,
+                p_ShippingDateTo = input.ShippingDateTo,
+                p_PortDateFrom = input.PortDateFrom,
+                p_PortDateTo = input.PortDateTo
             });
 
             var exportToExcel = result.ToList();
@@ -70,17 +72,12 @@ namespace tmss.MaterialManagement.ContainerIntransit
 
         public async Task EditContainerIntransit(ProdContainerIntransitDto input)
         {
-            string _sql = "Exec INV_PROD_CONTAINER_INTRANSIT_EDIT @p_ContId, @p_ContainerNo, @p_SupplierNo, @p_ShippingDate, " +
-                "@p_PortDate, @p_TransactionDate, @p_ShipmentId, @p_PartListId, @p_UsageQty, @p_UserId";
+            string _sql = "Exec INV_PROD_CONTAINER_INTRANSIT_EDIT @p_ContId, @p_ContainerNo, @p_SupplierNo, @p_PartListId, @p_UsageQty, @p_UserId";
             await _dapperRepo.ExecuteAsync(_sql, new
             {
                 p_ContId = input.Id,
                 p_ContainerNo = input.ContainerNo,
                 p_SupplierNo = input.SupplierNo,
-                p_ShippingDate = input.ShippingDate,
-                p_PortDate = input.PortDate,
-                p_TransactionDate = input.TransactionDate,
-                p_ShipmentId = input.ShipmentId,
                 p_PartListId = input.PartListId,
                 p_UsageQty = input.UsageQty,
                 p_UserId = AbpSession.UserId

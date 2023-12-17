@@ -57,6 +57,7 @@ namespace tmss.ManagementOther
         public virtual int? PartId { get; set; }
         public virtual string PartNo { get; set; }
         public virtual string PartName { get; set; }
+        public virtual string SupplierNo { get; set; }
     }
 
     public class GetListWarehouse

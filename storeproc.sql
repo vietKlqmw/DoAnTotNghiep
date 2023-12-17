@@ -1305,32 +1305,32 @@ GO
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_SEARCH
 (
 	  @p_ContainerNo NVARCHAR(20),
-	  @p_ShippingDate DATE,
-	  @p_PortDate DATE,
-	  @p_TransactionDate DATE
+	  @p_ShippingDateFrom DATE,
+    @p_ShippingDateTo DATE,
+	  @p_PortDateFrom DATE,
+    @p_PortDateTo DATE
 )
 AS
+BEGIN
     SELECT a.Id, a.ContainerNo, a.SupplierNo, a.ShippingDate, a.PortDate, 
-           a.TransactionDate, a.ShipmentId, a.Status, a.UsageQty, a.PartListId
+           a.ShipmentId, a.Status, a.UsageQty, a.PartListId, ps.ShipmentNo, mpl.PartNo
       FROM ProdContainerIntransit a
+ LEFT JOIN ProdShipment ps ON a.ShipmentId = ps.Id
+ LEFT JOIN MasterPartList mpl ON a.PartListId = mpl.Id
      WHERE (ISNULL(@p_ContainerNo, '') = '' OR a.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
-    	 AND (ISNULL(@p_ShippingDate, '') = '' OR a.ShippingDate = @p_ShippingDate)
-    	 AND (ISNULL(@p_PortDate, '') = '' OR a.PortDate = @p_PortDate)
-    	 AND (ISNULL(@p_TransactionDate, '') = '' OR a.TransactionDate = @p_TransactionDate)
+    	 AND (ISNULL(@p_ShippingDateFrom, '') = '' OR a.ShippingDate >= @p_ShippingDateFrom)
+       AND (ISNULL(@p_ShippingDateTo, '') = '' OR a.ShippingDate <= @p_ShippingDateTo)
+    	 AND (ISNULL(@p_PortDateFrom, '') = '' OR a.PortDate >= @p_PortDateFrom)
+       AND (ISNULL(@p_PortDateTo, '') = '' OR a.PortDate <= @p_PortDateTo)
 		   AND a.IsDeleted = 0
-	ORDER BY a.ShippingDate DESC
-
-GO
+	ORDER BY a.ShippingDate DESC, a.PortDate DESC
+END
 ------------------------------------------------Edit:
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_EDIT
 (
     @p_ContId INT,
     @p_ContainerNo NVARCHAR(20),
     @p_SupplierNo NVARCHAR(10),
-	  @p_ShippingDate DATE,
-	  @p_PortDate DATE,
-	  @p_TransactionDate DATE,
-    @p_ShipmentId INT, 
     @p_PartListId INT,
     @p_UsageQty INT,
     @p_UserId BIGINT
@@ -1341,25 +1341,18 @@ BEGIN
     BEGIN
         INSERT INTO ProdContainerIntransit 
                     (CreationTime, CreatorUserId, IsDeleted, 
-                    ContainerNo, SupplierNo, ShippingDate, PortDate, 
-                    TransactionDate, ShipmentId, Status,
-                    UsageQty, PartListId)
+                    ContainerNo, SupplierNo, Status, UsageQty, PartListId)
              VALUES (GETDATE(), @p_UserId, 0, 
-                    UPPER(@p_ContainerNo), @p_SupplierNo, @p_ShippingDate, @p_PortDate, 
-                    @p_TransactionDate, @p_ShipmentId, 'NEW',
-                    @p_UsageQty, @p_PartListId);
+                    @p_ContainerNo, @p_SupplierNo, 'NEW', @p_UsageQty, @p_PartListId);
     END
     ELSE
     BEGIN
         UPDATE ProdContainerIntransit 
            SET LastModificationTime = GETDATE(), 
                LastModifierUserId = @p_UserId, 
-               ShippingDate = @p_ShippingDate, 
-               PortDate = @p_PortDate, 
-               TransactionDate = @p_TransactionDate,
-               ShipmentId = @p_ShipmentId,
                UsageQty = @p_UsageQty,
-               PartListId = @p_PartListId
+               PartListId = @p_PartListId,
+               SupplierNo = @p_SupplierNo
          WHERE Id = @p_ContId;
     END
 END

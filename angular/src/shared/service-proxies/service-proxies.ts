@@ -10532,24 +10532,27 @@ export class ProdContainerIntransitServiceProxy {
 
     /**
      * @param containerNo (optional) 
-     * @param shippingDate (optional) 
-     * @param portDate (optional) 
-     * @param transactionDate (optional) 
+     * @param shippingDateFrom (optional) 
+     * @param shippingDateTo (optional) 
+     * @param portDateFrom (optional) 
+     * @param portDateTo (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getProdContainerIntransitSearch(containerNo: string | null | undefined, shippingDate: moment.Moment | null | undefined, portDate: moment.Moment | null | undefined, transactionDate: moment.Moment | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdContainerIntransitDto> {
+    getProdContainerIntransitSearch(containerNo: string | null | undefined, shippingDateFrom: moment.Moment | null | undefined, shippingDateTo: moment.Moment | null | undefined, portDateFrom: moment.Moment | null | undefined, portDateTo: moment.Moment | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdContainerIntransitDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdContainerIntransit/GetProdContainerIntransitSearch?";
         if (containerNo !== undefined)
             url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
-        if (shippingDate !== undefined)
-            url_ += "ShippingDate=" + encodeURIComponent(shippingDate ? "" + shippingDate.toJSON() : "") + "&"; 
-        if (portDate !== undefined)
-            url_ += "PortDate=" + encodeURIComponent(portDate ? "" + portDate.toJSON() : "") + "&"; 
-        if (transactionDate !== undefined)
-            url_ += "TransactionDate=" + encodeURIComponent(transactionDate ? "" + transactionDate.toJSON() : "") + "&"; 
+        if (shippingDateFrom !== undefined)
+            url_ += "ShippingDateFrom=" + encodeURIComponent(shippingDateFrom ? "" + shippingDateFrom.toJSON() : "") + "&"; 
+        if (shippingDateTo !== undefined)
+            url_ += "ShippingDateTo=" + encodeURIComponent(shippingDateTo ? "" + shippingDateTo.toJSON() : "") + "&"; 
+        if (portDateFrom !== undefined)
+            url_ += "PortDateFrom=" + encodeURIComponent(portDateFrom ? "" + portDateFrom.toJSON() : "") + "&"; 
+        if (portDateTo !== undefined)
+            url_ += "PortDateTo=" + encodeURIComponent(portDateTo ? "" + portDateTo.toJSON() : "") + "&"; 
         if (sorting !== undefined)
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         if (skipCount === null)
@@ -10608,21 +10611,24 @@ export class ProdContainerIntransitServiceProxy {
 
     /**
      * @param containerNo (optional) 
-     * @param shippingDate (optional) 
-     * @param portDate (optional) 
-     * @param transactionDate (optional) 
+     * @param shippingDateFrom (optional) 
+     * @param shippingDateTo (optional) 
+     * @param portDateFrom (optional) 
+     * @param portDateTo (optional) 
      * @return Success
      */
-    getProdContainerIntransitToExcel(containerNo: string | null | undefined, shippingDate: moment.Moment | null | undefined, portDate: moment.Moment | null | undefined, transactionDate: moment.Moment | null | undefined): Observable<FileDto> {
+    getProdContainerIntransitToExcel(containerNo: string | null | undefined, shippingDateFrom: moment.Moment | null | undefined, shippingDateTo: moment.Moment | null | undefined, portDateFrom: moment.Moment | null | undefined, portDateTo: moment.Moment | null | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdContainerIntransit/GetProdContainerIntransitToExcel?";
         if (containerNo !== undefined)
             url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
-        if (shippingDate !== undefined)
-            url_ += "ShippingDate=" + encodeURIComponent(shippingDate ? "" + shippingDate.toJSON() : "") + "&"; 
-        if (portDate !== undefined)
-            url_ += "PortDate=" + encodeURIComponent(portDate ? "" + portDate.toJSON() : "") + "&"; 
-        if (transactionDate !== undefined)
-            url_ += "TransactionDate=" + encodeURIComponent(transactionDate ? "" + transactionDate.toJSON() : "") + "&"; 
+        if (shippingDateFrom !== undefined)
+            url_ += "ShippingDateFrom=" + encodeURIComponent(shippingDateFrom ? "" + shippingDateFrom.toJSON() : "") + "&"; 
+        if (shippingDateTo !== undefined)
+            url_ += "ShippingDateTo=" + encodeURIComponent(shippingDateTo ? "" + shippingDateTo.toJSON() : "") + "&"; 
+        if (portDateFrom !== undefined)
+            url_ += "PortDateFrom=" + encodeURIComponent(portDateFrom ? "" + portDateFrom.toJSON() : "") + "&"; 
+        if (portDateTo !== undefined)
+            url_ += "PortDateTo=" + encodeURIComponent(portDateTo ? "" + portDateTo.toJSON() : "") + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -29518,6 +29524,8 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
     shipmentId!: number | undefined;
     partListId!: number | undefined;
     usageQty!: number | undefined;
+    partNo!: string | undefined;
+    shipmentNo!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdContainerIntransitDto) {
@@ -29541,6 +29549,8 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
             this.shipmentId = _data["shipmentId"];
             this.partListId = _data["partListId"];
             this.usageQty = _data["usageQty"];
+            this.partNo = _data["partNo"];
+            this.shipmentNo = _data["shipmentNo"];
             this.id = _data["id"];
         }
     }
@@ -29564,6 +29574,8 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
         data["shipmentId"] = this.shipmentId;
         data["partListId"] = this.partListId;
         data["usageQty"] = this.usageQty;
+        data["partNo"] = this.partNo;
+        data["shipmentNo"] = this.shipmentNo;
         data["id"] = this.id;
         return data; 
     }
@@ -29580,6 +29592,8 @@ export interface IProdContainerIntransitDto {
     shipmentId: number | undefined;
     partListId: number | undefined;
     usageQty: number | undefined;
+    partNo: string | undefined;
+    shipmentNo: string | undefined;
     id: number | undefined;
 }
 
@@ -31239,6 +31253,7 @@ export class GetListPartDto implements IGetListPartDto {
     partId!: number | undefined;
     partNo!: string | undefined;
     partName!: string | undefined;
+    supplierNo!: string | undefined;
 
     constructor(data?: IGetListPartDto) {
         if (data) {
@@ -31254,6 +31269,7 @@ export class GetListPartDto implements IGetListPartDto {
             this.partId = _data["partId"];
             this.partNo = _data["partNo"];
             this.partName = _data["partName"];
+            this.supplierNo = _data["supplierNo"];
         }
     }
 
@@ -31269,6 +31285,7 @@ export class GetListPartDto implements IGetListPartDto {
         data["partId"] = this.partId;
         data["partNo"] = this.partNo;
         data["partName"] = this.partName;
+        data["supplierNo"] = this.supplierNo;
         return data; 
     }
 }
@@ -31277,6 +31294,7 @@ export interface IGetListPartDto {
     partId: number | undefined;
     partNo: string | undefined;
     partName: string | undefined;
+    supplierNo: string | undefined;
 }
 
 export class ProdStockReceivingDto implements IProdStockReceivingDto {

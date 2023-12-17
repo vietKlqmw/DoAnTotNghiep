@@ -98,7 +98,7 @@ namespace tmss.ManagementOther
 
         public async Task<List<GetListPartDto>> GetListPart()
         {
-            string _sql = "SELECT Id PartId, PartNo From MasterPartList WHERE IsDeleted = 0";
+            string _sql = "SELECT Id PartId, (CarfamilyCode + '/' + PartName) PartName, SupplierNo From MasterPartList WHERE IsDeleted = 0";
 
             IEnumerable<GetListPartDto> result = await _dapperRepo.QueryAsync<GetListPartDto>(_sql);
 

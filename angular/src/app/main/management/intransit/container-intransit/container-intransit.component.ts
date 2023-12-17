@@ -49,11 +49,12 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
     isLoading: boolean = false;
 
     containerNo: string = '';
-    shippingDate: any;
-    portDate: any;
-    transactionDate: any;
+    shippingDateFrom: any;
+    shippingDateTo: any;
+    portDateFrom: any;
+    portDateTo: any;
     _selectrow;
-    notDelete: boolean = false;
+    notDelete: boolean = true;
 
     defaultColDef = {
         resizable: true,
@@ -90,17 +91,12 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
                 headerName: this.l('Port Date'), headerTooltip: this.l('PortDate'), field: 'portDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.portDate, 'dd/MM/yyyy')
             },
-            // {
-            //     headerName: this.l('Transaction Date'), headerTooltip: this.l('TransactionDate'), field: 'transactionDate', flex: 1,
-            //     valueGetter: (params) => this.pipe.transform(params.data?.transactionDate, 'dd/MM/yyyy')
-            // },
             {
                 headerName: this.l('Qty'), headerTooltip: this.l('Qty'), field: 'usageQty', flex: 1, type: 'rightAligned',
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.usageQty)
             },
             { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
-            { headerName: this.l('Shipment Id'), headerTooltip: this.l('Shipment Id'), field: 'shipmentId', flex: 1 },
-            { headerName: this.l('Part List Id'), headerTooltip: this.l('Part List Id'), field: 'partListId', flex: 1 }
+            { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'partNo', flex: 1 }
         ];
 
         this.frameworkComponents = {
@@ -116,9 +112,10 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
         this.isLoading = true;
         this._service.getProdContainerIntransitSearch(
             this.containerNo,
-            this.shippingDate ? moment(this.shippingDate) : undefined,
-            this.portDate ? moment(this.portDate) : undefined,
-            this.transactionDate ? moment(this.transactionDate) : undefined,
+            this.shippingDateFrom ? moment(this.shippingDateFrom) : undefined,
+            this.shippingDateTo ? moment(this.shippingDateTo) : undefined,
+            this.portDateFrom ? moment(this.portDateFrom) : undefined,
+            this.portDateTo ? moment(this.portDateTo) : undefined,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -134,18 +131,20 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
 
     clearTextSearch() {
         this.containerNo = '';
-        this.shippingDate = '';
-        this.portDate = '';
-        this.transactionDate = '';
+        this.shippingDateFrom = '';
+        this.shippingDateTo = '';
+        this.portDateFrom = '';
+        this.portDateTo = '';
         this.searchDatas();
     }
 
     getDatas(paginationParams?: PaginationParamsModel) {
         return this._service.getProdContainerIntransitSearch(
             this.containerNo,
-            this.shippingDate ? moment(this.shippingDate) : undefined,
-            this.portDate ? moment(this.portDate) : undefined,
-            this.transactionDate ? moment(this.transactionDate) : undefined,
+            this.shippingDateFrom ? moment(this.shippingDateFrom) : undefined,
+            this.shippingDateTo ? moment(this.shippingDateTo) : undefined,
+            this.portDateFrom ? moment(this.portDateFrom) : undefined,
+            this.portDateTo ? moment(this.portDateTo) : undefined,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -199,9 +198,10 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
         this.isLoading = true;
         this._service.getProdContainerIntransitToExcel(
             this.containerNo,
-            this.shippingDate ? moment(this.shippingDate) : undefined,
-            this.portDate ? moment(this.portDate) : undefined,
-            this.transactionDate ? moment(this.transactionDate) : undefined)
+            this.shippingDateFrom ? moment(this.shippingDateFrom) : undefined,
+            this.shippingDateTo ? moment(this.shippingDateTo) : undefined,
+            this.portDateFrom ? moment(this.portDateFrom) : undefined,
+            this.portDateTo ? moment(this.portDateTo) : undefined)
             .pipe(finalize(() => this.isLoading = false))
             .subscribe(result => {
                 this._fileDownloadService.downloadTempFile(result);
@@ -210,9 +210,10 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
     }
 
     deleteContIntransit() {
-        this.message.confirm(this.l('Bạn có chắc chắn muốn xóa?'), 'Delete Shipment', (isConfirmed) => {
+        this.message.confirm(this.l('Are you sure Delete?'), 'Delete Shipment', (isConfirmed) => {
             if (isConfirmed) {
                 this._service.deleteContainerIntransit(this._selectrow).subscribe(() => {
+                    this.notDelete = true;
                     this.callBackDataGrid(this.dataParams!);
                     this.notify.success(this.l('SuccessfullyDeleted'));
                 }, error => {

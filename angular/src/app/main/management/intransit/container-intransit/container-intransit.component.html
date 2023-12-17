@@ -8,13 +8,17 @@
                             <div class="form-group">
                                 <input [(ngModel)]="containerNo" name="containerNo" class="form-control m-input"
                                     [placeholder]="l('Container No')" type="text" (keyup.enter)="searchDatas()">
+                                <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
+                                    class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
+                                <button class="btn btn-primary" (click)="clearTextSearch()">
+                                    <i class="fa fa-sync"></i></button>
                             </div>
                         </div>
                         <div class="col-md-customize">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type='text' class="form-control m-input" name='shippingDate' [placeholder]="l('Shipping Date')"
-                                        #datepicker='bsDatepicker' [(ngModel)]='shippingDate' bsDatepicker
+                                    <input type='text' class="form-control m-input" name='shippingDateFrom' [placeholder]="l('Shipping Date From')"
+                                        #datepicker='bsDatepicker' [(ngModel)]='shippingDateFrom' bsDatepicker
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
                                     <span class="input-group-text right-text">
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
@@ -25,8 +29,8 @@
                         <div class="col-md-customize">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type='text' class="form-control m-input" name='portDate' [placeholder]="l('Bill Date To')"
-                                        #datepicker2='bsDatepicker' [(ngModel)]='portDate' bsDatepicker
+                                    <input type='text' class="form-control m-input" name='shippingDateTo' [placeholder]="l('Shipping Date To')"
+                                        #datepicker2='bsDatepicker' [(ngModel)]='shippingDateTo' bsDatepicker
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
                                     <span class="input-group-text right-text">
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker2.toggle()"></i>
@@ -37,8 +41,8 @@
                         <div class="col-md-customize">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type='text' class="form-control m-input" name='transactionDate' [placeholder]="l('Transaction Date')"
-                                        #datepicker3='bsDatepicker' [(ngModel)]='transactionDate' bsDatepicker
+                                    <input type='text' class="form-control m-input" name='portDateFrom' [placeholder]="l('Port Date From')"
+                                        #datepicker3='bsDatepicker' [(ngModel)]='portDateFrom' bsDatepicker
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
                                     <span class="input-group-text right-text">
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker3.toggle()"></i>
@@ -48,10 +52,14 @@
                         </div>
                         <div class="col-md-customize">
                             <div class="form-group">
-                                <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
-                                    class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
-                                <button class="btn btn-primary" (click)="clearTextSearch()">
-                                    <i class="fa fa-sync"></i></button>
+                                <div class="input-group">
+                                    <input type='text' class="form-control m-input" name='portDateTo' [placeholder]="l('Port Date To')"
+                                        #datepicker4='bsDatepicker' [(ngModel)]='portDateTo' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker4.toggle()"></i>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
