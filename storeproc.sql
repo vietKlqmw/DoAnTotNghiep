@@ -1599,7 +1599,7 @@ FETCH NEXT FROM cursor_value INTO @p_ListStockId
          UPDATE ProdStockReceiving
             SET LastModificationTime = GETDATE(),
                 LastModifierUserId = @p_UserId,
-                OrderedQty = OrderedQty + @p_qty,
+                OrderedQty = ISNULL(OrderedQty, 0) + @p_qty,
                 OrderQty = 0,
                 RequestStatus = 'DELIVERED',
                 DeliveryDate = @p_InvoiceOutDate
