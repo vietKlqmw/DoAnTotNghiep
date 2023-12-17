@@ -1372,7 +1372,7 @@ BEGIN
 		   SET ErrorDescription = CONCAT(ISNULL(ErrorDescription, ''), N' Đã tồn tại ContainerNo: ', t1.ContainerNo, N' trong kho! ')
 		  FROM ProdContainerIntransit_T t1
 		 WHERE Guid = @Guid 
-       AND EXISTS (SELECT 1 FROM ProdContainerIntransit t2 WHERE t2.ContainerNo = t1.ContainerNo AND t2.IsDeleted = 1);
+       AND EXISTS (SELECT 1 FROM ProdContainerIntransit t2 WHERE t2.ContainerNo = t1.ContainerNo AND t2.Status = 'NEW');
 
     UPDATE t1 
 		   SET ErrorDescription = CONCAT(ISNULL(ErrorDescription, ''), N' Không tồn tại PartNo - Cfc - SupplierNo: ', t1.PartNo, '-',t1.CarfamilyCode, '-', t1.SupplierNo)
