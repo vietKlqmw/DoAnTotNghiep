@@ -643,7 +643,6 @@ CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_EDIT
     @p_ShipmentDate DATE,
     @p_Status NVARCHAR(50),
     @p_ListCont NVARCHAR(MAX),
-    @p_UnListCont NVARCHAR(MAX),
     @p_UserId BIGINT
 )
 AS

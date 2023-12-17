@@ -74,7 +74,7 @@ namespace tmss.MaterialManagement.Shipment
         public async Task EditShipment(ProdShipmentDto input)
         {
             string _sql = "Exec INV_PROD_SHIPMENT_EDIT @p_ShipmentId, @p_ShipmentNo, @p_SupplierNo, @p_FromPort, @p_ToPort, @p_Forwarder, " +
-                "@p_Etd, @p_Eta, @p_OceanVesselName, @p_ShipmentDate, @p_Status, @p_ListCont, @p_UnListCont, @p_UserId";
+                "@p_Etd, @p_Eta, @p_OceanVesselName, @p_ShipmentDate, @p_Status, @p_ListCont, @p_UserId";
             await _dapperRepo.ExecuteAsync(_sql, new
             {
                 p_ShipmentId = input.Id,
@@ -89,7 +89,6 @@ namespace tmss.MaterialManagement.Shipment
                 p_ShipmentDate = input.ShipmentDate,
                 p_Status = input.Status,
                 p_ListCont = input.ListCont,
-                p_UnListCont = input.UnListCont,
                 p_UserId = AbpSession.UserId
             });
 
