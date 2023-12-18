@@ -99,7 +99,8 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
             },
             { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
             { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'partNo', flex: 1 },
-            { headerName: this.l('Cfc'), headerTooltip: this.l('cfc'), field: 'carfamilyCode', flex: 1 }
+            { headerName: this.l('Cfc'), headerTooltip: this.l('cfc'), field: 'carfamilyCode', flex: 1 },
+            { headerName: this.l('Shipment No'), headerTooltip: this.l('Shipment No'), field: 'shipmentNo', flex: 1 }
         ];
 
         this.frameworkComponents = {

@@ -501,7 +501,10 @@ VALUES
 (GETDATE(), 1, 0, 'NYK', 'YLSV', 7),
 (GETDATE(), 1, 0, 'VMDC', 'VIMADECO', 7),
 (GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 10),
-(GETDATE(), 1, 0, 'NYK', 'YLSV', 10);
+(GETDATE(), 1, 0, 'NYK', 'YLSV', 10),
+(GETDATE(), 1, 0, 'NYK', 'YLSV', 1),
+(GETDATE(), 1, 0, 'NYK', 'YLSV', 9),
+(GETDATE(), 1, 0, 'NYK', 'YLSV', 12);
 ------------------------------------------------Search:
 CREATE OR ALTER PROCEDURE INV_MASTER_FORWARDER_SEARCH
 (
@@ -670,10 +673,12 @@ BEGIN
                                   @p_ShipmentNo, @p_SupplierNo, @p_FromPort, @p_ToPort, @p_Status, 
                                   @p_Forwarder, @p_Etd, @p_Eta, @p_OceanVesselName, @p_ShipmentDate);
 
+        DECLARE @ShipId BIGINT = (SELECT Id FROM ProdShipment WHERE ShipmentNo = @p_ShipmentNo);
+
         UPDATE ProdContainerIntransit
            SET LastModificationTime = GETDATE(), 
                LastModifierUserId = @p_UserId,
-               ShipmentId = @p_ShipmentId,
+               ShipmentId = @ShipId,
                ShippingDate = @p_ShipmentDate
          WHERE Id IN (SELECT item FROM dbo.fnSplit(@p_ListCont, ','))
     END
@@ -708,6 +713,20 @@ BEGIN
          LEFT JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
              WHERE pci.Id IN (SELECT Id FROM ProdContainerIntransit WHERE ShipmentId = @p_ShipmentId)
     END
+END
+------------------------------------------------Delete:
+CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_DELETE
+    @p_ShipmentId INT,
+    @p_UserId BIGINT
+AS
+BEGIN
+    UPDATE ProdShipment SET IsDeleted = 1 WHERE Id = @p_ShipmentId;
+    UPDATE ProdContainerIntransit
+       SET LastModificationTime = GETDATE(),
+           LastModifierUserId = @p_UserId,
+           ShipmentId = NULL,
+           ShippingDate = NULL
+     WHERE ShipmentId = @p_ShipmentId;
 END
 ------------------------------------------------GetListShipmentNewOrPending:
 CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_GET_LIST_NEW_OR_PENDING

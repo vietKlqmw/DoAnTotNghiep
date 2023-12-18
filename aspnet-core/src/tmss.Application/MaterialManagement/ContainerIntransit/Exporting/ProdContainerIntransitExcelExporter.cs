@@ -27,7 +27,8 @@ namespace tmss.MaterialManagement.ContainerIntransit.Exporting
                         ("Usage Qty"),
                         ("Status"),
                         ("Part No"),
-                        ("Cfc")
+                        ("Cfc"),
+                        ("Shipment No")
                     );
 
                     AddObjects(
@@ -40,10 +41,11 @@ namespace tmss.MaterialManagement.ContainerIntransit.Exporting
                         _ => _.UsageQty,
                         _ => _.Status,
                         _ => _.PartNo,
-                        _ => _.CarfamilyCode
+                        _ => _.CarfamilyCode,
+                        _ => _.ShipmentNo
                     );
 
-                    for (var i = 0; i < 9; i++)
+                    for (var i = 0; i < 10; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

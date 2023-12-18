@@ -64,10 +64,11 @@ namespace tmss.MaterialManagement.Shipment
 
         public async Task DeleteShipment(int? Id)
         {
-            string _sql = "UPDATE ProdShipment SET IsDeleted = 1 WHERE Id = @p_Id";
+            string _sql = "Exec INV_PROD_SHIPMENT_DELETE @p_ShipmentId, @p_UserId";
             await _dapperRepo.ExecuteAsync(_sql, new
             {
-                p_Id = Id
+                p_ShipmentId = Id,
+                p_UserId = AbpSession.UserId
             });
         }
 
