@@ -834,6 +834,31 @@ BEGIN
            Status = 'PENDING'
      WHERE Id = @p_ShipmentId
 END
+------------------------------------------------View:
+CREATE OR ALTER PROCEDURE INV_PROD_BILL_OF_LADING_VIEW
+    @p_BillId INT
+AS
+BEGIN
+    DECLARE @ListContNo NVARCHAR(MAX);
+    DECLARE @ListPartNo NVARCHAR(MAX);
+    DECLARE @ListPartName NVARCHAR(MAX);
+    DECLARE @ListCfc NVARCHAR(MAX);
+
+     SELECT @ListContNo = STRING_AGG(pci.ContainerNo, ';'),
+            @ListPartNo = STRING_AGG(mpl.PartNo, ';'),
+            @ListPartName = STRING_AGG(mpl.PartName, ';'),
+            @ListCfc = STRING_AGG(mpl.CarfamilyCode, ';') 
+       FROM ProdContainerIntransit pci
+  LEFT JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
+      WHERE pci.ShipmentId = (SELECT ShipmentId FROM ProdBillOfLading WHERE Id = @p_BillId )
+
+    SELECT pbol.Id, pbol.BillofladingNo, pbol.BillDate, pbol.StatusCode, 
+           ps.Forwarder, ps.SupplierNo, ps.FromPort, ps.ToPort,
+           @ListContNo ContainerNo, @ListPartNo PartNo, @ListPartName PartName, @ListCfc cfc
+      FROM ProdBillOfLading pbol
+INNER JOIN ProdShipment ps on pbol.ShipmentId = ps.Id
+     WHERE pbol.Id = @p_BillId
+END
 ------------------------------------------------Invoice------------------------------------------------
 CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_SEARCH 
 (

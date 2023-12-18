@@ -3,6 +3,7 @@ import { BillofladingComponent } from './billoflading.component';
 import { AppSharedModule } from '@app/shared/app-shared.module';
 import { BillofladingRoutingModule } from './billoflading-routing.module';
 import { EditBillOfLadingModalComponent } from './edit-billoflading-modal.component';
+import { ViewBillOfLadingModalComponent } from './view-billoflading-modal.component';
 
 @NgModule({
     imports: [
@@ -11,7 +12,8 @@ import { EditBillOfLadingModalComponent } from './edit-billoflading-modal.compon
     ],
     declarations: [
         BillofladingComponent,
-        EditBillOfLadingModalComponent
+        EditBillOfLadingModalComponent,
+        ViewBillOfLadingModalComponent
     ]
 })
 export class BillofladingModule { }

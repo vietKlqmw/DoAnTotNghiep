@@ -14,6 +14,9 @@ namespace tmss.MaterialManagement.BillOfLading
         public virtual string StatusCode { get; set; }
 
         public virtual string ShipmentNo { get; set; }
+
+        //for view 
+        public virtual string Forwarder { get; set; }
     }
 
     public class GetProdBillOfLadingInput : PagedAndSortedResultRequestDto
