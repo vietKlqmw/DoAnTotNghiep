@@ -68,5 +68,16 @@ namespace tmss.MaterialManagement.InvoiceStock
 
             return _excelExporter.ExportToFile(exportToExcel);
         }
+
+        public async Task UpdateStatusInvoiceStock(int? Id, string Status)
+        {
+            string _sql = "Exec INV_PROD_INVOICE_STOCK_UPDATE_STATUS @p_InvoiceStockId, @p_NewStatus, @p_UserId";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_InvoiceStockId = Id,
+                p_NewStatus = Status,
+                p_UserId = AbpSession.UserId
+            });
+        }
     }
 }

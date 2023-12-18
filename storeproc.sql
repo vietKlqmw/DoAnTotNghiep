@@ -1860,6 +1860,19 @@ INNER JOIN ProdStockReceiving psr ON psr.Id = piso.ListStockId
        AND piso.IsDeleted = 0
   ORDER BY psr.Warehouse, piso.InvoiceNoOut
 END
+------------------------------------------------updateStatus:
+CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_STOCK_UPDATE_STATUS
+    @p_InvoiceStockId INT,
+    @p_NewStatus NVARCHAR(50),
+    @p_UserId BIGINT
+AS
+BEGIN
+    UPDATE ProdInvoiceStockOut
+       SET LastModificationTime = GETDATE(),
+           LastModifierUserId = @p_UserId,
+           Status = @p_NewStatus
+     WHERE Id = @p_InvoiceStockId;
+END
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (
   ID BIGINT IDENTITY

@@ -12,6 +12,7 @@ import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
+import { AgDropdownRendererComponent } from '@app/shared/common/grid/ag-dropdown-renderer/ag-dropdown-renderer.component';
 
 @Component({
     selector: 'app-invoiceStockOut',
@@ -58,6 +59,12 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
         { label: 'Warehouse C2', value: "C2" }
     ];
     warehouse: string = '';
+    listStatus = [
+        { key: 'NEW', value: 'NEW' },
+        { key: 'NOT PAID (REQUESTED)', value: 'NOT PAID (REQUESTED)' },
+        { key: 'PENDING', value: 'PENDING' },
+        { key: 'PAID', value: 'PAID' }
+    ];
 
     defaultColDef = {
         resizable: true,
@@ -89,7 +96,12 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
                 headerName: this.l('Invoice Date'), headerTooltip: this.l('Invoice Date'), field: 'invoiceDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.invoiceDate, 'dd/MM/yyyy')
             },
-            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
+            { 
+                headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1,
+                cellRenderer: 'agSelectRendererComponent',
+                list: this.listStatus,
+                cellClass: ['RendererCombobox', 'text-center'] 
+            },
             { headerName: this.l('Cfc'), headerTooltip: this.l('Cfc'), field: 'listCfc', flex: 1 },
             { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'listPartNo', flex: 1 },
             { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'listPartName', flex: 1 },
@@ -106,6 +118,7 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
 
         this.frameworkComponents = {
             agCellButtonComponent: AgCellButtonRendererComponent,
+            agSelectRendererComponent: AgDropdownRendererComponent
         };
     }
 
@@ -267,6 +280,21 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
         var sum = 0;
         values.forEach(function (value) { sum += Number(value); });
         return sum;
+    }
+
+    onCellValueChanged(ev) {
+        if((ev.oldValue == 'PENDING' || ev.oldValue == 'NOT PAID (REQUESTED)') && ev.newValue == 'NEW'){
+            this.message.warn('Invoice is pending payment, status cannot be changed to NEW!');
+            this.callBackDataGrid(this.dataParams!);
+        }else if(ev.oldValue == 'PAID'){
+            this.message.warn('Invoice already Paid, cannot change status!');
+            this.callBackDataGrid(this.dataParams!);
+        }else{
+            this._service.updateStatusInvoiceStock(ev.data.id.toString(), ev.newValue).subscribe(() => {
+                this.callBackDataGrid(this.dataParams!);
+                this.notify.success(this.l('SavedSuccessfully'));
+            });
+        }
     }
 }
 
