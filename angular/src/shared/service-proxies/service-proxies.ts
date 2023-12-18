@@ -10449,6 +10449,60 @@ export class ProdBillOfLadingServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param billId (optional) 
+     * @return Success
+     */
+    viewBillOfLading(billId: number | null | undefined): Observable<ProdBillOfLadingDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProdBillOfLading/ViewBillOfLading?";
+        if (billId !== undefined)
+            url_ += "BillId=" + encodeURIComponent("" + billId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processViewBillOfLading(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processViewBillOfLading(<any>response_);
+                } catch (e) {
+                    return <Observable<ProdBillOfLadingDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ProdBillOfLadingDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processViewBillOfLading(response: HttpResponseBase): Observable<ProdBillOfLadingDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ProdBillOfLadingDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ProdBillOfLadingDto>(<any>null);
+    }
 }
 
 @Injectable()
@@ -29535,6 +29589,15 @@ export class ProdBillOfLadingDto implements IProdBillOfLadingDto {
     billDate!: moment.Moment | undefined;
     statusCode!: string | undefined;
     shipmentNo!: string | undefined;
+    forwarder!: string | undefined;
+    supplierNo!: string | undefined;
+    fromPort!: string | undefined;
+    toPort!: string | undefined;
+    containerNo!: string | undefined;
+    partNo!: string | undefined;
+    partName!: string | undefined;
+    cfc!: string | undefined;
+    oceanVesselName!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdBillOfLadingDto) {
@@ -29553,6 +29616,15 @@ export class ProdBillOfLadingDto implements IProdBillOfLadingDto {
             this.billDate = _data["billDate"] ? moment(_data["billDate"].toString()) : <any>undefined;
             this.statusCode = _data["statusCode"];
             this.shipmentNo = _data["shipmentNo"];
+            this.forwarder = _data["forwarder"];
+            this.supplierNo = _data["supplierNo"];
+            this.fromPort = _data["fromPort"];
+            this.toPort = _data["toPort"];
+            this.containerNo = _data["containerNo"];
+            this.partNo = _data["partNo"];
+            this.partName = _data["partName"];
+            this.cfc = _data["cfc"];
+            this.oceanVesselName = _data["oceanVesselName"];
             this.id = _data["id"];
         }
     }
@@ -29571,6 +29643,15 @@ export class ProdBillOfLadingDto implements IProdBillOfLadingDto {
         data["billDate"] = this.billDate ? this.billDate.toISOString() : <any>undefined;
         data["statusCode"] = this.statusCode;
         data["shipmentNo"] = this.shipmentNo;
+        data["forwarder"] = this.forwarder;
+        data["supplierNo"] = this.supplierNo;
+        data["fromPort"] = this.fromPort;
+        data["toPort"] = this.toPort;
+        data["containerNo"] = this.containerNo;
+        data["partNo"] = this.partNo;
+        data["partName"] = this.partName;
+        data["cfc"] = this.cfc;
+        data["oceanVesselName"] = this.oceanVesselName;
         data["id"] = this.id;
         return data; 
     }
@@ -29582,6 +29663,15 @@ export interface IProdBillOfLadingDto {
     billDate: moment.Moment | undefined;
     statusCode: string | undefined;
     shipmentNo: string | undefined;
+    forwarder: string | undefined;
+    supplierNo: string | undefined;
+    fromPort: string | undefined;
+    toPort: string | undefined;
+    containerNo: string | undefined;
+    partNo: string | undefined;
+    partName: string | undefined;
+    cfc: string | undefined;
+    oceanVesselName: string | undefined;
     id: number | undefined;
 }
 

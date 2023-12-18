@@ -853,7 +853,7 @@ BEGIN
       WHERE pci.ShipmentId = (SELECT ShipmentId FROM ProdBillOfLading WHERE Id = @p_BillId )
 
     SELECT pbol.Id, pbol.BillofladingNo, pbol.BillDate, pbol.StatusCode, 
-           ps.Forwarder, ps.SupplierNo, ps.FromPort, ps.ToPort,
+           ps.Forwarder, ps.SupplierNo, ps.FromPort, ps.ToPort, ps.OceanVesselName,
            @ListContNo ContainerNo, @ListPartNo PartNo, @ListPartName PartName, @ListCfc cfc
       FROM ProdBillOfLading pbol
 INNER JOIN ProdShipment ps on pbol.ShipmentId = ps.Id

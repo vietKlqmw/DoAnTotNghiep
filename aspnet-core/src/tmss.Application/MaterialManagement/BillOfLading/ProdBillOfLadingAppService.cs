@@ -80,13 +80,13 @@ namespace tmss.MaterialManagement.BillOfLading
             });
         }
 
-        public async Task EditBillOfLading(int? BillId)
+        public async Task<ProdBillOfLadingDto> ViewBillOfLading(int? BillId)
         {
             string _sql = "Exec INV_PROD_BILL_OF_LADING_VIEW @p_BillId";
-            await _dapperRepo.ExecuteAsync(_sql, new
+            return (await _dapperRepo.QueryAsync<ProdBillOfLadingDto>(_sql, new
             {
                 p_BillId = BillId
-            });
+            })).FirstOrDefault();
         }
     }
 }

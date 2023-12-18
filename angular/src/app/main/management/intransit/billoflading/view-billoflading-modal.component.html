@@ -11,7 +11,7 @@
                 </button>
             </div>
             <div class="modal-body p-0">
-                <div class="ui-g-12 p-0" *ngIf="saving">
+                <div class="ui-g-12 p-0">
                     <fieldset class="fieldset-border ui-g-12 pl-0 pr-0  mt-2" style="height: auto;">
                         <div class="ui-g-12 ph-0">
                             <div class="ui-g-12 ui-md-6">
@@ -30,7 +30,7 @@
                                 <tmss-text-input [text]="'Status'" [(ngModel)]="rowData.statusCode"
                                     name="statusCode" [isReadonly]="true"></tmss-text-input>
                             </div>
-                            <div class="ui-g-12 ui-md-4">
+                            <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Forwarder'" [(ngModel)]="rowData.forwarder"
                                     name='forwarder' [isReadonly]="true"></tmss-text-input>
                             </div>
@@ -39,21 +39,29 @@
                                     name='supplierNo' [isReadonly]="true"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Container No'" [(ngModel)]="rowData.containerNo"
+                                <tmss-text-input [text]="'Consignee'" [(ngModel)]="_consignee"
+                                    name='consignee' [isReadonly]="true"></tmss-text-input>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <tmss-text-input [text]="'List Container No'" [(ngModel)]="rowData.containerNo"
                                     name='containerNo' [isReadonly]="true"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Part No'" [(ngModel)]="rowData.partNo"
+                                <tmss-text-input [text]="'List Part No'" [(ngModel)]="rowData.partNo"
                                     name='partNo' [isReadonly]="true"></tmss-text-input>
                             </div>
                             <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Part Name'" [(ngModel)]="rowData.partName"
-                                    name='partName' [isReadonly]="true"></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Carfamily Code'" [(ngModel)]="rowData.carfamilyCode"
+                                <tmss-text-input [text]="'List Carfamily Code'" [(ngModel)]="rowData.cfc"
                                     name='carfamilyCode' [isReadonly]="true"></tmss-text-input>
                             </div>
+                            <div class="ui-g-12 ui-md-12">
+                                <div class="input-group">
+                                    <span class="input-group-text left-text">List Part Name</span>
+                                    <textarea name='partName' cols="91" readonly>{{rowData.partName}}</textarea>
+                                </div>
+                                <!-- <tmss-text-input [text]="'List Part Name'" [(ngModel)]="rowData.partName"
+                                    name='partName' [isReadonly]="true"></tmss-text-input> -->
+                            </div>                            
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'From Port'" [(ngModel)]="rowData.fromPort"
                                     name='fromPort' [isReadonly]="true"></tmss-text-input>

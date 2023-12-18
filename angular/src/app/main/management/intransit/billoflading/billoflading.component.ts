@@ -188,7 +188,7 @@ export class BillofladingComponent extends AppComponentBase implements OnInit {
     }
 
     deleteBill() {
-        this.message.confirm(this.l('Bạn có chắc chắn muốn xóa?'), 'Delete Bill Of Lading', (isConfirmed) => {
+        this.message.confirm(this.l('Are you sure Delete?'), 'Delete Bill Of Lading', (isConfirmed) => {
             if (isConfirmed) {
                 this._service.deleteBillOfLading(this._selectrow).subscribe(() => {
                     this.callBackDataGrid(this.dataParams!);

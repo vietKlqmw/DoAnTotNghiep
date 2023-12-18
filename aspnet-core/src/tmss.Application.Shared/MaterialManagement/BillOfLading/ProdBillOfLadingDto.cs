@@ -17,6 +17,14 @@ namespace tmss.MaterialManagement.BillOfLading
 
         //for view 
         public virtual string Forwarder { get; set; }
+        public virtual string SupplierNo { get; set; }
+        public virtual string FromPort { get;set; }
+        public virtual string ToPort { get; set; }
+        public virtual string ContainerNo { get; set; }
+        public virtual string PartNo { get; set; }
+        public virtual string PartName { get; set; }
+        public virtual string Cfc { get;set; }
+        public virtual string OceanVesselName { get; set; }
     }
 
     public class GetProdBillOfLadingInput : PagedAndSortedResultRequestDto

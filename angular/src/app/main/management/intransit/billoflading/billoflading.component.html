@@ -67,16 +67,12 @@
                 <hr>
                 <div class="row">
                     <div class="col-sm-12 text-right">
-                        <button type="button" class="btn btn-view" [disabled]="!saveSelectedRow.id">
+                        <button type="button" class="btn btn-view" (click)="viewModal.show(saveSelectedRow.id)" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-regular fa-eye"></i> {{"View Bill Of Lading" | localize}}</button>
                         <button type="button" class="btn btn-primary" (click)="editBill()" [disabled]="notDeleted">
                             <i class="far fa-edit"></i> {{"Edit" | localize}}</button>
                         <button type="button" class="btn btn-danger" (click)="deleteBill()" [disabled]="notDeleted">
                             <i class="far fa-trash-alt"></i> {{"Delete" | localize}}</button>
-                        <!-- <button type="button" class="btn btn-success" (click)="exportToExcel()">
-                            <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button> -->
-                        <!-- <button type="button" class="btn btn-pdf" [disabled]="!saveSelectedRow.id">
-                            <i class="far fa-regular fa-file-pdf"></i> {{"Export Bill To Pdf" | localize}}</button> -->
                     </div>
                 </div>
             </div>
@@ -84,3 +80,4 @@
     </div>
 </div>
 <editModal #editModal></editModal>
+<viewModal #viewModal></viewModal>
