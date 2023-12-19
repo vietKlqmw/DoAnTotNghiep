@@ -694,3 +694,13 @@ body .gridEdit .ag-theme-alpine .ag-ltr div[ref="centerContainer"]  .ag-row.ag-r
 body .gridEdit .ag-theme-alpine .ag-row.ag-row-selected,
 body .gridEdit .ag-theme-alpine .ag-ltr .ag-row.ag-row-selected .ag-cell.cell-text-render ag-cell-text-renderer .ag-in-cell-text  {  background-color: #ffd738 !important; }
 /*Edit grid*/
+
+.kt-header--fixed.kt-aside--minimize .kt-header{
+    background-color: oldlace;
+}
+.kt-grid.kt-grid--hor:not(.kt-grid--desktop):not(.kt-grid--desktop-and-tablet):not(.kt-grid--tablet):not(.kt-grid--tablet-and-mobile):not(.kt-grid--mobile){
+    background-color: darkseagreen;
+}
+.kt-portlet__body{
+    background-color: antiquewhite;
+}
