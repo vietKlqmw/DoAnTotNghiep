@@ -704,3 +704,7 @@ body .gridEdit .ag-theme-alpine .ag-ltr .ag-row.ag-row-selected .ag-cell.cell-te
 .kt-portlet__body{
     background-color: antiquewhite;
 }
+.chart-legend .legend-label-text{
+    color: black;
+    font-weight: 500;
+}

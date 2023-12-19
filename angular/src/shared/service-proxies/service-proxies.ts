@@ -14123,6 +14123,173 @@ export class ProdOthersServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    getDataForDashboardTop(): Observable<GetDataDashboardTop> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetDataForDashboardTop";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDataForDashboardTop(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDataForDashboardTop(<any>response_);
+                } catch (e) {
+                    return <Observable<GetDataDashboardTop>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetDataDashboardTop>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDataForDashboardTop(response: HttpResponseBase): Observable<GetDataDashboardTop> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetDataDashboardTop.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetDataDashboardTop>(<any>null);
+    }
+
+    /**
+     * @param warehouse (optional) 
+     * @return Success
+     */
+    getDataForDashboardNewContToWarehouse(warehouse: string | null | undefined): Observable<GetDataDashboardNewContToWarehouse[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetDataForDashboardNewContToWarehouse?";
+        if (warehouse !== undefined)
+            url_ += "warehouse=" + encodeURIComponent("" + warehouse) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDataForDashboardNewContToWarehouse(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDataForDashboardNewContToWarehouse(<any>response_);
+                } catch (e) {
+                    return <Observable<GetDataDashboardNewContToWarehouse[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetDataDashboardNewContToWarehouse[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDataForDashboardNewContToWarehouse(response: HttpResponseBase): Observable<GetDataDashboardNewContToWarehouse[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetDataDashboardNewContToWarehouse.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetDataDashboardNewContToWarehouse[]>(<any>null);
+    }
+
+    /**
+     * @param warehouse (optional) 
+     * @return Success
+     */
+    getDataForDashboardStockOut(warehouse: string | null | undefined): Observable<ProdInvoiceStockOutDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetDataForDashboardStockOut?";
+        if (warehouse !== undefined)
+            url_ += "warehouse=" + encodeURIComponent("" + warehouse) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDataForDashboardStockOut(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDataForDashboardStockOut(<any>response_);
+                } catch (e) {
+                    return <Observable<ProdInvoiceStockOutDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ProdInvoiceStockOutDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDataForDashboardStockOut(response: HttpResponseBase): Observable<ProdInvoiceStockOutDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ProdInvoiceStockOutDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ProdInvoiceStockOutDto[]>(<any>null);
+    }
+
+    /**
      * @param filePathSource (optional) 
      * @param filePathSave (optional) 
      * @param nameSave (optional) 
@@ -31974,6 +32141,90 @@ export interface IListPartForOrderDto {
     grandOrderQty: number | undefined;
     grandOrderAmount: number | undefined;
     id: number | undefined;
+}
+
+export class GetDataDashboardTop implements IGetDataDashboardTop {
+    newCont!: number | undefined;
+    contOnPort!: number | undefined;
+    totalAmountInvoice!: number | undefined;
+
+    constructor(data?: IGetDataDashboardTop) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.newCont = _data["newCont"];
+            this.contOnPort = _data["contOnPort"];
+            this.totalAmountInvoice = _data["totalAmountInvoice"];
+        }
+    }
+
+    static fromJS(data: any): GetDataDashboardTop {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetDataDashboardTop();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["newCont"] = this.newCont;
+        data["contOnPort"] = this.contOnPort;
+        data["totalAmountInvoice"] = this.totalAmountInvoice;
+        return data; 
+    }
+}
+
+export interface IGetDataDashboardTop {
+    newCont: number | undefined;
+    contOnPort: number | undefined;
+    totalAmountInvoice: number | undefined;
+}
+
+export class GetDataDashboardNewContToWarehouse implements IGetDataDashboardNewContToWarehouse {
+    containerNo!: string | undefined;
+    receiveDate!: moment.Moment | undefined;
+
+    constructor(data?: IGetDataDashboardNewContToWarehouse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.containerNo = _data["containerNo"];
+            this.receiveDate = _data["receiveDate"] ? moment(_data["receiveDate"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetDataDashboardNewContToWarehouse {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetDataDashboardNewContToWarehouse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["containerNo"] = this.containerNo;
+        data["receiveDate"] = this.receiveDate ? this.receiveDate.toISOString() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetDataDashboardNewContToWarehouse {
+    containerNo: string | undefined;
+    receiveDate: moment.Moment | undefined;
 }
 
 export class ProdShipmentDto implements IProdShipmentDto {

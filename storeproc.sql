@@ -1873,6 +1873,53 @@ BEGIN
            Status = @p_NewStatus
      WHERE Id = @p_InvoiceStockId;
 END
+------------------------------------------------DASHBOARD------------------------------------------------
+------------------------------------------------TOP
+CREATE OR ALTER PROCEDURE INV_PROD_DASHBOARD_TOP 
+AS
+BEGIN
+    DECLARE @New INT;
+    DECLARE @OnPort INT;
+    DECLARE @THC DECIMAL;
+    DECLARE @CIF DECIMAL;
+    DECLARE @TAX DECIMAL;
+    DECLARE @VAT DECIMAL;
+    
+    SELECT @New = COUNT(*) FROM ProdContainerIntransit pci WHERE pci.Status = 'NEW'
+    SELECT @OnPort = COUNT(*) FROM ProdContainerIntransit pci WHERE pci.Status = 'PORT/ARRIVED' AND pci.IsDeleted = 0
+    
+    SELECT @THC = SUM(pid.Thc), @CIF = SUM(pid.Cif), @TAX = SUM(pid.Tax), @VAT = SUM(pid.Vat)
+    FROM ProdInvoiceDetails pid 
+    INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
+    GROUP BY pid.InvoiceNo, pi.InvoiceDate
+    ORDER BY pi.InvoiceDate
+    
+    DECLARE @Total DECIMAL = ISNULL(@CIF, 0) + ISNULL(@THC, 0) + ISNULL(@TAX, 0) + ISNULL(@VAT, 0);
+    
+    SELECT ISNULL(@New, 0) NewCont, ISNULL(@OnPort, 0) ContOnPort, @Total TotalAmountInvoice
+END
+------------------------------------------------NewCont
+CREATE OR ALTER PROCEDURE INV_PROD_DASHBOARD_NEW_CONT_TO_WAREHOUSE
+    @p_Warehouse NVARCHAR(2)
+AS
+BEGIN
+    SELECT TOP(5) pcrw.ContainerNo, pcrw.ReceiveDate  
+      FROM ProdContainerRentalWHPlan pcrw
+     WHERE pcrw.Warehouse = @p_Warehouse
+  ORDER BY pcrw.ReceiveDate DESC
+END
+------------------------------------------------StockOut
+CREATE OR ALTER PROCEDURE INV_PROD_DASHBOARD_STOCK_OUT
+    @p_Warehouse NVARCHAR(2)
+AS
+BEGIN
+    SELECT TOP(5) piso.ListCfc, piso.ListPartName, piso.TotalOrderQty, piso.TotalAmount, piso.InvoiceDate 
+      FROM ProdInvoiceStockOut piso
+INNER JOIN ProdStockReceiving psr ON psr.InvoiceNoOut LIKE CONCAT(piso.InvoiceNoOut, '%')
+     WHERE psr.Warehouse = @p_Warehouse
+       AND piso.InvoiceDate IS NOT NULL
+  ORDER BY piso.InvoiceDate DESC
+END
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (
   ID BIGINT IDENTITY

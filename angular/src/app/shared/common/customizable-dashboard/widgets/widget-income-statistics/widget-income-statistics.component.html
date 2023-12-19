@@ -3,7 +3,7 @@
         <div class="kt-portlet__head-label">
             <h3 class="kt-portlet__head-title">
                 <i class="la la-line-chart kt-font-info"></i>
-                <span class="caption-subject font-blue bold uppercase">{{"Thống kê giá trị Hóa Đơn" | localize}}</span>
+                <span class="caption-subject font-blue bold uppercase">{{" IncomeStatistics" | localize}}</span><br>
                 <small>
                     <span class="caption-helper">
                         {{selectedDateRange[0] | momentFormat: 'L'}} -
@@ -45,7 +45,7 @@
             <ng-template #tooltipTemplate let-model="model">
                 <span>{{model.name}}</span>
                 <br />
-                <span>{{'Số Tiền Thanh Toán' | localize}} {{model.value + ' ' + _sessionService.application.currencySign}}</span>
+                <span>{{'IncomeWithAmount' | localize}} {{model.value + ' ' + _sessionService.application.currencySign}}</span>
             </ng-template>
         </ngx-charts-area-chart>
         <div class="note note-info text-center chart" [hidden]="incomeStatisticsHasData">

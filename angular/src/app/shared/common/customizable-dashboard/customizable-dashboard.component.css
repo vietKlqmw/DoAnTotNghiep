@@ -85,7 +85,7 @@ gridster {
 }
 
 gridster.no-tab{
-  height: calc(100vh - 180px);
+  height: calc(100vh - 100px);
 }
 
 :host ::ng-deep gridster .gridster-row{

@@ -67,6 +67,20 @@ namespace tmss.ManagementOther
         public virtual string AddressLanguageVn { get; set; }
     }
 
+
+    public class GetDataDashboardTop
+    {
+        public virtual int? NewCont { get; set; }
+        public virtual int? ContOnPort { get; set; }
+        public virtual decimal? TotalAmountInvoice { get; set; }
+    }
+
+    public class GetDataDashboardNewContToWarehouse
+    {
+        public virtual string ContainerNo { get; set; }
+        public virtual DateTime? ReceiveDate { get; set;}
+    }
+
     public class GoodsReceivedNoteExportInput
     {
         public virtual string ContId { get; set; }

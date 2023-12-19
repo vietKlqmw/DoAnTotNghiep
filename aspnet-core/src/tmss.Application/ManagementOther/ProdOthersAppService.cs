@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using tmss.Master.Material;
 using tmss.MaterialManagement.ContainerIntransit;
 using tmss.MaterialManagement.Invoice;
+using tmss.MaterialManagement.InvoiceStock;
 using tmss.MaterialManagement.StockReceiving;
 
 namespace tmss.ManagementOther
@@ -176,6 +177,39 @@ namespace tmss.ManagementOther
 
             return listResult;
         }
+
+        public async Task<GetDataDashboardTop> GetDataForDashboardTop()
+        {
+            string _sql = "Exec INV_PROD_DASHBOARD_TOP";
+
+            return (await _dapperRepo.QueryAsync<GetDataDashboardTop>(_sql)).FirstOrDefault();
+        }
+
+        public async Task<List<GetDataDashboardNewContToWarehouse>> GetDataForDashboardNewContToWarehouse(string warehouse)
+        {
+            string _sql = "Exec INV_PROD_DASHBOARD_NEW_CONT_TO_WAREHOUSE @p_Warehouse";
+
+            IEnumerable<GetDataDashboardNewContToWarehouse> result = await _dapperRepo.QueryAsync<GetDataDashboardNewContToWarehouse>(_sql, new
+            {
+                p_Warehouse = warehouse
+            });
+
+            return result.ToList();
+        }
+
+        public async Task<List<ProdInvoiceStockOutDto>> GetDataForDashboardStockOut(string warehouse)
+        {
+            string _sql = "Exec INV_PROD_DASHBOARD_STOCK_OUT @p_Warehouse";
+
+            IEnumerable<ProdInvoiceStockOutDto> result = await _dapperRepo.QueryAsync<ProdInvoiceStockOutDto>(_sql, new
+            {
+                p_Warehouse = warehouse
+            });
+
+            return result.ToList();
+        }
+
+
 
         //excel to pdf
         public string ConvertExcelToPdf(string filePathSource, string filePathSave, string nameSave)

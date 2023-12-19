@@ -4,48 +4,82 @@
             <h3 class="kt-portlet__head-title">
                 <i class="fas fa-user-plus kt-font-primary"></i>
                 <span
-                    class="caption-subject kt-font-primary">{{" Container mới nhập kho" | localize}}</span><br />
-                <small>
+                    class="caption-subject kt-font-primary">{{" New Container To Warehouse" | localize}}</span><br />
+                <!-- <small>
                     <span class="caption-helper" *ngIf="!loading">
-                        {{"5 Container mới nhất" | localize:recentTenantsData.recentTenantsDayCount : recentTenantsData.maxRecentTenantsShownCount}}
+                        {{"5 New Container" | localize:recentTenantsData.recentTenantsDayCount : recentTenantsData.maxRecentTenantsShownCount}}
                     </span>
-                </small>
+                </small> -->
             </h3>
+        </div>
+        <div class="kt-portlet__head-toolbar">
+            <div class="btn-group btn-group-devided" data-toggle="buttons">
+                <label class="btn m-btn--pill btn-secondary"
+                    [ngClass]="{'active': selectedWarehouse ==  'A1'}"
+                    (click)="warehouseChange('A1')">
+                    <input type="radio" name="IncomeStatisticsDatePeriod" class="toggle" [value]="'A1'">
+                    {{"A1" | localize}}
+                </label>
+                <label class="btn m-btn--pill btn-secondary"
+                    [ngClass]="{'active': selectedWarehouse ==  'A2'}"
+                    (click)="warehouseChange('A2')">
+                    <input type="radio" name="IncomeStatisticsDatePeriod" class="toggle" [value]="'A2'">
+                    {{"A2" | localize}}
+                </label>
+                <label class="btn m-btn--pill btn-secondary"
+                    [ngClass]="{'active': selectedWarehouse ==  'B1'}"
+                    (click)="warehouseChange('B1')">
+                    <input type="radio" name="IncomeStatisticsDatePeriod" class="toggle" [value]="'B1'">
+                    {{"B1" | localize}}
+                </label>
+                <label class="btn m-btn--pill btn-secondary"
+                    [ngClass]="{'active': selectedWarehouse ==  'C1'}"
+                    (click)="warehouseChange('C1')">
+                    <input type="radio" name="IncomeStatisticsDatePeriod" class="toggle"[value]="'C1'">
+                    {{"C1" | localize}}
+                </label>
+                <label class="btn m-btn--pill btn-secondary"
+                    [ngClass]="{'active': selectedWarehouse ==  'C2'}"
+                    (click)="warehouseChange('C2')">
+                    <input type="radio" name="IncomeStatisticsDatePeriod" class="toggle"[value]="'C2'">
+                    {{"C2" | localize}}
+                </label>
+            </div>
         </div>
     </div>
     <div class="kt-portlet__body" >
         <div class="scroller chart kt-scroll" [perfectScrollbar]>
             <div class="primeng-datatable-container recent-tenants-table" *ngIf="!loading"
                 [busyIf]="primengTableHelper.isLoading">
-                <p-table #RecentTenantsTable [value]="recentTenantsData.recentTenants"
+                <p-table #RecentTenantsTable [value]="recentTenantsData"
                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                     [lazy]="false" [responsive]="primengTableHelper.isResponsive">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>{{'Container No' | localize}}</th>
-                            <th>{{'Warehouse Date' | localize}}</th>
+                            <th>{{'Receive Date' | localize}}</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-record="$implicit">
                         <tr>
                             <td>
                                 <span class="ui-column-title">{{'Container No' | localize}}</span>
-                                {{record.name}}
+                                {{record.containerNo}}
                             </td>
                             <td>
                                 <span
-                                    class="ui-column-title">{{'Warehouse Date' | localize}}</span>
-                                {{ record.creationTime | momentFormat:'L LT'}}
+                                    class="ui-column-title">{{'Receive Date' | localize}}</span>
+                                {{ record.receiveDate | momentFormat:'L'}}
                             </td>
                         </tr>
                     </ng-template>
                 </p-table>
-                <div class="primeng-no-data" *ngIf="recentTenantsData?.recentTenants?.length == 0">
+                <div class="primeng-no-data" *ngIf="recentTenantsData?.length == 0">
                     {{'NoData' | localize}}
                 </div>
             </div>
         </div>
-        <div class="scroller-footer">
+        <div class="scroller-footer mt-1">
             <div class="btn-arrow-link pull-right">
                 <a href="javascript:;" class="see-all-recent-tenants"
                     (click)="gotoAllRecentTenants()">{{"SeeAll" | localize}}</a>

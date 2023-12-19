@@ -1,12 +1,117 @@
 <div class="kt-portlet kt-portlet--height-fluid">
     <div class="kt-portlet__body  kt-portlet__body--fit" [perfectScrollbar]>
         <div class="row row-no-padding row-col-separator-xl">
-            <div class="col-md-12 col-lg-6 col-xl-3">
+            <div class="col-md-12 col-lg-4 col-xl-3">
+                <div class="kt-widget24 new-tenants-statistics">
+                    <div class="kt-widget24__details">
+                        <div class="kt-widget24__info">
+                            <h4 class="kt-widget24__title">
+                                {{"New Container" | localize}}
+                            </h4>
+                            <span class="kt-widget24__desc">
+                                {{"Container" | localize}}
+                            </span>
+                        </div>
+                        <span class="kt-widget24__stats kt-font-info new-tenants-count">
+                            <span *ngIf="!topStatsData">...</span>
+                            <span *ngIf="topStatsData" counto [step]="10"
+                                [countTo]="topStatsData.newCont" [countFrom]="0"
+                                [duration]="5"
+                                (countoChange)="countoNewTenants = $event">{{countoNewTenants | number:'1.0-0' }}</span>
+                        </span>
+                    </div>
+                    <div class="progress progress--sm">
+                        <div class="progress-bar kt-bg-info" role="progressbar" style="width: 100%;"
+                            aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <!-- <div class="kt-widget24__action">
+                        <span class="kt-widget24__change">
+                            <div class="status-title">
+                                {{selectedDateRange[0] | momentFormat: 'L'}} -
+                                {{selectedDateRange[1] | momentFormat: 'L'}}
+                            </div>
+                        </span>
+                        <span class="kt-widget24__number">
+                        </span>
+                    </div> -->
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4 col-xl-3">
                 <div class="kt-widget24 new-subscription-statistics">
                     <div class="kt-widget24__details">
                         <div class="kt-widget24__info">
                             <h4 class="kt-widget24__title">
-                                {{"Giá trị hóa đơn mới" | localize}}
+                                {{"New Invoice Amount" | localize}}
+                            </h4>
+                            <span class="kt-widget24__desc">
+                                {{"Invoice" | localize}}
+                            </span>
+                        </div>
+                        <span class="kt-widget24__stats kt-font-brand">
+                            <span *ngIf="!topStatsData">...</span>
+                            <span *ngIf="topStatsData" counto [step]="30"
+                                [countTo]="topStatsData.totalAmountInvoice" [countFrom]="0"
+                                [duration]="5"
+                                (countoChange)="countoNewSubscriptionAmount = $event">{{countoNewSubscriptionAmount | currency:'VND':'symbol':'1.0-0'}}</span>
+                        </span>
+                    </div>
+                    <div class="progress progress--sm">
+                        <div class="progress-bar kt-bg-brand progress-red" role="progressbar" style="width: 100%;"
+                            aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <!-- <div class="kt-widget24__action">
+                        <span class="kt-widget24__change">
+                            <div class="status-title">
+                                {{selectedDateRange[0] | momentFormat: 'L'}} -
+                                {{selectedDateRange[1] | momentFormat: 'L'}}
+                            </div>
+                        </span>
+                        <span class="kt-widget24__number">
+                        </span>
+                    </div> -->
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4 col-xl-3">
+                <div class="kt-widget24 new-tenants-statistics">
+                    <div class="kt-widget24__details">
+                        <div class="kt-widget24__info">
+                            <h4 class="kt-widget24__title">
+                                {{"Container On Port" | localize}}
+                            </h4>
+                            <span class="kt-widget24__desc">
+                                {{"Container" | localize}}
+                            </span>
+                        </div>
+                        <span class="kt-widget24__stats kt-font-info new-tenants-count">
+                            <span *ngIf="!topStatsData">...</span>
+                            <span *ngIf="topStatsData" counto [step]="10"
+                                [countTo]="topStatsData.contOnPort" [countFrom]="0"
+                                [duration]="5"
+                                (countoChange)="countoNewTenantsCount = $event">{{countoNewTenantsCount | number:'1.0-0' }}</span>
+                        </span>
+                    </div>
+                    <div class="progress progress--sm">
+                        <div class="progress-bar kt-bg-info progress-yellow" role="progressbar" style="width: 100%;"
+                            aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <!-- <div class="kt-widget24__action">
+                        <span class="kt-widget24__change">
+                            <div class="status-title">
+                                {{selectedDateRange[0] | momentFormat: 'L'}} -
+                                {{selectedDateRange[1] | momentFormat: 'L'}}
+                            </div>
+                        </span>
+                        <span class="kt-widget24__number">
+                        </span>
+                    </div> -->
+                </div>
+            </div>
+            <!-- <div class="col-md-12 col-lg-6 col-xl-3">
+                <div class="kt-widget24 new-subscription-statistics">
+                    <div class="kt-widget24__details">
+                        <div class="kt-widget24__info">
+                            <h4 class="kt-widget24__title">
+                                {{"New Invoice Amount" | localize}}
                             </h4>
                             <span class="kt-widget24__desc">
                                 {{"Invoice" | localize}}
@@ -17,7 +122,7 @@
                             <span *ngIf="topStatsData" counto [step]="30"
                                 [countTo]="topStatsData.newSubscriptionAmount" [countFrom]="0"
                                 [duration]="5"
-                                (countoChange)="countoNewSubscriptionAmount = $event">{{countoNewSubscriptionAmount | currency:'USD':'symbol':'1.0-0'}}</span>
+                                (countoChange)="countoNewSubscriptionAmount = $event">{{countoNewSubscriptionAmount | currency:'VND':'symbol':'1.0-0'}}</span>
                         </span>
                     </div>
                     <div class="progress progress--sm">
@@ -35,43 +140,8 @@
                         </span>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-12 col-lg-6 col-xl-3">
-                <div class="kt-widget24 new-tenants-statistics">
-                    <div class="kt-widget24__details">
-                        <div class="kt-widget24__info">
-                            <h4 class="kt-widget24__title">
-                                {{"Lô hàng mới" | localize}}
-                            </h4>
-                            <span class="kt-widget24__desc">
-                                {{"Shipment" | localize}}
-                            </span>
-                        </div>
-                        <span class="kt-widget24__stats kt-font-info new-tenants-count">
-                            <span *ngIf="!topStatsData">...</span>
-                            <span *ngIf="topStatsData" counto [step]="10"
-                                [countTo]="topStatsData.newTenantsCount" [countFrom]="0"
-                                [duration]="5"
-                                (countoChange)="countoNewTenantsCount = $event">{{countoNewTenantsCount | number:'1.0-0' }}</span>
-                        </span>
-                    </div>
-                    <div class="progress progress--sm">
-                        <div class="progress-bar kt-bg-info" role="progressbar" style="width: 100%;"
-                            aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="kt-widget24__action">
-                        <span class="kt-widget24__change">
-                            <div class="status-title">
-                                {{selectedDateRange[0] | momentFormat: 'L'}} -
-                                {{selectedDateRange[1] | momentFormat: 'L'}}
-                            </div>
-                        </span>
-                        <span class="kt-widget24__number">
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 col-lg-6 col-xl-3">
+            </div> -->
+            <!-- <div class="col-md-12 col-lg-6 col-xl-3">
                 <div class="kt-widget24 dashboard-statistics1">
                     <div class="kt-widget24__details">
                         <div class="kt-widget24__info">
@@ -136,7 +206,7 @@
                         </span>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
