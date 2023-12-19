@@ -3,7 +3,7 @@
         <div class="kt-portlet__head-label">
             <h3 class="kt-portlet__head-title">
                 <i class="la la-line-chart kt-font-info"></i>
-                <span class="caption-subject font-blue bold uppercase">{{" IncomeStatistics" | localize}}</span><br>
+                <span class="caption-subject font-blue bold uppercase">{{" Invoice Statistics" | localize}}</span><br>
                 <small>
                     <span class="caption-helper">
                         {{selectedDateRange[0] | momentFormat: 'L'}} -
@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="kt-portlet__body" [perfectScrollbar]>
-        <ngx-charts-area-chart *ngIf="incomeStatisticsHasData" [busyIf]="loadingIncomeStatistics"
+        <ngx-charts-line-chart *ngIf="incomeStatisticsHasData" [busyIf]="loadingIncomeStatistics"
             [results]="incomeStatisticsData" [showXAxisLabel]="true" showYAxisLabel="true" [xAxis]="true" [yAxis]="true"
             [showGridLines]="true">
             <ng-template #tooltipTemplate let-model="model">
@@ -47,7 +47,7 @@
                 <br />
                 <span>{{'IncomeWithAmount' | localize}} {{model.value + ' ' + _sessionService.application.currencySign}}</span>
             </ng-template>
-        </ngx-charts-area-chart>
+        </ngx-charts-line-chart>
         <div class="note note-info text-center chart" [hidden]="incomeStatisticsHasData">
             <small class="text-muted">{{"NoData" | localize}}</small>
         </div>

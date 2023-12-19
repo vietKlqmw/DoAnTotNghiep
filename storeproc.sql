@@ -1876,6 +1876,7 @@ END
 ------------------------------------------------DASHBOARD------------------------------------------------
 ------------------------------------------------TOP
 CREATE OR ALTER PROCEDURE INV_PROD_DASHBOARD_TOP 
+    @p_Warehouse NVARCHAR(2)
 AS
 BEGIN
     DECLARE @New INT;
@@ -1884,6 +1885,7 @@ BEGIN
     DECLARE @CIF DECIMAL;
     DECLARE @TAX DECIMAL;
     DECLARE @VAT DECIMAL;
+    DECLARE @Inventory INT;
     
     SELECT @New = COUNT(*) FROM ProdContainerIntransit pci WHERE pci.Status = 'NEW'
     SELECT @OnPort = COUNT(*) FROM ProdContainerIntransit pci WHERE pci.Status = 'PORT/ARRIVED' AND pci.IsDeleted = 0
@@ -1895,8 +1897,14 @@ BEGIN
     ORDER BY pi.InvoiceDate
     
     DECLARE @Total DECIMAL = ISNULL(@CIF, 0) + ISNULL(@THC, 0) + ISNULL(@TAX, 0) + ISNULL(@VAT, 0);
+
+    SELECT @Inventory = SUM(psr.ActualQty - ISNULL(psr.OrderedQty, 0)) 
+    FROM ProdStockReceiving psr 
+    WHERE (psr.ActualQty > psr.OrderedQty)
+    AND psr.Warehouse = @p_Warehouse
+    GROUP BY psr.Warehouse, psr.PartNo, psr.PartName, psr.Model
     
-    SELECT ISNULL(@New, 0) NewCont, ISNULL(@OnPort, 0) ContOnPort, @Total TotalAmountInvoice
+    SELECT ISNULL(@New, 0) NewCont, ISNULL(@OnPort, 0) ContOnPort, @Total TotalAmountInvoice, ISNULL(@Inventory, 0) Inventory
 END
 ------------------------------------------------NewCont
 CREATE OR ALTER PROCEDURE INV_PROD_DASHBOARD_NEW_CONT_TO_WAREHOUSE
@@ -1919,6 +1927,26 @@ INNER JOIN ProdStockReceiving psr ON psr.InvoiceNoOut LIKE CONCAT(piso.InvoiceNo
      WHERE psr.Warehouse = @p_Warehouse
        AND piso.InvoiceDate IS NOT NULL
   ORDER BY piso.InvoiceDate DESC
+END
+------------------------------------------------QtyOut
+CREATE OR ALTER PROCEDURE INV_PROD_DASHBOARD_QTY_OUT
+    @p_Type NVARCHAR(3)
+AS
+BEGIN
+    IF @p_Type = 'Cfc'
+    BEGIN
+        SELECT piso.ListCfc Label, SUM(piso.TotalOrderQty) QtyOut
+          FROM ProdInvoiceStockOut piso 
+         WHERE piso.InvoiceDate IS NOT NULL 
+      GROUP BY piso.ListCfc
+    END
+    ELSE 
+    BEGIN
+        SELECT SUBSTRING(piso.GoodsDeliveryNoteNo, 1, 2) Label, SUM(piso.TotalOrderQty) QtyOut
+          FROM ProdInvoiceStockOut piso 
+         WHERE piso.InvoiceDate IS NOT NULL 
+      GROUP BY SUBSTRING(piso.GoodsDeliveryNoteNo, 1, 2)
+    END
 END
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (

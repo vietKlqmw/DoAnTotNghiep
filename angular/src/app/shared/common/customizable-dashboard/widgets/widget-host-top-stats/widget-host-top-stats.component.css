@@ -4,3 +4,9 @@
 .progress-red{
     background-color: crimson !important;
 }
+.progress-green{
+    background-color: greenyellow !important;
+}
+input[type="radio"] {
+    display: none;
+}

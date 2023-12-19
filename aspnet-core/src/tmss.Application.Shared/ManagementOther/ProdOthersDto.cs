@@ -73,12 +73,19 @@ namespace tmss.ManagementOther
         public virtual int? NewCont { get; set; }
         public virtual int? ContOnPort { get; set; }
         public virtual decimal? TotalAmountInvoice { get; set; }
+        public virtual int? Inventory { get; set; }
+    }
+
+    public class GetDataDashboardQtyOut
+    {
+        public virtual string Label { get; set; }
+        public virtual int? QtyOut { get; set; }
     }
 
     public class GetDataDashboardNewContToWarehouse
     {
         public virtual string ContainerNo { get; set; }
-        public virtual DateTime? ReceiveDate { get; set;}
+        public virtual DateTime? ReceiveDate { get; set; }
     }
 
     public class GoodsReceivedNoteExportInput
@@ -111,7 +118,7 @@ namespace tmss.ManagementOther
     public class ListPartForOrderDto : EntityDto<long?>
     {
         public virtual string PartNo { get; set; }
-        public virtual string PartName { get; set;}
+        public virtual string PartName { get; set; }
         public virtual string SupplierNo { get; set; }
         public virtual string Cfc { get; set; }
         public virtual int? Qty { get; set; }

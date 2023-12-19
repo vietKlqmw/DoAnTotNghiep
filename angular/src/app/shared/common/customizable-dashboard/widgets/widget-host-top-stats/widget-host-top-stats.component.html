@@ -16,7 +16,7 @@
                             <span *ngIf="!topStatsData">...</span>
                             <span *ngIf="topStatsData" counto [step]="10"
                                 [countTo]="topStatsData.newCont" [countFrom]="0"
-                                [duration]="5"
+                                [duration]="2"
                                 (countoChange)="countoNewTenants = $event">{{countoNewTenants | number:'1.0-0' }}</span>
                         </span>
                     </div>
@@ -51,7 +51,7 @@
                             <span *ngIf="!topStatsData">...</span>
                             <span *ngIf="topStatsData" counto [step]="30"
                                 [countTo]="topStatsData.totalAmountInvoice" [countFrom]="0"
-                                [duration]="5"
+                                [duration]="2"
                                 (countoChange)="countoNewSubscriptionAmount = $event">{{countoNewSubscriptionAmount | currency:'VND':'symbol':'1.0-0'}}</span>
                         </span>
                     </div>
@@ -86,7 +86,7 @@
                             <span *ngIf="!topStatsData">...</span>
                             <span *ngIf="topStatsData" counto [step]="10"
                                 [countTo]="topStatsData.contOnPort" [countFrom]="0"
-                                [duration]="5"
+                                [duration]="2"
                                 (countoChange)="countoNewTenantsCount = $event">{{countoNewTenantsCount | number:'1.0-0' }}</span>
                         </span>
                     </div>
@@ -104,6 +104,75 @@
                         <span class="kt-widget24__number">
                         </span>
                     </div> -->
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4 col-xl-3">
+                <div class="kt-widget24 new-tenants-statistics">
+                    <div class="kt-widget24__details">
+                        <div class="kt-widget24__info">
+                            <h4 class="kt-widget24__title">
+                                {{"Inventory" | localize}}
+                            </h4>
+                            <span class="kt-widget24__desc">
+                                {{"Current Inventory" | localize}}
+                            </span>
+                        </div>
+                        <span class="kt-widget24__stats kt-font-info new-tenants-count">
+                            <span *ngIf="!topStatsData">...</span>
+                            <span *ngIf="topStatsData" counto [step]="10"
+                                [countTo]="topStatsData.inventory" [countFrom]="0"
+                                [duration]="2"
+                                (countoChange)="countoNew = $event">{{countoNew | number:'1.0-0' }}</span>
+                        </span>
+                    </div>
+                    <div class="progress progress--sm">
+                        <div class="progress-bar kt-bg-info progress-green" role="progressbar" style="width: 100%;"
+                            aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <!-- <div class="kt-widget24__action">
+                        <span class="kt-widget24__change">
+                            <div class="status-title">
+                                {{selectedDateRange[0] | momentFormat: 'L'}} -
+                                {{selectedDateRange[1] | momentFormat: 'L'}}
+                            </div>
+                        </span>
+                        <span class="kt-widget24__number">
+                        </span>
+                    </div> -->
+                    <div class="kt-portlet__head-toolbar">
+                        <div class="btn-group btn-group-devided" data-toggle="buttons">
+                            <label class="btn m-btn--pill btn-secondary"
+                                [ngClass]="{'active': selectedWarehouse ==  'A1'}"
+                                (click)="warehouseChange('A1')">
+                                <input type="radio" name="IncomeStatisticsDatePeriod" class="toggle" [value]="'A1'">
+                                {{"A1" | localize}}
+                            </label>
+                            <label class="btn m-btn--pill btn-secondary"
+                                [ngClass]="{'active': selectedWarehouse ==  'A2'}"
+                                (click)="warehouseChange('A2')">
+                                <input type="radio" name="IncomeStatisticsDatePeriod" class="toggle" [value]="'A2'">
+                                {{"A2" | localize}}
+                            </label>
+                            <label class="btn m-btn--pill btn-secondary"
+                                [ngClass]="{'active': selectedWarehouse ==  'B1'}"
+                                (click)="warehouseChange('B1')">
+                                <input type="radio" name="IncomeStatisticsDatePeriod" class="toggle" [value]="'B1'">
+                                {{"B1" | localize}}
+                            </label>
+                            <label class="btn m-btn--pill btn-secondary"
+                                [ngClass]="{'active': selectedWarehouse ==  'C1'}"
+                                (click)="warehouseChange('C1')">
+                                <input type="radio" name="IncomeStatisticsDatePeriod" class="toggle"[value]="'C1'">
+                                {{"C1" | localize}}
+                            </label>
+                            <label class="btn m-btn--pill btn-secondary"
+                                [ngClass]="{'active': selectedWarehouse ==  'C2'}"
+                                (click)="warehouseChange('C2')">
+                                <input type="radio" name="IncomeStatisticsDatePeriod" class="toggle"[value]="'C2'">
+                                {{"C2" | localize}}
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- <div class="col-md-12 col-lg-6 col-xl-3">

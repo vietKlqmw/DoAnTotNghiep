@@ -14123,10 +14123,13 @@ export class ProdOthersServiceProxy {
     }
 
     /**
+     * @param warehouse (optional) 
      * @return Success
      */
-    getDataForDashboardTop(): Observable<GetDataDashboardTop> {
-        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetDataForDashboardTop";
+    getDataForDashboardTop(warehouse: string | null | undefined): Observable<GetDataDashboardTop> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetDataForDashboardTop?";
+        if (warehouse !== undefined)
+            url_ += "warehouse=" + encodeURIComponent("" + warehouse) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -14287,6 +14290,64 @@ export class ProdOthersServiceProxy {
             }));
         }
         return _observableOf<ProdInvoiceStockOutDto[]>(<any>null);
+    }
+
+    /**
+     * @param type (optional) 
+     * @return Success
+     */
+    getDataForDashboardQtyOut(type: string | null | undefined): Observable<GetDataDashboardQtyOut[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetDataForDashboardQtyOut?";
+        if (type !== undefined)
+            url_ += "type=" + encodeURIComponent("" + type) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDataForDashboardQtyOut(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDataForDashboardQtyOut(<any>response_);
+                } catch (e) {
+                    return <Observable<GetDataDashboardQtyOut[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetDataDashboardQtyOut[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDataForDashboardQtyOut(response: HttpResponseBase): Observable<GetDataDashboardQtyOut[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetDataDashboardQtyOut.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetDataDashboardQtyOut[]>(<any>null);
     }
 
     /**
@@ -32147,6 +32208,7 @@ export class GetDataDashboardTop implements IGetDataDashboardTop {
     newCont!: number | undefined;
     contOnPort!: number | undefined;
     totalAmountInvoice!: number | undefined;
+    inventory!: number | undefined;
 
     constructor(data?: IGetDataDashboardTop) {
         if (data) {
@@ -32162,6 +32224,7 @@ export class GetDataDashboardTop implements IGetDataDashboardTop {
             this.newCont = _data["newCont"];
             this.contOnPort = _data["contOnPort"];
             this.totalAmountInvoice = _data["totalAmountInvoice"];
+            this.inventory = _data["inventory"];
         }
     }
 
@@ -32177,6 +32240,7 @@ export class GetDataDashboardTop implements IGetDataDashboardTop {
         data["newCont"] = this.newCont;
         data["contOnPort"] = this.contOnPort;
         data["totalAmountInvoice"] = this.totalAmountInvoice;
+        data["inventory"] = this.inventory;
         return data; 
     }
 }
@@ -32185,6 +32249,7 @@ export interface IGetDataDashboardTop {
     newCont: number | undefined;
     contOnPort: number | undefined;
     totalAmountInvoice: number | undefined;
+    inventory: number | undefined;
 }
 
 export class GetDataDashboardNewContToWarehouse implements IGetDataDashboardNewContToWarehouse {
@@ -32225,6 +32290,46 @@ export class GetDataDashboardNewContToWarehouse implements IGetDataDashboardNewC
 export interface IGetDataDashboardNewContToWarehouse {
     containerNo: string | undefined;
     receiveDate: moment.Moment | undefined;
+}
+
+export class GetDataDashboardQtyOut implements IGetDataDashboardQtyOut {
+    label!: string | undefined;
+    qtyOut!: number | undefined;
+
+    constructor(data?: IGetDataDashboardQtyOut) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.qtyOut = _data["qtyOut"];
+        }
+    }
+
+    static fromJS(data: any): GetDataDashboardQtyOut {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetDataDashboardQtyOut();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["qtyOut"] = this.qtyOut;
+        return data; 
+    }
+}
+
+export interface IGetDataDashboardQtyOut {
+    label: string | undefined;
+    qtyOut: number | undefined;
 }
 
 export class ProdShipmentDto implements IProdShipmentDto {

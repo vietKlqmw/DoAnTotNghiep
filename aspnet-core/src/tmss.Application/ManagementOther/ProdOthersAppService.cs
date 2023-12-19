@@ -178,11 +178,11 @@ namespace tmss.ManagementOther
             return listResult;
         }
 
-        public async Task<GetDataDashboardTop> GetDataForDashboardTop()
+        public async Task<GetDataDashboardTop> GetDataForDashboardTop(string warehouse)
         {
-            string _sql = "Exec INV_PROD_DASHBOARD_TOP";
+            string _sql = "Exec INV_PROD_DASHBOARD_TOP @p_Warehouse";
 
-            return (await _dapperRepo.QueryAsync<GetDataDashboardTop>(_sql)).FirstOrDefault();
+            return (await _dapperRepo.QueryAsync<GetDataDashboardTop>(_sql, new { p_Warehouse = warehouse })).FirstOrDefault();
         }
 
         public async Task<List<GetDataDashboardNewContToWarehouse>> GetDataForDashboardNewContToWarehouse(string warehouse)
@@ -204,6 +204,18 @@ namespace tmss.ManagementOther
             IEnumerable<ProdInvoiceStockOutDto> result = await _dapperRepo.QueryAsync<ProdInvoiceStockOutDto>(_sql, new
             {
                 p_Warehouse = warehouse
+            });
+
+            return result.ToList();
+        }
+
+        public async Task<List<GetDataDashboardQtyOut>> GetDataForDashboardQtyOut(string type)
+        {
+            string _sql = "Exec INV_PROD_DASHBOARD_QTY_OUT @p_Type";
+
+            IEnumerable<GetDataDashboardQtyOut> result = await _dapperRepo.QueryAsync<GetDataDashboardQtyOut>(_sql, new
+            {
+                p_Type = type
             });
 
             return result.ToList();

@@ -22,23 +22,16 @@
                         {{"Cfc" | localize}}
                     </label>
                     <label class="btn m-btn--pill btn-secondary"
-                        [ngClass]="{'active': selectedType ==  'Warehouse'}"
-                        (click)="typeChange('Warehouse')">
-                        <input type="radio" name="IncomeStatisticsDatePeriod" class="toggle" [value]="'Warehouse'">
+                        [ngClass]="{'active': selectedType ==  'Wh'}"
+                        (click)="typeChange('Wh')">
+                        <input type="radio" name="IncomeStatisticsDatePeriod" class="toggle" [value]="'Wh'">
                         {{"Warehouse" | localize}}
                     </label>
-                    <select id="HasException" name="HasException" class="form-control" style="width: 65px;" *ngIf="isWarehouse">
-                        <option value="A1">{{"A1" | localize}}</option>
-                        <option value="A2">{{"A2" | localize}}</option>
-                        <option value="B1">{{"B1" | localize}}</option>
-                        <option value="C1">{{"C1" | localize}}</option>
-                        <option value="C2">{{"C2" | localize}}</option>
-                    </select>
                 </div>
             </div>
         </div>
         <div class="kt-portlet__body" [perfectScrollbar]>
-            <ngx-charts-pie-chart  [results]="editionStatisticsData"
+            <ngx-charts-pie-chart *ngIf="editionStatisticsHasData" [results]="editionStatisticsData"
                 [legend]="true" [doughnut]="true" [arcWidth]="0.75" [labels]="true" [explodeSlices]="true">
             </ngx-charts-pie-chart>
             <div class="note note-info text-center chart" [hidden]="editionStatisticsHasData">

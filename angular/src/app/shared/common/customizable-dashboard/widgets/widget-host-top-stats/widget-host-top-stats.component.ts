@@ -14,6 +14,7 @@ export class WidgetHostTopStatsComponent extends WidgetComponentBase implements 
     loading = true;
     //topStatsData: TopStatsData;
     topStatsData: GetDataDashboardTop;
+    selectedWarehouse = 'A1';
 
     constructor(
         injector: Injector,
@@ -34,7 +35,7 @@ export class WidgetHostTopStatsComponent extends WidgetComponentBase implements 
         //     this.topStatsData = data;
         //     this.loading = false;
         // });
-        this._other.getDataForDashboardTop().subscribe((data) => {
+        this._other.getDataForDashboardTop(this.selectedWarehouse).subscribe((data) => {
             this.topStatsData = data;
             this.loading = false;
         });
@@ -48,6 +49,15 @@ export class WidgetHostTopStatsComponent extends WidgetComponentBase implements 
         this.selectedDateRange[0] = dateRange[0];
         this.selectedDateRange[1] = dateRange[1];
         this.runDelayed(this.loadHostTopStatsData);
+    }
+
+    warehouseChange(interval) {
+        if (this.selectedWarehouse === interval) {
+            return;
+        }
+
+        this.selectedWarehouse = interval;
+        this.loadHostTopStatsData();
     }
 
     subDateRangeFilter() {

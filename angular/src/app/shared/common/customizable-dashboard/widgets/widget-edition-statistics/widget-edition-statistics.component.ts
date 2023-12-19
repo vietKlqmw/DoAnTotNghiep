@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild, Injector, OnDestroy } from '@angular/core';
-import { HostDashboardServiceProxy, GetEditionTenantStatisticsOutput } from '@shared/service-proxies/service-proxies';
+import { HostDashboardServiceProxy, GetEditionTenantStatisticsOutput, ProdOthersServiceProxy, GetDataDashboardQtyOut } from '@shared/service-proxies/service-proxies';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { WidgetComponentBase } from '../widget-component-base';
@@ -18,11 +18,11 @@ export class WidgetEditionStatisticsComponent extends WidgetComponentBase implem
     editionStatisticsHasData = false;
     editionStatisticsData;
     selectedType = 'Cfc';
-    isWarehouse: boolean = false;
 
     constructor(
         injector: Injector,
-        private _hostDashboardServiceProxy: HostDashboardServiceProxy) {
+        private _hostDashboardServiceProxy: HostDashboardServiceProxy,
+        private _other: ProdOthersServiceProxy) {
         super(injector);
     }
 
@@ -32,24 +32,46 @@ export class WidgetEditionStatisticsComponent extends WidgetComponentBase implem
     }
 
     showChart = () => {
-        this._hostDashboardServiceProxy.getEditionTenantStatistics(this.selectedDateRange[0], this.selectedDateRange[1])
+        // this._hostDashboardServiceProxy.getEditionTenantStatistics(this.selectedDateRange[0], this.selectedDateRange[1])
+        //     .subscribe((editionTenantStatistics) => {
+        //         this.editionStatisticsData = this.normalizeEditionStatisticsData(editionTenantStatistics);
+        //         this.editionStatisticsHasData = _.filter(this.editionStatisticsData, data => data.value > 0).length > 0;
+        //     });
+        this._other.getDataForDashboardQtyOut(this.selectedType)
             .subscribe((editionTenantStatistics) => {
                 this.editionStatisticsData = this.normalizeEditionStatisticsData(editionTenantStatistics);
                 this.editionStatisticsHasData = _.filter(this.editionStatisticsData, data => data.value > 0).length > 0;
             });
     }
 
-    normalizeEditionStatisticsData(data: GetEditionTenantStatisticsOutput): Array<any> {
-        // if (!data || !data.editionStatistics || data.editionStatistics.length === 0) {
-        //   return [];
-        // }
+    // normalizeEditionStatisticsData(data: GetEditionTenantStatisticsOutput): Array<any> {
+    //     if (!data || !data.editionStatistics || data.editionStatistics.length === 0) {
+    //         return [];
+    //     }
 
-        const chartData = new Array(5);
+    //     const chartData = new Array(data.editionStatistics.length);
 
-        for (let i = 0; i < 5; i++) {
+    //     for (let i = 0; i < data.editionStatistics.length; i++) {
+    //         chartData[i] = {
+    //             name: data.editionStatistics[i].label,
+    //             value: data.editionStatistics[i].value
+    //         };
+    //     }
+
+    //     return chartData;
+    // }
+
+    normalizeEditionStatisticsData(data: GetDataDashboardQtyOut[]): Array<any> {
+        if (!data || data.length === 0) {
+            return [];
+        }
+
+        const chartData = new Array(data.length);
+
+        for (let i = 0; i < data.length; i++) {
             chartData[i] = {
-                name: 'abc/' + i,
-                value: (i + 1) * 10
+                name: data[i].label,
+                value: data[i].qtyOut
             };
         }
 
@@ -70,9 +92,6 @@ export class WidgetEditionStatisticsComponent extends WidgetComponentBase implem
         if (this.selectedType === interval) {
             return;
         }
-
-        if(interval == 'Warehouse') this.isWarehouse = true;
-        else this.isWarehouse = false;
 
         this.selectedType = interval;
         this.showChart();
