@@ -232,15 +232,15 @@ body{
     /*  flex: 1;  --> không mở */
 }
 
-.form-group .input-group .input-search .form-control {
-    font-size: 1rem;
+.form-group .input-group .form-control {
+    /* font-size: 1rem; */
     padding: 0.15rem 0.3rem;
-    line-height: 1.5;
+    /* line-height: 1.5;
     height: 24.44px;
     border: 1px solid #ced4da;
     border-radius: 0px;
     font-weight: 500;
-    margin-bottom: 0px;
+    margin-bottom: 0px; */
 }
 
 .form-group .input-group .input-search .form-control:focus {
