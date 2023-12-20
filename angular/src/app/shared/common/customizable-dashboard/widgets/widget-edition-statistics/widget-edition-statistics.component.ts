@@ -18,6 +18,7 @@ export class WidgetEditionStatisticsComponent extends WidgetComponentBase implem
     editionStatisticsHasData = false;
     editionStatisticsData;
     selectedType = 'Cfc';
+    type = 'IN';
 
     constructor(
         injector: Injector,
@@ -37,7 +38,7 @@ export class WidgetEditionStatisticsComponent extends WidgetComponentBase implem
         //         this.editionStatisticsData = this.normalizeEditionStatisticsData(editionTenantStatistics);
         //         this.editionStatisticsHasData = _.filter(this.editionStatisticsData, data => data.value > 0).length > 0;
         //     });
-        this._other.getDataForDashboardQtyOut(this.selectedType)
+        this._other.getDataForDashboardQtyOut(this.selectedType, this.type, moment(this.selectedDateRange[0]), moment(this.selectedDateRange[1]))
             .subscribe((editionTenantStatistics) => {
                 this.editionStatisticsData = this.normalizeEditionStatisticsData(editionTenantStatistics);
                 this.editionStatisticsHasData = _.filter(this.editionStatisticsData, data => data.value > 0).length > 0;
@@ -94,6 +95,11 @@ export class WidgetEditionStatisticsComponent extends WidgetComponentBase implem
         }
 
         this.selectedType = interval;
+        this.showChart();
+    }
+
+    changeType(type) {
+        this.type = type;
         this.showChart();
     }
 

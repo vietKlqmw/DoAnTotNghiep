@@ -1930,22 +1930,53 @@ INNER JOIN ProdStockReceiving psr ON psr.InvoiceNoOut LIKE CONCAT(piso.InvoiceNo
 END
 ------------------------------------------------QtyOut
 CREATE OR ALTER PROCEDURE INV_PROD_DASHBOARD_QTY_OUT
-    @p_Type NVARCHAR(3)
+    @p_Type NVARCHAR(3),
+    @p_InOrOut NVARCHAR(3),
+    @p_DateFrom DATE,
+    @p_DateTo DATE
 AS
 BEGIN
-    IF @p_Type = 'Cfc'
+    IF @p_InOrOut = 'OUT'
     BEGIN
-        SELECT piso.ListCfc Label, SUM(piso.TotalOrderQty) QtyOut
-          FROM ProdInvoiceStockOut piso 
-         WHERE piso.InvoiceDate IS NOT NULL 
-      GROUP BY piso.ListCfc
+        IF @p_Type = 'Cfc'
+        BEGIN
+            SELECT piso.ListCfc Label, SUM(piso.TotalOrderQty) QtyOut
+              FROM ProdInvoiceStockOut piso 
+             WHERE piso.InvoiceDate IS NOT NULL 
+               AND piso.InvoiceDate >= @p_DateFrom
+               AND piso.InvoiceDate <= @p_DateTo
+          GROUP BY piso.ListCfc
+        END
+        ELSE 
+        BEGIN
+            SELECT SUBSTRING(piso.GoodsDeliveryNoteNo, 1, 2) Label, SUM(piso.TotalOrderQty) QtyOut
+              FROM ProdInvoiceStockOut piso 
+             WHERE piso.InvoiceDate IS NOT NULL 
+               AND piso.InvoiceDate >= @p_DateFrom
+               AND piso.InvoiceDate <= @p_DateTo
+          GROUP BY SUBSTRING(piso.GoodsDeliveryNoteNo, 1, 2)
+        END
     END
-    ELSE 
+    ELSE
     BEGIN
-        SELECT SUBSTRING(piso.GoodsDeliveryNoteNo, 1, 2) Label, SUM(piso.TotalOrderQty) QtyOut
-          FROM ProdInvoiceStockOut piso 
-         WHERE piso.InvoiceDate IS NOT NULL 
-      GROUP BY SUBSTRING(piso.GoodsDeliveryNoteNo, 1, 2)
+        IF @p_Type = 'Cfc'
+        BEGIN
+            SELECT psr.Model Label, SUM(psr.ActualQty) QtyOut
+              FROM ProdStockReceiving psr
+        INNER JOIN ProdContainerRentalWHPlan pcl on psr.ContainerNo = pcl.ContainerNo
+             WHERE pcl.ReceiveDate >= @p_DateFrom
+               AND pcl.ReceiveDate <= @p_DateTo
+          GROUP BY psr.Model
+        END
+        ELSE 
+        BEGIN
+            SELECT psr.Warehouse Label, SUM(psr.ActualQty) QtyOut
+              FROM ProdStockReceiving psr
+        INNER JOIN ProdContainerRentalWHPlan pcl on psr.ContainerNo = pcl.ContainerNo
+             WHERE pcl.ReceiveDate >= @p_DateFrom
+               AND pcl.ReceiveDate <= @p_DateTo
+             GROUP BY psr.Warehouse
+        END
     END
 END
 ------------------------------------------------INVOICE_STATISTICS

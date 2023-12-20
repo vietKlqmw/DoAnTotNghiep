@@ -82,6 +82,15 @@ namespace tmss.ManagementOther
         public virtual int? QtyOut { get; set; }
     }
 
+    public class GetDataDashboardQtyOutInput
+    {
+        public virtual string Type { get; set; }
+        public virtual string InOrOut { get; set; }
+        public virtual DateTime? DateFrom { get; set; }
+        public virtual DateTime? DateTo { get; set; }
+
+    }
+
     public class GetDataDashboardNewContToWarehouse
     {
         public virtual string ContainerNo { get; set; }

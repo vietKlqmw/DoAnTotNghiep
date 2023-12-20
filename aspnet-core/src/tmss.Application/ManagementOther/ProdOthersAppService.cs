@@ -209,13 +209,16 @@ namespace tmss.ManagementOther
             return result.ToList();
         }
 
-        public async Task<List<GetDataDashboardQtyOut>> GetDataForDashboardQtyOut(string type)
+        public async Task<List<GetDataDashboardQtyOut>> GetDataForDashboardQtyOut(GetDataDashboardQtyOutInput input)
         {
-            string _sql = "Exec INV_PROD_DASHBOARD_QTY_OUT @p_Type";
+            string _sql = "Exec INV_PROD_DASHBOARD_QTY_OUT @p_Type, @p_InOrOut, @p_DateFrom, @p_DateTo";
 
             IEnumerable<GetDataDashboardQtyOut> result = await _dapperRepo.QueryAsync<GetDataDashboardQtyOut>(_sql, new
             {
-                p_Type = type
+                p_Type = input.Type,
+                p_InOrOut = input.InOrOut,
+                p_DateFrom = input.DateFrom,
+                p_DateTo = input.DateTo
             });
 
             return result.ToList();

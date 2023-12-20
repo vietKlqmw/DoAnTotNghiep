@@ -14294,12 +14294,21 @@ export class ProdOthersServiceProxy {
 
     /**
      * @param type (optional) 
+     * @param inOrOut (optional) 
+     * @param dateFrom (optional) 
+     * @param dateTo (optional) 
      * @return Success
      */
-    getDataForDashboardQtyOut(type: string | null | undefined): Observable<GetDataDashboardQtyOut[]> {
+    getDataForDashboardQtyOut(type: string | null | undefined, inOrOut: string | null | undefined, dateFrom: moment.Moment | null | undefined, dateTo: moment.Moment | null | undefined): Observable<GetDataDashboardQtyOut[]> {
         let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetDataForDashboardQtyOut?";
         if (type !== undefined)
-            url_ += "type=" + encodeURIComponent("" + type) + "&"; 
+            url_ += "Type=" + encodeURIComponent("" + type) + "&"; 
+        if (inOrOut !== undefined)
+            url_ += "InOrOut=" + encodeURIComponent("" + inOrOut) + "&"; 
+        if (dateFrom !== undefined)
+            url_ += "DateFrom=" + encodeURIComponent(dateFrom ? "" + dateFrom.toJSON() : "") + "&"; 
+        if (dateTo !== undefined)
+            url_ += "DateTo=" + encodeURIComponent(dateTo ? "" + dateTo.toJSON() : "") + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
