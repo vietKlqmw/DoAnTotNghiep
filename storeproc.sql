@@ -762,6 +762,15 @@ BEGIN
        AND a.IsDeleted = 0
 	ORDER BY a.ShippingDate DESC, a.PortDate DESC
 END
+------------------------------------------------listcont2:
+CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_CONT_IN_SHIPMENT
+    @p_ShipmentId INT
+AS
+BEGIN
+    SELECT STRING_AGG(pci.Id, ',') ListCont 
+      FROM ProdContainerIntransit pci 
+     WHERE pci.ShipmentId = @p_ShipmentId
+END
 ------------------------------------------------BillOfLading------------------------------------------------
 ------------------------------------------------Search:
 CREATE OR ALTER PROCEDURE INV_PROD_BILL_OF_LADING_SEARCH
@@ -771,7 +780,7 @@ CREATE OR ALTER PROCEDURE INV_PROD_BILL_OF_LADING_SEARCH
     @p_BillDateTo DATE
 )
 AS 
-    SELECT DISTINCT b.Id, b.BillofladingNo, b.ShipmentId, b.BillDate, ps.ShipmentNo, b.StatusCode
+    SELECT DISTINCT b.Id, b.BillofladingNo, b.ShipmentId, b.BillDate, ps.ShipmentNo, b.StatusCode, ps.ShipmentDate
       FROM ProdBillOfLading b 
 INNER JOIN ProdShipment ps
         ON b.ShipmentId = ps.Id

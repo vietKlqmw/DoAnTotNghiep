@@ -10,6 +10,7 @@ using tmss.Master.Material;
 using tmss.MaterialManagement.ContainerIntransit;
 using tmss.MaterialManagement.Invoice;
 using tmss.MaterialManagement.InvoiceStock;
+using tmss.MaterialManagement.Shipment;
 using tmss.MaterialManagement.StockReceiving;
 
 namespace tmss.ManagementOther
@@ -238,6 +239,14 @@ namespace tmss.ManagementOther
             return result.ToList();
         }
 
+        public async Task<string> GetListContWhenEditShipment(int? shipmentId)
+        {
+            string _sql = "Exec INV_PROD_GET_LIST_CONT_IN_SHIPMENT @p_ShipmentId";
+
+            var res = (await _dapperRepo.QueryAsync<ProdShipmentDto>(_sql, new { p_ShipmentId = shipmentId })).FirstOrDefault();
+
+            return res.ListCont;
+        }
 
 
         //excel to pdf

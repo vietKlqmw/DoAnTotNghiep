@@ -243,6 +243,10 @@ body{
     margin-bottom: 0px; */
 }
 
+.modal-body .input-group .form-control {
+    padding: 0.15rem 0.3rem;
+}
+
 .form-group .input-group .input-search .form-control:focus {
     color: var(--kt-input-focus-color);
     background-color: var(--kt-input-focus-bg);

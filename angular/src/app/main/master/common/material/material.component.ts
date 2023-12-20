@@ -112,12 +112,12 @@ export class MaterialComponent extends AppComponentBase implements OnInit {
                 field: 'baseUnitOfMeasure',
                 flex: 1
             },
-            {
-                headerName: this.l('Production Type'),
-                headerTooltip: this.l('Production Type'),
-                field: 'productionType',
-                flex: 1
-            },
+            // {
+            //     headerName: this.l('Production Type'),
+            //     headerTooltip: this.l('Production Type'),
+            //     field: 'productionType',
+            //     flex: 1
+            // },
             {
                 headerName: this.l('Standard Price'),
                 headerTooltip: this.l('Standard Price'),
@@ -134,13 +134,13 @@ export class MaterialComponent extends AppComponentBase implements OnInit {
                 type: 'rightAligned',
                 cellRenderer: (params) => (params.data?.movingPrice != null ? this._fm.formatMoney_decimal(params.data?.movingPrice) : 0)
             },
-            {
-                headerName: this.l('Material Origin'),
-                headerTooltip: this.l('Material Origin'),
-                field: 'materialOrigin',
-                cellClass: ['text-center'],
-                flex: 1
-            },
+            // {
+            //     headerName: this.l('Material Origin'),
+            //     headerTooltip: this.l('Material Origin'),
+            //     field: 'materialOrigin',
+            //     cellClass: ['text-center'],
+            //     flex: 1
+            // },
             {
                 headerName: this.l('Effective Date From'),
                 headerTooltip: this.l('Effective Date From'),

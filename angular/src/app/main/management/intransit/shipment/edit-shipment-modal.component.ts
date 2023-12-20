@@ -140,6 +140,14 @@ export class EditShipmentModalComponent extends AppComponentBase {
 
         if (type != 'Edit') this.rowData.shipmentNo = 'S' + formatDate(new Date(), 'HH', 'en-US') + 'H' + formatDate(new Date(), 'mm', 'en-US') + 'I' + formatDate(new Date(), 'ss', 'en-US') + 'P' + formatDate(new Date(), 'yyMMdd', 'en-US');
 
+        if (type == 'Edit') {
+            this._other.getListContWhenEditShipment(this.rowData.id).subscribe(res => {
+                this.listCont = res;
+            })
+        } else {
+            this.listCont = '';
+        }
+
         setTimeout(() => {
             this.modal.show();
         }, 300)
@@ -150,7 +158,7 @@ export class EditShipmentModalComponent extends AppComponentBase {
         this.rowData.etd = this._etd ? moment(this._etd) : undefined;
         this.rowData.eta = this._eta ? moment(this._eta) : undefined;
         this.rowData.forwarder = this._forwarder;
-        this.rowData.listCont = this.listCont;        
+        this.rowData.listCont = this.listCont;
 
         if (this.rowData.supplierNo == null) {
             this.notify.warn('SupplierNo is Required!');

@@ -6,6 +6,7 @@ import { finalize } from "rxjs/operators";
 import { BsDatepickerDirective } from "ngx-bootstrap/datepicker";
 import * as moment from 'moment';
 import { BillofladingComponent } from "./billoflading.component";
+import { formatDate } from "@angular/common";
 
 @Component({
     selector: 'editModal',
@@ -29,6 +30,7 @@ export class EditBillOfLadingModalComponent extends AppComponentBase {
         { value: 'PENDING', label: "PENDING" },
         { value: 'PAID', label: "PAID" }
     ];
+    _shipmentDate: any;
 
     constructor(
         private injector: Injector,
@@ -50,10 +52,20 @@ export class EditBillOfLadingModalComponent extends AppComponentBase {
 
         this._status = this.rowData.statusCode == 'NEW' ? 'PAID' : this.rowData.statusCode;
 
+        this._shipmentDate = formatDate(this.rowData.shipmentDate?.toString(), 'dd/MM/yyyy', 'en-US');
+
         this.modal.show();
     }
 
     save(): void {
+        if(this._status == 'PAID' && (this._billDate == undefined || this._billDate == null)){
+            this.notify.warn('Bill Date is Required!');
+            return;
+        }
+        if(this._billDate != undefined && this.rowData.shipmentDate > this._billDate){
+            this.notify.warn('BillDate cannot be less than ShipmentDate!');
+            return;
+        }
         this.rowData.billDate = this._billDate ? moment(this._billDate) : undefined;
         this.rowData.statusCode = this._status;
         this.saving = true;

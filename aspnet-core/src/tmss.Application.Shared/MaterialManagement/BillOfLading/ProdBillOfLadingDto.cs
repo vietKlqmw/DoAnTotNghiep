@@ -15,6 +15,8 @@ namespace tmss.MaterialManagement.BillOfLading
 
         public virtual string ShipmentNo { get; set; }
 
+        public virtual DateTime? ShipmentDate { get; set; }
+
         //for view 
         public virtual string Forwarder { get; set; }
         public virtual string SupplierNo { get; set; }
