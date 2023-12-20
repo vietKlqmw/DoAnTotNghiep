@@ -221,6 +221,20 @@ namespace tmss.ManagementOther
             return result.ToList();
         }
 
+        public async Task<List<GetDataDashboardInvoiceStatistics>> GetDataForDashboardInvoiceStatistics(DateTime? DateFrom, DateTime? DateTo, string type)
+        {
+            string _sql = "Exec INV_PROD_DASHBOARD_INVOICE_STATISTICS @p_DateFrom, @p_DateTo, @p_Type";
+
+            IEnumerable<GetDataDashboardInvoiceStatistics> result = await _dapperRepo.QueryAsync<GetDataDashboardInvoiceStatistics>(_sql, new
+            {
+                p_DateFrom = DateFrom,
+                p_DateTo = DateTo,
+                p_Type = type
+            });
+
+            return result.ToList();
+        }
+
 
 
         //excel to pdf

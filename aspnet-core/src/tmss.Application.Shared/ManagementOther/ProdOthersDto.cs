@@ -88,6 +88,17 @@ namespace tmss.ManagementOther
         public virtual DateTime? ReceiveDate { get; set; }
     }
 
+    public class GetDataDashboardInvoiceStatistics
+    {
+        public virtual string Warehouse { get; set; }
+        public virtual decimal? Cif { get; set; }
+        public virtual decimal? Tax { get; set; }
+        public virtual decimal? Vat { get; set; }
+        public virtual decimal? AmountOut { get; set; }
+        public virtual DateTime? InvoiceDate { get; set; }
+
+    }
+
     public class GoodsReceivedNoteExportInput
     {
         public virtual string ContId { get; set; }

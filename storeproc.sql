@@ -1948,6 +1948,36 @@ BEGIN
       GROUP BY SUBSTRING(piso.GoodsDeliveryNoteNo, 1, 2)
     END
 END
+------------------------------------------------INVOICE_STATISTICS
+CREATE OR ALTER PROCEDURE INV_PROD_DASHBOARD_INVOICE_STATISTICS
+    @p_DateFrom DATE,
+    @p_DateTo DATE,
+    @p_Type NVARCHAR(3)
+AS
+BEGIN
+    IF @p_Type = 'IN'
+    BEGIN
+        SELECT pcrw.Warehouse, pi.InvoiceDate, SUM(pid.Cif) Cif, SUM(pid.Tax) Tax, SUM(pid.Vat) Vat
+          FROM ProdInvoiceDetails pid
+    INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
+    INNER JOIN ProdContainerRentalWHPlan pcrw ON pid.ContainerNo = pcrw.ContainerNo
+         WHERE pi.InvoiceDate >= @p_DateFrom AND pi.InvoiceDate <= @p_DateTo
+      GROUP BY pcrw.Warehouse, pi.InvoiceDate
+      ORDER BY pi.InvoiceDate
+    END
+    ELSE
+    BEGIN
+        SELECT SUBSTRING(piso.GoodsDeliveryNoteNo, 1, 2) Warehouse, piso.InvoiceDate, SUM(piso.TotalAmount) AmountOut
+          FROM ProdInvoiceStockOut piso
+    INNER JOIN ProdStockReceiving psr 
+            ON psr.InvoiceNoOut LIKE CONCAT(piso.InvoiceNoOut, '%')
+         WHERE piso.InvoiceDate IS NOT NULL 
+           AND piso.InvoiceDate >= @p_DateFrom 
+           AND piso.InvoiceDate <= @p_DateTo
+      GROUP BY SUBSTRING(piso.GoodsDeliveryNoteNo, 1, 2), piso.InvoiceDate
+      ORDER BY piso.InvoiceDate
+    END
+END
 ------------------------------------------------Other(s)------------------------------------------------
 CREATE TABLE ProcessLog (
   ID BIGINT IDENTITY
