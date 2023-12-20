@@ -9,7 +9,8 @@
                         <!-- {{selectedDateRange[0] | momentFormat: 'L'}} -
                         {{selectedDateRange[1] | momentFormat: 'L'}} -->
                         <input class="form-control" id="StartEndRange" name="StartEndRange" style="height: 15px;" (dateChange)="onDateRangeFilterChange($event)"
-                            #drp="bsDaterangepicker" bsDaterangepicker dateRangePickerMomentModifier [(date)]="selectedDateRange" />
+                            #drp="bsDaterangepicker" bsDaterangepicker dateRangePickerMomentModifier [(date)]="selectedDateRange"
+                            [bsConfig]="{isAnimated: true}"/>
                     </span>
                 </small>
             </h3>
@@ -22,14 +23,14 @@
                     <input type="radio" name="IncomeStatistics" class="toggle"
                         [value]="'IN'">{{"IN" | localize}}
                 </label>
-                <label class="btn m-btn--pill btn-secondary mr-3"
+                <label class="btn m-btn--pill btn-secondary"
                     [ngClass]="{'active': type == 'OUT'}"
                     (click)="changeType('OUT')">
                     <input type="radio" name="IncomeStatistics" class="toggle"
                         [value]="'OUT'">{{"OUT" | localize}}
                 </label>
 
-                <label class="btn m-btn--pill btn-secondary"
+                <!-- <label class="btn m-btn--pill btn-secondary"
                     [ngClass]="{'active': selectedIncomeStatisticsDateInterval ==  appIncomeStatisticsDateInterval.Daily}"
                     (click)="incomeStatisticsDateIntervalChange(appIncomeStatisticsDateInterval.Daily)">
                     <input type="radio" name="IncomeStatisticsDatePeriod" class="toggle"
@@ -49,7 +50,7 @@
                     <input type="radio" name="IncomeStatisticsDatePeriod" class="toggle"
                         [value]="appIncomeStatisticsDateInterval.Monthly">
                     {{"Monthly" | localize}}
-                </label>
+                </label> -->
             </div>
         </div>
     </div>
