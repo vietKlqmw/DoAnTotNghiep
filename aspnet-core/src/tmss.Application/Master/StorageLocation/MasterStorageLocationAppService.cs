@@ -60,5 +60,14 @@ namespace tmss.Master.StorageLocation
 
             return _excelExporter.ExportToFile(exportToExcel);
         }
+
+        public async Task DeleteWH(int? WHId)
+        {
+            string _sql = "UPDATE MasterStorageLocation SET IsDeleted = 1 WHERE Id = @p_WHId";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_WHId = WHId
+            });
+        }
     }
 }

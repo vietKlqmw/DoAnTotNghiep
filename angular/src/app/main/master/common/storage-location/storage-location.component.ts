@@ -29,6 +29,7 @@ export class StorageLocationComponent extends AppComponentBase implements OnInit
         sorting: '',
         totalPage: 1,
     };
+    saveSelectedRow: MasterStorageLocationDto = new MasterStorageLocationDto();
     selectedRow: MasterStorageLocationDto = new MasterStorageLocationDto();
     datas: MasterStorageLocationDto = new MasterStorageLocationDto();
     dataParams: GridParams | undefined;
@@ -156,6 +157,11 @@ export class StorageLocationComponent extends AppComponentBase implements OnInit
             });
     }
 
+    onChangeRowSelection(params: { api: { getSelectedRows: () => MasterStorageLocationDto[] } }) {
+        this.saveSelectedRow = params.api.getSelectedRows()[0] ?? new MasterStorageLocationDto();
+        this.selectedRow = Object.assign({}, this.saveSelectedRow);
+    }
+
     exportToExcel(): void {
         this.isLoading = true;
         this._service.getStorageLocationToExcel(
@@ -168,6 +174,19 @@ export class StorageLocationComponent extends AppComponentBase implements OnInit
                 this._fileDownloadService.downloadTempFile(result);
                 this.notify.success(this.l('Download Excel Successfully'));
             });
+    }
+
+    deleteWH() {
+        this.message.confirm(this.l('Are you sure Delete?'), 'Delete Warehouse', (isConfirmed) => {
+            if (isConfirmed) {
+                this._service.deleteWH(this.saveSelectedRow.id).subscribe(() => {
+                    this.callBackDataGrid(this.dataParams!);
+                    this.notify.success(this.l('SuccessfullyDeleted'));
+                }, error => {
+                    this.notify.error(this.l('FailedDeleted'));
+                });
+            }
+        });
     }
 }
 
