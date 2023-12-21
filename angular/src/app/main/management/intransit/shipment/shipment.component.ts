@@ -104,7 +104,7 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
                 headerName: this.l('ETA'), headerTooltip: this.l('Eta'), field: 'eta', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.eta, 'dd/MM/yyyy')
             },
-            { headerName: this.l('Oceanvessel Name'), headerTooltip: this.l('Oceanvessel Name'), field: 'oceanvesselName', flex: 1 },
+            { headerName: this.l('Oceanvessel Name'), headerTooltip: this.l('Oceanvessel Name'), field: 'oceanVesselName', flex: 1 },
             {
                 headerName: this.l('ATD'), headerTooltip: this.l('Atd'), field: 'atd', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.atd, 'dd/MM/yyyy')
