@@ -12864,6 +12864,58 @@ export class ProdInvoiceServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    updateAmountInvoice(body: ProdInvoiceDetailsDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdInvoice/UpdateAmountInvoice";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateAmountInvoice(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateAmountInvoice(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateAmountInvoice(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -31573,6 +31625,78 @@ export class PagedResultDtoOfProdInvoiceDto implements IPagedResultDtoOfProdInvo
 export interface IPagedResultDtoOfProdInvoiceDto {
     totalCount: number;
     items: ProdInvoiceDto[] | undefined;
+}
+
+export class ProdInvoiceDetailsDto implements IProdInvoiceDetailsDto {
+    partNo!: string | undefined;
+    insurance!: number | undefined;
+    containerNo!: string | undefined;
+    freight!: number | undefined;
+    thc!: number | undefined;
+    tax!: number | undefined;
+    vat!: number | undefined;
+    carfamilyCode!: string | undefined;
+    keyRow!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IProdInvoiceDetailsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.partNo = _data["partNo"];
+            this.insurance = _data["insurance"];
+            this.containerNo = _data["containerNo"];
+            this.freight = _data["freight"];
+            this.thc = _data["thc"];
+            this.tax = _data["tax"];
+            this.vat = _data["vat"];
+            this.carfamilyCode = _data["carfamilyCode"];
+            this.keyRow = _data["keyRow"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): ProdInvoiceDetailsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProdInvoiceDetailsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["partNo"] = this.partNo;
+        data["insurance"] = this.insurance;
+        data["containerNo"] = this.containerNo;
+        data["freight"] = this.freight;
+        data["thc"] = this.thc;
+        data["tax"] = this.tax;
+        data["vat"] = this.vat;
+        data["carfamilyCode"] = this.carfamilyCode;
+        data["keyRow"] = this.keyRow;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IProdInvoiceDetailsDto {
+    partNo: string | undefined;
+    insurance: number | undefined;
+    containerNo: string | undefined;
+    freight: number | undefined;
+    thc: number | undefined;
+    tax: number | undefined;
+    vat: number | undefined;
+    carfamilyCode: string | undefined;
+    keyRow: string | undefined;
+    id: number | undefined;
 }
 
 export class ProdInvoiceStockOutDto implements IProdInvoiceStockOutDto {

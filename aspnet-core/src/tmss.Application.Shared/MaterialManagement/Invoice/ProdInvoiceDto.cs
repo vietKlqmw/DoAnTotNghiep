@@ -100,4 +100,21 @@ namespace tmss.MaterialManagement.Invoice
         public virtual long? InvoiceId { get; set; }
 
     }
+
+    public class ProdInvoiceDetailsDto : EntityDto<long?>
+    {
+        public virtual string PartNo { get; set; }
+        public virtual decimal? Insurance { get; set; } //Bảo hiểm
+        public virtual string ContainerNo { get; set; }
+        public virtual decimal? Freight { get; set; } // Cước vẫn chuyển
+        public virtual decimal? Thc { get; set; } //phí xếp dỡ bến
+        public virtual decimal? Tax { get; set; } //thuế
+        public virtual decimal? Vat { get; set; } //giá trị gia tăng
+        public virtual string CarfamilyCode { get; set; }
+        public virtual string KeyRow
+        {
+            get { return string.Format("{0}_{1}_{2}",ContainerNo, PartNo, CarfamilyCode); }
+            set { }
+        }
+    }
 }

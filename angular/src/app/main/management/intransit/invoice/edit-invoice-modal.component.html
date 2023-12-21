@@ -1,6 +1,6 @@
 <div appBsModal #editModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="editModal" aria-hidden="true" [config]="{backdrop: 'static'}">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog prod-small-modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
@@ -12,19 +12,16 @@
             </div>
             <div class="modal-body p-0">
                 <div class="ui-g-12 p-0">
-                    <h6 style="cursor:pointer;" class="card-header bg-card-header card-header-input mb-1"
-                        (click)="expand(1)">
-                        <i class="fa tmss-fa fa-minus mr-1" *ngIf="_expandInfo"></i>
-                        <i class="fa tmss-fa fa-plus mr-1" *ngIf="!_expandInfo"></i>
+                    <h6 class="card-header bg-card-header card-header-input mb-1">
                         {{ 'Invoice Information' }}
                     </h6>
-                    <fieldset class="fieldset-border ui-g-12 pl-0 pr-0" style="height: auto;" *ngIf="_expandInfo">
+                    <fieldset class="fieldset-border ui-g-12 pl-0 pr-0" style="height: auto;">
                         <div class="ui-g-12 ph-0">
-                            <div class="ui-g-12 ui-md-6">
+                            <div class="ui-g-12 ui-md-4">
                                 <tmss-text-input [text]="'Invoice No'" [(ngModel)]="rowData.invoiceNo"
                                     name='invoiceNo' [isReadonly]="true"></tmss-text-input>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
+                            <div class="ui-g-12 ui-md-4" *ngIf="isEdit">
                                 <div class="input-group">
                                     <span class="input-group-text left-text">Invoice Date</span>
                                     <input type='text' class="form-control tmss-form-control" name='invoiceDate'
@@ -35,100 +32,69 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="!isEdit">
+                            <div class="ui-g-12 ui-md-4" *ngIf="!isEdit">
                                 <div class="input-group">
                                     <span class="input-group-text left-text">Invoice Date</span>
                                     <input type='text' class="form-control tmss-form-control" name='invoiceDate' readonly
 						                [(ngModel)]='_invoiceDate'>
                                 </div>
                             </div>
-                            <div class="ui-g-12 ui-md-6">
+                            <div class="ui-g-12 ui-md-4">
                                 <tmss-text-input [text]="'Bill No'" [(ngModel)]="rowData.billNo"
                                     name='billNo' [isReadonly]="true"></tmss-text-input>
                             </div>
-                            <div class="ui-g-12 ui-md-6">
+                            <div class="ui-g-12 ui-md-4">
                                 <div class="input-group">
                                     <span class="input-group-text left-text">Bill Date</span>
                                     <input type='text' class="form-control tmss-form-control" name='billDate' readonly
 						                [(ngModel)]='_billDate'>
                                 </div>
                             </div>
-                            <div class="ui-g-12 ui-md-6">
+                            <div class="ui-g-12 ui-md-4">
                                 <tmss-text-input [text]="'Shipment No'" [(ngModel)]="rowData.shipmentNo"
                                     name='shipmentNo' [isReadonly]="true"></tmss-text-input>
                             </div>
-                            <div class="ui-g-12 ui-md-6">
+                            <div class="ui-g-12 ui-md-4">
                                 <tmss-text-input [text]="'Forwarder'" [(ngModel)]="rowData.forwarder" name='forwarder' [isReadonly]="true"></tmss-text-input>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="isEdit">
+                            <div class="ui-g-12 ui-md-4" *ngIf="isEdit">
                                 <tmss-combobox [items]="list" name="status" [text]="'Status'" [(ngModel)]="rowData.status"></tmss-combobox>
                             </div>
-                            <div class="ui-g-12 ui-md-6" *ngIf="!isEdit">
+                            <div class="ui-g-12 ui-md-4" *ngIf="!isEdit">
                                 <tmss-text-input [text]="'Status'" [(ngModel)]="rowData.status" name='status' [isReadonly]="true"></tmss-text-input>
                             </div>
                         </div>
                     </fieldset>
                 </div>
                 <div class="ui-g-12 p-0">
-                    <h6 style="cursor:pointer;" class="card-header bg-card-header card-header-input mb-1"
-                        (click)="expand(2)">
-                        <i class="fa tmss-fa fa-minus mr-1" *ngIf="_expandDetailsInfo"></i>
-                        <i class="fa tmss-fa fa-plus mr-1" *ngIf="!_expandDetailsInfo"></i>
+                    <h6 class="card-header bg-card-header card-header-input mb-1">
                         {{ 'Invoice Details' }}
                     </h6>
-                    <fieldset class="fieldset-border ui-g-12 pl-0 pr-0" style="height: auto;" *ngIf="_expandDetailsInfo">
+                    <fieldset class="fieldset-border ui-g-12 pl-0 pr-0" style="height: auto;">
                         <div class="ui-g-12 ph-0">
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Container No'" [(ngModel)]="rowData.containerNo"
-                                    name='containerNo' [isReadonly]="true"></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Supplier No'" [(ngModel)]="rowData.supplierNo"
-                                    name='supplierNo' [isReadonly]="true"></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Carfamily Code'" [(ngModel)]="rowData.carfamilyCode"
-                                    name='carfamilyCode' [isReadonly]="true"></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Part No'" [(ngModel)]="rowData.partNo"
-                                    name='partNo' [isReadonly]="true"></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Part Name'" [(ngModel)]="rowData.partName"
-                                    name='partName' [isReadonly]="true"></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Qty'" [(ngModel)]="rowData.usageQty"
-                                    name='usageQty' [isReadonly]="true"></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Currency'" [(ngModel)]="rowData.currency" [isReadonly]="true"
-                                    name='currency'></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Freight'" [(ngModel)]="_freight" [isReadonly]="!isEdit"
-                                    name='freight' (ngModelChange)="changeFreight($event)"></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Insurance'" [(ngModel)]="_insurance" [isReadonly]="!isEdit"
-                                    name='insurance' (ngModelChange)="changeInsurance($event)"></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'THC'" [(ngModel)]="_thc" [isReadonly]="!isEdit"
-                                    name='thc' (ngModelChange)="changeThc($event)"></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'C.I.F'" [(ngModel)]="_cif" [isReadonly]="true" name='cif'></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'TAX'" [(ngModel)]="_tax" [isReadonly]="!isEdit"
-                                    name='tax' (ngModelChange)="changeTax($event)"></tmss-text-input>
-                            </div>
-                            <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'VAT'" [(ngModel)]="_vat" [isReadonly]="!isEdit"
-                                    name='vat' (ngModelChange)="changeVat($event)"></tmss-text-input>
-                            </div>
+                            <grid-table *ngIf="isEdit"
+                                [columnDefs]="editColDefs"
+                                [paginationParams]="paginationParams"
+                                [showPagination]="false"
+                                [rowData]="data"
+                                [defaultColDef]="defaultColDef"
+                                (callBackEvent)="callBackDataGrid($event)"
+                                [frameworkComponents]="frameworkComponents"
+
+                                (cellValueChanged)="onCellValueChanged($event)"
+                                [gridOptions]="gridOptions"
+                            >
+                            </grid-table>
+                            <grid-table *ngIf="!isEdit"
+                                [columnDefs]="viewColDefs"
+                                [paginationParams]="paginationParams"
+                                [showPagination]="false"
+                                [rowData]="data"
+                                [defaultColDef]="defaultColDef"
+                                (callBackEvent)="callBackDataGrid($event)"
+                                [frameworkComponents]="frameworkComponents"
+                            >
+                            </grid-table>
                         </div>
                     </fieldset>
                 </div>

@@ -117,21 +117,28 @@ namespace tmss.MaterialManagement.Invoice
 
         public async Task EditInvoice(ProdInvoiceDto input)
         {
-            string _sql = "Exec INV_PROD_INVOICE_EDIT @p_InvoiceId, @p_InvoiceNo, @p_InvoiceDate, @p_Status, @p_Freight, " +
-                "@p_Insurance, @p_Tax, @p_Vat, @p_Thc, @p_Cif, @p_ContainerNo, @p_UserId";
+            string _sql = "Exec INV_PROD_INVOICE_EDIT @p_InvoiceId, @p_InvoiceDate, @p_Status, @p_UserId";
             await _dapperRepo.ExecuteAsync(_sql, new
             {
                 p_InvoiceId = input.Id,
-                p_InvoiceNo = input.InvoiceNo,
                 p_InvoiceDate = input.InvoiceDate,
                 p_Status = input.Status,
+                p_UserId = AbpSession.UserId
+            });
+        }
+
+        public async Task UpdateAmountInvoice(ProdInvoiceDetailsDto input)
+        {
+            string _sql = "Exec INV_PROD_INVOICE_UPDATE_AMOUNT_INVOICE @p_InvoiceDetailsId, @p_Freight, " +
+               "@p_Insurance, @p_Tax, @p_Vat, @p_Thc, @p_UserId";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_InvoiceDetailsId = input.Id,
                 p_Freight = input.Freight,
                 p_Insurance = input.Insurance,
                 p_Tax = input.Tax,
                 p_Vat = input.Vat,
                 p_Thc = input.Thc,
-                p_Cif = input.Cif,
-                p_ContainerNo = input.ContainerNo,
                 p_UserId = AbpSession.UserId
             });
         }

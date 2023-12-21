@@ -911,16 +911,8 @@ END
 CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_EDIT
 (
     @p_InvoiceId INT, 
-    @p_InvoiceNo NVARCHAR(20),
     @p_InvoiceDate DATE, 
     @p_Status NVARCHAR(50), 
-    @p_Freight DECIMAL, 
-    @p_Insurance DECIMAL, 
-    @p_Tax DECIMAL, 
-    @p_Vat DECIMAL, 
-    @p_Thc DECIMAL, 
-    @p_Cif DECIMAL, 
-    @p_ContainerNo NVARCHAR(20),
     @p_UserId BIGINT
 )
 AS
@@ -931,17 +923,6 @@ BEGIN
            InvoiceDate = @p_InvoiceDate,
            Status = @p_Status
      WHERE Id = @p_InvoiceId;
-
-    UPDATE ProdInvoiceDetails 
-       SET LastModificationTime = GETDATE(),
-           LastModifierUserId = @p_UserId,
-           Insurance = @p_Insurance,
-           Freight = @p_Freight,
-           Thc = @p_Thc, 
-           Cif = @p_Cif,
-           Tax = @p_Tax,
-           Vat = @p_Vat
-     WHERE InvoiceNo = @p_InvoiceNo AND ContainerNo = @p_ContainerNo
 END
 ------------------------------------------------GetInvoiceCustomsDeclared:
 CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_CUSTOMS_DECLARED
@@ -953,6 +934,30 @@ BEGIN
 INNER JOIN ProdBillOfLading pbol ON pi.BillId = pbol.Id
      WHERE pi.Status = 'PRE CUSTOMS'
 END
+------------------------------------------------editdetails:
+CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_UPDATE_AMOUNT_INVOICE
+(
+    @p_InvoiceDetailsId INT,
+    @p_Freight DECIMAL,
+    @p_Insurance DECIMAL,
+    @p_Tax DECIMAL, 
+    @p_Vat DECIMAL, 
+    @p_Thc DECIMAL, 
+    @p_UserId BIGINT
+)
+AS
+BEGIN
+    UPDATE ProdInvoiceDetails
+       SET LastModificationTime = GETDATE(),
+           LastModifierUserId = @p_UserId,
+           Freight = @p_Freight,
+           Insurance = @p_Insurance,
+           Tax = @p_Tax,
+           Vat = @p_Vat,
+           Thc = @p_Thc,
+           Cif = ISNULL(@p_Freight, 0) + ISNULL(@p_Insurance, 0)
+     WHERE Id = @p_InvoiceDetailsId
+END
 ------------------------------------------------InvoiceDetails------------------------------------------------
 CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_DETAILS_SEARCH
 (
@@ -960,7 +965,7 @@ CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_DETAILS_SEARCH
 )
 AS 
 BEGIN
-    SELECT a.PartNo, a.Insurance, a.ContainerNo, a.InvoiceNo, a.GrossWeight, a.Currency,  
+    SELECT a.Id, a.PartNo, a.Insurance, a.ContainerNo, a.InvoiceNo, a.GrossWeight, a.Currency,  
            a.SupplierNo, a.Freight, a.Thc, a.Cif, a.Tax, a.TaxRate, a.Vat, a.VatRate, a.UsageQty, 
            a.PartName, a.CarfamilyCode
       FROM ProdInvoiceDetails a 
