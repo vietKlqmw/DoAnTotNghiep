@@ -73,12 +73,11 @@
                         (onChangeSelection)="onChangeRowSelection($event)"
                         (rowClicked)="onRowClick($event)"
                         [frameworkComponents]="frameworkComponents"
-                        [height]="'56vh'"
+                        [height]="'55vh'"
                         >
                     </grid-table>
                 </div>
-                <hr>
-                <div class="row">
+                <div class="row mt-2">
                     <div class="col-sm-12 text-right">
                         <button type="button" class="btn btn-primary" (click)="editShipment('Add')">
                             <i class="fa fa-plus"></i> {{"Add" | localize}}</button>

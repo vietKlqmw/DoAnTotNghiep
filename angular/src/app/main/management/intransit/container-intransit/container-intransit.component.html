@@ -82,12 +82,11 @@
                         (changePaginationParams)="changePage($event)"
                         (onChangeSelection)="onChangeRowSelection($event)"
                         [frameworkComponents]="frameworkComponents"
-                        [height]="'56vh'"
+                        [height]="'55vh'"
                         >
                     </grid-table>
                 </div>
-                <hr>
-                <div class="row">
+                <div class="row mt-2">
                     <div class="col-sm-12 text-right">
                         <button type="button" class="btn btn-primary" (click)="editContIntransit('Add')">
                             <i class="fa fa-plus"></i> {{"Add" | localize}}</button>

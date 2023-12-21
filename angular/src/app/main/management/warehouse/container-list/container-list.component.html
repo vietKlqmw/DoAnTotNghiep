@@ -98,12 +98,11 @@
                         (changePaginationParams)="changePage($event)"
                         (onChangeSelection)="onChangeRowSelection($event)"
                         [frameworkComponents]="frameworkComponents"
-                        [height]="'50vh'"
+                        [height]="'51vh'"
                         >
                     </grid-table>
                 </div>
-                <hr>
-                <div class="row">
+                <div class="row mt-2">
                     <div class="col-sm-12 text-right">
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
                             <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>

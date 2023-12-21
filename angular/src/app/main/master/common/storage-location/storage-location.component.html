@@ -48,12 +48,11 @@
                         (changePaginationParams)="changePage($event)"
                         (onChangeSelection)="onChangeRowSelection($event)"
                         [frameworkComponents]="frameworkComponents"
-                        [height]="'60vh'"
+                        [height]="'56vh'"
                         >
                     </grid-table>
                 </div>
-                <hr>
-                <div class="row">
+                <div class="row mt-2">
                     <div class="col-sm-12 text-right">
                         <button type="button" class="btn btn-danger" (click)="deleteWH()" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-trash-alt"></i> {{"Delete" | localize}}</button>

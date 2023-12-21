@@ -86,14 +86,13 @@
                         (changePaginationParams)="changePage($event)"
                         (onChangeSelection)="onChangeRowSelection($event)"
                         [frameworkComponents]="frameworkComponents"
-                        [height]="'50vh'"
+                        [height]="'51vh'"
                         [rowSelection]="rowSelection"
                         (rowClicked)="onRowClick($event)"
                         >
                     </grid-table>
                 </div>
-                <hr>
-                <div class="row">
+                <div class="row mt-2">
                     <div class="col-sm-12 text-right">
                         <button type="button" class="btn btn-view" (click)="viewMaterialById()" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-regular fa-eye"></i> {{"View Material" | localize}}</button>
