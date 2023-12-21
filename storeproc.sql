@@ -1239,6 +1239,25 @@ BEGIN
        SET IsDeleted = 1
      WHERE Id = @p_Id 
 END
+------------------------------------------------History:
+CREATE OR ALTER PROCEDURE INV_PROD_HISTORY_RECEIVE
+    @p_GRN NVARCHAR(20)
+AS
+BEGIN
+    SELECT DISTINCT pcrw.GoodsReceivedNoteNo, pcrw.ReceiveDate, pcrw.Warehouse , 
+           psr.PartNo, psr.Qty, psr.ActualQty, psr.PartName, pcrw.ContainerNo,
+           pid.InvoiceNo, pcrw.SupplierNo, pi.Forwarder, pid.Freight, pid.Insurance, 
+           pid.Cif, pid.Thc, pid.Tax, pid.Vat, pid.Currency, pid.CarfamilyCode,
+           msl.AddressLanguageVn, mm.BaseUnitOfMeasure, mm.StandardPrice
+      FROM ProdContainerRentalWHPlan pcrw
+INNER JOIN ProdStockReceiving psr ON pcrw.ContainerNo = psr.ContainerNo
+INNER JOIN ProdInvoiceDetails pid ON pcrw.ContainerNo = pid.ContainerNo
+INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
+ LEFT JOIN MasterStorageLocation msl ON msl.StorageLocation = pcrw.Warehouse
+ LEFT JOIN MasterMaterial mm ON psr.MaterialId = mm.Id
+     WHERE pcrw.GoodsReceivedNoteNo = @p_GRN
+END
+
 ------------------------------------------------Import:
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_MERGE
     @Guid VARCHAR(MAX)
