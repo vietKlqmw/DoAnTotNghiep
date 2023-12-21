@@ -10590,12 +10590,13 @@ export class ProdContainerIntransitServiceProxy {
      * @param shippingDateTo (optional) 
      * @param portDateFrom (optional) 
      * @param portDateTo (optional) 
+     * @param status (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getProdContainerIntransitSearch(containerNo: string | null | undefined, shippingDateFrom: moment.Moment | null | undefined, shippingDateTo: moment.Moment | null | undefined, portDateFrom: moment.Moment | null | undefined, portDateTo: moment.Moment | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdContainerIntransitDto> {
+    getProdContainerIntransitSearch(containerNo: string | null | undefined, shippingDateFrom: moment.Moment | null | undefined, shippingDateTo: moment.Moment | null | undefined, portDateFrom: moment.Moment | null | undefined, portDateTo: moment.Moment | null | undefined, status: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdContainerIntransitDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdContainerIntransit/GetProdContainerIntransitSearch?";
         if (containerNo !== undefined)
             url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
@@ -10607,6 +10608,8 @@ export class ProdContainerIntransitServiceProxy {
             url_ += "PortDateFrom=" + encodeURIComponent(portDateFrom ? "" + portDateFrom.toJSON() : "") + "&"; 
         if (portDateTo !== undefined)
             url_ += "PortDateTo=" + encodeURIComponent(portDateTo ? "" + portDateTo.toJSON() : "") + "&"; 
+        if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&"; 
         if (sorting !== undefined)
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         if (skipCount === null)
@@ -10669,9 +10672,10 @@ export class ProdContainerIntransitServiceProxy {
      * @param shippingDateTo (optional) 
      * @param portDateFrom (optional) 
      * @param portDateTo (optional) 
+     * @param status (optional) 
      * @return Success
      */
-    getProdContainerIntransitToExcel(containerNo: string | null | undefined, shippingDateFrom: moment.Moment | null | undefined, shippingDateTo: moment.Moment | null | undefined, portDateFrom: moment.Moment | null | undefined, portDateTo: moment.Moment | null | undefined): Observable<FileDto> {
+    getProdContainerIntransitToExcel(containerNo: string | null | undefined, shippingDateFrom: moment.Moment | null | undefined, shippingDateTo: moment.Moment | null | undefined, portDateFrom: moment.Moment | null | undefined, portDateTo: moment.Moment | null | undefined, status: string | null | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdContainerIntransit/GetProdContainerIntransitToExcel?";
         if (containerNo !== undefined)
             url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
@@ -10683,6 +10687,8 @@ export class ProdContainerIntransitServiceProxy {
             url_ += "PortDateFrom=" + encodeURIComponent(portDateFrom ? "" + portDateFrom.toJSON() : "") + "&"; 
         if (portDateTo !== undefined)
             url_ += "PortDateTo=" + encodeURIComponent(portDateTo ? "" + portDateTo.toJSON() : "") + "&"; 
+        if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

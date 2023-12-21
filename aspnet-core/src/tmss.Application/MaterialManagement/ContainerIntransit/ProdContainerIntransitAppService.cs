@@ -30,7 +30,7 @@ namespace tmss.MaterialManagement.ContainerIntransit
         }
         public async Task<PagedResultDto<ProdContainerIntransitDto>> GetProdContainerIntransitSearch(GetProdContainerIntransitInput input)
         {
-            string _sql = "Exec INV_PROD_CONTAINER_INTRANSIT_SEARCH @p_ContainerNo, @p_ShippingDateFrom, @p_ShippingDateTo, @p_PortDateFrom, @p_PortDateTo";
+            string _sql = "Exec INV_PROD_CONTAINER_INTRANSIT_SEARCH @p_ContainerNo, @p_ShippingDateFrom, @p_ShippingDateTo, @p_PortDateFrom, @p_PortDateTo, @p_Status";
 
             IEnumerable<ProdContainerIntransitDto> result = await _dapperRepo.QueryAsync<ProdContainerIntransitDto>(_sql, new
             {
@@ -38,7 +38,8 @@ namespace tmss.MaterialManagement.ContainerIntransit
                 p_ShippingDateFrom = input.ShippingDateFrom,
                 p_ShippingDateTo = input.ShippingDateTo,
                 p_PortDateFrom = input.PortDateFrom,
-                p_PortDateTo = input.PortDateTo
+                p_PortDateTo = input.PortDateTo,
+                p_Status = input.Status
             });
 
             var listResult = result.ToList();
@@ -52,7 +53,7 @@ namespace tmss.MaterialManagement.ContainerIntransit
 
         public async Task<FileDto> GetProdContainerIntransitToExcel(GetProdContainerIntransitExportInput input)
         {
-            string _sql = "Exec INV_PROD_CONTAINER_INTRANSIT_SEARCH @p_ContainerNo, @p_ShippingDateFrom, @p_ShippingDateTo, @p_PortDateFrom, @p_PortDateTo";
+            string _sql = "Exec INV_PROD_CONTAINER_INTRANSIT_SEARCH @p_ContainerNo, @p_ShippingDateFrom, @p_ShippingDateTo, @p_PortDateFrom, @p_PortDateTo, @p_Status";
 
             IEnumerable<ProdContainerIntransitDto> result = await _dapperRepo.QueryAsync<ProdContainerIntransitDto>(_sql, new
             {
@@ -60,7 +61,8 @@ namespace tmss.MaterialManagement.ContainerIntransit
                 p_ShippingDateFrom = input.ShippingDateFrom,
                 p_ShippingDateTo = input.ShippingDateTo,
                 p_PortDateFrom = input.PortDateFrom,
-                p_PortDateTo = input.PortDateTo
+                p_PortDateTo = input.PortDateTo,
+                p_Status = input.Status
             });
 
             var exportToExcel = result.ToList();

@@ -1342,7 +1342,8 @@ CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_SEARCH
 	  @p_ShippingDateFrom DATE,
     @p_ShippingDateTo DATE,
 	  @p_PortDateFrom DATE,
-    @p_PortDateTo DATE
+    @p_PortDateTo DATE,
+    @p_Status NVARCHAR(50)
 )
 AS
 BEGIN
@@ -1356,6 +1357,7 @@ BEGIN
        AND (ISNULL(@p_ShippingDateTo, '') = '' OR a.ShippingDate <= @p_ShippingDateTo)
     	 AND (ISNULL(@p_PortDateFrom, '') = '' OR a.PortDate >= @p_PortDateFrom)
        AND (ISNULL(@p_PortDateTo, '') = '' OR a.PortDate <= @p_PortDateTo)
+       AND (ISNULL(@p_Status, '') = '' OR a.Status = @p_Status)
 		   AND a.IsDeleted = 0
 	ORDER BY a.ShippingDate DESC, a.PortDate DESC
 END

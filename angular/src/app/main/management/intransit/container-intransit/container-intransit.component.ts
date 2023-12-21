@@ -55,8 +55,15 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
     shippingDateTo: any;
     portDateFrom: any;
     portDateTo: any;
+    status: string = '';
     _selectrow;
     notDelete: boolean = true;
+    listStatus = [
+        { value: '', label: "Status" },
+        { value: 'NEW', label: "NEW" },
+        { value: 'On SEA', label: "On SEA" },
+        { value: 'PORT/ARRIVED', label: "PORT/ARRIVED" }
+    ];
 
     defaultColDef = {
         resizable: true,
@@ -120,6 +127,7 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
             this.shippingDateTo ? moment(this.shippingDateTo) : undefined,
             this.portDateFrom ? moment(this.portDateFrom) : undefined,
             this.portDateTo ? moment(this.portDateTo) : undefined,
+            this.status,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -139,6 +147,7 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
         this.shippingDateTo = '';
         this.portDateFrom = '';
         this.portDateTo = '';
+        this.status = '';
         this.searchDatas();
     }
 
@@ -149,6 +158,7 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
             this.shippingDateTo ? moment(this.shippingDateTo) : undefined,
             this.portDateFrom ? moment(this.portDateFrom) : undefined,
             this.portDateTo ? moment(this.portDateTo) : undefined,
+            this.status,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -205,7 +215,8 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
             this.shippingDateFrom ? moment(this.shippingDateFrom) : undefined,
             this.shippingDateTo ? moment(this.shippingDateTo) : undefined,
             this.portDateFrom ? moment(this.portDateFrom) : undefined,
-            this.portDateTo ? moment(this.portDateTo) : undefined)
+            this.portDateTo ? moment(this.portDateTo) : undefined,
+            this.status)
             .pipe(finalize(() => this.isLoading = false))
             .subscribe(result => {
                 this._fileDownloadService.downloadTempFile(result);

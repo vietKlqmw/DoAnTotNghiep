@@ -8,10 +8,8 @@
                             <div class="form-group">
                                 <input [(ngModel)]="containerNo" name="containerNo" class="form-control m-input"
                                     [placeholder]="l('Container No')" type="text" (keyup.enter)="searchDatas()">
-                                <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
-                                    class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
-                                <button class="btn btn-primary" (click)="clearTextSearch()">
-                                    <i class="fa fa-sync"></i></button>
+                                <tmss-combobox [items]="listStatus" name="status"
+                                    [(ngModel)]="status" (ngModelChange)="searchDatas()"></tmss-combobox>
                             </div>
                         </div>
                         <div class="col-md-customize">
@@ -24,6 +22,10 @@
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
                                     </span>
                                 </div>
+                                <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
+                                    class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
+                                <button class="btn btn-primary" (click)="clearTextSearch()">
+                                    <i class="fa fa-sync"></i></button>
                             </div>
                         </div>
                         <div class="col-md-customize">

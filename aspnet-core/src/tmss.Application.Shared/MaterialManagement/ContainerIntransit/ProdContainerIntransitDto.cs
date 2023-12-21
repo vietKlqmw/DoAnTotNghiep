@@ -28,6 +28,7 @@ namespace tmss.MaterialManagement.ContainerIntransit
         public virtual DateTime? ShippingDateTo { get; set; }
         public virtual DateTime? PortDateFrom { get; set; }
         public virtual DateTime? PortDateTo { get; set; }
+        public virtual string Status { get; set; }
 
     }
 
@@ -38,6 +39,7 @@ namespace tmss.MaterialManagement.ContainerIntransit
         public virtual DateTime? ShippingDateTo { get; set; }
         public virtual DateTime? PortDateFrom { get; set; }
         public virtual DateTime? PortDateTo { get; set; }
+        public virtual string Status { get; set; }
 
     }
 
