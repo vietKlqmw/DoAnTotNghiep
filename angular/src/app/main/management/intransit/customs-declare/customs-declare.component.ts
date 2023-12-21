@@ -83,17 +83,7 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
                 headerName: this.l('Declare Date'), headerTooltip: this.l('Declare Date'), field: 'declareDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.declareDate, 'dd/MM/yyyy')
             },
-            { headerName: this.l('Invoice No'), headerTooltip: this.l('InvoiceNo'), field: 'invoiceNo', flex: 1 },
-            {
-                headerName: this.l('Invoice Date'), headerTooltip: this.l('Invoice Date'), field: 'invoiceDate', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.invoiceDate, 'dd/MM/yyyy')
-            },
-            { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('Bill Of Lading No'), field: 'billOfLadingNo', flex: 1 },
-            {
-                headerName: this.l('Bill Date'), headerTooltip: this.l('Bill Date'), field: 'billDate', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.billDate, 'dd/MM/yyyy')
-            },
-            { headerName: this.l('Forwarder'), headerTooltip: this.l('Forwarder'), field: 'forwarder', flex: 1 },
+            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
             {
                 headerName: this.l('Tax (VND)'), headerTooltip: this.l('Tax (VND)'), field: 'tax', flex: 1, type: 'rightAligned',
                 valueFormatter: (params) => this._fm.formatMoney_decimal(params.data?.tax, 0)
@@ -107,7 +97,17 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
                 valueFormatter: (params) => this._fm.formatMoney_decimal(params.data?.sumCustomsDeclare, 0),
                 sortable: true
             },
-            { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 }
+            { headerName: this.l('Forwarder'), headerTooltip: this.l('Forwarder'), field: 'forwarder', flex: 1 },
+            { headerName: this.l('Invoice No'), headerTooltip: this.l('InvoiceNo'), field: 'invoiceNo', flex: 1 },
+            {
+                headerName: this.l('Invoice Date'), headerTooltip: this.l('Invoice Date'), field: 'invoiceDate', flex: 1,
+                valueGetter: (params) => this.pipe.transform(params.data?.invoiceDate, 'dd/MM/yyyy')
+            },
+            { headerName: this.l('Bill Of Lading No'), headerTooltip: this.l('Bill Of Lading No'), field: 'billOfLadingNo', flex: 1 },
+            {
+                headerName: this.l('Bill Date'), headerTooltip: this.l('Bill Date'), field: 'billDate', flex: 1,
+                valueGetter: (params) => this.pipe.transform(params.data?.billDate, 'dd/MM/yyyy')
+            }
         ];
 
         this.frameworkComponents = {

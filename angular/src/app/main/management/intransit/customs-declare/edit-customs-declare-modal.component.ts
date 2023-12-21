@@ -29,8 +29,10 @@ export class EditCustomsDeclareModalComponent extends AppComponentBase {
     _status;
     _tax;
     _vat;
-    listInvoicePreDeclare = [{ value: undefined, label: '', invoicedate: undefined, 
-                                billid: undefined, billno: '', billdate: undefined, forward: '' }]
+    listInvoicePreDeclare = [{
+        value: undefined, label: '', invoicedate: undefined,
+        billid: undefined, billno: '', billdate: undefined, forward: ''
+    }]
     list = [
         { value: 'CuS1', label: "NEW" },
         { value: 'CuS2', label: "NOT PAID (REQUESTED)" },
@@ -50,11 +52,13 @@ export class EditCustomsDeclareModalComponent extends AppComponentBase {
     ngOnInit() {
         this._other.getListInvociePreDeclared().subscribe(result => {
             result.forEach(e => {
-                this.listInvoicePreDeclare.push({value: e.id, label : e.invoiceNo, invoicedate: e.invoiceDate, 
-                                                billid: e.billId, billno: e.billNo, billdate: e.billDate, forward: e.forwarder })
+                this.listInvoicePreDeclare.push({
+                    value: e.id, label: e.invoiceNo, invoicedate: e.invoiceDate,
+                    billid: e.billId, billno: e.billNo, billdate: e.billDate, forward: e.forwarder
+                })
             })
         })
-     }
+    }
 
     show(type, material?: ProdCustomsDeclareDto): void {
         if (type == 'Edit') this.isEdit = true;
@@ -78,7 +82,7 @@ export class EditCustomsDeclareModalComponent extends AppComponentBase {
         if (this.rowData.vat == undefined) this._vat = 0;
         else this._vat = this._fm.formatMoney(this.rowData.vat);
 
-        if(type != 'Edit') this.rowData.customsDeclareNo = 'CD' + formatDate(new Date(), 'yyMMddHHmmss', 'en-US');
+        if (type != 'Edit') this.rowData.customsDeclareNo = 'CD' + formatDate(new Date(), 'yyMMddHHmmss', 'en-US');
 
         this.modal.show();
     }
@@ -86,8 +90,8 @@ export class EditCustomsDeclareModalComponent extends AppComponentBase {
     save(): void {
         this.rowData.declareDate = this._declareDate ? moment(this._declareDate) : undefined;
         this.rowData.status = this._status;
-        this.rowData.tax = this._tax != null ? (this._tax.length > 3 ? Number(this._tax.replace(/,/g,'')) : Number(this._tax)) : 0;
-        this.rowData.vat = this._vat != null ? (this._vat.length > 3 ? Number(this._vat.replace(/,/g,'')) : Number(this._vat)) : 0;
+        this.rowData.tax = this._tax != null ? (this._tax.length > 3 ? Number(this._tax.replace(/,/g, '')) : Number(this._tax)) : 0;
+        this.rowData.vat = this._vat != null ? (this._vat.length > 3 ? Number(this._vat.replace(/,/g, '')) : Number(this._vat)) : 0;
         this.rowData.billDate = moment(this._billDateSub);
         this.rowData.invoiceDate = moment(this._invoiceDateSub);
 
@@ -103,7 +107,7 @@ export class EditCustomsDeclareModalComponent extends AppComponentBase {
             this.notify.warn('InvoiceNo is Required!');
             return;
         }
-        if(this.rowData.declareDate < this.rowData.invoiceDate){
+        if (this.rowData.declareDate < this.rowData.invoiceDate) {
             this.notify.warn('DeclareDate cannot be less than InvoiceDate!');
             return;
         }
@@ -115,15 +119,43 @@ export class EditCustomsDeclareModalComponent extends AppComponentBase {
             this.notify.warn('VAT is Required!');
             return;
         }
+        if(this.rowData.status == 'CuS3' && this.rowData.declareDate == undefined){
+            this.notify.warn('DeclareDate is Required!');
+            return;
+        }
+        if(this.rowData.status == 'CuS1' && this.rowData.declareDate != undefined){
+            this.notify.warn('Invoice status does not match!');
+            return;
+        }
 
-        this.saving = true;
-        this._service.editCustomsDeclare(this.rowData)
-            .pipe(finalize(() => { this.saving = false; }))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this._component.searchDatas();
-                this.close();
-            });
+        if (this.rowData.status == 'CuS3') {
+            this.message.confirm(
+                this.l('The added invoice will not be editable!'),
+                this.l('AreYouSure'),
+                isConfirmed => {
+                    if (isConfirmed) {
+                        this.saving = true;
+                        this._service.editCustomsDeclare(this.rowData)
+                            .pipe(finalize(() => { this.saving = false; }))
+                            .subscribe(() => {
+                                this.notify.info(this.l('SavedSuccessfully'));
+                                this._component.searchDatas();
+                                this.close();
+                            });
+                    }
+                }
+            );
+        } else {
+            this.saving = true;
+            this._service.editCustomsDeclare(this.rowData)
+                .pipe(finalize(() => { this.saving = false; }))
+                .subscribe(() => {
+                    this.notify.info(this.l('SavedSuccessfully'));
+                    this._component.searchDatas();
+                    this.close();
+                });
+        }
+
     }
 
     changeTax(event) {
@@ -133,7 +165,7 @@ export class EditCustomsDeclareModalComponent extends AppComponentBase {
         this._vat = this._fm.formatMoney(event);
     }
 
-    changeInvoice(event){
+    changeInvoice(event) {
         this.rowData.invoiceNo = this.listInvoicePreDeclare.filter(e => e.value == event)[0].label;
         this.rowData.billId = this.listInvoicePreDeclare.filter(e => e.value == event)[0].billid;
         this.rowData.billOfLadingNo = this.listInvoicePreDeclare.filter(e => e.value == event)[0].billno;
