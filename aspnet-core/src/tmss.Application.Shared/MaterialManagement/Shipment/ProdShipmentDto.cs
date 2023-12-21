@@ -47,7 +47,11 @@ namespace tmss.MaterialManagement.Shipment
 
         public virtual string ToPort { get; set; }
 
-        public virtual DateTime? ShipmentDate { get; set; }
+        public virtual DateTime? ShipmentDateFrom { get; set; }
+
+        public virtual DateTime? ShipmentDateTo { get; set; }
+
+        public virtual string Status { get; set; }
     }
 
     public class GetProdShipmentExportInput
@@ -60,6 +64,10 @@ namespace tmss.MaterialManagement.Shipment
 
         public virtual string ToPort { get; set; }
 
-        public virtual DateTime? ShipmentDate { get; set; }
+        public virtual DateTime? ShipmentDateFrom { get; set; }
+
+        public virtual DateTime? ShipmentDateTo { get; set; }
+
+        public virtual string Status { get; set; }
     }
 }

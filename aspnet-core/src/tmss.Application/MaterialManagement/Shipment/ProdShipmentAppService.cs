@@ -24,7 +24,7 @@ namespace tmss.MaterialManagement.Shipment
 
         public async Task<PagedResultDto<ProdShipmentDto>> GetProdShipmentSearch(GetProdShipmentInput input)
         {
-            string _sql = "Exec INV_PROD_SHIPMENT_SEARCH @p_ShipmentNo, @p_SupplierNo, @p_FromPort, @p_ToPort, @p_ShipmentDate";
+            string _sql = "Exec INV_PROD_SHIPMENT_SEARCH @p_ShipmentNo, @p_SupplierNo, @p_FromPort, @p_ToPort, @p_ShipmentDateFrom, @p_ShipmentDateTo, @p_Status";
 
             IEnumerable<ProdShipmentDto> result = await _dapperRepo.QueryAsync<ProdShipmentDto>(_sql, new
             {
@@ -32,7 +32,9 @@ namespace tmss.MaterialManagement.Shipment
                 p_SupplierNo = input.SupplierNo,
                 p_FromPort = input.FromPort,
                 p_ToPort = input.ToPort,
-                p_ShipmentDate = input.ShipmentDate
+                p_ShipmentDateFrom = input.ShipmentDateFrom,
+                p_ShipmentDateTo = input.ShipmentDateTo,
+                p_Status = input.Status
             });
 
             var listResult = result.ToList();
@@ -46,7 +48,7 @@ namespace tmss.MaterialManagement.Shipment
 
         public async Task<FileDto> GetProdShipmentToExcel(GetProdShipmentExportInput input)
         {
-            string _sql = "Exec INV_PROD_SHIPMENT_SEARCH @p_ShipmentNo, @p_SupplierNo, @p_FromPort, @p_ToPort, @p_ShipmentDate";
+            string _sql = "Exec INV_PROD_SHIPMENT_SEARCH @p_ShipmentNo, @p_SupplierNo, @p_FromPort, @p_ToPort, @p_ShipmentDateFrom, @p_ShipmentDateTo, @p_Status";
 
             IEnumerable<ProdShipmentDto> result = await _dapperRepo.QueryAsync<ProdShipmentDto>(_sql, new
             {
@@ -54,7 +56,9 @@ namespace tmss.MaterialManagement.Shipment
                 p_SupplierNo = input.SupplierNo,
                 p_FromPort = input.FromPort,
                 p_ToPort = input.ToPort,
-                p_ShipmentDate = input.ShipmentDate
+                p_ShipmentDateFrom = input.ShipmentDateFrom,
+                p_ShipmentDateTo = input.ShipmentDateTo,
+                p_Status = input.Status
             });
 
             var exportToExcel = result.ToList();

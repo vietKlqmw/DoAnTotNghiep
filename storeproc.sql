@@ -615,7 +615,9 @@ CREATE OR ALTER PROCEDURE INV_PROD_SHIPMENT_SEARCH
     @p_SupplierNo NVARCHAR(10),
     @p_FromPort NVARCHAR(50),
     @p_ToPort NVARCHAR(50),
-    @p_ShipmentDate DATE
+    @p_ShipmentDateFrom DATE,
+    @p_ShipmentDateTo DATE,
+    @p_Status NVARCHAR(50)
 )
 AS 
     SELECT DISTINCT a.Id, a.ShipmentNo, a.SupplierNo, a.Forwarder,
@@ -628,7 +630,9 @@ AS
        AND (@p_SupplierNo IS NULL OR a.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
        AND (@p_FromPort IS NULL OR a.FromPort LIKE CONCAT('%', @p_FromPort, '%'))
        AND (@p_ToPort IS NULL OR a.ToPort LIKE CONCAT('%', @p_ToPort, '%'))
-       AND (@p_ShipmentDate IS NULL OR a.ShipmentDate = @p_ShipmentDate)
+       AND (@p_ShipmentDateFrom IS NULL OR a.ShipmentDate >= @p_ShipmentDateFrom)
+       AND (@p_ShipmentDateTo IS NULL OR a.ShipmentDate <= @p_ShipmentDateTo)
+       AND (@p_Status IS NULL OR a.Status = @p_Status)
        AND a.IsDeleted = 0
   ORDER BY a.Status , a.ShipmentDate DESC 
 ------------------------------------------------Edit:

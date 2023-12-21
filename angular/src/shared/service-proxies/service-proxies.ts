@@ -14612,13 +14612,15 @@ export class ProdShipmentServiceProxy {
      * @param supplierNo (optional) 
      * @param fromPort (optional) 
      * @param toPort (optional) 
-     * @param shipmentDate (optional) 
+     * @param shipmentDateFrom (optional) 
+     * @param shipmentDateTo (optional) 
+     * @param status (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getProdShipmentSearch(shipmentNo: string | null | undefined, supplierNo: string | null | undefined, fromPort: string | null | undefined, toPort: string | null | undefined, shipmentDate: moment.Moment | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdShipmentDto> {
+    getProdShipmentSearch(shipmentNo: string | null | undefined, supplierNo: string | null | undefined, fromPort: string | null | undefined, toPort: string | null | undefined, shipmentDateFrom: moment.Moment | null | undefined, shipmentDateTo: moment.Moment | null | undefined, status: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdShipmentDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdShipment/GetProdShipmentSearch?";
         if (shipmentNo !== undefined)
             url_ += "ShipmentNo=" + encodeURIComponent("" + shipmentNo) + "&"; 
@@ -14628,8 +14630,12 @@ export class ProdShipmentServiceProxy {
             url_ += "FromPort=" + encodeURIComponent("" + fromPort) + "&"; 
         if (toPort !== undefined)
             url_ += "ToPort=" + encodeURIComponent("" + toPort) + "&"; 
-        if (shipmentDate !== undefined)
-            url_ += "ShipmentDate=" + encodeURIComponent(shipmentDate ? "" + shipmentDate.toJSON() : "") + "&"; 
+        if (shipmentDateFrom !== undefined)
+            url_ += "ShipmentDateFrom=" + encodeURIComponent(shipmentDateFrom ? "" + shipmentDateFrom.toJSON() : "") + "&"; 
+        if (shipmentDateTo !== undefined)
+            url_ += "ShipmentDateTo=" + encodeURIComponent(shipmentDateTo ? "" + shipmentDateTo.toJSON() : "") + "&"; 
+        if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&"; 
         if (sorting !== undefined)
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         if (skipCount === null)
@@ -14691,10 +14697,12 @@ export class ProdShipmentServiceProxy {
      * @param supplierNo (optional) 
      * @param fromPort (optional) 
      * @param toPort (optional) 
-     * @param shipmentDate (optional) 
+     * @param shipmentDateFrom (optional) 
+     * @param shipmentDateTo (optional) 
+     * @param status (optional) 
      * @return Success
      */
-    getProdShipmentToExcel(shipmentNo: string | null | undefined, supplierNo: string | null | undefined, fromPort: string | null | undefined, toPort: string | null | undefined, shipmentDate: moment.Moment | null | undefined): Observable<FileDto> {
+    getProdShipmentToExcel(shipmentNo: string | null | undefined, supplierNo: string | null | undefined, fromPort: string | null | undefined, toPort: string | null | undefined, shipmentDateFrom: moment.Moment | null | undefined, shipmentDateTo: moment.Moment | null | undefined, status: string | null | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdShipment/GetProdShipmentToExcel?";
         if (shipmentNo !== undefined)
             url_ += "ShipmentNo=" + encodeURIComponent("" + shipmentNo) + "&"; 
@@ -14704,8 +14712,12 @@ export class ProdShipmentServiceProxy {
             url_ += "FromPort=" + encodeURIComponent("" + fromPort) + "&"; 
         if (toPort !== undefined)
             url_ += "ToPort=" + encodeURIComponent("" + toPort) + "&"; 
-        if (shipmentDate !== undefined)
-            url_ += "ShipmentDate=" + encodeURIComponent(shipmentDate ? "" + shipmentDate.toJSON() : "") + "&"; 
+        if (shipmentDateFrom !== undefined)
+            url_ += "ShipmentDateFrom=" + encodeURIComponent(shipmentDateFrom ? "" + shipmentDateFrom.toJSON() : "") + "&"; 
+        if (shipmentDateTo !== undefined)
+            url_ += "ShipmentDateTo=" + encodeURIComponent(shipmentDateTo ? "" + shipmentDateTo.toJSON() : "") + "&"; 
+        if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

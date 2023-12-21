@@ -51,13 +51,16 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
     supplierNo: string = '';
     fromPort: string = '';
     toPort: string = '';
-    shipmentDate: any;
+    shipmentDateFrom: any;
+    shipmentDateTo: any;
+    status = '';
     listStatus = [
-        { key: 'NEW', value: 'NEW' },
-        { key: 'PENDING', value: 'PENDING' },
-        { key: 'ORDERED', value: 'ORDERED' },
-        { key: 'ORDERED (ON SEA)', value: 'ORDERED (ON SEA)' },
-        { key: 'ORDERED (ON PORT)', value: 'ORDERED (ON PORT)' }
+        { label: 'Status', value: '' },
+        { label: 'NEW', value: 'NEW' },
+        { label: 'PENDING', value: 'PENDING' },
+        { label: 'ORDERED', value: 'ORDERED' },
+        { label: 'ORDERED (ON SEA)', value: 'ORDERED (ON SEA)' },
+        { label: 'ORDERED (ON PORT)', value: 'ORDERED (ON PORT)' }
     ];
     _selectrow;
     notDelete: boolean = false;
@@ -147,7 +150,9 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
             this.supplierNo,
             this.fromPort,
             this.toPort,
-            this.shipmentDate ? moment(this.shipmentDate) : undefined,
+            this.shipmentDateFrom ? moment(this.shipmentDateFrom) : undefined,
+            this.shipmentDateTo ? moment(this.shipmentDateTo) : undefined,
+            this.status,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -167,7 +172,9 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
         this.supplierNo = '';
         this.fromPort = '';
         this.toPort = '';
-        this.shipmentDate = '';
+        this.shipmentDateFrom = '';
+        this.shipmentDateTo = '';
+        this.status = '';
         this.searchDatas();
     }
 
@@ -177,7 +184,9 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
             this.supplierNo,
             this.fromPort,
             this.toPort,
-            this.shipmentDate ? moment(this.shipmentDate) : undefined,
+            this.shipmentDateFrom ? moment(this.shipmentDateFrom) : undefined,
+            this.shipmentDateTo ? moment(this.shipmentDateTo) : undefined,
+            this.status,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -236,7 +245,9 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
             this.supplierNo,
             this.fromPort,
             this.toPort,
-            this.shipmentDate ? moment(this.shipmentDate) : undefined)
+            this.shipmentDateFrom ? moment(this.shipmentDateFrom) : undefined,
+            this.shipmentDateTo ? moment(this.shipmentDateTo) : undefined,
+            this.status)
             .pipe(finalize(() => this.isLoading = false))
             .subscribe(result => {
                 this._fileDownloadService.downloadTempFile(result);
