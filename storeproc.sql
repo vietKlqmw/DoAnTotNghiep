@@ -1775,9 +1775,11 @@ END
 CREATE OR ALTER PROCEDURE INV_PROD_CUSTOMS_DECLARE_SEARCH 
 (
     @p_CustomsDeclareNo NVARCHAR(20),
-    @p_DeclareDate DATE,
+    @p_DeclareDateFrom DATE,
+    @p_DeclareDateTo DATE,
     @p_BillOfLadingNo NVARCHAR(20),
-    @p_InvoiceNo NVARCHAR(20)
+    @p_InvoiceNo NVARCHAR(20),
+    @p_Status NVARCHAR(50)
 )
 AS
 BEGIN
@@ -1789,9 +1791,11 @@ INNER JOIN ProdBillOfLading pbol ON pcd.BillId = pbol.Id
 INNER JOIN ProdInvoice pi ON pcd.InvoiceId = pi.Id
  LEFT JOIN MasterCustomsStatus mcs ON pcd.Status = mcs.Code
      WHERE (ISNULL(@p_CustomsDeclareNo, '') = '' OR pcd.CustomsDeclareNo LIKE CONCAT('%', @p_CustomsDeclareNo, '%'))
-		   AND (ISNULL(@p_DeclareDate, '')= '' OR  pcd.DeclareDate = @p_DeclareDate)
+		   AND (ISNULL(@p_DeclareDateFrom, '')= '' OR  pcd.DeclareDate >= @p_DeclareDateFrom)
+       AND (ISNULL(@p_DeclareDateTo, '')= '' OR  pcd.DeclareDate <= @p_DeclareDateTo)
        AND (ISNULL(@p_BillOfLadingNo, '') = '' OR pbol.BillofladingNo LIKE CONCAT('%', @p_BillOfLadingNo, '%'))
        AND (ISNULL(@p_InvoiceNo, '') = '' OR pi.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
+       AND (ISNULL(@p_Status, '') = '' OR pcd.Status = @p_Status)
        AND pcd.IsDeleted = 0
   ORDER BY pcd.DeclareDate DESC
 END

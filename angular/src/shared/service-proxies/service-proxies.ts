@@ -12136,24 +12136,30 @@ export class ProdCustomsDeclareServiceProxy {
 
     /**
      * @param customsDeclareNo (optional) 
-     * @param declareDate (optional) 
+     * @param declareDateFrom (optional) 
+     * @param declareDateTo (optional) 
      * @param billOfLadingNo (optional) 
      * @param invoiceNo (optional) 
+     * @param status (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getProdCustomsDeclareSearch(customsDeclareNo: string | null | undefined, declareDate: moment.Moment | null | undefined, billOfLadingNo: string | null | undefined, invoiceNo: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdCustomsDeclareDto> {
+    getProdCustomsDeclareSearch(customsDeclareNo: string | null | undefined, declareDateFrom: moment.Moment | null | undefined, declareDateTo: moment.Moment | null | undefined, billOfLadingNo: string | null | undefined, invoiceNo: string | null | undefined, status: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdCustomsDeclareDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdCustomsDeclare/GetProdCustomsDeclareSearch?";
         if (customsDeclareNo !== undefined)
             url_ += "CustomsDeclareNo=" + encodeURIComponent("" + customsDeclareNo) + "&"; 
-        if (declareDate !== undefined)
-            url_ += "DeclareDate=" + encodeURIComponent(declareDate ? "" + declareDate.toJSON() : "") + "&"; 
+        if (declareDateFrom !== undefined)
+            url_ += "DeclareDateFrom=" + encodeURIComponent(declareDateFrom ? "" + declareDateFrom.toJSON() : "") + "&"; 
+        if (declareDateTo !== undefined)
+            url_ += "DeclareDateTo=" + encodeURIComponent(declareDateTo ? "" + declareDateTo.toJSON() : "") + "&"; 
         if (billOfLadingNo !== undefined)
             url_ += "BillOfLadingNo=" + encodeURIComponent("" + billOfLadingNo) + "&"; 
         if (invoiceNo !== undefined)
             url_ += "InvoiceNo=" + encodeURIComponent("" + invoiceNo) + "&"; 
+        if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&"; 
         if (sorting !== undefined)
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         if (skipCount === null)
@@ -12212,21 +12218,27 @@ export class ProdCustomsDeclareServiceProxy {
 
     /**
      * @param customsDeclareNo (optional) 
-     * @param declareDate (optional) 
+     * @param declareDateFrom (optional) 
+     * @param declareDateTo (optional) 
      * @param billOfLadingNo (optional) 
      * @param invoiceNo (optional) 
+     * @param status (optional) 
      * @return Success
      */
-    getProdCustomsDeclareToExcel(customsDeclareNo: string | null | undefined, declareDate: moment.Moment | null | undefined, billOfLadingNo: string | null | undefined, invoiceNo: string | null | undefined): Observable<FileDto> {
+    getProdCustomsDeclareToExcel(customsDeclareNo: string | null | undefined, declareDateFrom: moment.Moment | null | undefined, declareDateTo: moment.Moment | null | undefined, billOfLadingNo: string | null | undefined, invoiceNo: string | null | undefined, status: string | null | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/ProdCustomsDeclare/GetProdCustomsDeclareToExcel?";
         if (customsDeclareNo !== undefined)
             url_ += "CustomsDeclareNo=" + encodeURIComponent("" + customsDeclareNo) + "&"; 
-        if (declareDate !== undefined)
-            url_ += "DeclareDate=" + encodeURIComponent(declareDate ? "" + declareDate.toJSON() : "") + "&"; 
+        if (declareDateFrom !== undefined)
+            url_ += "DeclareDateFrom=" + encodeURIComponent(declareDateFrom ? "" + declareDateFrom.toJSON() : "") + "&"; 
+        if (declareDateTo !== undefined)
+            url_ += "DeclareDateTo=" + encodeURIComponent(declareDateTo ? "" + declareDateTo.toJSON() : "") + "&"; 
         if (billOfLadingNo !== undefined)
             url_ += "BillOfLadingNo=" + encodeURIComponent("" + billOfLadingNo) + "&"; 
         if (invoiceNo !== undefined)
             url_ += "InvoiceNo=" + encodeURIComponent("" + invoiceNo) + "&"; 
+        if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

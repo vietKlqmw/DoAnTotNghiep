@@ -24,16 +24,20 @@ namespace tmss.MaterialManagement.CustomsDeclare
     public class GetProdCustomsDeclareInput : PagedAndSortedResultRequestDto
     {
         public virtual string CustomsDeclareNo { get; set; }
-        public virtual DateTime? DeclareDate { get; set; }
+        public virtual DateTime? DeclareDateFrom { get; set; }
+        public virtual DateTime? DeclareDateTo { get; set; }
         public virtual string BillOfLadingNo { get; set; }
         public virtual string InvoiceNo { get; set; }
+        public virtual string Status { get; set; }
     }
 
     public class GetProdCustomsDeclareExportInput
     {
         public virtual string CustomsDeclareNo { get; set; }
-        public virtual DateTime? DeclareDate { get; set; }
+        public virtual DateTime? DeclareDateFrom { get; set; }
+        public virtual DateTime? DeclareDateTo { get; set; }
         public virtual string BillOfLadingNo { get; set; }
         public virtual string InvoiceNo { get; set; }
+        public virtual string Status { get; set; }
     }
 }

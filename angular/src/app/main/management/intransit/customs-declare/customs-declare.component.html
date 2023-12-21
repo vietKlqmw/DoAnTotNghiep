@@ -8,16 +8,34 @@
                             <div class="form-group">
                                 <input [(ngModel)]="customsDeclareNo" name="customsDeclareNo" class="form-control m-input"
                                     [placeholder]="l('Customs Declare No')" type="text" (keyup.enter)="searchDatas()">
+                                <tmss-combobox [items]="listStatus" name="status"
+                                    [(ngModel)]="status" (ngModelChange)="searchDatas()"></tmss-combobox>
                             </div>
                         </div>
                         <div class="col-md-customize">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type='text' class="form-control m-input" name='declareDate' [placeholder]="l('Declare Date')"
-                                        #datepicker='bsDatepicker' [(ngModel)]='declareDate' bsDatepicker
+                                    <input type='text' class="form-control m-input" name='declareDateFrom' [placeholder]="l('Declare Date From')"
+                                        #datepicker='bsDatepicker' [(ngModel)]='declareDateFrom' bsDatepicker
                                         [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
                                     <span class="input-group-text right-text">
                                         <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
+                                    </span>
+                                </div>
+                                <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
+                                    class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
+                                <button class="btn btn-primary" (click)="clearTextSearch()">
+                                    <i class="fa fa-sync"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type='text' class="form-control m-input" name='declareDateTo' [placeholder]="l('Declare Date To')"
+                                        #datepicker1='bsDatepicker' [(ngModel)]='declareDateTo' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker1.toggle()"></i>
                                     </span>
                                 </div>
                             </div>
@@ -32,14 +50,6 @@
                             <div class="form-group">
                                 <input [(ngModel)]="invoiceNo" name="invoiceNo" class="form-control m-input"
                                     [placeholder]="l('Invoice No')" type="text" (keyup.enter)="searchDatas()">
-                            </div>
-                        </div>
-                        <div class="col-md-customize">
-                            <div class="form-group">
-                                <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
-                                    class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
-                                <button class="btn btn-primary" (click)="clearTextSearch()">
-                                    <i class="fa fa-sync"></i></button>
                             </div>
                         </div>
                     </div>
@@ -60,7 +70,7 @@
                         (changePaginationParams)="changePage($event)"
                         (onChangeSelection)="onChangeRowSelection($event)"
                         [frameworkComponents]="frameworkComponents"
-                        [height]="'60vh'"
+                        [height]="'56vh'"
                         >
                     </grid-table>
                 </div>

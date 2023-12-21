@@ -47,11 +47,19 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
     isLoading: boolean = false;
 
     customsDeclareNo: string = '';
-    declareDate: any;
+    declareDateFrom: any;
+    declareDateTo: any;
     billOfLadingNo: string = '';
     invoiceNo: string = '';
     _selectrow;
     notDeleted: boolean = false;
+    status: string = '';
+    listStatus = [
+        { value: '', label: "Status" },
+        { value: 'CuS1', label: "NEW" },
+        { value: 'CuS2', label: "NOT PAID (REQUESTED)" },
+        { value: 'CuS3', label: "PAID" }
+    ];
 
     defaultColDef = {
         resizable: true,
@@ -143,9 +151,11 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
         this.isLoading = true;
         this._service.getProdCustomsDeclareSearch(
             this.customsDeclareNo,
-            this.declareDate ? moment(this.declareDate) : undefined,
+            this.declareDateFrom ? moment(this.declareDateFrom) : undefined,
+            this.declareDateTo ? moment(this.declareDateTo) : undefined,
             this.billOfLadingNo,
             this.invoiceNo,
+            this.status,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -162,18 +172,22 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
 
     clearTextSearch() {
         this.customsDeclareNo = '';
-        this.declareDate = '';
+        this.declareDateFrom = '';
+        this.declareDateTo = '';
         this.billOfLadingNo = '';
         this.invoiceNo = '';
+        this.status = '';
         this.searchDatas();
     }
 
     getDatas(paginationParams?: PaginationParamsModel) {
         return this._service.getProdCustomsDeclareSearch(
             this.customsDeclareNo,
-            this.declareDate ? moment(this.declareDate) : undefined,
+            this.declareDateFrom ? moment(this.declareDateFrom) : undefined,
+            this.declareDateTo ? moment(this.declareDateTo) : undefined,
             this.billOfLadingNo,
             this.invoiceNo,
+            this.status,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -232,9 +246,11 @@ export class CustomsDeclareComponent extends AppComponentBase implements OnInit 
         this.isLoading = true;
         this._service.getProdCustomsDeclareToExcel(
             this.customsDeclareNo,
-            this.declareDate ? moment(this.declareDate) : undefined,
+            this.declareDateFrom ? moment(this.declareDateFrom) : undefined,
+            this.declareDateTo ? moment(this.declareDateTo) : undefined,
             this.billOfLadingNo,
-            this.invoiceNo)
+            this.invoiceNo,
+            this.status)
             .pipe(finalize(() => this.isLoading = false))
             .subscribe(result => {
                 this._fileDownloadService.downloadTempFile(result);

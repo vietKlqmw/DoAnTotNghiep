@@ -23,14 +23,16 @@ namespace tmss.MaterialManagement.CustomsDeclare
         }
         public async Task<PagedResultDto<ProdCustomsDeclareDto>> GetProdCustomsDeclareSearch(GetProdCustomsDeclareInput input)
         {
-            string _sql = "Exec INV_PROD_CUSTOMS_DECLARE_SEARCH @p_CustomsDeclareNo, @p_DeclareDate, @p_BillOfLadingNo, @p_InvoiceNo";
+            string _sql = "Exec INV_PROD_CUSTOMS_DECLARE_SEARCH @p_CustomsDeclareNo, @p_DeclareDateFrom, @p_DeclareDateTo, @p_BillOfLadingNo, @p_InvoiceNo, @p_Status";
 
             IEnumerable<ProdCustomsDeclareDto> result = await _dapperRepo.QueryAsync<ProdCustomsDeclareDto>(_sql, new
             {
                 p_CustomsDeclareNo = input.CustomsDeclareNo,
-                p_DeclareDate = input.DeclareDate,
+                p_DeclareDateFrom = input.DeclareDateFrom,
+                p_DeclareDateTo = input.DeclareDateTo,
                 p_BillOfLadingNo = input.BillOfLadingNo,
-                p_InvoiceNo = input.InvoiceNo
+                p_InvoiceNo = input.InvoiceNo,
+                p_Status = input.Status
             });
 
             var listResult = result.ToList();
@@ -44,14 +46,16 @@ namespace tmss.MaterialManagement.CustomsDeclare
 
         public async Task<FileDto> GetProdCustomsDeclareToExcel(GetProdCustomsDeclareExportInput input)
         {
-            string _sql = "Exec INV_PROD_CUSTOMS_DECLARE_SEARCH @p_CustomsDeclareNo, @p_DeclareDate, @p_BillOfLadingNo, @p_InvoiceNo";
+            string _sql = "Exec INV_PROD_CUSTOMS_DECLARE_SEARCH @p_CustomsDeclareNo, @p_DeclareDateFrom, @p_DeclareDateTo, @p_BillOfLadingNo, @p_InvoiceNo, @p_Status";
 
             IEnumerable<ProdCustomsDeclareDto> result = await _dapperRepo.QueryAsync<ProdCustomsDeclareDto>(_sql, new
             {
                 p_CustomsDeclareNo = input.CustomsDeclareNo,
-                p_DeclareDate = input.DeclareDate,
+                p_DeclareDateFrom = input.DeclareDateFrom,
+                p_DeclareDateTo = input.DeclareDateTo,
                 p_BillOfLadingNo = input.BillOfLadingNo,
-                p_InvoiceNo = input.InvoiceNo
+                p_InvoiceNo = input.InvoiceNo,
+                p_Status = input.Status
             });
 
             var exportToExcel = result.ToList();
