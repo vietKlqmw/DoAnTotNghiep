@@ -29,13 +29,15 @@ export class AppNavigationService {
                     new AppMenuItem('Material Group', '', 'flaticon-car', '/app/main/master/common/material-group'),
                     new AppMenuItem('Material Type', '', 'flaticon-car', '/app/main/master/common/material-type'),
                     new AppMenuItem('Unit Of Measure', '', 'flaticon-car', '/app/main/master/common/uom'),
+                ]),
+                new AppMenuItem('GENERAL', '', 'flaticon-user-settings', '',[],[
+                    new AppMenuItem('Warehouse', '', 'flaticon-car', '/app/main/master/common/storage-location'),
+                    new AppMenuItem('Material', '', 'flaticon-car', '/app/main/master/common/material'),
+                    new AppMenuItem('Part List', '', 'flaticon-car', '/app/main/master/common/part-list'),
                     new AppMenuItem('Carfamily', '', 'flaticon-car', '/app/main/master/common/carfamily'),
                     new AppMenuItem('Supplier List', '', 'flaticon-car', '/app/main/master/common/supplier-list'),
                     new AppMenuItem('Forwarder', '', 'flaticon-car', '/app/main/master/common/forwarder'),
                 ]),
-                new AppMenuItem('Warehouse', '', 'flaticon-car', '/app/main/master/common/storage-location'),
-                new AppMenuItem('Material', '', 'flaticon-car', '/app/main/master/common/material'),
-                new AppMenuItem('Part List', '', 'flaticon-car', '/app/main/master/common/part-list')
             ]),
 //MAIN
             new AppMenuItem('MANAGEMENT', '', 'flaticon-user-settings', '',[],[
@@ -56,7 +58,7 @@ export class AppNavigationService {
             // new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
             // new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
             new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [], [
-                new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),
+                //new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),
                 new AppMenuItem('Roles', 'Pages.Administration.Roles', 'flaticon-suitcase', '/app/admin/roles'),
                 new AppMenuItem('Users', 'Pages.Administration.Users', 'flaticon-users', '/app/admin/users'),
                 new AppMenuItem('Languages', 'Pages.Administration.Languages', 'flaticon-tabs', '/app/admin/languages', ['/app/admin/languages/{name}/texts']),

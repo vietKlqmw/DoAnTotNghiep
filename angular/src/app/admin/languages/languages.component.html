@@ -1,7 +1,7 @@
 <div [@routerTransition]>
     <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
 
-        <div class="kt-subheader kt-grid__item">
+        <!-- <div class="kt-subheader kt-grid__item">
             <div [class]="containerClass">
                 <div class="kt-subheader__main">
                     <h3 class="kt-subheader__title">
@@ -20,7 +20,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
             <div class="kt-portlet">
@@ -140,6 +140,13 @@
                             * {{"CanNotEditOrDeleteDefaultLanguages" | localize}}
                         </p>
 
+                    </div>
+                    <div class="kt-subheader__toolbar">
+                        <div class="kt-subheader__wrapper">
+                            <button *ngIf="('Pages.Administration.Languages.Create' | permission) && multiTenancySideIsHost"
+                                (click)="createOrEditLanguageModal.show()" class="btn btn-primary"><i
+                                    class="fa fa-plus"></i> {{"CreateNewLanguage" | localize}}</button>
+                        </div>
                     </div>
                 </div>
             </div>
