@@ -109,6 +109,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                         loadChildren: () => import('./management/intransit/container-intransit/container-intransit.module').then(m => m.ContainerIntransitModule),
                         //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
                     },
+                    {
+                        path: 'management/intransit/order-part',
+                        loadChildren: () => import('./management/intransit/order-part/order-part.module').then(m => m.OrderPartModule),
+                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                    },
                     //Warehouse
                     {
                         path: 'management/warehouse/container-list',

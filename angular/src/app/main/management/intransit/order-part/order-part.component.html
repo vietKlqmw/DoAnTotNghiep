@@ -1,0 +1,97 @@
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" [busyIf]="isLoading">
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form">
+                    <div class="row">
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <input [(ngModel)]="partNo" name="partMo" class="form-control m-input"
+                                    [placeholder]="l('Part No')" type="text" (keyup.enter)="searchDatas()">
+                                <input [(ngModel)]="containerNo" name="containerNo" class="form-control m-input"
+                                    [placeholder]="l('Container No')" type="text" (keyup.enter)="searchDatas()">
+                            </div>
+                        </div>
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <input [(ngModel)]="cfc" name="cfc" class="form-control m-input"
+                                    [placeholder]="l('Carfamily Code')" type="text" (keyup.enter)="searchDatas()">
+                                <input [(ngModel)]="shipmentNo" name="shipmentNo" class="form-control m-input"
+                                    [placeholder]="l('Shipment No')" type="text" (keyup.enter)="searchDatas()">
+                            </div>
+                        </div>
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <input [(ngModel)]="supplierNo" name="supplierNo" class="form-control m-input"
+                                    [placeholder]="l('Supplier No')" type="text" (keyup.enter)="searchDatas()">
+                                <tmss-combobox [items]="listStatus" name="status"
+                                    [(ngModel)]="status" (ngModelChange)="searchDatas()"></tmss-combobox>
+                            </div>
+                        </div>
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type='text' class="form-control m-input" name='orderDateFrom' [placeholder]="l('Order Date From')"
+                                        #datepicker='bsDatepicker' [(ngModel)]='orderDateFrom' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker.toggle()"></i>
+                                    </span>
+                                </div>
+                                <button (click)="searchDatas()" class="btn btn-primary" type="submit"><i
+                                    class="flaticon-search-1" [attr.aria-label]="l('Search')"></i></button>
+                                <button class="btn btn-primary" (click)="clearTextSearch()">
+                                    <i class="fa fa-sync"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-md-customize">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type='text' class="form-control m-input" name='orderDateTo' [placeholder]="l('Order Date To')"
+                                        #datepicker1='bsDatepicker' [(ngModel)]='orderDateTo' bsDatepicker
+                                        [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', isAnimated: true, selectFromOtherMonth: true}">
+                                    <span class="input-group-text right-text">
+                                        <i class="fa tmss-fa fa-calendar-alt" (click)="datepicker1.toggle()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </form>
+                <!-- ==================================================Table================================================== -->
+                <span>
+                    <h6 class="card-header"> {{ 'Order Part' }} </h6>
+                </span>
+                <div class="">
+                    <grid-table
+                        [columnDefs]="colDefs"
+                        [paginationParams]="paginationParams"
+                        [showPagination]="true"
+                        [rowData]="rowData"
+                        [defaultColDef]="defaultColDef"
+                        (callBackEvent)="callBackDataGrid($event)"
+                        (changePaginationParams)="changePage($event)"
+                        (onChangeSelection)="onChangeRowSelection($event)"
+                        [frameworkComponents]="frameworkComponents"
+                        [height]="'55vh'"
+                        >
+                    </grid-table>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-12 text-right">
+                        <!-- <button type="button" class="btn btn-view" (click)="viewModal.show(saveSelectedRow.id)" [disabled]="!saveSelectedRow.id">
+                            <i class="far fa-regular fa-eye"></i> {{"View Bill Of Lading" | localize}}</button>
+                        <button type="button" class="btn btn-primary" (click)="editBill()" [disabled]="notDeleted">
+                            <i class="far fa-edit"></i> {{"Edit" | localize}}</button>
+                        <button type="button" class="btn btn-danger" (click)="deleteBill()" [disabled]="notDeleted">
+                            <i class="far fa-trash-alt"></i> {{"Delete" | localize}}</button> -->
+                        <button type="button" class="btn btn-success" (click)="exportToExcel()">
+                            <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <editModal #editModal></editModal> -->

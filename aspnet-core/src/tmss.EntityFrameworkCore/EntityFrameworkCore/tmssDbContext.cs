@@ -107,6 +107,8 @@ namespace tmss.EntityFrameworkCore
 
         public virtual DbSet<ProdInvoiceStockOut> ProdInvoiceStockOuts { get; set; }
 
+        public virtual DbSet<ProdOrderPart> ProdOrderParts { get; set; }
+
         #endregion
 
         public tmssDbContext(DbContextOptions<tmssDbContext> options)

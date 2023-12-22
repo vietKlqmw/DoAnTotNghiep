@@ -1916,6 +1916,37 @@ BEGIN
            Status = @p_NewStatus
      WHERE Id = @p_InvoiceStockId;
 END
+------------------------------------------------ORDER_PART------------------------------------------------
+------------------------------------------------Search
+CREATE OR ALTER PROCEDURE INV_PROD_ORDER_PART_SEARCH
+(
+    @p_PartNo NVARCHAR(15),
+    @p_SupplierNo NVARCHAR(10),
+    @p_Cfc NVARCHAR(4),
+    @p_ContainerNo NVARCHAR(20),
+    @p_ShimentNo NVARCHAR(20),
+    @p_Status NVARCHAR(50),
+    @p_OrderDateFrom DATE,
+    @p_OrderDateTo DATE
+)
+AS
+BEGIN
+    SELECT pop.Id, pop.PartNo, pop.PartName, pop.SupplierNo, pop.CarfamilyCode, 
+           pop.SupplierId, pop.MaterialId, pop.Status, pop.Remark, pop.ShipmentId, 
+           pop.ContainerNo, pop.Qty, pop.AmountUnit, pop.TotalAmount, ps.ShipmentNo,
+           pop.OrderDate
+      FROM ProdOrderPart pop
+ LEFT JOIN ProdShipment ps on pop.ShipmentId = ps.Id
+     WHERE (@p_PartNo IS NULL OR pop.PartNo LIKE CONCAT('%', @p_PartNo, '%'))
+       AND (@p_SupplierNo IS NULL OR pop.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
+       AND (@p_Cfc IS NULL OR pop.CarfamilyCode LIKE CONCAT('%', @p_Cfc, '%'))
+       AND (@p_ContainerNo IS NULL OR pop.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
+       AND (@p_ShimentNo IS NULL OR ps.ShipmentNo LIKE CONCAT('%', @p_ShimentNo, '%'))
+       AND (@p_Status IS NULL OR pop.Status = @p_Status)
+       AND (@p_OrderDateFrom IS NULL OR pop.OrderDate >= @p_OrderDateFrom)
+       AND (@p_OrderDateTo IS NULL OR pop.OrderDate <= @p_OrderDateTo)
+       AND pop.IsDeleted = 0
+END
 ------------------------------------------------DASHBOARD------------------------------------------------
 ------------------------------------------------TOP
 CREATE OR ALTER PROCEDURE INV_PROD_DASHBOARD_TOP 

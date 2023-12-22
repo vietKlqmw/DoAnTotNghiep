@@ -13389,6 +13389,299 @@ export class ProdInvoiceStockOutExcelExporterServiceProxy {
 }
 
 @Injectable()
+export class ProdOrderPartServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param partNo (optional) 
+     * @param supplierNo (optional) 
+     * @param carfamilyCode (optional) 
+     * @param status (optional) 
+     * @param containerNo (optional) 
+     * @param shipmentNo (optional) 
+     * @param orderDateFrom (optional) 
+     * @param orderDateTo (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getProdOrderPartSearch(partNo: string | null | undefined, supplierNo: string | null | undefined, carfamilyCode: string | null | undefined, status: string | null | undefined, containerNo: string | null | undefined, shipmentNo: string | null | undefined, orderDateFrom: moment.Moment | null | undefined, orderDateTo: moment.Moment | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfProdOrderPartDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOrderPart/GetProdOrderPartSearch?";
+        if (partNo !== undefined)
+            url_ += "PartNo=" + encodeURIComponent("" + partNo) + "&"; 
+        if (supplierNo !== undefined)
+            url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
+        if (carfamilyCode !== undefined)
+            url_ += "CarfamilyCode=" + encodeURIComponent("" + carfamilyCode) + "&"; 
+        if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&"; 
+        if (containerNo !== undefined)
+            url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
+        if (shipmentNo !== undefined)
+            url_ += "ShipmentNo=" + encodeURIComponent("" + shipmentNo) + "&"; 
+        if (orderDateFrom !== undefined)
+            url_ += "OrderDateFrom=" + encodeURIComponent(orderDateFrom ? "" + orderDateFrom.toJSON() : "") + "&"; 
+        if (orderDateTo !== undefined)
+            url_ += "OrderDateTo=" + encodeURIComponent(orderDateTo ? "" + orderDateTo.toJSON() : "") + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProdOrderPartSearch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProdOrderPartSearch(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfProdOrderPartDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfProdOrderPartDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetProdOrderPartSearch(response: HttpResponseBase): Observable<PagedResultDtoOfProdOrderPartDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfProdOrderPartDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfProdOrderPartDto>(<any>null);
+    }
+
+    /**
+     * @param partNo (optional) 
+     * @param supplierNo (optional) 
+     * @param carfamilyCode (optional) 
+     * @param status (optional) 
+     * @param containerNo (optional) 
+     * @param shipmentNo (optional) 
+     * @param orderDateFrom (optional) 
+     * @param orderDateTo (optional) 
+     * @return Success
+     */
+    getProdOrderPartToExcel(partNo: string | null | undefined, supplierNo: string | null | undefined, carfamilyCode: string | null | undefined, status: string | null | undefined, containerNo: string | null | undefined, shipmentNo: string | null | undefined, orderDateFrom: moment.Moment | null | undefined, orderDateTo: moment.Moment | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOrderPart/GetProdOrderPartToExcel?";
+        if (partNo !== undefined)
+            url_ += "PartNo=" + encodeURIComponent("" + partNo) + "&"; 
+        if (supplierNo !== undefined)
+            url_ += "SupplierNo=" + encodeURIComponent("" + supplierNo) + "&"; 
+        if (carfamilyCode !== undefined)
+            url_ += "CarfamilyCode=" + encodeURIComponent("" + carfamilyCode) + "&"; 
+        if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&"; 
+        if (containerNo !== undefined)
+            url_ += "ContainerNo=" + encodeURIComponent("" + containerNo) + "&"; 
+        if (shipmentNo !== undefined)
+            url_ += "ShipmentNo=" + encodeURIComponent("" + shipmentNo) + "&"; 
+        if (orderDateFrom !== undefined)
+            url_ += "OrderDateFrom=" + encodeURIComponent(orderDateFrom ? "" + orderDateFrom.toJSON() : "") + "&"; 
+        if (orderDateTo !== undefined)
+            url_ += "OrderDateTo=" + encodeURIComponent(orderDateTo ? "" + orderDateTo.toJSON() : "") + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProdOrderPartToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProdOrderPartToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetProdOrderPartToExcel(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+
+    /**
+     * @param billId (optional) 
+     * @return Success
+     */
+    deleteOrder(billId: number | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOrderPart/DeleteOrder?";
+        if (billId !== undefined)
+            url_ += "BillId=" + encodeURIComponent("" + billId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteOrder(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteOrder(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteOrder(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
+export class ProdOrderPartExcelExporterServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    exportToFile(body: ProdOrderPartDto[] | null | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOrderPartExcelExporter/ExportToFile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportToFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportToFile(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processExportToFile(response: HttpResponseBase): Observable<FileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class ProdOthersServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -31909,6 +32202,150 @@ export class PagedResultDtoOfProdInvoiceStockOutDto implements IPagedResultDtoOf
 export interface IPagedResultDtoOfProdInvoiceStockOutDto {
     totalCount: number;
     items: ProdInvoiceStockOutDto[] | undefined;
+}
+
+export class ProdOrderPartDto implements IProdOrderPartDto {
+    partNo!: string | undefined;
+    partName!: string | undefined;
+    supplierNo!: string | undefined;
+    carfamilyCode!: string | undefined;
+    supplierId!: number | undefined;
+    materialId!: number | undefined;
+    status!: string | undefined;
+    remark!: string | undefined;
+    shipmentId!: number | undefined;
+    containerNo!: string | undefined;
+    qty!: number | undefined;
+    amountUnit!: number | undefined;
+    totalAmount!: number | undefined;
+    orderDate!: moment.Moment | undefined;
+    shipmentNo!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IProdOrderPartDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.partNo = _data["partNo"];
+            this.partName = _data["partName"];
+            this.supplierNo = _data["supplierNo"];
+            this.carfamilyCode = _data["carfamilyCode"];
+            this.supplierId = _data["supplierId"];
+            this.materialId = _data["materialId"];
+            this.status = _data["status"];
+            this.remark = _data["remark"];
+            this.shipmentId = _data["shipmentId"];
+            this.containerNo = _data["containerNo"];
+            this.qty = _data["qty"];
+            this.amountUnit = _data["amountUnit"];
+            this.totalAmount = _data["totalAmount"];
+            this.orderDate = _data["orderDate"] ? moment(_data["orderDate"].toString()) : <any>undefined;
+            this.shipmentNo = _data["shipmentNo"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): ProdOrderPartDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProdOrderPartDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["partNo"] = this.partNo;
+        data["partName"] = this.partName;
+        data["supplierNo"] = this.supplierNo;
+        data["carfamilyCode"] = this.carfamilyCode;
+        data["supplierId"] = this.supplierId;
+        data["materialId"] = this.materialId;
+        data["status"] = this.status;
+        data["remark"] = this.remark;
+        data["shipmentId"] = this.shipmentId;
+        data["containerNo"] = this.containerNo;
+        data["qty"] = this.qty;
+        data["amountUnit"] = this.amountUnit;
+        data["totalAmount"] = this.totalAmount;
+        data["orderDate"] = this.orderDate ? this.orderDate.toISOString() : <any>undefined;
+        data["shipmentNo"] = this.shipmentNo;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IProdOrderPartDto {
+    partNo: string | undefined;
+    partName: string | undefined;
+    supplierNo: string | undefined;
+    carfamilyCode: string | undefined;
+    supplierId: number | undefined;
+    materialId: number | undefined;
+    status: string | undefined;
+    remark: string | undefined;
+    shipmentId: number | undefined;
+    containerNo: string | undefined;
+    qty: number | undefined;
+    amountUnit: number | undefined;
+    totalAmount: number | undefined;
+    orderDate: moment.Moment | undefined;
+    shipmentNo: string | undefined;
+    id: number | undefined;
+}
+
+export class PagedResultDtoOfProdOrderPartDto implements IPagedResultDtoOfProdOrderPartDto {
+    totalCount!: number;
+    items!: ProdOrderPartDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfProdOrderPartDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ProdOrderPartDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfProdOrderPartDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfProdOrderPartDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfProdOrderPartDto {
+    totalCount: number;
+    items: ProdOrderPartDto[] | undefined;
 }
 
 export class ListSupplierDto implements IListSupplierDto {
