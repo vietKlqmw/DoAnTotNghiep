@@ -55,11 +55,12 @@ export class OrderPartComponent extends AppComponentBase implements OnInit {
     orderDateFrom: any;
     orderDateTo: any;
     _selectrow;
-    notDeleted: boolean = false;
+    notDeleted: boolean = true;
     listStatus = [
         { label: 'Status', value: '' },
         { label: 'PENDING', value: 'PENDING' },
-        { label: 'ORDER', value: 'ORDER' }
+        { label: 'ORDER', value: 'ORDER' },
+        { label: 'TRANSFERRING', value: 'TRANSFERRING' }
     ];
 
     defaultColDef = {
@@ -232,6 +233,12 @@ export class OrderPartComponent extends AppComponentBase implements OnInit {
         this.selectedRow = Object.assign({}, this.saveSelectedRow);
 
         this._selectrow = this.saveSelectedRow.id;
+
+        if(this.saveSelectedRow.id){
+            if(this.saveSelectedRow.status == 'TRANSFERRING' || this.saveSelectedRow.status == 'In Warehouse'){
+                this.notDeleted = true;
+            }else this.notDeleted = false;
+        }else this.notDeleted = true;
     }
 
     exportToExcel(): void {

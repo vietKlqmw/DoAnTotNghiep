@@ -117,7 +117,7 @@ export class EditShipmentModalComponent extends AppComponentBase {
         if (material) this.rowData = material;
         else this.rowData = new ProdShipmentDto();
 
-        const dateValue = this.rowData.shipmentDate ? new Date(this.rowData.shipmentDate?.toString()) : undefined;
+        const dateValue = this.rowData.shipmentDate ? new Date(this.rowData.shipmentDate?.toString()) : new Date();
         this.datepicker?.bsValueChange.emit(dateValue);
         const dateValue2 = this.rowData.etd ? new Date(this.rowData.etd?.toString()) : undefined;
         this.datepicker2?.bsValueChange.emit(dateValue2);

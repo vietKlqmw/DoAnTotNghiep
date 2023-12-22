@@ -274,7 +274,7 @@ export class EditInvoiceModalComponent extends AppComponentBase {
         else this.rowData = new ProdInvoiceDto();
 
         if (type == 'Edit') {
-            const dateValue = this.rowData.invoiceDate ? new Date(this.rowData.invoiceDate?.toString()) : undefined;
+            const dateValue = this.rowData.invoiceDate ? new Date(this.rowData.invoiceDate?.toString()) : new Date();
             this.datepicker?.bsValueChange.emit(dateValue);
         }
         else {

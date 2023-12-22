@@ -695,6 +695,13 @@ BEGIN
                ShipmentId = @ShipId,
                ShippingDate = @p_ShipmentDate
          WHERE Id IN (SELECT item FROM dbo.fnSplit(@p_ListCont, ','))
+
+        DECLARE @ListContainer NVARCHAR(MAX) = (SELECT STRING_AGG(ContainerNo, ',') FROM ProdContainerIntransit WHERE Id IN (SELECT item FROM dbo.fnSplit(@p_ListCont, ',')))
+        UPDATE ProdOrderPart
+           SET LastModificationTime = GETDATE(), 
+               LastModifierUserId = @p_UserId,
+               ShipmentId = @ShipId
+         WHERE ContainerNo IN (SELECT item FROM dbo.fnSplit(@ListContainer, ','))
     END
 
     IF @p_Status = 'ORDERED'
@@ -834,6 +841,12 @@ BEGIN
                LastModifierUserId = @p_UserId,
                Status = 'On SEA'
          WHERE Id IN (SELECT Id FROM ProdContainerIntransit WHERE ShipmentId = @ShipmentId);
+
+        UPDATE ProdOrderPart
+           SET LastModificationTime = GETDATE(), 
+               LastModifierUserId = @p_UserId,
+               Status = 'TRANSFERRING'
+         WHERE ShipmentId = @ShipmentId; 
     END
 END
 ------------------------------------------------Delete:
@@ -1194,6 +1207,12 @@ FETCH NEXT FROM cursor_value INTO @p_ListContId
      INNER JOIN ProdInvoiceDetails pid ON pci.ContainerNo = pid.ContainerNo
      INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
           WHERE pci.Id = @p_id
+
+         UPDATE ProdOrderPart
+            SET LastModificationTime = GETDATE(),
+                LastModifierUserId = @p_UserId,
+                Status = 'In Warehouse'
+          WHERE ContainerNo = (SELECT ContainerNo FROM ProdContainerIntransit WHERE Id = @p_id)
 
          UPDATE ProdContainerIntransit
             SET IsDeleted = 1
