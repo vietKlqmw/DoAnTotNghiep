@@ -13563,13 +13563,13 @@ export class ProdOrderPartServiceProxy {
     }
 
     /**
-     * @param billId (optional) 
+     * @param id (optional) 
      * @return Success
      */
-    deleteOrder(billId: number | null | undefined): Observable<void> {
+    deleteOrder(id: number | null | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/ProdOrderPart/DeleteOrder?";
-        if (billId !== undefined)
-            url_ += "BillId=" + encodeURIComponent("" + billId) + "&"; 
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

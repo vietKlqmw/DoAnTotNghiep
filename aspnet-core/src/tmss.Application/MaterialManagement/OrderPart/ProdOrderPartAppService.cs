@@ -68,13 +68,12 @@ namespace tmss.MaterialManagement.OrderPart
             return _excelExporter.ExportToFile(exportToExcel);
         }
 
-        public async Task DeleteOrder(int? BillId)
+        public async Task DeleteOrder(int? Id)
         {
-            string _sql = "Exec INV_PROD_BILL_OF_LADING_DELETE @p_BillId, @p_UserId";
+            string _sql = "UPDATE ProdOrderPart SET IsDeleted = 1 WHERE Id = @p_Id";
             await _dapperRepo.ExecuteAsync(_sql, new
             {
-                p_BillId = BillId,
-                p_UserId = AbpSession.UserId
+                p_Id = Id
             });
         }
     }

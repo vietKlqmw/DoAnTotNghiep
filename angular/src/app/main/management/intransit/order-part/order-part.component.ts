@@ -250,18 +250,18 @@ export class OrderPartComponent extends AppComponentBase implements OnInit {
             });
     }
 
-    // deleteBill() {
-    //     this.message.confirm(this.l('Are you sure Delete?'), 'Delete Bill Of Lading', (isConfirmed) => {
-    //         if (isConfirmed) {
-    //             this._service.deleteOrderPart(this._selectrow).subscribe(() => {
-    //                 this.callBackDataGrid(this.dataParams!);
-    //                 this.notify.success(this.l('SuccessfullyDeleted'));
-    //             }, error => {
-    //                 this.notify.error(this.l('FailedDeleted'));
-    //             });
-    //         }
-    //     });
-    // }
+    deleteOrderPart() {
+        this.message.confirm(this.l('Are you sure Delete?'), 'Delete Order Part', (isConfirmed) => {
+            if (isConfirmed) {
+                this._service.deleteOrder(this._selectrow).subscribe(() => {
+                    this.callBackDataGrid(this.dataParams!);
+                    this.notify.success(this.l('SuccessfullyDeleted'));
+                }, error => {
+                    this.notify.error(this.l('FailedDeleted'));
+                });
+            }
+        });
+    }
 
     // editBill(): void {
     //     this.editModal.show(this.saveSelectedRow);
