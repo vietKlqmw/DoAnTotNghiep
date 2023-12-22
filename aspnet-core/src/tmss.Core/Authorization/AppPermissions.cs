@@ -97,5 +97,70 @@
         public const string Pages_Administration_Host_Settings = "Pages.Administration.Host.Settings";
         public const string Pages_Administration_Host_Dashboard = "Pages.Administration.Host.Dashboard";
 
+
+        #region MyApp
+
+        public const string Pages_Master = "Pages.Master";
+
+        public const string Pages_Master_Common = "Pages.Master.Common";
+
+        public const string Pages_Master_General = "Pages.Master.General";
+
+        public const string Pages_Master_General_Warehouse_View = "Pages.Master.General.Warehouse.View";
+        public const string Pages_Master_General_Warehouse_Edit = "Pages.Master.General.Warehouse.Edit";
+
+        public const string Pages_Master_General_Material_View = "Pages.Master.General.Material.View";
+        public const string Pages_Master_General_Material_Edit = "Pages.Master.General.Material.Edit";
+
+        public const string Pages_Master_General_PartList_View = "Pages.Master.General.PartList.View";
+        public const string Pages_Master_General_PartList_Edit = "Pages.Master.General.PartList.Edit";
+
+        public const string Pages_Master_General_Cfc_View = "Pages.Master.General.Cfc.View";
+        public const string Pages_Master_General_Cfc_Edit = "Pages.Master.General.Cfc.Edit";
+
+        public const string Pages_Master_General_Supplier_View = "Pages.Master.General.Supplier.View";
+        public const string Pages_Master_General_Supplier_Edit = "Pages.Master.General.Supplier.Edit";
+
+        public const string Pages_Master_General_Forwarder_View = "Pages.Master.General.Forwarder.View";
+        public const string Pages_Master_General_Forwarder_Edit = "Pages.Master.General.Forwarder.Edit";
+
+
+
+        public const string Pages_Management = "Pages.Management";
+
+        public const string Pages_Management_Intransit = "Pages.Management.Intransit";
+
+        public const string Pages_Management_Intransit_OrderPart_View = "Pages.Management.Intransit.OrderPart.View";
+        public const string Pages_Management_Intransit_OrderPart_Edit = "Pages.Management.Intransit.OrderPart.Edit";
+
+        public const string Pages_Management_Intransit_ContainerIntransit_View = "Pages.Management.Intransit.ContainerIntransit.View";
+        public const string Pages_Management_Intransit_ContainerIntransit_Edit = "Pages.Management.Intransit.ContainerIntransit.Edit";
+
+        public const string Pages_Management_Intransit_Shipment_View = "Pages.Management.Intransit.Shipment.View";
+        public const string Pages_Management_Intransit_Shipment_Edit = "Pages.Management.Intransit.Shipment.Edit";
+
+        public const string Pages_Management_Intransit_Bill_View = "Pages.Management.Intransit.Bill.View";
+        public const string Pages_Management_Intransit_Bill_Edit = "Pages.Management.Intransit.Bill.Edit";
+
+        public const string Pages_Management_Intransit_Invoice_View = "Pages.Management.Intransit.Invoice.View";
+        public const string Pages_Management_Intransit_Invoice_Edit = "Pages.Management.Intransit.Invoice.Edit";
+
+        public const string Pages_Management_Intransit_CustomsDeclare_View = "Pages.Management.Intransit.CustomsDeclare.View";
+        public const string Pages_Management_Intransit_CustomsDeclare_Edit = "Pages.Management.Intransit.CustomsDeclare.Edit";
+
+        public const string Pages_Management_Warehouse = "Pages.Management.Warehouse";
+
+        public const string Pages_Management_Warehouse_ContainerList_View = "Pages.Management.Warehouse.ContainerList.View";
+
+        public const string Pages_Management_Warehouse_ContainerWarehouse_View = "Pages.Management.Warehouse.ContainerWarehouse.View";
+        public const string Pages_Management_Warehouse_ContainerWarehouse_Edit = "Pages.Management.Warehouse.ContainerWarehouse.Edit";
+
+        public const string Pages_Management_Warehouse_StockWarehouse_View = "Pages.Management.Warehouse.StockWarehouse.View";
+        public const string Pages_Management_Warehouse_StockWarehouse_Edit = "Pages.Management.Warehouse.StockWarehouse.Edit";
+        public const string Pages_Management_Warehouse_StockWarehouse_Order = "Pages.Management.Warehouse.StockWarehouse.Order";
+
+        public const string Pages_Management_Warehouse_InvoiceOut_View = "Pages.Management.Warehouse.InvoiceOut.View";
+
+        #endregion
     }
 }

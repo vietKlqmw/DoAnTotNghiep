@@ -60,7 +60,8 @@ export class OrderPartComponent extends AppComponentBase implements OnInit {
         { label: 'Status', value: '' },
         { label: 'PENDING', value: 'PENDING' },
         { label: 'ORDER', value: 'ORDER' },
-        { label: 'TRANSFERRING', value: 'TRANSFERRING' }
+        { label: 'TRANSFERRING', value: 'TRANSFERRING' },
+        { label: 'In Warehouse', value: 'In Warehouse' }
     ];
 
     defaultColDef = {

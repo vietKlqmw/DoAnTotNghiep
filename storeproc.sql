@@ -466,18 +466,12 @@ INSERT INTO MasterSupplierList
 VALUES 
 (GETDATE(), 1, 0, 'STM', 'STM', 'ITNL', 'STM'),
 (GETDATE(), 1, 0, 'TMC', 'Japan', 'ITNL', 'Japan'),
-(GETDATE(), 1, 0, 'CTF', 'CHIEN TAI FONG', 'ITNL', 'CHIEN TAI FONG'),
-(GETDATE(), 1, 0, 'EIDAIKAKO', 'EIDAIKAKO', 'LCL', 'EIDAIKAKO'),
-(GETDATE(), 1, 0, 'TAM', 'Indonesia(Tam)', 'ITNL', 'Indonesia(Tam)'),
 (GETDATE(), 1, 0, 'TMI', 'Indonesia(TMI)', 'ITNL', 'Indonesia(TMI)'),
 (GETDATE(), 1, 0, 'UMW', 'Malaysia', 'ITNL', 'Malaysia'),
-(GETDATE(), 1, 0, 'T&K', 'Malysia(T&K)', 'ITNL', 'Malysia(T&K)'),
 (GETDATE(), 1, 0, 'TAP', 'Philipine(TAP)', 'ITNL', 'Philipine(TAP)'),
 (GETDATE(), 1, 0, 'TMP', 'Philipine(TMP)', 'ITNL', 'Philipine(TMP)'),
-(GETDATE(), 1, 0, 'SINGAPORE', 'SINGAPORE', 'ITNL', 'SINGAPORE'),
 (GETDATE(), 1, 0, 'KUO', 'Taiwan(kuo)', 'ITNL', 'Taiwan(kuo)'),
 (GETDATE(), 1, 0, 'TMT', 'Thailand(TMT)', 'ITNL', 'Thailand(TMT)'),
-(GETDATE(), 1, 0, 'USA', 'USA', 'ITNL', 'USA'),
 (GETDATE(), 1, 0, 'AUS', 'AUSTRALIA', 'ITNL', 'AUSTRALIA'),
 (GETDATE(), 1, 0, 'USA', 'USA', 'ITNL', 'USA'),
 (GETDATE(), 1, 0, 'GTE', 'GTE', 'ITNL', N'GTE(Trung Quốc)'),
@@ -493,28 +487,27 @@ END
 INSERT INTO MasterForwarder 
 (CreationTime, CreatorUserId, IsDeleted, Code, Name, SupplierId)
 VALUES 
-(GETDATE(), 1, 0, 'NYK', 'YLSV', 6),
-(GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 6),
-(GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 2),
+(GETDATE(), 1, 0, 'NYK', 'YLSV', 3),
+(GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 3),
 (GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 2),
 (GETDATE(), 1, 0, 'NYK', 'YLSV', 2),
 (GETDATE(), 1, 0, 'VMDC', 'VIMADECO', 2),
-(GETDATE(), 1, 0, 'VMDC', 'VIMADECO', 13),
-(GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 13),
-(GETDATE(), 1, 0, 'NYK', 'YLSV', 13),
-(GETDATE(), 1, 0, 'NAMPHAT', 'NAMPHAT', 15),
-(GETDATE(), 1, 0, 'EGLV', 'EGLV', 16),
-(GETDATE(), 1, 0, 'NYK', 'YLSV', 16),
-(GETDATE(), 1, 0, 'NIPPONHN', 'NIPPON HN', 17),
-(GETDATE(), 1, 0, 'SAFIHN', 'SAFI HN', 18),
-(GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 18),
-(GETDATE(), 1, 0, 'NYK', 'YLSV', 7),
-(GETDATE(), 1, 0, 'VMDC', 'VIMADECO', 7),
-(GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 10),
+(GETDATE(), 1, 0, 'VMDC', 'VIMADECO', 8),
+(GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 8),
+(GETDATE(), 1, 0, 'NYK', 'YLSV', 8),
+(GETDATE(), 1, 0, 'NAMPHAT', 'NAMPHAT', 9),
+(GETDATE(), 1, 0, 'EGLV', 'EGLV', 10),
 (GETDATE(), 1, 0, 'NYK', 'YLSV', 10),
+(GETDATE(), 1, 0, 'NIPPONHN', 'NIPPON HN', 11),
+(GETDATE(), 1, 0, 'SAFIHN', 'SAFI HN', 12),
+(GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 12),
+(GETDATE(), 1, 0, 'NYK', 'YLSV', 4),
+(GETDATE(), 1, 0, 'VMDC', 'VIMADECO', 4),
+(GETDATE(), 1, 0, 'YLSV', 'Yusen Logistics', 10),
+(GETDATE(), 1, 0, 'NYK', 'YLSV', 6),
 (GETDATE(), 1, 0, 'NYK', 'YLSV', 1),
-(GETDATE(), 1, 0, 'NYK', 'YLSV', 9),
-(GETDATE(), 1, 0, 'NYK', 'YLSV', 12);
+(GETDATE(), 1, 0, 'NYK', 'YLSV', 5),
+(GETDATE(), 1, 0, 'NYK', 'YLSV', 7);
 ------------------------------------------------Search:
 CREATE OR ALTER PROCEDURE INV_MASTER_FORWARDER_SEARCH
 (
@@ -1402,7 +1395,7 @@ BEGIN
            a.ShipmentId, a.Status, a.UsageQty, a.PartListId, ps.ShipmentNo, pop.PartNo
       FROM ProdContainerIntransit a
  LEFT JOIN ProdShipment ps ON a.ShipmentId = ps.Id
- LEFT JOIN ProdOrderPart pop ON a.PartListId = pop.Id
+INNER JOIN ProdOrderPart pop ON a.PartListId = pop.Id
      WHERE (ISNULL(@p_ContainerNo, '') = '' OR a.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
     	 AND (ISNULL(@p_ShippingDateFrom, '') = '' OR a.ShippingDate >= @p_ShippingDateFrom)
        AND (ISNULL(@p_ShippingDateTo, '') = '' OR a.ShippingDate <= @p_ShippingDateTo)
