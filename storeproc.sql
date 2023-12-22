@@ -1424,6 +1424,23 @@ BEGIN
          WHERE Id = @p_ContId;
     END
 END
+------------------------------------------------DELETE:
+CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_DELETE
+    @p_Id INT,
+    @p_UserId BIGINT
+AS
+BEGIN
+    DECLARE @ConTainerNo NVARCHAR(20) = (SELECT ContainerNo FROM ProdContainerIntransit WHERE Id = @p_Id);
+     UPDATE ProdContainerIntransit
+        SET IsDeleted = 1
+      WHERE Id = @p_Id 
+
+    UPDATE ProdOrderPart
+       SET LastModificationTime = GETDATE(),
+           LastModifierUserId = @p_UserId,
+           Status = 'PENDING'
+     WHERE ContainerNo = @ConTainerNo
+END
 ------------------------------------------------import:
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_MERGE
     @Guid VARCHAR(MAX)

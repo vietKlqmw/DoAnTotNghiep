@@ -72,10 +72,11 @@ namespace tmss.MaterialManagement.ContainerIntransit
 
         public async Task DeleteContainerIntransit(int? Id)
         {
-            string _sql = "UPDATE ProdContainerIntransit SET IsDeleted = 1 WHERE Id = @p_Id";
+            string _sql = "Exec INV_PROD_CONTAINER_INTRANSIT_DELETE @p_Id, @p_UserId";
             await _dapperRepo.ExecuteAsync(_sql, new
             {
-                p_Id = Id
+                p_Id = Id,
+                p_UserId = AbpSession.UserId
             });
         }
 
