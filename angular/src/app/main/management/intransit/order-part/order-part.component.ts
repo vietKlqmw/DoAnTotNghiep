@@ -12,6 +12,7 @@ import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
+import { EditOrderPartModalComponent } from './edit-order-part-modal.component';
 
 @Component({
     selector: 'app-orderpart',
@@ -21,7 +22,7 @@ import { DataFormatService } from '@app/shared/common/services/data-format.servi
     animations: [appModuleAnimation()]
 })
 export class OrderPartComponent extends AppComponentBase implements OnInit {
-    // @ViewChild('editModal', { static: true }) editModal: EditOrderPartModalComponent;
+    @ViewChild('editModal', { static: true }) editModal: EditOrderPartModalComponent;
 
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
@@ -58,7 +59,7 @@ export class OrderPartComponent extends AppComponentBase implements OnInit {
     listStatus = [
         { label: 'Status', value: '' },
         { label: 'PENDING', value: 'PENDING' },
-        { label: 'ORDERED', value: 'ORDERED' }
+        { label: 'ORDER', value: 'ORDER' }
     ];
 
     defaultColDef = {
@@ -88,7 +89,7 @@ export class OrderPartComponent extends AppComponentBase implements OnInit {
             { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 80 },
             { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'partNo', flex: 1 },
             { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', flex: 1 },
-            { headerName: this.l('Cfc'), headerTooltip: this.l('Cfc'), field: 'cfc', flex: 1 },
+            { headerName: this.l('Cfc'), headerTooltip: this.l('Cfc'), field: 'carfamilyCode', flex: 1 },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
             {
                 headerName: this.l('Order Date'), headerTooltip: this.l('Order Date'), field: 'orderDate', flex: 1,
@@ -108,7 +109,8 @@ export class OrderPartComponent extends AppComponentBase implements OnInit {
             },
             { headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', flex: 1 },
             { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', flex: 1 },
-            { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
+            { headerName: this.l('Shipment No'), headerTooltip: this.l('Shipment No'), field: 'shipmentNo', flex: 1 },
+            { headerName: this.l('Base Unit Of Measure'), headerTooltip: this.l('Base Unit Of Measure'), field: 'baseUnitOfMeasure', flex: 1 },
             { headerName: this.l('Remark'), headerTooltip: this.l('Remark'), field: 'remark', flex: 1 }
         ];
 
@@ -263,8 +265,9 @@ export class OrderPartComponent extends AppComponentBase implements OnInit {
         });
     }
 
-    // editBill(): void {
-    //     this.editModal.show(this.saveSelectedRow);
-    // }
+    editOrderPart(ev): void {
+        if(ev == 'Add') this.editModal.show(ev);
+        else this.editModal.show(ev, this.saveSelectedRow);
+    }
 }
 

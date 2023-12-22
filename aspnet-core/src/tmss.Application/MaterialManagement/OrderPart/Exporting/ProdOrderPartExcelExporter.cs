@@ -32,6 +32,7 @@ namespace tmss.MaterialManagement.OrderPart.Exporting
                         ("Status"),
                         ("Container No"),
                         ("Shipment No"),
+                        ("Basic Of Measure"),
                         ("Remark")
                     );
 
@@ -48,10 +49,11 @@ namespace tmss.MaterialManagement.OrderPart.Exporting
                         _ => _.Status,
                         _ => _.ContainerNo,
                         _ => _.ShipmentNo,
+                        _ => _.BaseUnitOfMeasure,
                         _ => _.Remark
                     );
 
-                    for (var i = 0; i < 12; i++)
+                    for (var i = 0; i < 13; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

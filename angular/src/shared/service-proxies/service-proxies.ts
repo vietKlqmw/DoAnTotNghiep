@@ -13611,6 +13611,58 @@ export class ProdOrderPartServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    editOrderPart(body: ProdOrderPartDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOrderPart/EditOrderPart";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEditOrderPart(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEditOrderPart(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processEditOrderPart(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -14888,6 +14940,61 @@ export class ProdOthersServiceProxy {
             }));
         }
         return _observableOf<string>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getListPartForOrderToWarehouse(): Observable<ListPartForOrderToWarehouse[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetListPartForOrderToWarehouse";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListPartForOrderToWarehouse(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListPartForOrderToWarehouse(<any>response_);
+                } catch (e) {
+                    return <Observable<ListPartForOrderToWarehouse[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ListPartForOrderToWarehouse[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetListPartForOrderToWarehouse(response: HttpResponseBase): Observable<ListPartForOrderToWarehouse[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ListPartForOrderToWarehouse.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ListPartForOrderToWarehouse[]>(<any>null);
     }
 
     /**
@@ -32219,6 +32326,7 @@ export class ProdOrderPartDto implements IProdOrderPartDto {
     amountUnit!: number | undefined;
     totalAmount!: number | undefined;
     orderDate!: moment.Moment | undefined;
+    baseUnitOfMeasure!: string | undefined;
     shipmentNo!: string | undefined;
     id!: number | undefined;
 
@@ -32247,6 +32355,7 @@ export class ProdOrderPartDto implements IProdOrderPartDto {
             this.amountUnit = _data["amountUnit"];
             this.totalAmount = _data["totalAmount"];
             this.orderDate = _data["orderDate"] ? moment(_data["orderDate"].toString()) : <any>undefined;
+            this.baseUnitOfMeasure = _data["baseUnitOfMeasure"];
             this.shipmentNo = _data["shipmentNo"];
             this.id = _data["id"];
         }
@@ -32275,6 +32384,7 @@ export class ProdOrderPartDto implements IProdOrderPartDto {
         data["amountUnit"] = this.amountUnit;
         data["totalAmount"] = this.totalAmount;
         data["orderDate"] = this.orderDate ? this.orderDate.toISOString() : <any>undefined;
+        data["baseUnitOfMeasure"] = this.baseUnitOfMeasure;
         data["shipmentNo"] = this.shipmentNo;
         data["id"] = this.id;
         return data; 
@@ -32296,6 +32406,7 @@ export interface IProdOrderPartDto {
     amountUnit: number | undefined;
     totalAmount: number | undefined;
     orderDate: moment.Moment | undefined;
+    baseUnitOfMeasure: string | undefined;
     shipmentNo: string | undefined;
     id: number | undefined;
 }
@@ -33158,6 +33269,66 @@ export interface IGetDataDashboardInvoiceStatistics {
     vat: number | undefined;
     amountOut: number | undefined;
     invoiceDate: moment.Moment | undefined;
+}
+
+export class ListPartForOrderToWarehouse implements IListPartForOrderToWarehouse {
+    partNo!: string | undefined;
+    partName!: string | undefined;
+    supplierNo!: string | undefined;
+    carfamilyCode!: string | undefined;
+    standardPrice!: number | undefined;
+    baseUnitOfMeasure!: string | undefined;
+    materialId!: number | undefined;
+
+    constructor(data?: IListPartForOrderToWarehouse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.partNo = _data["partNo"];
+            this.partName = _data["partName"];
+            this.supplierNo = _data["supplierNo"];
+            this.carfamilyCode = _data["carfamilyCode"];
+            this.standardPrice = _data["standardPrice"];
+            this.baseUnitOfMeasure = _data["baseUnitOfMeasure"];
+            this.materialId = _data["materialId"];
+        }
+    }
+
+    static fromJS(data: any): ListPartForOrderToWarehouse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListPartForOrderToWarehouse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["partNo"] = this.partNo;
+        data["partName"] = this.partName;
+        data["supplierNo"] = this.supplierNo;
+        data["carfamilyCode"] = this.carfamilyCode;
+        data["standardPrice"] = this.standardPrice;
+        data["baseUnitOfMeasure"] = this.baseUnitOfMeasure;
+        data["materialId"] = this.materialId;
+        return data; 
+    }
+}
+
+export interface IListPartForOrderToWarehouse {
+    partNo: string | undefined;
+    partName: string | undefined;
+    supplierNo: string | undefined;
+    carfamilyCode: string | undefined;
+    standardPrice: number | undefined;
+    baseUnitOfMeasure: string | undefined;
+    materialId: number | undefined;
 }
 
 export class ProdShipmentDto implements IProdShipmentDto {

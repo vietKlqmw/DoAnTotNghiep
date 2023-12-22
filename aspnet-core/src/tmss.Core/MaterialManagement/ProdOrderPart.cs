@@ -23,6 +23,7 @@ namespace tmss.MaterialManagement
 
         public const int MaxContainerNoLength = 20;
 
+        public const int MaxBaseUnitOfMeasureLength = 3;
 
         [StringLength(MaxPartNoLength)]
         public virtual string PartNo { get; set; }
@@ -58,5 +59,8 @@ namespace tmss.MaterialManagement
         public virtual decimal? TotalAmount { get; set; }
 
         public virtual DateTime? OrderDate { get; set; }
+
+        [StringLength(MaxBaseUnitOfMeasureLength)]
+        public virtual string BaseUnitOfMeasure { get; set; }//Đơn Vị Đo Cơ Bản
     }
 }

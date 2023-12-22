@@ -27,6 +27,17 @@ namespace tmss.ManagementOther
         public virtual string Description { get; set; }
     }
 
+    public class ListPartForOrderToWarehouse
+    {
+        public virtual string PartNo { get; set; }
+        public virtual string PartName { get; set; }
+        public virtual string SupplierNo { get; set; }
+        public virtual string CarfamilyCode { get; set; }
+        public virtual decimal? StandardPrice { get; set; }
+        public virtual string BaseUnitOfMeasure { get; set; }//Đơn Vị Đo Cơ Bản
+        public virtual long? MaterialId { get; set; }
+    }
+
     public class ListMaterialUsageDto
     {
         public virtual long? MaterialId { get; set; }

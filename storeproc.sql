@@ -339,6 +339,16 @@ BEGIN
       FROM MasterPartList_T mplt
      WHERE mplt.Guid = @Guid AND ISNULL(mplt.ErrorDescription, '') <> '' 
 END
+------------------------------------------------Get List:
+CREATE OR ALTER PROCEDURE INV_PROD_OTHER_GET_LIST_PART_FOR_ORDER
+AS
+BEGIN
+    SELECT mpl.PartNo, mpl.SupplierNo, mpl.CarfamilyCode, mpl.PartName, 
+           mm.StandardPrice, mm.BaseUnitOfMeasure, mm.Id MaterialId 
+      FROM MasterPartList mpl
+ LEFT JOIN MasterMaterial mm on mpl.MaterialId = mm.Id
+     WHERE mpl.IsDeleted = 0
+END
 ------------------------------------------------MaterialGroup------------------------------------------------
 INSERT INTO MasterMaterialGroup 
 (CreationTime, CreatorUserId, IsDeleted, Code, Name)
@@ -712,9 +722,9 @@ BEGIN
         INSERT INTO ProdInvoiceDetails 
                     (CreationTime, CreatorUserId, IsDeleted, 
                      PartNo, ContainerNo, InvoiceNo, SupplierNo, UsageQty, PartName, CarfamilyCode, Currency)
-            SELECT GETDATE(), @p_UserId, 0, mpl.PartNo, pci.ContainerNo, @InvoiceNo, pci.SupplierNo, pci.UsageQty, mpl.PartName, mpl.CarfamilyCode, 'VND'
+            SELECT GETDATE(), @p_UserId, 0, pop.PartNo, pci.ContainerNo, @InvoiceNo, pci.SupplierNo, pci.UsageQty, pop.PartName, pop.CarfamilyCode, 'VND'
               FROM ProdContainerIntransit pci
-         LEFT JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
+         LEFT JOIN ProdOrderPart pop ON pci.PartListId = pop.Id
              WHERE pci.Id IN (SELECT Id FROM ProdContainerIntransit WHERE ShipmentId = @p_ShipmentId)
     END
 END
@@ -757,9 +767,9 @@ CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_CONTAINER_FOR_SHIPMENT
     @p_SupplierNo NVARCHAR(10)
 AS
 BEGIN
-    SELECT a.Id, a.ContainerNo, mpl.CarfamilyCode, a.UsageQty, mpl.PartNo, mpl.PartName
+    SELECT a.Id, a.ContainerNo, pop.CarfamilyCode, a.UsageQty, pop.PartNo, pop.PartName
       FROM ProdContainerIntransit a
- LEFT JOIN MasterPartList mpl ON a.PartListId = mpl.Id
+ LEFT JOIN ProdOrderPart pop ON a.PartListId = pop.Id
      WHERE a.SupplierNo = @p_SupplierNo
        AND a.Status = 'NEW'
 		   AND a.ShipmentId IS NULL
@@ -858,11 +868,11 @@ BEGIN
     DECLARE @ListCfc NVARCHAR(MAX);
 
      SELECT @ListContNo = STRING_AGG(pci.ContainerNo, ';'),
-            @ListPartNo = STRING_AGG(mpl.PartNo, ';'),
-            @ListPartName = STRING_AGG(mpl.PartName, ';'),
-            @ListCfc = STRING_AGG(mpl.CarfamilyCode, ';') 
+            @ListPartNo = STRING_AGG(pop.PartNo, ';'),
+            @ListPartName = STRING_AGG(pop.PartName, ';'),
+            @ListCfc = STRING_AGG(pop.CarfamilyCode, ';') 
        FROM ProdContainerIntransit pci
-  LEFT JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
+ INNER JOIN ProdOrderPart pop ON pci.PartListId = pop.Id
       WHERE pci.ShipmentId = (SELECT ShipmentId FROM ProdBillOfLading WHERE Id = @p_BillId )
 
     SELECT pbol.Id, pbol.BillofladingNo, pbol.BillDate, pbol.StatusCode, 
@@ -1131,11 +1141,10 @@ CREATE OR ALTER PROCEDURE INV_PROD_EXPORT_GOODS_RECEIVED_NOTE
 AS
 BEGIN
     SELECT pid.PartNo, pid.PartName, pid.UsageQty, pi.Forwarder, pi.InvoiceNo,
-           pid.ContainerNo, mm.BaseUnitOfMeasure, mm.StandardPrice
+           pid.ContainerNo, pop.BaseUnitOfMeasure, pop.AmountUnit StandardPrice
       FROM ProdInvoiceDetails pid
 INNER JOIN ProdContainerIntransit pci ON pid.ContainerNo = pci.ContainerNo
-INNER JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
-INNER JOIN MasterMaterial mm ON mpl.MaterialId = mm.Id
+INNER JOIN ProdOrderPart pop ON pci.PartListId = pop.Id
 INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
      WHERE pci.Id IN (SELECT item FROM dbo.fnSplit(@p_ContId, ','))
 
@@ -1195,11 +1204,11 @@ FETCH NEXT FROM cursor_value INTO @p_ListContId
                 PartNo, PartName, PartListId, MaterialId, Qty, InvoiceDetailsId, 
                 SupplierNo, Model, ActualQty, ContainerNo, Warehouse)
          SELECT GETDATE(), @p_UserId, 0, 
-                pid.PartNo, pid.PartName, pci.PartListId, mpl.MaterialId, pid.UsageQty, pid.Id, 
+                pid.PartNo, pid.PartName, pci.PartListId, pop.MaterialId, pid.UsageQty, pid.Id, 
                 pid.SupplierNo, pid.CarfamilyCode, @p_qty, pid.ContainerNo, @p_Warehouse 
            FROM ProdInvoiceDetails pid
      INNER JOIN ProdContainerIntransit pci ON pid.ContainerNo = pci.ContainerNo
-      LEFT JOIN MasterPartList mpl ON pci.PartListId = mpl.Id
+     INNER JOIN ProdOrderPart pop ON pci.PartListId = pop.Id
           WHERE pci.Id = @p_id
 
 FETCH NEXT FROM cursor_value INTO @p_ListContId 
@@ -1370,11 +1379,11 @@ CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_SEARCH
 )
 AS
 BEGIN
-    SELECT a.Id, a.ContainerNo, a.SupplierNo, a.ShippingDate, a.PortDate, mpl.CarfamilyCode,
-           a.ShipmentId, a.Status, a.UsageQty, a.PartListId, ps.ShipmentNo, mpl.PartNo
+    SELECT a.Id, a.ContainerNo, a.SupplierNo, a.ShippingDate, a.PortDate, pop.CarfamilyCode,
+           a.ShipmentId, a.Status, a.UsageQty, a.PartListId, ps.ShipmentNo, pop.PartNo
       FROM ProdContainerIntransit a
  LEFT JOIN ProdShipment ps ON a.ShipmentId = ps.Id
- LEFT JOIN MasterPartList mpl ON a.PartListId = mpl.Id
+ LEFT JOIN ProdOrderPart pop ON a.PartListId = pop.Id
      WHERE (ISNULL(@p_ContainerNo, '') = '' OR a.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
     	 AND (ISNULL(@p_ShippingDateFrom, '') = '' OR a.ShippingDate >= @p_ShippingDateFrom)
        AND (ISNULL(@p_ShippingDateTo, '') = '' OR a.ShippingDate <= @p_ShippingDateTo)
@@ -1934,7 +1943,7 @@ BEGIN
     SELECT pop.Id, pop.PartNo, pop.PartName, pop.SupplierNo, pop.CarfamilyCode, 
            pop.SupplierId, pop.MaterialId, pop.Status, pop.Remark, pop.ShipmentId, 
            pop.ContainerNo, pop.Qty, pop.AmountUnit, pop.TotalAmount, ps.ShipmentNo,
-           pop.OrderDate
+           pop.OrderDate, pop.BaseUnitOfMeasure
       FROM ProdOrderPart pop
  LEFT JOIN ProdShipment ps on pop.ShipmentId = ps.Id
      WHERE (@p_PartNo IS NULL OR pop.PartNo LIKE CONCAT('%', @p_PartNo, '%'))
@@ -1946,6 +1955,85 @@ BEGIN
        AND (@p_OrderDateFrom IS NULL OR pop.OrderDate >= @p_OrderDateFrom)
        AND (@p_OrderDateTo IS NULL OR pop.OrderDate <= @p_OrderDateTo)
        AND pop.IsDeleted = 0
+END
+------------------------------------------------Edit:
+CREATE OR ALTER PROCEDURE INV_PROD_ORDER_PART_EDIT
+(
+    @p_OrderId INT,
+    @p_PartNo NVARCHAR(15),
+    @p_PartName NVARCHAR(MAX),
+    @p_SupplierNo NVARCHAR(10),
+    @p_Cfc NVARCHAR(4),
+    @p_Status NVARCHAR(50),
+    @p_Remark NVARCHAR(MAX),
+    @p_Qty INT,
+    @p_AmountUnit DECIMAL,
+    @p_TotalAmount DECIMAL,
+    @p_OrderDate DATE,
+    @p_BOM NVARCHAR(3),
+    @p_MaterialId BIGINT,
+    @p_UserId BIGINT
+)
+AS
+BEGIN
+    IF @p_OrderId IS NULL
+    BEGIN
+        INSERT INTO ProdOrderPart 
+                   (CreationTime, CreatorUserId, IsDeleted, 
+                    PartNo, PartName, SupplierNo, CarfamilyCode, 
+                    Status, Remark, BaseUnitOfMeasure, MaterialId, 
+                    Qty, AmountUnit, TotalAmount, OrderDate)
+            VALUES (GETDATE(), @p_UserId, 0, 
+                    @p_PartNo, @p_PartName, @p_SupplierNo, @p_Cfc,
+                    @p_Status, @p_Remark, @p_BOM, @p_MaterialId,
+                    @p_Qty, @p_AmountUnit, @p_TotalAmount, @p_OrderDate);
+
+        SELECT @p_OrderId = @@identity;
+    END
+    ELSE
+    BEGIN
+        UPDATE ProdOrderPart
+           SET LastModificationTime = GETDATE(),
+               LastModifierUserId = @p_UserId,
+               PartNo = @p_PartNo,
+               PartName = @p_PartName,
+               SupplierNo = @p_SupplierNo,
+               CarfamilyCode = @p_Cfc,
+               [Status] = @p_Status,
+               Remark = @p_Remark,
+               Qty = @p_Qty,
+               AmountUnit = @p_AmountUnit,
+               TotalAmount = @p_TotalAmount,
+               OrderDate = @p_OrderDate,
+               BaseUnitOfMeasure = @p_BOM,
+               MaterialId = @p_MaterialId
+         WHERE Id = @p_OrderId  
+    END
+
+    IF @p_Status = 'ORDER'
+    BEGIN
+          DECLARE @p_ContainerNo NVARCHAR(20) = 'CONT' + FORMAT(GETDATE(), 'yyMMddHHmmss');
+          INSERT INTO ProdContainerIntransit 
+                      (CreationTime, CreatorUserId, IsDeleted, 
+                      ContainerNo, SupplierNo, Status, UsageQty, PartListId)
+               VALUES (GETDATE(), @p_UserId, 0, 
+                      @p_ContainerNo, @p_SupplierNo, 'NEW', @p_Qty, @p_OrderId);
+
+          UPDATE ProdOrderPart
+             SET ContainerNo = @p_ContainerNo
+           WHERE Id = @p_OrderId
+    END
+END
+------------------------------------------------DELETE:
+CREATE OR ALTER PROCEDURE INV_PROD_ORDER_PART_DELETE
+    @p_Id INT
+AS
+BEGIN
+    DELETE ProdContainerIntransit WHERE PartListId = @p_Id
+
+    UPDATE ProdOrderPart
+       SET IsDeleted = 1
+     WHERE Id = @p_Id
 END
 ------------------------------------------------DASHBOARD------------------------------------------------
 ------------------------------------------------TOP

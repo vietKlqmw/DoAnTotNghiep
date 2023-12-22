@@ -19,6 +19,7 @@ namespace tmss.MaterialManagement.OrderPart
         public virtual decimal? AmountUnit { get; set; }
         public virtual decimal? TotalAmount { get; set; }
         public virtual DateTime? OrderDate { get; set; }
+        public virtual string BaseUnitOfMeasure { get; set; }//Đơn Vị Đo Cơ Bản
 
         public virtual string ShipmentNo { get; set; }
     }

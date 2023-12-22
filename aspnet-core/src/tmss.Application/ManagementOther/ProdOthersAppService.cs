@@ -249,6 +249,17 @@ namespace tmss.ManagementOther
         }
 
 
+        public async Task<List<ListPartForOrderToWarehouse>> GetListPartForOrderToWarehouse()
+        {
+            string _sql = "Exec INV_PROD_OTHER_GET_LIST_PART_FOR_ORDER";
+
+            IEnumerable<ListPartForOrderToWarehouse> result = await _dapperRepo.QueryAsync<ListPartForOrderToWarehouse>(_sql);
+
+            return result.ToList();
+        }
+
+
+
         //excel to pdf
         public string ConvertExcelToPdf(string filePathSource, string filePathSave, string nameSave)
         {
