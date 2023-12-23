@@ -231,7 +231,7 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
         this._selectrow = this.saveSelectedRow.id;
 
         if(this._selectrow){
-            if(this.saveSelectedRow.status == 'ORDERED (ON SEA)' || this.saveSelectedRow.status == 'ORDERED (ON PORT)') this.notDelete = true;
+            if(this.saveSelectedRow.status.includes('ORDERED')) this.notDelete = true;
             else this.notDelete = false;
         }else{
             this.notDelete = false;

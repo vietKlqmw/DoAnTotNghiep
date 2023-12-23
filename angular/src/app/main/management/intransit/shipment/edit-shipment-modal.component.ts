@@ -181,14 +181,24 @@ export class EditShipmentModalComponent extends AppComponentBase {
             return;
         }
 
-        this.saving = true;
-        this._service.editShipment(this.rowData)
-            .pipe(finalize(() => { this.saving = false; }))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this._component.searchDatas();
-                this.close();
-            });
+        if (this.rowData.status == 'ORDERED') {
+            this.message.confirm(
+                this.l('Shipment will not be editable!'),
+                this.l('AreYouSure'),
+                isConfirmed => {
+                    if (isConfirmed) {
+                        this.saving = true;
+                        this._service.editShipment(this.rowData)
+                            .pipe(finalize(() => { this.saving = false; }))
+                            .subscribe(() => {
+                                this.notify.info(this.l('SavedSuccessfully'));
+                                this._component.searchDatas();
+                                this.close();
+                            });
+                    }
+                }
+            );
+        }
     }
 
     changeSupplier(event) {
@@ -224,6 +234,15 @@ export class EditShipmentModalComponent extends AppComponentBase {
             }
         }
     }
+
+    // selectAll() {
+    //     this.dataParams.api.forEachNode((e, idx) => {
+    //         this.dataParams.api.getRowNode(`${e.rowIndex}`)?.setSelected(true);
+    //         this.dataParams.api.setFocusedCell(e.rowIndex,
+    //             this.dataParams.api.getColumnDefs()[0]['checked']);
+    //         this.dataParams.api.redrawRows();
+    //     });
+    // }
 
     close(): void {
         this.modal.hide();

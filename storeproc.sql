@@ -769,7 +769,7 @@ AS
 BEGIN
     SELECT a.Id, a.ContainerNo, pop.CarfamilyCode, a.UsageQty, pop.PartNo, pop.PartName
       FROM ProdContainerIntransit a
- LEFT JOIN ProdOrderPart pop ON a.PartListId = pop.Id
+INNER JOIN ProdOrderPart pop ON a.PartListId = pop.Id
      WHERE a.SupplierNo = @p_SupplierNo
        AND a.Status = 'NEW'
 		   AND a.ShipmentId IS NULL
