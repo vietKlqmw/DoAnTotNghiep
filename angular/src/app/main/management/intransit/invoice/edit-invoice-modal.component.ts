@@ -115,12 +115,16 @@ export class EditInvoiceModalComponent extends AppComponentBase {
             { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 80, pinned: true },
             { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', width: 130, pinned: true },
             {
-                headerName: this.l('Freight'), headerTooltip: this.l('Freight'), field: 'freight', width: 100, type: 'editableColumn',
-                cellRenderer: (params) => (params.data?.freight != null ? this._fm.formatMoney_decimal(params.data?.freight) : 0)
+                headerName: this.l('Cost'), headerTooltip: this.l('Cost'), field: 'cost', width: 100, type: 'rightAligned',
+                cellRenderer: (params) => (params.data?.cost != null ? this._fm.formatMoney_decimal(params.data?.cost) : 0)
             },
             {
                 headerName: this.l('Insurance'), headerTooltip: this.l('Insurance'), field: 'insurance', width: 110, type: 'editableColumn',
                 cellRenderer: (params) => (params.data?.insurance != null ? this._fm.formatMoney_decimal(params.data?.insurance) : 0)
+            },
+            {
+                headerName: this.l('Freight'), headerTooltip: this.l('Freight'), field: 'freight', width: 100, type: 'editableColumn',
+                cellRenderer: (params) => (params.data?.freight != null ? this._fm.formatMoney_decimal(params.data?.freight) : 0)
             },
             {
                 headerName: this.l('C.I.F'), headerTooltip: this.l('Cif'), field: 'cif', width: 100, type: 'rightAligned',
@@ -218,7 +222,7 @@ export class EditInvoiceModalComponent extends AppComponentBase {
 
             if (v == null || v == undefined || Number.isNaN(v)) {
                 params.data[field] = 0;
-                params.data['cif'] = params.data['insurance'] + params.data['freight'];
+                params.data['cif'] = params.data['cost'] + params.data['insurance'] + params.data['freight'];
                 params.api.applyTransaction({ update: [params.data] });
                 return 0;
             }
@@ -226,7 +230,7 @@ export class EditInvoiceModalComponent extends AppComponentBase {
                 params.newValue = ((params.newValue) < 0) ? params.oldValue : params.newValue;
                 params.data[field] = params.newValue;
 
-                params.data['cif'] = params.data['insurance'] + params.data['freight'];
+                params.data['cif'] = params.data['cost'] + params.data['insurance'] + params.data['freight'];
                 params.api.applyTransaction({ update: [params.data] });
 
                 return params.newValue;
@@ -237,7 +241,7 @@ export class EditInvoiceModalComponent extends AppComponentBase {
     }
 
     onCellValueChanged(params: CellValueChangedEvent) {
-        params.data['cif'] = params.data['insurance'] + params.data['freight'];
+        params.data['cif'] = params.data['cost'] + params.data['insurance'] + params.data['freight'];
         params.api.applyTransaction({ update: [params.data] });
 
         if (params.newValue == null || Number.isNaN(params.newValue) || params.newValue == undefined) return;

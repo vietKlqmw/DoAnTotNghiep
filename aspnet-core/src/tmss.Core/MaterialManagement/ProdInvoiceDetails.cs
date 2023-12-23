@@ -63,5 +63,7 @@ namespace tmss.MaterialManagement
         [StringLength(MaxCurrencyLength)]
         public virtual string Currency { get; set; } //Tiền tệ
 
+        public virtual decimal? Cost { get; set; }
+
     }
 }

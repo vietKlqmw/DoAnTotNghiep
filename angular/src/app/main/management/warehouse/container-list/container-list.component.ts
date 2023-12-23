@@ -100,16 +100,20 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
                 valueFormatter: (params) => this.pipe.transform(params.data?.receiveDate, 'dd/MM/yyyy')
             },
             { headerName: this.l('Invoice No'), headerTooltip: this.l('Invoice No'), field: 'invoiceNo', flex: 1 },
-            { headerName: this.l('Transport'), headerTooltip: this.l('Transport'), field: 'transport', flex: 1 },
             {
-                headerName: this.l('Freight'), headerTooltip: this.l('Freight'), field: 'freight', flex: 1,
+                headerName: this.l('Cost'), headerTooltip: this.l('Cost'), field: 'totalAmount', flex: 1,
                 type: 'rightAligned', aggFunc: this.calTotal,
-                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.freight)
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.totalAmount)
             },
             {
                 headerName: this.l('Insurance'), headerTooltip: this.l('Insurance'), field: 'insurance', flex: 1,
                 type: 'rightAligned', aggFunc: this.calTotal,
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.insurance)
+            },
+            {
+                headerName: this.l('Freight'), headerTooltip: this.l('Freight'), field: 'freight', flex: 1,
+                type: 'rightAligned', aggFunc: this.calTotal,
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.freight)
             },
             {
                 headerName: this.l('C.I.F'), headerTooltip: this.l('C.I.F'), field: 'cif', flex: 1,
@@ -126,7 +130,12 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
                 type: 'rightAligned', aggFunc: this.calTotal,
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.amount)
             },
+            { headerName: this.l('Cfc'), headerTooltip: this.l('Carfamily Code'), field: 'carfamilyCode', flex: 1 },
+            { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'partNo', flex: 1 },
+            { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', flex: 1 },
+            { headerName: this.l('Base Unit Of Measure'), headerTooltip: this.l('Base Unit Of Measure'), field: 'baseUnitOfMeasure', flex: 1 },
             { headerName: this.l('Warehouse'), headerTooltip: this.l('Warehouse'), field: 'warehouse', flex: 1 },
+            { headerName: this.l('Transport'), headerTooltip: this.l('Transport'), field: 'transport', flex: 1 },
             { headerName: this.l('Remark'), headerTooltip: this.l('Remark'), field: 'remark', flex: 1 }
         ];
 
@@ -186,12 +195,14 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
                     var _sumTax = 0;
                     var _sumCif = 0;
                     var _sumAmount = 0;
+                    var _sumCost = 0;
                     _sumFreight = result.items[0].grandFreight;
                     _sumInsurance = result.items[0].grandInsurance;
                     _sumTax = result.items[0].grandTax;
                     _sumCif = result.items[0].grandCif;
                     _sumAmount = result.items[0].grandAmount;
-                    var rows = this.createRow(1, _sumFreight, _sumInsurance, _sumTax, _sumCif, _sumAmount);
+                    _sumCost = result.items[0].grandCost;
+                    var rows = this.createRow(1, _sumFreight, _sumInsurance, _sumTax, _sumCif, _sumAmount, _sumCost);
                     this.dataParams!.api.setPinnedBottomRowData(rows);
                 } else {
                     this.dataParams!.api.setPinnedBottomRowData(null);
@@ -263,12 +274,14 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
                     var _sumTax = 0;
                     var _sumCif = 0;
                     var _sumAmount = 0;
+                    var _sumCost = 0;
                     _sumFreight = result.items[0].grandFreight;
                     _sumInsurance = result.items[0].grandInsurance;
                     _sumTax = result.items[0].grandTax;
                     _sumCif = result.items[0].grandCif;
                     _sumAmount = result.items[0].grandAmount;
-                    var rows = this.createRow(1, _sumFreight, _sumInsurance, _sumTax, _sumCif, _sumAmount);
+                    _sumCost = result.items[0].grandCost;
+                    var rows = this.createRow(1, _sumFreight, _sumInsurance, _sumTax, _sumCif, _sumAmount, _sumCost);
                     this.dataParams!.api.setPinnedBottomRowData(rows);
                 } else {
                     this.dataParams!.api.setPinnedBottomRowData(null);
@@ -305,7 +318,7 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
     }
 
     createRow(count: number, sumFreight: number, sumInsurance: number,
-        sumTax: number, sumCif: number, sumAmount: number): any[] {
+        sumTax: number, sumCif: number, sumAmount: number, sumCost: number): any[] {
         let result: any[] = [];
 
         for (var i = 0; i < count; i++) {
@@ -315,7 +328,8 @@ export class ContainerListComponent extends AppComponentBase implements OnInit {
                 insurance: sumInsurance,
                 tax: sumTax,
                 cif: sumCif,
-                amount: sumAmount
+                amount: sumAmount,
+                totalAmount: sumCost
             });
         }
         return result;

@@ -137,12 +137,16 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', width: 120 },
             { headerName: this.l('Forwarder'), headerTooltip: this.l('Forwarder'), field: 'forwarder', width: 120 },
             {
-                headerName: this.l('Freight'), headerTooltip: this.l('Freight'), field: 'freight', width: 100, type: 'rightAligned',
-                cellRenderer: (params) => (params.data?.freight != null ? this._fm.formatMoney_decimal(params.data?.freight) : 0),
+                headerName: this.l('Cost'), headerTooltip: this.l('Cost'), field: 'cost', width: 100, type: 'rightAligned',
+                cellRenderer: (params) => (params.data?.cost != null ? this._fm.formatMoney_decimal(params.data?.cost) : 0),
             },
             {
                 headerName: this.l('Insurance'), headerTooltip: this.l('Insurance'), field: 'insurance', width: 110, type: 'rightAligned',
                 cellRenderer: (params) => (params.data?.insurance != null ? this._fm.formatMoney_decimal(params.data?.insurance) : 0),
+            },
+            {
+                headerName: this.l('Freight'), headerTooltip: this.l('Freight'), field: 'freight', width: 100, type: 'rightAligned',
+                cellRenderer: (params) => (params.data?.freight != null ? this._fm.formatMoney_decimal(params.data?.freight) : 0),
             },
             {
                 headerName: this.l('C.I.F'), headerTooltip: this.l('Cif'), field: 'cif', width: 100, type: 'rightAligned',

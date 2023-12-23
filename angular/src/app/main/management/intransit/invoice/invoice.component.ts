@@ -124,13 +124,18 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
             },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
             {
-                headerName: this.l('Freight'), headerTooltip: this.l('Freight'), field: 'freight', flex: 1, type: 'rightAligned',
-                cellRenderer: (params) => (params.data?.freight != null ? this._fm.formatMoney_decimal(params.data?.freight) : 0),
+                headerName: this.l('Cost'), headerTooltip: this.l('Cost'), field: 'cost', flex: 1, type: 'rightAligned',
+                cellRenderer: (params) => (params.data?.cost != null ? this._fm.formatMoney_decimal(params.data?.cost) : 0),
                 aggFunc: this.calTotal
             },
             {
                 headerName: this.l('Insurance'), headerTooltip: this.l('Insurance'), field: 'insurance', flex: 1, type: 'rightAligned',
                 cellRenderer: (params) => (params.data?.insurance != null ? this._fm.formatMoney_decimal(params.data?.insurance) : 0),
+                aggFunc: this.calTotal
+            },
+            {
+                headerName: this.l('Freight'), headerTooltip: this.l('Freight'), field: 'freight', flex: 1, type: 'rightAligned',
+                cellRenderer: (params) => (params.data?.freight != null ? this._fm.formatMoney_decimal(params.data?.freight) : 0),
                 aggFunc: this.calTotal
             },
             {
@@ -359,6 +364,7 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
                     var _sumFreight = 0;
                     var _sumInsurance = 0;
                     var _sumThc = 0;
+                    var _sumCost = 0;
                     _sumQty = result.items[0].grandQty;
                     _sumCif = result.items[0].grandCif;
                     _sumTax = result.items[0].grandTax;
@@ -366,7 +372,8 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
                     _sumFreight = result.items[0].grandFreight;
                     _sumInsurance = result.items[0].grandInsurance;
                     _sumThc = result.items[0].grandThc;
-                    var rows = this.createRow(1, _sumQty, _sumCif, _sumTax, _sumVat, _sumFreight, _sumInsurance, _sumThc);
+                    _sumCost = result.items[0].grandCost;
+                    var rows = this.createRow(1, _sumQty, _sumCif, _sumTax, _sumVat, _sumFreight, _sumInsurance, _sumThc, _sumCost);
                     this.dataParamsDetails!.api.setPinnedBottomRowData(rows);
                 } else {
                     this.dataParamsDetails!.api.setPinnedBottomRowData(null);
@@ -444,7 +451,7 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
     }
 
     createRow(count: number, sumSty: number, sumCif: number, sumTax: number,
-        sumVat: number, sumFreight: number, sumInsurance: number, sumThc: number): any[] {
+        sumVat: number, sumFreight: number, sumInsurance: number, sumThc: number, sumCost): any[] {
         let result: any[] = [];
 
         for (var i = 0; i < count; i++) {
@@ -456,7 +463,8 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
                 tax: sumTax,
                 vat: sumVat,
                 usageQty: sumSty,
-                thc: sumThc
+                thc: sumThc,
+                cost: sumCost
             });
         }
         return result;

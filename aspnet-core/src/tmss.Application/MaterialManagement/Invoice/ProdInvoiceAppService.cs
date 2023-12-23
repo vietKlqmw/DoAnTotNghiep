@@ -46,6 +46,7 @@ namespace tmss.MaterialManagement.Invoice
                 listResult[0].GrandTax = listResult.Sum(e => e.Tax);
                 listResult[0].GrandVat = listResult.Sum(e => e.Vat);
                 listResult[0].GrandQty = listResult.Sum(e => e.UsageQty);
+                listResult[0].GrandCost = listResult.Sum(e => e.Cost);
             }
 
             return new PagedResultDto<ProdInvoiceDto>(totalCount, pagedAndFiltered);

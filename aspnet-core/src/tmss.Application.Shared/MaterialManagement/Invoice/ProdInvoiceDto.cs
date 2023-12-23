@@ -35,6 +35,7 @@ namespace tmss.MaterialManagement.Invoice
         public virtual string CarfamilyCode { get; set; }
         public virtual decimal? GrossWeight { get; set; } //khối lượng toàn phần
         public virtual string Currency { get; set; } //Tiền tệ
+        public virtual decimal? Cost { get; set; }
 
         public virtual double? GrandQty { get; set; }
         public virtual decimal? GrandCif { get; set; }
@@ -43,6 +44,7 @@ namespace tmss.MaterialManagement.Invoice
         public virtual decimal? GrandTax { get; set; }
         public virtual decimal? GrandVat { get; set; }
         public virtual decimal? GrandThc { get; set; }
+        public virtual decimal? GrandCost { get; set; }
 
         //for Export
         public virtual string BaseUnitOfMeasure { get; set; }
@@ -51,7 +53,7 @@ namespace tmss.MaterialManagement.Invoice
         //other
         public virtual string KeyRow
         {
-            get { return string.Format("{0}_{1}", PartNo, PartName); }
+            get { return string.Format("{0}_{1}_{2}", ContainerNo, PartNo, CarfamilyCode); }
             set { }
         }
         public virtual int? ActualQty
@@ -113,7 +115,7 @@ namespace tmss.MaterialManagement.Invoice
         public virtual string CarfamilyCode { get; set; }
         public virtual string KeyRow
         {
-            get { return string.Format("{0}_{1}_{2}",ContainerNo, PartNo, CarfamilyCode); }
+            get { return string.Format("{0}_{1}_{2}", ContainerNo, PartNo, CarfamilyCode); }
             set { }
         }
     }

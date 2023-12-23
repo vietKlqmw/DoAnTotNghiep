@@ -26,12 +26,18 @@ namespace tmss.MaterialManagement.ContainerList
         public virtual string RequestStatus { get; set; }
         public virtual DateTime? BillDate { get; set; }
         public virtual string Warehouse { get; set; }
+        public virtual decimal? TotalAmount { get; set; }
+        public virtual string PartName { get; set; }
+        public virtual string CarfamilyCode { get; set; }
+        public virtual string PartNo { get; set; }
+        public virtual string BaseUnitOfMeasure { get; set; }
 
         public virtual decimal? GrandFreight { get; set; }
         public virtual decimal? GrandInsurance { get; set; }
         public virtual decimal? GrandCif { get; set; }
         public virtual decimal? GrandTax { get; set; }
         public virtual decimal? GrandAmount { get; set; }
+        public virtual decimal? GrandCost { get; set; }
     }
 
     public class GetProdContainerListInput : PagedAndSortedResultRequestDto

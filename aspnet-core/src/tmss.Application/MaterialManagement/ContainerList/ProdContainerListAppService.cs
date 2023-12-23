@@ -53,6 +53,7 @@ namespace tmss.MaterialManagement.ContainerList
                 listResult[0].GrandTax = listResult.Sum(e => e.Tax);
                 listResult[0].GrandCif = listResult.Sum(e => e.Cif);
                 listResult[0].GrandAmount = listResult.Sum(e => e.Amount);
+                listResult[0].GrandCost = listResult.Sum(e => e.TotalAmount);
             }
 
             return new PagedResultDto<ProdContainerListDto>(totalCount, pagedAndFiltered);

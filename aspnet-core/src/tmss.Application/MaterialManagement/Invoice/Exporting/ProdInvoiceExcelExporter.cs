@@ -59,8 +59,9 @@ namespace tmss.MaterialManagement.Invoice.Exporting
                         ("Qty"),
                         ("Container No"),
                         ("Supplier No"),
-                        ("Freight"),
+                        ("Cost"),
                         ("Insurance"),
+                        ("Freight"),
                         ("CIF"),
                         ("THC"),
                         ("TAX"),
@@ -79,8 +80,9 @@ namespace tmss.MaterialManagement.Invoice.Exporting
                         _ => _.UsageQty,
                         _ => _.ContainerNo,
                         _ => _.SupplierNo,
-                        _ => _.Freight,
+                        _ => _.Cost,
                         _ => _.Insurance,
+                        _ => _.Freight,
                         _ => _.Cif,
                         _ => _.Thc,
                         _ => _.Tax,
@@ -93,7 +95,7 @@ namespace tmss.MaterialManagement.Invoice.Exporting
                         _ => _.PartName
                     );
 
-                    for (var i = 0; i < 16; i++)
+                    for (var i = 0; i < 17; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

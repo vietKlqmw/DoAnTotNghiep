@@ -721,10 +721,12 @@ BEGIN
 
         INSERT INTO ProdInvoiceDetails 
                     (CreationTime, CreatorUserId, IsDeleted, 
-                     PartNo, ContainerNo, InvoiceNo, SupplierNo, UsageQty, PartName, CarfamilyCode, Currency)
-            SELECT GETDATE(), @p_UserId, 0, pop.PartNo, pci.ContainerNo, @InvoiceNo, pci.SupplierNo, pci.UsageQty, pop.PartName, pop.CarfamilyCode, 'VND'
+                     PartNo, ContainerNo, InvoiceNo, SupplierNo, UsageQty, 
+                     PartName, CarfamilyCode, Currency, Cost, Cif, Insurance, Freight)
+            SELECT GETDATE(), @p_UserId, 0, pop.PartNo, pci.ContainerNo, @InvoiceNo, pci.SupplierNo, pci.UsageQty, 
+                   pop.PartName, pop.CarfamilyCode, 'VND', pop.TotalAmount, pop.TotalAmount, 0, 0
               FROM ProdContainerIntransit pci
-         LEFT JOIN ProdOrderPart pop ON pci.PartListId = pop.Id
+        INNER JOIN ProdOrderPart pop ON pci.PartListId = pop.Id
              WHERE pci.Id IN (SELECT Id FROM ProdContainerIntransit WHERE ShipmentId = @p_ShipmentId)
     END
 END
@@ -987,9 +989,9 @@ AS
 BEGIN
     SELECT a.Id, a.PartNo, a.Insurance, a.ContainerNo, a.InvoiceNo, a.GrossWeight, a.Currency,  
            a.SupplierNo, a.Freight, a.Thc, a.Cif, a.Tax, a.TaxRate, a.Vat, a.VatRate, a.UsageQty, 
-           a.PartName, a.CarfamilyCode
+           a.PartName, a.CarfamilyCode, a.Cost
       FROM ProdInvoiceDetails a 
- LEFT JOIN ProdInvoice inv 
+INNER JOIN ProdInvoice inv 
         ON inv.InvoiceNo = a.InvoiceNo 
      WHERE inv.Id = @p_InvoiceId
        AND a.IsDeleted = 0
@@ -1011,9 +1013,11 @@ CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_LIST_SEARCH
 AS
 BEGIN 
     SELECT DISTINCT a.ContainerNo, a.SupplierNo, pbol.BillofladingNo, a.ShippingDate, a.PortDate, pbol.BillDate, 
-                    NULL ReceiveDate, pid.InvoiceNo, NULL Transport, NULL Remark, pid.Freight, 
-                    pid.Insurance, pid.Cif, pid.Tax, (pid.Cif + pid.Tax) Amount, a.Status, NULL Warehouse
+                    NULL ReceiveDate, pid.InvoiceNo, NULL Transport, pop.Remark, pid.Freight, pop.TotalAmount,
+                    pid.Insurance, ISNULL(pid.Cif, pop.TotalAmount) Cif, pid.Tax, (ISNULL(pid.Cif, pop.TotalAmount) + ISNULL(pid.Tax, 0)) Amount, a.Status, NULL Warehouse,
+                    pop.PartNo, pop.PartName, pop.CarfamilyCode, pop.BaseUnitOfMeasure
                FROM ProdContainerIntransit a
+         INNER JOIN ProdOrderPart pop ON a.ContainerNo = pop.ContainerNo
           LEFT JOIN ProdInvoiceDetails pid ON a.ContainerNo = pid.ContainerNo
           LEFT JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
           LEFT JOIN ProdBillOfLading pbol on pi.BillId = pbol.Id
@@ -1031,9 +1035,11 @@ BEGIN
     UNION ALL
     
     SELECT DISTINCT pcrw.ContainerNo, pcrw.SupplierNo, pbol.BillofladingNo, ps.ShipmentDate ShippingDate, ps.Atd PortDate, pbol.BillDate, 
-                    pcrw.ReceiveDate, pid.InvoiceNo, pcrw.Transport, NULL Remark, pid.Freight, 
-                    pid.Insurance, pid.Cif, pid.Tax, (pid.Cif + pid.Tax) Amount, 'DEVANNING' Status, pcrw.Warehouse 
+                    pcrw.ReceiveDate, pid.InvoiceNo, pcrw.Transport, pop.Remark, pid.Freight, pop.TotalAmount, 
+                    pid.Insurance, pid.Cif, pid.Tax, (pid.Cif + pid.Tax) Amount, 'DEVANNING' Status, pcrw.Warehouse,
+                    pop.PartNo, pop.PartName, pop.CarfamilyCode, pop.BaseUnitOfMeasure 
                FROM ProdContainerRentalWHPlan pcrw
+         INNER JOIN ProdOrderPart pop ON pcrw.ContainerNo = pop.ContainerNo
          INNER JOIN ProdBillOfLading pbol ON pcrw.BillId = pbol.Id
          INNER JOIN ProdShipment ps ON pbol.ShipmentId = ps.Id
          INNER JOIN ProdInvoiceDetails pid ON pid.InvoiceNo = (SELECT pi.InvoiceNo FROM ProdInvoice pi WHERE pcrw.InvoiceId = pi.Id) AND pcrw.ContainerNo = pid.ContainerNo
@@ -1543,7 +1549,7 @@ CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_CONTAINER_TO_WAREHOUSE
 AS
 BEGIN
         SELECT pci.Id, pci.ContainerNo, pci.SupplierNo, pci.UsageQty,
-               pi.Forwarder, pid.Insurance, pid.Freight, pid.Thc, 
+               pi.Forwarder, pid.Insurance, pid.Freight, pid.Thc, pid.Cost, 
                pid.Cif, pid.Tax, pid.Vat, pid.Currency, pi.InvoiceNo,
                pi.InvoiceDate, pid.PartNo, pid.PartName, pid.CarfamilyCode
           FROM ProdContainerIntransit pci 

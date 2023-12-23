@@ -31129,11 +31129,17 @@ export class ProdContainerListDto implements IProdContainerListDto {
     requestStatus!: string | undefined;
     billDate!: moment.Moment | undefined;
     warehouse!: string | undefined;
+    totalAmount!: number | undefined;
+    partName!: string | undefined;
+    carfamilyCode!: string | undefined;
+    partNo!: string | undefined;
+    baseUnitOfMeasure!: string | undefined;
     grandFreight!: number | undefined;
     grandInsurance!: number | undefined;
     grandCif!: number | undefined;
     grandTax!: number | undefined;
     grandAmount!: number | undefined;
+    grandCost!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdContainerListDto) {
@@ -31168,11 +31174,17 @@ export class ProdContainerListDto implements IProdContainerListDto {
             this.requestStatus = _data["requestStatus"];
             this.billDate = _data["billDate"] ? moment(_data["billDate"].toString()) : <any>undefined;
             this.warehouse = _data["warehouse"];
+            this.totalAmount = _data["totalAmount"];
+            this.partName = _data["partName"];
+            this.carfamilyCode = _data["carfamilyCode"];
+            this.partNo = _data["partNo"];
+            this.baseUnitOfMeasure = _data["baseUnitOfMeasure"];
             this.grandFreight = _data["grandFreight"];
             this.grandInsurance = _data["grandInsurance"];
             this.grandCif = _data["grandCif"];
             this.grandTax = _data["grandTax"];
             this.grandAmount = _data["grandAmount"];
+            this.grandCost = _data["grandCost"];
             this.id = _data["id"];
         }
     }
@@ -31207,11 +31219,17 @@ export class ProdContainerListDto implements IProdContainerListDto {
         data["requestStatus"] = this.requestStatus;
         data["billDate"] = this.billDate ? this.billDate.toISOString() : <any>undefined;
         data["warehouse"] = this.warehouse;
+        data["totalAmount"] = this.totalAmount;
+        data["partName"] = this.partName;
+        data["carfamilyCode"] = this.carfamilyCode;
+        data["partNo"] = this.partNo;
+        data["baseUnitOfMeasure"] = this.baseUnitOfMeasure;
         data["grandFreight"] = this.grandFreight;
         data["grandInsurance"] = this.grandInsurance;
         data["grandCif"] = this.grandCif;
         data["grandTax"] = this.grandTax;
         data["grandAmount"] = this.grandAmount;
+        data["grandCost"] = this.grandCost;
         data["id"] = this.id;
         return data; 
     }
@@ -31239,11 +31257,17 @@ export interface IProdContainerListDto {
     requestStatus: string | undefined;
     billDate: moment.Moment | undefined;
     warehouse: string | undefined;
+    totalAmount: number | undefined;
+    partName: string | undefined;
+    carfamilyCode: string | undefined;
+    partNo: string | undefined;
+    baseUnitOfMeasure: string | undefined;
     grandFreight: number | undefined;
     grandInsurance: number | undefined;
     grandCif: number | undefined;
     grandTax: number | undefined;
     grandAmount: number | undefined;
+    grandCost: number | undefined;
     id: number | undefined;
 }
 
@@ -31909,6 +31933,7 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
     carfamilyCode!: string | undefined;
     grossWeight!: number | undefined;
     currency!: string | undefined;
+    cost!: number | undefined;
     grandQty!: number | undefined;
     grandCif!: number | undefined;
     grandFreight!: number | undefined;
@@ -31916,6 +31941,7 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
     grandTax!: number | undefined;
     grandVat!: number | undefined;
     grandThc!: number | undefined;
+    grandCost!: number | undefined;
     baseUnitOfMeasure!: string | undefined;
     standardPrice!: number | undefined;
     keyRow!: string | undefined;
@@ -31958,6 +31984,7 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
             this.carfamilyCode = _data["carfamilyCode"];
             this.grossWeight = _data["grossWeight"];
             this.currency = _data["currency"];
+            this.cost = _data["cost"];
             this.grandQty = _data["grandQty"];
             this.grandCif = _data["grandCif"];
             this.grandFreight = _data["grandFreight"];
@@ -31965,6 +31992,7 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
             this.grandTax = _data["grandTax"];
             this.grandVat = _data["grandVat"];
             this.grandThc = _data["grandThc"];
+            this.grandCost = _data["grandCost"];
             this.baseUnitOfMeasure = _data["baseUnitOfMeasure"];
             this.standardPrice = _data["standardPrice"];
             this.keyRow = _data["keyRow"];
@@ -32007,6 +32035,7 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
         data["carfamilyCode"] = this.carfamilyCode;
         data["grossWeight"] = this.grossWeight;
         data["currency"] = this.currency;
+        data["cost"] = this.cost;
         data["grandQty"] = this.grandQty;
         data["grandCif"] = this.grandCif;
         data["grandFreight"] = this.grandFreight;
@@ -32014,6 +32043,7 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
         data["grandTax"] = this.grandTax;
         data["grandVat"] = this.grandVat;
         data["grandThc"] = this.grandThc;
+        data["grandCost"] = this.grandCost;
         data["baseUnitOfMeasure"] = this.baseUnitOfMeasure;
         data["standardPrice"] = this.standardPrice;
         data["keyRow"] = this.keyRow;
@@ -32049,6 +32079,7 @@ export interface IProdInvoiceDto {
     carfamilyCode: string | undefined;
     grossWeight: number | undefined;
     currency: string | undefined;
+    cost: number | undefined;
     grandQty: number | undefined;
     grandCif: number | undefined;
     grandFreight: number | undefined;
@@ -32056,6 +32087,7 @@ export interface IProdInvoiceDto {
     grandTax: number | undefined;
     grandVat: number | undefined;
     grandThc: number | undefined;
+    grandCost: number | undefined;
     baseUnitOfMeasure: string | undefined;
     standardPrice: number | undefined;
     keyRow: string | undefined;
