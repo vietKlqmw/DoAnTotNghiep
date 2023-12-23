@@ -1170,12 +1170,15 @@ INNER JOIN ProdOrderPart pop ON pci.PartListId = pop.Id
 INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
      WHERE pci.Id IN (SELECT item FROM dbo.fnSplit(@p_ContId, ','))
 
-    SELECT DISTINCT STRING_AGG(CONCAT(pid.InvoiceNo, ' - ', FORMAT(pi.InvoiceDate, 'dd/MM/yyyy')), '; ') InvoiceNo, 
-           STRING_AGG(pi.Forwarder, '; ') Forwarder
-      FROM ProdInvoiceDetails pid
-INNER JOIN ProdContainerIntransit pci ON pid.ContainerNo = pci.ContainerNo
-INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
-     WHERE pci.Id IN (SELECT item FROM dbo.fnSplit(@p_ContId, ','))
+    SELECT STRING_AGG(CONCAT(x.InvoiceNo, ' - ', FORMAT(x.InvoiceDate, 'dd/MM/yyyy')), '; ') InvoiceNo,
+           STRING_AGG(x.Forwarder, '; ') Forwarder
+    FROM 
+        (SELECT DISTINCT pi.InvoiceNo, pi.InvoiceDate, pi.Forwarder
+                    FROM ProdInvoice pi
+              INNER JOIN ProdInvoiceDetails pid ON pid.InvoiceNo = pi.InvoiceNo
+              INNER JOIN ProdContainerIntransit pci ON pid.ContainerNo = pci.ContainerNo
+                   WHERE pci.Id IN (SELECT item FROM dbo.fnSplit(@p_ContId, ','))
+        ) x
 END
 ------------------------------------------------AddGoodsReceivedNote:
 CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_ADD_GOODS_RECEIVED_NOTE
@@ -1281,17 +1284,17 @@ CREATE OR ALTER PROCEDURE INV_PROD_HISTORY_RECEIVE
     @p_GRN NVARCHAR(20)
 AS
 BEGIN
-    SELECT DISTINCT pcrw.GoodsReceivedNoteNo, pcrw.ReceiveDate, pcrw.Warehouse , 
-           psr.PartNo, psr.Qty, psr.ActualQty, psr.PartName, pcrw.ContainerNo,
+    SELECT pcrw.GoodsReceivedNoteNo, pcrw.ReceiveDate, pcrw.Warehouse , 
+           pop.PartNo, psr.Qty, psr.ActualQty, pop.PartName, pcrw.ContainerNo,
            pid.InvoiceNo, pcrw.SupplierNo, pi.Forwarder, pid.Freight, pid.Insurance, 
-           pid.Cif, pid.Thc, pid.Tax, pid.Vat, pid.Currency, pid.CarfamilyCode,
-           msl.AddressLanguageVn, mm.BaseUnitOfMeasure, mm.StandardPrice
+           pid.Cif, pid.Thc, pid.Tax, pid.Vat, pid.Currency, pop.CarfamilyCode,
+           msl.AddressLanguageVn, pop.BaseUnitOfMeasure, pop.AmountUnit, pop.TotalAmount Cost
       FROM ProdContainerRentalWHPlan pcrw
+INNER JOIN ProdOrderPart pop ON pcrw.ContainerNo = pop.ContainerNo
 INNER JOIN ProdStockReceiving psr ON pcrw.ContainerNo = psr.ContainerNo
-INNER JOIN ProdInvoiceDetails pid ON pcrw.ContainerNo = pid.ContainerNo
+INNER JOIN ProdInvoiceDetails pid ON psr.InvoiceDetailsId = pid.Id
 INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
  LEFT JOIN MasterStorageLocation msl ON msl.StorageLocation = pcrw.Warehouse
- LEFT JOIN MasterMaterial mm ON psr.MaterialId = mm.Id
      WHERE pcrw.GoodsReceivedNoteNo = @p_GRN
 END
 
