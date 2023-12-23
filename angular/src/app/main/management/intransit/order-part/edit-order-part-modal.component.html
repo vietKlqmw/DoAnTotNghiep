@@ -19,8 +19,8 @@
                                     [(ngModel)]="rowData.partNo" (ngModelChange)="changePart($event)"></tmss-combobox>
                             </div>
                             <div class="ui-g-12 ui-md-6">
-                                <tmss-text-input [text]="'Carfamily Code'" [(ngModel)]="rowData.carfamilyCode"
-                                    name='carfamilyCode' [isReadonly]="true"></tmss-text-input>
+                                <tmss-combobox [items]="listCfc" name="carfamilyCode" [text]="'Carfamily Code'"
+                                    [(ngModel)]="_cfc"></tmss-combobox>
                             </div>
                             <div class="ui-g-12 ui-md-6">
                                 <tmss-text-input [text]="'Supplier No'" [(ngModel)]="rowData.supplierNo"

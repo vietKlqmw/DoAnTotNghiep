@@ -343,11 +343,11 @@ END
 CREATE OR ALTER PROCEDURE INV_PROD_OTHER_GET_LIST_PART_FOR_ORDER
 AS
 BEGIN
-    SELECT mpl.PartNo, mpl.SupplierNo, mpl.CarfamilyCode, mpl.PartName, 
-           mm.StandardPrice, mm.BaseUnitOfMeasure, mm.Id MaterialId 
-      FROM MasterPartList mpl
- LEFT JOIN MasterMaterial mm on mpl.MaterialId = mm.Id
-     WHERE mpl.IsDeleted = 0
+    SELECT DISTINCT mpl.PartNo, mpl.PartName, mpl.SupplierNo, mm.StandardPrice, 
+                    mm.BaseUnitOfMeasure, mm.Id MaterialId 
+               FROM MasterPartList mpl
+         INNER JOIN MasterMaterial mm on mpl.MaterialId = mm.Id
+              WHERE mpl.IsDeleted = 0
 END
 ------------------------------------------------MaterialGroup------------------------------------------------
 INSERT INTO MasterMaterialGroup 
@@ -609,6 +609,16 @@ AS
 BEGIN
     SELECT mc.Code, mc.Name 
       FROM MasterCarfamily mc
+END
+------------------------------------------------GetList2:
+CREATE OR ALTER PROCEDURE INV_PROD_OTHER_GET_CFC_BY_PART_NO
+    @p_PartNo NVARCHAR(12)
+AS
+BEGIN
+    SELECT mpl.CarfamilyCode
+      FROM MasterPartList mpl
+     WHERE mpl.IsDeleted = 0
+       AND mpl.PartNo = @p_PartNo
 END
 ------------------------------------------------Shipment------------------------------------------------
 ------------------------------------------------Search:
@@ -977,7 +987,7 @@ BEGIN
            Tax = @p_Tax,
            Vat = @p_Vat,
            Thc = @p_Thc,
-           Cif = ISNULL(@p_Freight, 0) + ISNULL(@p_Insurance, 0)
+           Cif = ISNULL(@p_Freight, 0) + ISNULL(@p_Insurance, 0) + Cost
      WHERE Id = @p_InvoiceDetailsId
 END
 ------------------------------------------------InvoiceDetails------------------------------------------------

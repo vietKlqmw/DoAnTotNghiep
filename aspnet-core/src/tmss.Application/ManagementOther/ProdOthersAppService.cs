@@ -258,6 +258,15 @@ namespace tmss.ManagementOther
             return result.ToList();
         }
 
+        public async Task<List<ListPartForOrderToWarehouse>> GetListCfcForOrderToWarehouse(string partno)
+        {
+            string _sql = "Exec INV_PROD_OTHER_GET_CFC_BY_PART_NO @p_PartNo";
+
+            IEnumerable<ListPartForOrderToWarehouse> result = await _dapperRepo.QueryAsync<ListPartForOrderToWarehouse>(_sql, new { p_PartNo = partno });
+
+            return result.ToList();
+        }
+
 
 
         //excel to pdf

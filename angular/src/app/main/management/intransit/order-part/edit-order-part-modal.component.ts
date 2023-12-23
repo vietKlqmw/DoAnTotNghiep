@@ -22,7 +22,9 @@ export class EditOrderPartModalComponent extends AppComponentBase {
 
     isEdit: boolean = false;
     header: string = '';
-    listPart = [{ label: '', value: '', supplier: '', cfc: '', price: undefined, partname: '', bom: '', material: undefined }];
+    listPart = [{ label: '', value: '', supplier: '', price: undefined, partname: '', bom: '', material: undefined }];
+    listCfc = [{label: '', value: ''}];
+    _cfc;
     _qty;
     _subqty;
     _orderDate = new Date();
@@ -49,13 +51,14 @@ export class EditOrderPartModalComponent extends AppComponentBase {
         this._other.getListPartForOrderToWarehouse().subscribe(result => {
             this.shipmentData = result;
             result.forEach(e => {
-                this.listPart.push({ label: e.partNo + '/' + e.partName, value: e.partNo, supplier: e.supplierNo, cfc: e.carfamilyCode, price: e.standardPrice, partname: e.partName, bom: e.baseUnitOfMeasure, material: e.materialId })
+                this.listPart.push({ label: e.partNo + '/' + e.partName, value: e.partNo, supplier: e.supplierNo, price: e.standardPrice, partname: e.partName, bom: e.baseUnitOfMeasure, material: e.materialId })
             })
         });
-
     }
 
     show(type, material?: ProdOrderPartDto): void {
+        this._cfc = '';
+        this.listCfc = [{label: '', value: ''}];
         this._amountUnit = '';
         this._qty = '';
         this._totalAmount = '';
@@ -98,13 +101,18 @@ export class EditOrderPartModalComponent extends AppComponentBase {
             return;
         }
         if (this._orderDate == null || this._orderDate == undefined) {
-            this.notify.warn('Orde rDate is Required!');
+            this.notify.warn('Order Date is Required!');
+            return;
+        }
+        if (this._cfc == null || this._cfc == undefined || this._cfc == '') {
+            this.notify.warn('Carfamily Code is Required!');
             return;
         }
         this.rowData.status = this._status;
         this.rowData.orderDate = moment(this._orderDate);
         this.rowData.qty = this._subqty;
         this.rowData.totalAmount = this._subtotalamount;
+        this.rowData.carfamilyCode = this._cfc;
 
         this.saving = true;
         this._service.editOrderPart(this.rowData)
@@ -118,13 +126,19 @@ export class EditOrderPartModalComponent extends AppComponentBase {
 
     changePart(ev) {
        this.rowData.supplierNo = this.listPart.filter(e => e.value == ev)[0].supplier;
-       this.rowData.carfamilyCode = this.listPart.filter(e => e.value == ev)[0].cfc;
        this.rowData.partName = this.listPart.filter(e => e.value == ev)[0].partname;
        this.rowData.amountUnit = this.listPart.filter(e => e.value == ev)[0].price;
        this.rowData.baseUnitOfMeasure = this.listPart.filter(e => e.value == ev)[0].bom;
        this.rowData.materialId = this.listPart.filter(e => e.value == ev)[0].material;
        this._amountUnit = this._fm.formatMoney(this.rowData.amountUnit);
        this.changeQty(this.rowData.qty);
+
+       this.listCfc = [{label: '', value: ''}];
+       this._other.getListCfcForOrderToWarehouse(ev).subscribe(result => {
+            result.forEach(e => {
+                this.listCfc.push({label: e.carfamilyCode, value: e.carfamilyCode});
+            })
+       })
     }
 
     changeQty(event) {
