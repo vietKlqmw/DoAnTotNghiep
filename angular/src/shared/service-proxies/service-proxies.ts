@@ -11886,6 +11886,64 @@ export class ProdContainerRentalWHPlanServiceProxy {
     }
 
     /**
+     * @param grn (optional) 
+     * @return Success
+     */
+    viewHistoryReceive(grn: string | null | undefined): Observable<ProdInvoiceDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdContainerRentalWHPlan/ViewHistoryReceive?";
+        if (grn !== undefined)
+            url_ += "grn=" + encodeURIComponent("" + grn) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processViewHistoryReceive(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processViewHistoryReceive(<any>response_);
+                } catch (e) {
+                    return <Observable<ProdInvoiceDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ProdInvoiceDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processViewHistoryReceive(response: HttpResponseBase): Observable<ProdInvoiceDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ProdInvoiceDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ProdInvoiceDto[]>(<any>null);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -12558,6 +12616,62 @@ export class ProdFileServiceProxy {
     }
 
     protected processExportGoodsDeliveryNote(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<string>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    exportGoodsReceivedNoteHistory(body: GoodsReceivedNoteHistoryExportInput | undefined): Observable<string> {
+        let url_ = this.baseUrl + "/api/services/app/ProdFile/ExportGoodsReceivedNoteHistory";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportGoodsReceivedNoteHistory(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportGoodsReceivedNoteHistory(<any>response_);
+                } catch (e) {
+                    return <Observable<string>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<string>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processExportGoodsReceivedNoteHistory(response: HttpResponseBase): Observable<string> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -15053,6 +15167,61 @@ export class ProdOthersServiceProxy {
             }));
         }
         return _observableOf<ListPartForOrderToWarehouse[]>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getListGRNForViewHistory(): Observable<ListGRNDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetListGRNForViewHistory";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListGRNForViewHistory(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListGRNForViewHistory(<any>response_);
+                } catch (e) {
+                    return <Observable<ListGRNDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ListGRNDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetListGRNForViewHistory(response: HttpResponseBase): Observable<ListGRNDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ListGRNDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ListGRNDto[]>(<any>null);
     }
 
     /**
@@ -31593,6 +31762,198 @@ export interface IGoodsReceivedNoteExportInput {
     listActualQty: string[] | undefined;
 }
 
+export class ProdInvoiceDto implements IProdInvoiceDto {
+    invoiceNo!: string | undefined;
+    billId!: number | undefined;
+    invoiceDate!: moment.Moment | undefined;
+    forwarder!: string | undefined;
+    status!: string | undefined;
+    shipmentNo!: string | undefined;
+    billNo!: string | undefined;
+    billDate!: moment.Moment | undefined;
+    partNo!: string | undefined;
+    insurance!: number | undefined;
+    containerNo!: string | undefined;
+    invoiceId!: number | undefined;
+    supplierNo!: string | undefined;
+    freight!: number | undefined;
+    thc!: number | undefined;
+    cif!: number | undefined;
+    tax!: number | undefined;
+    taxRate!: number | undefined;
+    vat!: number | undefined;
+    vatRate!: number | undefined;
+    usageQty!: number | undefined;
+    partName!: string | undefined;
+    carfamilyCode!: string | undefined;
+    grossWeight!: number | undefined;
+    currency!: string | undefined;
+    cost!: number | undefined;
+    grandQty!: number | undefined;
+    grandCif!: number | undefined;
+    grandFreight!: number | undefined;
+    grandInsurance!: number | undefined;
+    grandTax!: number | undefined;
+    grandVat!: number | undefined;
+    grandThc!: number | undefined;
+    grandCost!: number | undefined;
+    baseUnitOfMeasure!: string | undefined;
+    standardPrice!: number | undefined;
+    keyRow!: string | undefined;
+    actualQty!: number | undefined;
+    realQty!: number | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IProdInvoiceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.invoiceNo = _data["invoiceNo"];
+            this.billId = _data["billId"];
+            this.invoiceDate = _data["invoiceDate"] ? moment(_data["invoiceDate"].toString()) : <any>undefined;
+            this.forwarder = _data["forwarder"];
+            this.status = _data["status"];
+            this.shipmentNo = _data["shipmentNo"];
+            this.billNo = _data["billNo"];
+            this.billDate = _data["billDate"] ? moment(_data["billDate"].toString()) : <any>undefined;
+            this.partNo = _data["partNo"];
+            this.insurance = _data["insurance"];
+            this.containerNo = _data["containerNo"];
+            this.invoiceId = _data["invoiceId"];
+            this.supplierNo = _data["supplierNo"];
+            this.freight = _data["freight"];
+            this.thc = _data["thc"];
+            this.cif = _data["cif"];
+            this.tax = _data["tax"];
+            this.taxRate = _data["taxRate"];
+            this.vat = _data["vat"];
+            this.vatRate = _data["vatRate"];
+            this.usageQty = _data["usageQty"];
+            this.partName = _data["partName"];
+            this.carfamilyCode = _data["carfamilyCode"];
+            this.grossWeight = _data["grossWeight"];
+            this.currency = _data["currency"];
+            this.cost = _data["cost"];
+            this.grandQty = _data["grandQty"];
+            this.grandCif = _data["grandCif"];
+            this.grandFreight = _data["grandFreight"];
+            this.grandInsurance = _data["grandInsurance"];
+            this.grandTax = _data["grandTax"];
+            this.grandVat = _data["grandVat"];
+            this.grandThc = _data["grandThc"];
+            this.grandCost = _data["grandCost"];
+            this.baseUnitOfMeasure = _data["baseUnitOfMeasure"];
+            this.standardPrice = _data["standardPrice"];
+            this.keyRow = _data["keyRow"];
+            this.actualQty = _data["actualQty"];
+            this.realQty = _data["realQty"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): ProdInvoiceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProdInvoiceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["invoiceNo"] = this.invoiceNo;
+        data["billId"] = this.billId;
+        data["invoiceDate"] = this.invoiceDate ? this.invoiceDate.toISOString() : <any>undefined;
+        data["forwarder"] = this.forwarder;
+        data["status"] = this.status;
+        data["shipmentNo"] = this.shipmentNo;
+        data["billNo"] = this.billNo;
+        data["billDate"] = this.billDate ? this.billDate.toISOString() : <any>undefined;
+        data["partNo"] = this.partNo;
+        data["insurance"] = this.insurance;
+        data["containerNo"] = this.containerNo;
+        data["invoiceId"] = this.invoiceId;
+        data["supplierNo"] = this.supplierNo;
+        data["freight"] = this.freight;
+        data["thc"] = this.thc;
+        data["cif"] = this.cif;
+        data["tax"] = this.tax;
+        data["taxRate"] = this.taxRate;
+        data["vat"] = this.vat;
+        data["vatRate"] = this.vatRate;
+        data["usageQty"] = this.usageQty;
+        data["partName"] = this.partName;
+        data["carfamilyCode"] = this.carfamilyCode;
+        data["grossWeight"] = this.grossWeight;
+        data["currency"] = this.currency;
+        data["cost"] = this.cost;
+        data["grandQty"] = this.grandQty;
+        data["grandCif"] = this.grandCif;
+        data["grandFreight"] = this.grandFreight;
+        data["grandInsurance"] = this.grandInsurance;
+        data["grandTax"] = this.grandTax;
+        data["grandVat"] = this.grandVat;
+        data["grandThc"] = this.grandThc;
+        data["grandCost"] = this.grandCost;
+        data["baseUnitOfMeasure"] = this.baseUnitOfMeasure;
+        data["standardPrice"] = this.standardPrice;
+        data["keyRow"] = this.keyRow;
+        data["actualQty"] = this.actualQty;
+        data["realQty"] = this.realQty;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IProdInvoiceDto {
+    invoiceNo: string | undefined;
+    billId: number | undefined;
+    invoiceDate: moment.Moment | undefined;
+    forwarder: string | undefined;
+    status: string | undefined;
+    shipmentNo: string | undefined;
+    billNo: string | undefined;
+    billDate: moment.Moment | undefined;
+    partNo: string | undefined;
+    insurance: number | undefined;
+    containerNo: string | undefined;
+    invoiceId: number | undefined;
+    supplierNo: string | undefined;
+    freight: number | undefined;
+    thc: number | undefined;
+    cif: number | undefined;
+    tax: number | undefined;
+    taxRate: number | undefined;
+    vat: number | undefined;
+    vatRate: number | undefined;
+    usageQty: number | undefined;
+    partName: string | undefined;
+    carfamilyCode: string | undefined;
+    grossWeight: number | undefined;
+    currency: string | undefined;
+    cost: number | undefined;
+    grandQty: number | undefined;
+    grandCif: number | undefined;
+    grandFreight: number | undefined;
+    grandInsurance: number | undefined;
+    grandTax: number | undefined;
+    grandVat: number | undefined;
+    grandThc: number | undefined;
+    grandCost: number | undefined;
+    baseUnitOfMeasure: string | undefined;
+    standardPrice: number | undefined;
+    keyRow: string | undefined;
+    actualQty: number | undefined;
+    realQty: number | undefined;
+    id: number | undefined;
+}
+
 export class ProdContainerRentalWHPlanImportDto implements IProdContainerRentalWHPlanImportDto {
     guid!: string | undefined;
     containerNo!: string | undefined;
@@ -31965,48 +32326,12 @@ export interface IGoodsDeliveryNoteExportInput {
     listDeliveryQty: string[] | undefined;
 }
 
-export class ProdInvoiceDto implements IProdInvoiceDto {
-    invoiceNo!: string | undefined;
-    billId!: number | undefined;
-    invoiceDate!: moment.Moment | undefined;
-    forwarder!: string | undefined;
-    status!: string | undefined;
-    shipmentNo!: string | undefined;
-    billNo!: string | undefined;
-    billDate!: moment.Moment | undefined;
-    partNo!: string | undefined;
-    insurance!: number | undefined;
-    containerNo!: string | undefined;
-    invoiceId!: number | undefined;
-    supplierNo!: string | undefined;
-    freight!: number | undefined;
-    thc!: number | undefined;
-    cif!: number | undefined;
-    tax!: number | undefined;
-    taxRate!: number | undefined;
-    vat!: number | undefined;
-    vatRate!: number | undefined;
-    usageQty!: number | undefined;
-    partName!: string | undefined;
-    carfamilyCode!: string | undefined;
-    grossWeight!: number | undefined;
-    currency!: string | undefined;
-    cost!: number | undefined;
-    grandQty!: number | undefined;
-    grandCif!: number | undefined;
-    grandFreight!: number | undefined;
-    grandInsurance!: number | undefined;
-    grandTax!: number | undefined;
-    grandVat!: number | undefined;
-    grandThc!: number | undefined;
-    grandCost!: number | undefined;
-    baseUnitOfMeasure!: string | undefined;
-    standardPrice!: number | undefined;
-    keyRow!: string | undefined;
-    actualQty!: number | undefined;
-    id!: number | undefined;
+export class GoodsReceivedNoteHistoryExportInput implements IGoodsReceivedNoteHistoryExportInput {
+    goodsReceivedNoteNo!: string | undefined;
+    isExcel!: boolean;
+    receiveDate!: string | undefined;
 
-    constructor(data?: IProdInvoiceDto) {
+    constructor(data?: IGoodsReceivedNoteHistoryExportInput) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -32017,140 +32342,32 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
 
     init(_data?: any) {
         if (_data) {
-            this.invoiceNo = _data["invoiceNo"];
-            this.billId = _data["billId"];
-            this.invoiceDate = _data["invoiceDate"] ? moment(_data["invoiceDate"].toString()) : <any>undefined;
-            this.forwarder = _data["forwarder"];
-            this.status = _data["status"];
-            this.shipmentNo = _data["shipmentNo"];
-            this.billNo = _data["billNo"];
-            this.billDate = _data["billDate"] ? moment(_data["billDate"].toString()) : <any>undefined;
-            this.partNo = _data["partNo"];
-            this.insurance = _data["insurance"];
-            this.containerNo = _data["containerNo"];
-            this.invoiceId = _data["invoiceId"];
-            this.supplierNo = _data["supplierNo"];
-            this.freight = _data["freight"];
-            this.thc = _data["thc"];
-            this.cif = _data["cif"];
-            this.tax = _data["tax"];
-            this.taxRate = _data["taxRate"];
-            this.vat = _data["vat"];
-            this.vatRate = _data["vatRate"];
-            this.usageQty = _data["usageQty"];
-            this.partName = _data["partName"];
-            this.carfamilyCode = _data["carfamilyCode"];
-            this.grossWeight = _data["grossWeight"];
-            this.currency = _data["currency"];
-            this.cost = _data["cost"];
-            this.grandQty = _data["grandQty"];
-            this.grandCif = _data["grandCif"];
-            this.grandFreight = _data["grandFreight"];
-            this.grandInsurance = _data["grandInsurance"];
-            this.grandTax = _data["grandTax"];
-            this.grandVat = _data["grandVat"];
-            this.grandThc = _data["grandThc"];
-            this.grandCost = _data["grandCost"];
-            this.baseUnitOfMeasure = _data["baseUnitOfMeasure"];
-            this.standardPrice = _data["standardPrice"];
-            this.keyRow = _data["keyRow"];
-            this.actualQty = _data["actualQty"];
-            this.id = _data["id"];
+            this.goodsReceivedNoteNo = _data["goodsReceivedNoteNo"];
+            this.isExcel = _data["isExcel"];
+            this.receiveDate = _data["receiveDate"];
         }
     }
 
-    static fromJS(data: any): ProdInvoiceDto {
+    static fromJS(data: any): GoodsReceivedNoteHistoryExportInput {
         data = typeof data === 'object' ? data : {};
-        let result = new ProdInvoiceDto();
+        let result = new GoodsReceivedNoteHistoryExportInput();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["invoiceNo"] = this.invoiceNo;
-        data["billId"] = this.billId;
-        data["invoiceDate"] = this.invoiceDate ? this.invoiceDate.toISOString() : <any>undefined;
-        data["forwarder"] = this.forwarder;
-        data["status"] = this.status;
-        data["shipmentNo"] = this.shipmentNo;
-        data["billNo"] = this.billNo;
-        data["billDate"] = this.billDate ? this.billDate.toISOString() : <any>undefined;
-        data["partNo"] = this.partNo;
-        data["insurance"] = this.insurance;
-        data["containerNo"] = this.containerNo;
-        data["invoiceId"] = this.invoiceId;
-        data["supplierNo"] = this.supplierNo;
-        data["freight"] = this.freight;
-        data["thc"] = this.thc;
-        data["cif"] = this.cif;
-        data["tax"] = this.tax;
-        data["taxRate"] = this.taxRate;
-        data["vat"] = this.vat;
-        data["vatRate"] = this.vatRate;
-        data["usageQty"] = this.usageQty;
-        data["partName"] = this.partName;
-        data["carfamilyCode"] = this.carfamilyCode;
-        data["grossWeight"] = this.grossWeight;
-        data["currency"] = this.currency;
-        data["cost"] = this.cost;
-        data["grandQty"] = this.grandQty;
-        data["grandCif"] = this.grandCif;
-        data["grandFreight"] = this.grandFreight;
-        data["grandInsurance"] = this.grandInsurance;
-        data["grandTax"] = this.grandTax;
-        data["grandVat"] = this.grandVat;
-        data["grandThc"] = this.grandThc;
-        data["grandCost"] = this.grandCost;
-        data["baseUnitOfMeasure"] = this.baseUnitOfMeasure;
-        data["standardPrice"] = this.standardPrice;
-        data["keyRow"] = this.keyRow;
-        data["actualQty"] = this.actualQty;
-        data["id"] = this.id;
+        data["goodsReceivedNoteNo"] = this.goodsReceivedNoteNo;
+        data["isExcel"] = this.isExcel;
+        data["receiveDate"] = this.receiveDate;
         return data; 
     }
 }
 
-export interface IProdInvoiceDto {
-    invoiceNo: string | undefined;
-    billId: number | undefined;
-    invoiceDate: moment.Moment | undefined;
-    forwarder: string | undefined;
-    status: string | undefined;
-    shipmentNo: string | undefined;
-    billNo: string | undefined;
-    billDate: moment.Moment | undefined;
-    partNo: string | undefined;
-    insurance: number | undefined;
-    containerNo: string | undefined;
-    invoiceId: number | undefined;
-    supplierNo: string | undefined;
-    freight: number | undefined;
-    thc: number | undefined;
-    cif: number | undefined;
-    tax: number | undefined;
-    taxRate: number | undefined;
-    vat: number | undefined;
-    vatRate: number | undefined;
-    usageQty: number | undefined;
-    partName: string | undefined;
-    carfamilyCode: string | undefined;
-    grossWeight: number | undefined;
-    currency: string | undefined;
-    cost: number | undefined;
-    grandQty: number | undefined;
-    grandCif: number | undefined;
-    grandFreight: number | undefined;
-    grandInsurance: number | undefined;
-    grandTax: number | undefined;
-    grandVat: number | undefined;
-    grandThc: number | undefined;
-    grandCost: number | undefined;
-    baseUnitOfMeasure: string | undefined;
-    standardPrice: number | undefined;
-    keyRow: string | undefined;
-    actualQty: number | undefined;
-    id: number | undefined;
+export interface IGoodsReceivedNoteHistoryExportInput {
+    goodsReceivedNoteNo: string | undefined;
+    isExcel: boolean;
+    receiveDate: string | undefined;
 }
 
 export class PagedResultDtoOfProdInvoiceDto implements IPagedResultDtoOfProdInvoiceDto {
@@ -33427,6 +33644,50 @@ export interface IListPartForOrderToWarehouse {
     standardPrice: number | undefined;
     baseUnitOfMeasure: string | undefined;
     materialId: number | undefined;
+}
+
+export class ListGRNDto implements IListGRNDto {
+    goodsReceivedNoteNo!: string | undefined;
+    receiveDate!: moment.Moment | undefined;
+    warehouse!: string | undefined;
+
+    constructor(data?: IListGRNDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.goodsReceivedNoteNo = _data["goodsReceivedNoteNo"];
+            this.receiveDate = _data["receiveDate"] ? moment(_data["receiveDate"].toString()) : <any>undefined;
+            this.warehouse = _data["warehouse"];
+        }
+    }
+
+    static fromJS(data: any): ListGRNDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListGRNDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["goodsReceivedNoteNo"] = this.goodsReceivedNoteNo;
+        data["receiveDate"] = this.receiveDate ? this.receiveDate.toISOString() : <any>undefined;
+        data["warehouse"] = this.warehouse;
+        return data; 
+    }
+}
+
+export interface IListGRNDto {
+    goodsReceivedNoteNo: string | undefined;
+    receiveDate: moment.Moment | undefined;
+    warehouse: string | undefined;
 }
 
 export class ProdShipmentDto implements IProdShipmentDto {

@@ -13,6 +13,7 @@ using tmss.Common;
 using tmss.Dto;
 using tmss.ManagementOther;
 using tmss.MaterialManagement.ContainerWH.Exporting;
+using tmss.MaterialManagement.Invoice;
 
 namespace tmss.MaterialManagement.ContainerWH
 {
@@ -94,6 +95,14 @@ namespace tmss.MaterialManagement.ContainerWH
                 p_ListContId = input.ListContId,
                 p_UserId = AbpSession.UserId
             });
+        }
+
+        public async Task<List<ProdInvoiceDto>> ViewHistoryReceive(string grn)
+        {
+            string _sql = "Exec INV_PROD_HISTORY_RECEIVE @p_GRN";
+            IEnumerable<ProdInvoiceDto> result = await _dapperRepo.QueryAsync<ProdInvoiceDto>(_sql, new { p_GRN = grn });
+
+            return result.ToList();
         }
 
         public async Task EditContainerWH(ProdContainerRentalWHPlanDto input)

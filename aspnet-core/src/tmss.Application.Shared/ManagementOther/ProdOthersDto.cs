@@ -27,6 +27,13 @@ namespace tmss.ManagementOther
         public virtual string Description { get; set; }
     }
 
+    public class ListGRNDto
+    {
+        public virtual string GoodsReceivedNoteNo { get; set; }
+        public virtual DateTime? ReceiveDate { get; set; }
+        public virtual string Warehouse { get; set; }
+    }
+
     public class ListPartForOrderToWarehouse
     {
         public virtual string PartNo { get; set; }
@@ -132,6 +139,13 @@ namespace tmss.ManagementOther
         public virtual string[] ListActualQty { get; set; }
     }
 
+    public class GoodsReceivedNoteHistoryExportInput
+    {
+        public virtual string GoodsReceivedNoteNo { get; set; }
+        public virtual bool IsExcel { get; set; }
+        public virtual string ReceiveDate { get; set; }
+    }
+
     public class GoodsDeliveryNoteExportInput
     {
         public virtual string StockId { get; set; }
@@ -175,5 +189,24 @@ namespace tmss.ManagementOther
 
         public virtual int? GrandOrderQty { get; set; }
         public virtual decimal? GrandOrderAmount { get; set; }
+    }
+
+
+    public class ProdHistoryDto
+    {
+        public virtual string GoodsReceivedNoteNo { get; set; }
+        public virtual DateTime? ReceiveDate { get; set; }
+        public virtual string Warehouse { get; set; }
+        public virtual string PartNo { get; set; }
+        public virtual int? UsageQty { get; set; }
+        public virtual int? RealQty { get; set; }
+        public virtual string PartName { get; set; }
+        public virtual string BaseUnitOfMeasure { get; set; }
+        public virtual string ContainerNo { get; set; }
+        public virtual string AddressLanguageVn { get;set; }
+        public virtual string Forwarder { get; set; }
+        public virtual string Invoice { get; set; }
+        public virtual decimal? AmountUnit { get; set; }
+        public virtual decimal? Cost { get;set; }
     }
 }

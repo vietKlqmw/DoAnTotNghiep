@@ -80,6 +80,8 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-sm-12 text-right">
+                        <button type="button" class="btn btn-view" (click)="viewHistoryReceive.show()">
+                            <i class="far fa-regular fa-eye"></i> {{"View History Receive" | localize}}</button>
                         <button type="button" class="btn btn-primary" (click)="addGoodsReceivedNote()">
                             <i class="fa fa-plus"></i> {{"Add Goods Received Note" | localize}}</button>
                         <!-- <button type="button" class="btn btn-primary" (click)="edit('Edit')" [disabled]="!saveSelectedRow.id">
@@ -97,3 +99,4 @@
 <editContainerWarehouse #editContainerWarehouse></editContainerWarehouse>
 <importExcelModal #importExcelModal></importExcelModal>
 <addGrnContWarehouse #addGrnContWarehouse></addGrnContWarehouse>
+<viewHistoryReceive #viewHistoryReceive></viewHistoryReceive>

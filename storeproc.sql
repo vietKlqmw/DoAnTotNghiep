@@ -1285,7 +1285,7 @@ CREATE OR ALTER PROCEDURE INV_PROD_HISTORY_RECEIVE
 AS
 BEGIN
     SELECT pcrw.GoodsReceivedNoteNo, pcrw.ReceiveDate, pcrw.Warehouse , 
-           pop.PartNo, psr.Qty, psr.ActualQty, pop.PartName, pcrw.ContainerNo,
+           pop.PartNo, psr.Qty UsageQty, psr.ActualQty RealQty, pop.PartName, pcrw.ContainerNo,
            pid.InvoiceNo, pcrw.SupplierNo, pi.Forwarder, pid.Freight, pid.Insurance, 
            pid.Cif, pid.Thc, pid.Tax, pid.Vat, pid.Currency, pop.CarfamilyCode,
            msl.AddressLanguageVn, pop.BaseUnitOfMeasure, pop.AmountUnit, pop.TotalAmount Cost
@@ -1296,6 +1296,23 @@ INNER JOIN ProdInvoiceDetails pid ON psr.InvoiceDetailsId = pid.Id
 INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
  LEFT JOIN MasterStorageLocation msl ON msl.StorageLocation = pcrw.Warehouse
      WHERE pcrw.GoodsReceivedNoteNo = @p_GRN
+
+    SELECT STRING_AGG(CONCAT(x.InvoiceNo, ' - ', FORMAT(x.InvoiceDate, 'dd/MM/yyyy')), '; ') Invoice,
+           STRING_AGG(x.Forwarder, '; ') Forwarder
+    FROM 
+        (SELECT DISTINCT pi.InvoiceNo, pi.InvoiceDate, pi.Forwarder
+                    FROM ProdContainerRentalWHPlan pcrw
+              INNER JOIN ProdInvoice pi ON pcrw.InvoiceId = pi.Id
+                   WHERE pcrw.GoodsReceivedNoteNo = @p_GRN
+        ) x
+END
+------------------------------------------------GET_LIST_GRN:
+CREATE OR ALTER PROCEDURE INV_PROD_OTHER_GET_LIST_GRN
+AS
+BEGIN
+    SELECT DISTINCT pcrw.GoodsReceivedNoteNo, pcrw.ReceiveDate, pcrw.Warehouse 
+               FROM ProdContainerRentalWHPlan pcrw
+              WHERE pcrw.GoodsReceivedNoteNo IS NOT NULL
 END
 
 ------------------------------------------------Import:

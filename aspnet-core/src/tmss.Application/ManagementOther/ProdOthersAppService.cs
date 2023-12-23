@@ -267,6 +267,14 @@ namespace tmss.ManagementOther
             return result.ToList();
         }
 
+        public async Task<List<ListGRNDto>> GetListGRNForViewHistory()
+        {
+            string _sql = "Exec INV_PROD_OTHER_GET_LIST_GRN";
+
+            IEnumerable<ListGRNDto> result = await _dapperRepo.QueryAsync<ListGRNDto>(_sql);
+
+            return result.ToList();
+        }
 
 
         //excel to pdf

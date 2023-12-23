@@ -162,5 +162,75 @@ namespace tmss.ManagementOther
             fileByteReturn = fileByte;
             return fileByteReturn;
         }
+
+
+        public async Task<byte[]> ExportGoodsReceivedNoteHistory(GoodsReceivedNoteHistoryExportInput input)
+        {
+            byte[] fileByteReturn = new byte[] { };
+            SpreadsheetInfo.SetLicense("EF21-1FW1-HWZF-CLQH");
+            string p_template = "wwwroot/Excel_Template";
+            string path = Path.Combine(Directory.GetCurrentDirectory(), p_template, "GoodsReceivedNote_Template.xlsx");
+            var xlWorkBook = ExcelFile.Load(path);
+            var xlWorkSheet = xlWorkBook.Worksheets[0];
+            string connectionString = Common.Commons.getConnectionString();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string _sql = "Exec INV_PROD_HISTORY_RECEIVE @p_GRN";
+                var reader = await conn.QueryMultipleAsync(_sql, new
+                {
+                    p_GRN = input.GoodsReceivedNoteNo
+                });
+                var listdata = reader.ReadAsync<ProdHistoryDto>().Result.ToList();
+                var listother = reader.ReadAsync<ProdHistoryDto>().Result.FirstOrDefault();
+                conn.Close();
+
+                xlWorkSheet.Cells[1, 3].Value = "Ngày " + input.ReceiveDate.Substring(6, 2) + " tháng " + input.ReceiveDate.Substring(4, 2) + " năm " + input.ReceiveDate.Substring(0, 4);
+                xlWorkSheet.Cells[2, 4].Value = input.GoodsReceivedNoteNo;
+                xlWorkSheet.Cells[4, 2].Value = listother.Forwarder;
+                xlWorkSheet.Cells[5, 2].Value = listother.Invoice;
+                xlWorkSheet.Cells[6, 2].Value = listdata[0].Warehouse;
+                xlWorkSheet.Cells[6, 4].Value = listdata[0].AddressLanguageVn;
+
+                var currentRow = xlWorkSheet.Rows[12];
+                int addrow = 1;
+                if (listdata.Count > 9) addrow = listdata.Count - 8;
+
+                currentRow.InsertCopy(addrow, xlWorkSheet.Rows[12]);
+
+                int startrow = 11;
+
+                for (int i = 0; i < listdata.Count; i++)
+                {
+                    xlWorkSheet.Cells[startrow + i, 0].Value = i + "-" + listdata[i].ContainerNo;
+                    xlWorkSheet.Cells[startrow + i, 1].Value = listdata[i].PartName;
+                    xlWorkSheet.Cells[startrow + i, 3].Value = listdata[i].PartNo;
+                    xlWorkSheet.Cells[startrow + i, 4].Value = listdata[i].BaseUnitOfMeasure;
+                    xlWorkSheet.Cells[startrow + i, 5].Value = listdata[i].UsageQty;
+                    xlWorkSheet.Cells[startrow + i, 6].Value = listdata[i].RealQty;
+                    xlWorkSheet.Cells[startrow + i, 7].Value = listdata[i].AmountUnit;
+                    xlWorkSheet.Cells[startrow + i, 8].Value = listdata[i].Cost;
+                }
+            }
+            var tempFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".xlsx");
+            xlWorkBook.Save(tempFile);
+
+            byte[] fileByte = new byte[] { };
+            if (input.IsExcel)
+            {
+                fileByte = await File.ReadAllBytesAsync(tempFile);
+            }
+            else
+            {
+                string _savePdf = _prodOthersAppService.ConvertExcelToPdf(tempFile, Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"), "GoodsReceivedNote_" + input.ReceiveDate) + ".pdf";
+                fileByte = await File.ReadAllBytesAsync(_savePdf);
+                File.Delete(_savePdf);
+            }
+
+            File.Delete(tempFile);
+
+            fileByteReturn = fileByte;
+            return fileByteReturn;
+        }
     }
 }

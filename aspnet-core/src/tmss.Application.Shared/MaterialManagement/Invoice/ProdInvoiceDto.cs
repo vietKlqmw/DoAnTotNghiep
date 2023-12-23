@@ -61,6 +61,8 @@ namespace tmss.MaterialManagement.Invoice
             get { return UsageQty; }
             set { }
         }
+
+        public virtual int? RealQty { get; set; }
     }
 
     public class GetProdInvoiceInput : PagedAndSortedResultRequestDto
