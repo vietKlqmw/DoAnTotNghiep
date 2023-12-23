@@ -236,7 +236,7 @@ export class OrderPartComponent extends AppComponentBase implements OnInit {
         this._selectrow = this.saveSelectedRow.id;
 
         if(this.saveSelectedRow.id){
-            if(this.saveSelectedRow.status == 'TRANSFERRING' || this.saveSelectedRow.status == 'In Warehouse'){
+            if(this.saveSelectedRow.isOrdered == 1){
                 this.notDeleted = true;
             }else this.notDeleted = false;
         }else this.notDeleted = true;

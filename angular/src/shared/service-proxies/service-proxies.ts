@@ -30682,6 +30682,7 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
     shipmentNo!: string | undefined;
     carfamilyCode!: string | undefined;
     partName!: string | undefined;
+    isOrdered!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdContainerIntransitDto) {
@@ -30709,6 +30710,7 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
             this.shipmentNo = _data["shipmentNo"];
             this.carfamilyCode = _data["carfamilyCode"];
             this.partName = _data["partName"];
+            this.isOrdered = _data["isOrdered"];
             this.id = _data["id"];
         }
     }
@@ -30736,6 +30738,7 @@ export class ProdContainerIntransitDto implements IProdContainerIntransitDto {
         data["shipmentNo"] = this.shipmentNo;
         data["carfamilyCode"] = this.carfamilyCode;
         data["partName"] = this.partName;
+        data["isOrdered"] = this.isOrdered;
         data["id"] = this.id;
         return data; 
     }
@@ -30756,6 +30759,7 @@ export interface IProdContainerIntransitDto {
     shipmentNo: string | undefined;
     carfamilyCode: string | undefined;
     partName: string | undefined;
+    isOrdered: number | undefined;
     id: number | undefined;
 }
 
@@ -32328,6 +32332,7 @@ export class ProdOrderPartDto implements IProdOrderPartDto {
     orderDate!: moment.Moment | undefined;
     baseUnitOfMeasure!: string | undefined;
     shipmentNo!: string | undefined;
+    isOrdered!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdOrderPartDto) {
@@ -32357,6 +32362,7 @@ export class ProdOrderPartDto implements IProdOrderPartDto {
             this.orderDate = _data["orderDate"] ? moment(_data["orderDate"].toString()) : <any>undefined;
             this.baseUnitOfMeasure = _data["baseUnitOfMeasure"];
             this.shipmentNo = _data["shipmentNo"];
+            this.isOrdered = _data["isOrdered"];
             this.id = _data["id"];
         }
     }
@@ -32386,6 +32392,7 @@ export class ProdOrderPartDto implements IProdOrderPartDto {
         data["orderDate"] = this.orderDate ? this.orderDate.toISOString() : <any>undefined;
         data["baseUnitOfMeasure"] = this.baseUnitOfMeasure;
         data["shipmentNo"] = this.shipmentNo;
+        data["isOrdered"] = this.isOrdered;
         data["id"] = this.id;
         return data; 
     }
@@ -32408,6 +32415,7 @@ export interface IProdOrderPartDto {
     orderDate: moment.Moment | undefined;
     baseUnitOfMeasure: string | undefined;
     shipmentNo: string | undefined;
+    isOrdered: number | undefined;
     id: number | undefined;
 }
 

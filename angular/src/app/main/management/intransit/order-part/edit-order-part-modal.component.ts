@@ -24,9 +24,11 @@ export class EditOrderPartModalComponent extends AppComponentBase {
     header: string = '';
     listPart = [{ label: '', value: '', supplier: '', cfc: '', price: undefined, partname: '', bom: '', material: undefined }];
     _qty;
+    _subqty;
     _orderDate = new Date();
     _amountUnit;
     _totalAmount;
+    _subtotalamount;
     list = [
         { value: 'PENDING', label: "PENDING" },
         { value: 'ORDER', label: "ORDER" }
@@ -91,7 +93,7 @@ export class EditOrderPartModalComponent extends AppComponentBase {
             this.notify.warn('Part is Required!');
             return;
         }
-        if (this.rowData.qty == null || this.rowData.qty < 1) {
+        if (this._subqty == null || this._subqty < 1) {
             this.notify.warn('Qty is Required!');
             return;
         }
@@ -101,6 +103,8 @@ export class EditOrderPartModalComponent extends AppComponentBase {
         }
         this.rowData.status = this._status;
         this.rowData.orderDate = moment(this._orderDate);
+        this.rowData.qty = this._subqty;
+        this.rowData.totalAmount = this._subtotalamount;
 
         this.saving = true;
         this._service.editOrderPart(this.rowData)
@@ -120,13 +124,14 @@ export class EditOrderPartModalComponent extends AppComponentBase {
        this.rowData.baseUnitOfMeasure = this.listPart.filter(e => e.value == ev)[0].bom;
        this.rowData.materialId = this.listPart.filter(e => e.value == ev)[0].material;
        this._amountUnit = this._fm.formatMoney(this.rowData.amountUnit);
+       this.changeQty(this.rowData.qty);
     }
 
     changeQty(event) {
-        this.rowData.qty = event.length > 3 ? Number(event.replace(/,/g,'')) : Number(event);
-        this.rowData.totalAmount = Number(this.rowData.qty) * this.rowData.amountUnit;
+        this._subqty = event.length > 3 ? Number(event.replace(/,/g,'')) : Number(event);
+        this._subtotalamount = Number(this._subqty) * this.rowData.amountUnit;
         this._qty = this._fm.formatMoney(event);
-        this._totalAmount = this._fm.formatMoney(this.rowData.totalAmount);
+        this._totalAmount = this._fm.formatMoney(this._subtotalamount);
     }
 
     close(): void {

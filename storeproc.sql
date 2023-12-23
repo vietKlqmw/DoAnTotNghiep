@@ -1392,7 +1392,8 @@ CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_INTRANSIT_SEARCH
 AS
 BEGIN
     SELECT a.Id, a.ContainerNo, a.SupplierNo, a.ShippingDate, a.PortDate, pop.CarfamilyCode,
-           a.ShipmentId, a.Status, a.UsageQty, a.PartListId, ps.ShipmentNo, pop.PartNo
+           a.ShipmentId, a.Status, a.UsageQty, a.PartListId, ps.ShipmentNo, pop.PartNo,
+           (CASE WHEN ps.Status LIKE 'ORDERED%' THEN 1 ELSE 0 END) IsOrdered
       FROM ProdContainerIntransit a
  LEFT JOIN ProdShipment ps ON a.ShipmentId = ps.Id
 INNER JOIN ProdOrderPart pop ON a.PartListId = pop.Id
@@ -1972,7 +1973,8 @@ BEGIN
     SELECT pop.Id, pop.PartNo, pop.PartName, pop.SupplierNo, pop.CarfamilyCode, 
            pop.SupplierId, pop.MaterialId, pop.Status, pop.Remark, pop.ShipmentId, 
            pop.ContainerNo, pop.Qty, pop.AmountUnit, pop.TotalAmount, ps.ShipmentNo,
-           pop.OrderDate, pop.BaseUnitOfMeasure
+           pop.OrderDate, pop.BaseUnitOfMeasure, 
+           (CASE WHEN ps.Status LIKE 'ORDERED%' THEN 1 ELSE 0 END) IsOrdered
       FROM ProdOrderPart pop
  LEFT JOIN ProdShipment ps on pop.ShipmentId = ps.Id
      WHERE (@p_PartNo IS NULL OR pop.PartNo LIKE CONCAT('%', @p_PartNo, '%'))
@@ -2041,16 +2043,29 @@ BEGIN
 
     IF @p_Status = 'ORDER'
     BEGIN
-          DECLARE @p_ContainerNo NVARCHAR(20) = 'CONT' + FORMAT(GETDATE(), 'yyMMddHHmmss');
-          INSERT INTO ProdContainerIntransit 
-                      (CreationTime, CreatorUserId, IsDeleted, 
-                      ContainerNo, SupplierNo, Status, UsageQty, PartListId)
-               VALUES (GETDATE(), @p_UserId, 0, 
-                      @p_ContainerNo, @p_SupplierNo, 'NEW', @p_Qty, @p_OrderId);
-
-          UPDATE ProdOrderPart
-             SET ContainerNo = @p_ContainerNo
-           WHERE Id = @p_OrderId
+        DECLARE @ContNo NVARCHAR(20) = (SELECT ContainerNo FROM ProdOrderPart WHERE Id = @p_OrderId);
+        IF @ContNo IS NOT NULL 
+        BEGIN
+            UPDATE ProdContainerIntransit
+               SET LastModificationTime = GETDATE(),
+                   LastModifierUserId = @p_UserId,
+                   SupplierNo = @p_SupplierNo,
+                   UsageQty = @p_Qty
+             WHERE ContainerNo = @ContNo
+        END
+        ELSE
+        BEGIN
+            DECLARE @p_ContainerNo NVARCHAR(20) = 'CONT' + FORMAT(GETDATE(), 'yyMMddHHmmss');
+            INSERT INTO ProdContainerIntransit 
+                        (CreationTime, CreatorUserId, IsDeleted, 
+                        ContainerNo, SupplierNo, Status, UsageQty, PartListId)
+                 VALUES (GETDATE(), @p_UserId, 0, 
+                        @p_ContainerNo, @p_SupplierNo, 'NEW', @p_Qty, @p_OrderId);
+  
+            UPDATE ProdOrderPart
+               SET ContainerNo = @p_ContainerNo
+             WHERE Id = @p_OrderId
+        END
     END
 END
 ------------------------------------------------DELETE:

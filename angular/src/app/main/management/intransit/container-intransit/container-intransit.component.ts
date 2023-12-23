@@ -201,7 +201,7 @@ export class ContainerIntransitComponent extends AppComponentBase implements OnI
         this._selectrow = this.saveSelectedRow.id;
 
         if(this._selectrow){
-            if(this.saveSelectedRow.status != 'NEW') this.notDelete = true;
+            if(this.saveSelectedRow.isOrdered == 1) this.notDelete = true;
             else this.notDelete = false;
         }else{
             this.notDelete = false;

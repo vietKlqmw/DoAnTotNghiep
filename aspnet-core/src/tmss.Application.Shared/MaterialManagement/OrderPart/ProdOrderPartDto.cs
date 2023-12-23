@@ -22,6 +22,7 @@ namespace tmss.MaterialManagement.OrderPart
         public virtual string BaseUnitOfMeasure { get; set; }//Đơn Vị Đo Cơ Bản
 
         public virtual string ShipmentNo { get; set; }
+        public virtual int? IsOrdered { get; set; }
     }
 
     public class GetProdOrderPartInput : PagedAndSortedResultRequestDto
