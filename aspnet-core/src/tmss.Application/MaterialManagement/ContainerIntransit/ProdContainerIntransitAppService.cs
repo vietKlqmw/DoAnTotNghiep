@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Dapper.Repositories;
 using Abp.UI;
 using FastMember;
@@ -9,12 +10,14 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using tmss.Authorization;
 using tmss.Common;
 using tmss.Dto;
 using tmss.MaterialManagement.ContainerIntransit.Exporting;
 
 namespace tmss.MaterialManagement.ContainerIntransit
 {
+    [AbpAuthorize(AppPermissions.Pages_Management_Intransit_ContainerIntransit_View)]
     public class ProdContainerIntransitAppService : tmssAppServiceBase, IProdContainerIntransitAppService
     {
         private readonly IDapperRepository<ProdContainerIntransit, long> _dapperRepo;

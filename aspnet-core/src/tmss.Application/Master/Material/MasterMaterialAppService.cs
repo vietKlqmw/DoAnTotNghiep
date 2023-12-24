@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Dapper.Repositories;
 using Abp.UI;
 using FastMember;
@@ -9,12 +10,14 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using tmss.Authorization;
 using tmss.Common;
 using tmss.Dto;
 using tmss.Master.Material.Exporting;
 
 namespace tmss.Master.Material
 {
+    [AbpAuthorize(AppPermissions.Pages_Master_General_Material_View)]
     public class MasterMaterialAppService : tmssAppServiceBase, IMasterMaterialAppService
     {
         private readonly IDapperRepository<MasterMaterial, long> _dapperRepo;

@@ -22,7 +22,7 @@ export class AppNavigationService {
 
 //MASTER
             new AppMenuItem('MASTER', '', 'flaticon-user-settings', '',[],[
-                new AppMenuItem('COMMON', '', 'flaticon-user-settings', '',[],[
+                new AppMenuItem('COMMON', 'Pages.Master.Common', 'flaticon-user-settings', '',[],[
                     new AppMenuItem('Container Status', '', 'flaticon-car', '/app/main/master/common/container-status'),
                     new AppMenuItem('Customs Status', '', 'flaticon-car', '/app/main/master/common/customs-status'),
                     new AppMenuItem('Invoice Status', '', 'flaticon-car', '/app/main/master/common/invoice-status'),
@@ -30,18 +30,18 @@ export class AppNavigationService {
                     new AppMenuItem('Material Type', '', 'flaticon-car', '/app/main/master/common/material-type'),
                     new AppMenuItem('Unit Of Measure', '', 'flaticon-car', '/app/main/master/common/uom'),
                 ]),
-                new AppMenuItem('GENERAL', '', 'flaticon-user-settings', '',[],[
-                    new AppMenuItem('Warehouse', '', 'flaticon-car', '/app/main/master/common/storage-location'),
-                    new AppMenuItem('Material', '', 'flaticon-car', '/app/main/master/common/material'),
-                    new AppMenuItem('Part List', '', 'flaticon-car', '/app/main/master/common/part-list'),
-                    new AppMenuItem('Carfamily', '', 'flaticon-car', '/app/main/master/common/carfamily'),
-                    new AppMenuItem('Supplier List', '', 'flaticon-car', '/app/main/master/common/supplier-list'),
-                    new AppMenuItem('Forwarder', '', 'flaticon-car', '/app/main/master/common/forwarder'),
+                new AppMenuItem('GENERAL', 'Pages.Master.General', 'flaticon-user-settings', '',[],[
+                    new AppMenuItem('Warehouse', 'Pages.Master.General.Warehouse.View', 'flaticon-car', '/app/main/master/common/storage-location'),
+                    new AppMenuItem('Material', 'Pages.Master.General.Material.View', 'flaticon-car', '/app/main/master/common/material'),
+                    new AppMenuItem('Part List', 'Pages.Master.General.PartList.View', 'flaticon-car', '/app/main/master/common/part-list'),
+                    new AppMenuItem('Carfamily', 'Pages.Master.General.Cfc.View', 'flaticon-car', '/app/main/master/common/carfamily'),
+                    new AppMenuItem('Supplier List', 'Pages.Master.General.Supplier.View', 'flaticon-car', '/app/main/master/common/supplier-list'),
+                    new AppMenuItem('Forwarder', 'Pages.Master.General.Forwarder.View', 'flaticon-car', '/app/main/master/common/forwarder'),
                 ]),
             ]),
 //MAIN
             new AppMenuItem('MANAGEMENT', '', 'flaticon-user-settings', '',[],[
-                new AppMenuItem('INTRANSIT', '', 'flaticon-user-settings', '',[],[
+                new AppMenuItem('INTRANSIT', 'Pages.Management.Intransit', 'flaticon-user-settings', '',[],[
                     new AppMenuItem('Order Part', '', 'flaticon-car', '/app/main/management/intransit/order-part'),
                     new AppMenuItem('Container Intransit', '', 'flaticon-car', '/app/main/management/intransit/container-intransit'),
                     new AppMenuItem('Shipment', '', 'flaticon-car', '/app/main/management/intransit/shipment'),
@@ -49,7 +49,7 @@ export class AppNavigationService {
                     new AppMenuItem('Invoice', '', 'flaticon-car', '/app/main/management/intransit/invoice'),
                     new AppMenuItem('Customs Declare', '', 'flaticon-car', '/app/main/management/intransit/customs-declare'),
                 ]),
-                new AppMenuItem('WAREHOUSE', '', 'flaticon-user-settings', '',[],[
+                new AppMenuItem('WAREHOUSE', 'Pages.Management.Warehouse', 'flaticon-user-settings', '',[],[
                     new AppMenuItem('Container List', '', 'flaticon-car', '/app/main/management/warehouse/container-list'),
                     new AppMenuItem('Container At Warehouse', '', 'flaticon-car', '/app/main/management/warehouse/container-warehouse'),
                     new AppMenuItem('Stock In Warehouse', '', 'flaticon-car', '/app/main/management/warehouse/stock-receiving'),

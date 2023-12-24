@@ -1,12 +1,15 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using tmss.Authorization;
 
 namespace tmss.Master.Carfamily
 {
+    [AbpAuthorize(AppPermissions.Pages_Master_General_Cfc_View)]
     public class MasterCarfamilyAppService : tmssAppServiceBase, IMasterCarfamilyAppService
     {
         private readonly IRepository<MasterCarfamily, long> _repo;

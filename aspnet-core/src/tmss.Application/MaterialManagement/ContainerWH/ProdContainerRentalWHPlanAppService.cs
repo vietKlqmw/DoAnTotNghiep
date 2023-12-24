@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Dapper.Repositories;
 using Abp.UI;
 using FastMember;
@@ -9,6 +10,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using tmss.Authorization;
 using tmss.Common;
 using tmss.Dto;
 using tmss.ManagementOther;
@@ -17,6 +19,7 @@ using tmss.MaterialManagement.Invoice;
 
 namespace tmss.MaterialManagement.ContainerWH
 {
+    [AbpAuthorize(AppPermissions.Pages_Management_Warehouse_ContainerWarehouse_View)]
     public class ProdContainerRentalWHPlanAppService : tmssAppServiceBase, IProdContainerRentalWHPlanAppService
     {
         private readonly IDapperRepository<ProdContainerRentalWHPlan, long> _dapperRepo;

@@ -1,11 +1,14 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Dapper.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using tmss.Authorization;
 
 namespace tmss.Master.Forwarder
 {
+    [AbpAuthorize(AppPermissions.Pages_Master_General_Forwarder_View)]
     public class MasterForwarderAppService : tmssAppServiceBase, IMasterForwarderAppService
     {
         private readonly IDapperRepository<MasterForwarder, long> _dapperRepo;

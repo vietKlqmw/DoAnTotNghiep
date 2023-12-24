@@ -1,12 +1,15 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using tmss.Authorization;
 
 namespace tmss.Master.SupplierList
 {
+    [AbpAuthorize(AppPermissions.Pages_Master_General_Supplier_View)]
     public class MasterSupplierListAppService : tmssAppServiceBase, IMasterSupplierListAppService
     {
         private readonly IRepository<MasterSupplierList, long> _repo;

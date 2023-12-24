@@ -30,7 +30,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                     {
                         path: 'master/common/storage-location',
                         loadChildren: () => import('./master/common/storage-location/storage-location.module').then(m => m.StorageLocationModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                        data: { permission: 'Pages.Master.General.Warehouse.View' }
                     },
                     {
                         path: 'master/common/material-group',
@@ -45,7 +45,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                     {
                         path: 'master/common/forwarder',
                         loadChildren: () => import('./master/common/forwarder/forwarder.module').then(m => m.ForwarderModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                        data: { permission: 'Pages.Master.General.Forwarder.View' }
                     },
                     {
                         path: 'master/common/product-type',
@@ -55,12 +55,12 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                     {
                         path: 'master/common/material',
                         loadChildren: () => import('./master/common/material/material.module').then(m => m.MaterialModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                        data: { permission: 'Pages.Master.General.Material.View' }
                     },
                     {
                         path: 'master/common/part-list',
                         loadChildren: () => import('./master/common/part-list/part-list.module').then(m => m.PartListModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                        data: { permission: 'Pages.Master.General.PartList.View' }
                     },
                     {
                         path: 'master/common/uom',
@@ -70,12 +70,12 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                     {
                         path: 'master/common/carfamily',
                         loadChildren: () => import('./master/common/carfamily/carfamily.module').then(m => m.CarfamilyModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                        data: { permission: 'Pages.Master.General.Cfc.View' }
                     },
                     {
                         path: 'master/common/supplier-list',
                         loadChildren: () => import('./master/common/supplier-list/supplier-list.module').then(m => m.SupplierListModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                        data: { permission: 'Pages.Master.General.Supplier.View' }
                     },
 //MANAGEMENT
                     //Intransit

@@ -1,13 +1,16 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Dapper.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using tmss.Authorization;
 using tmss.Dto;
 using tmss.MaterialManagement.ContainerList.Exporting;
 
 namespace tmss.MaterialManagement.ContainerList
 {
+    [AbpAuthorize(AppPermissions.Pages_Management_Warehouse_ContainerList_View)]
     public class ProdContainerListAppService : tmssAppServiceBase, IProdContainerListAppService
     {
         private readonly IDapperRepository<ProdContainerList, long> _dapperRepo;

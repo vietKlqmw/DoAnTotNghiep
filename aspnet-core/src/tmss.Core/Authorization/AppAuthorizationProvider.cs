@@ -117,69 +117,69 @@ namespace tmss.Authorization
             administration.CreateChildPermission(AppPermissions.Pages_Administration_Host_Dashboard, L("Dashboard"), multiTenancySides: MultiTenancySides.Host);
 
 
-            var master = pages.CreateChildPermission(AppPermissions.Pages_Master, L("Pages_Master"), multiTenancySides: MultiTenancySides.Tenant);
+            var master = pages.CreateChildPermission(AppPermissions.Pages_Master, L("Pages_Master"));
 
-            var common = master.CreateChildPermission(AppPermissions.Pages_Master_Common, L("Pages_Master_Common"), multiTenancySides: MultiTenancySides.Tenant);
-
-
-            var general = master.CreateChildPermission(AppPermissions.Pages_Master_General, L("Pages_Master_General"), multiTenancySides: MultiTenancySides.Tenant);
-
-            var masterwarehouse = general.CreateChildPermission(AppPermissions.Pages_Master_General_Warehouse_View, L("Pages_Master_General_Warehouse_View"), multiTenancySides: MultiTenancySides.Tenant);
-            masterwarehouse.CreateChildPermission(AppPermissions.Pages_Master_General_Warehouse_Edit, L("Pages_Master_General_Warehouse_Edit"), multiTenancySides: MultiTenancySides.Tenant);
-
-            var material = general.CreateChildPermission(AppPermissions.Pages_Master_General_Material_View, L("Pages_Master_General_Material_View"), multiTenancySides: MultiTenancySides.Tenant);
-            material.CreateChildPermission(AppPermissions.Pages_Master_General_Material_Edit, L("Pages_Master_General_Material_Edit"), multiTenancySides: MultiTenancySides.Tenant);
-
-            var partlist = general.CreateChildPermission(AppPermissions.Pages_Master_General_PartList_View, L("Pages_Master_General_PartList_View"), multiTenancySides: MultiTenancySides.Tenant);
-            partlist.CreateChildPermission(AppPermissions.Pages_Master_General_PartList_Edit, L("Pages_Master_General_PartList_Edit"), multiTenancySides: MultiTenancySides.Tenant);
-
-            var cfc = general.CreateChildPermission(AppPermissions.Pages_Master_General_Cfc_View, L("Pages_Master_General_Cfc_View"), multiTenancySides: MultiTenancySides.Tenant);
-            cfc.CreateChildPermission(AppPermissions.Pages_Master_General_Cfc_Edit, L("Pages_Master_General_Cfc_Edit"), multiTenancySides: MultiTenancySides.Tenant);
-
-            var supplier = general.CreateChildPermission(AppPermissions.Pages_Master_General_Supplier_View, L("Pages_Master_General_Supplier_View"), multiTenancySides: MultiTenancySides.Tenant);
-            supplier.CreateChildPermission(AppPermissions.Pages_Master_General_Supplier_Edit, L("Pages_Master_General_Supplier_Edit"), multiTenancySides: MultiTenancySides.Tenant);
-
-            var forwarder = general.CreateChildPermission(AppPermissions.Pages_Master_General_Forwarder_View, L("Pages_Master_General_Forwarder_View"), multiTenancySides: MultiTenancySides.Tenant);
-            forwarder.CreateChildPermission(AppPermissions.Pages_Master_General_Forwarder_Edit, L("Pages_Master_General_Forwarder_Edit"), multiTenancySides: MultiTenancySides.Tenant);
+            var common = master.CreateChildPermission(AppPermissions.Pages_Master_Common, L("Pages_Master_Common"));
 
 
+            var general = master.CreateChildPermission(AppPermissions.Pages_Master_General, L("Pages_Master_General"));
 
-            var management = pages.CreateChildPermission(AppPermissions.Pages_Management, L("Pages_Management"), multiTenancySides: MultiTenancySides.Tenant);
+            var masterwarehouse = general.CreateChildPermission(AppPermissions.Pages_Master_General_Warehouse_View, L("Pages_Master_General_Warehouse_View"));
+            masterwarehouse.CreateChildPermission(AppPermissions.Pages_Master_General_Warehouse_Edit, L("Pages_Master_General_Warehouse_Edit"));
 
-            var intransit = management.CreateChildPermission(AppPermissions.Pages_Management_Intransit, L("Pages_Management_Intransit"), multiTenancySides: MultiTenancySides.Tenant);
+            var material = general.CreateChildPermission(AppPermissions.Pages_Master_General_Material_View, L("Pages_Master_General_Material_View"));
+            material.CreateChildPermission(AppPermissions.Pages_Master_General_Material_Edit, L("Pages_Master_General_Material_Edit"));
 
-            var orderpart = intransit.CreateChildPermission(AppPermissions.Pages_Management_Intransit_OrderPart_View, L("Pages_Management_Intransit_OrderPart_View"), multiTenancySides: MultiTenancySides.Tenant);
-            orderpart.CreateChildPermission(AppPermissions.Pages_Management_Intransit_OrderPart_Edit, L("Pages_Management_Intransit_OrderPart_Edit"), multiTenancySides: MultiTenancySides.Tenant);
+            var partlist = general.CreateChildPermission(AppPermissions.Pages_Master_General_PartList_View, L("Pages_Master_General_PartList_View"));
+            partlist.CreateChildPermission(AppPermissions.Pages_Master_General_PartList_Edit, L("Pages_Master_General_PartList_Edit"));
 
-            var contintransit = intransit.CreateChildPermission(AppPermissions.Pages_Management_Intransit_ContainerIntransit_View, L("Pages_Management_Intransit_ContainerIntransit_View"), multiTenancySides: MultiTenancySides.Tenant);
-            contintransit.CreateChildPermission(AppPermissions.Pages_Management_Intransit_ContainerIntransit_Edit, L("Pages_Management_Intransit_ContainerIntransit_Edit"), multiTenancySides: MultiTenancySides.Tenant);
+            var cfc = general.CreateChildPermission(AppPermissions.Pages_Master_General_Cfc_View, L("Pages_Master_General_Cfc_View"));
+            cfc.CreateChildPermission(AppPermissions.Pages_Master_General_Cfc_Edit, L("Pages_Master_General_Cfc_Edit"));
 
-            var shipment = intransit.CreateChildPermission(AppPermissions.Pages_Management_Intransit_Shipment_View, L("Pages_Management_Intransit_Shipment_View"), multiTenancySides: MultiTenancySides.Tenant);
-            shipment.CreateChildPermission(AppPermissions.Pages_Management_Intransit_Shipment_Edit, L("Pages_Management_Intransit_Shipment_Edit"), multiTenancySides: MultiTenancySides.Tenant);
+            var supplier = general.CreateChildPermission(AppPermissions.Pages_Master_General_Supplier_View, L("Pages_Master_General_Supplier_View"));
+            supplier.CreateChildPermission(AppPermissions.Pages_Master_General_Supplier_Edit, L("Pages_Master_General_Supplier_Edit"));
 
-            var bill = intransit.CreateChildPermission(AppPermissions.Pages_Management_Intransit_Bill_View, L("Pages_Management_Intransit_Bill_View"), multiTenancySides: MultiTenancySides.Tenant);
-            bill.CreateChildPermission(AppPermissions.Pages_Management_Intransit_Bill_Edit, L("Pages_Management_Intransit_Bill_Edit"), multiTenancySides: MultiTenancySides.Tenant);
-
-            var invoice = intransit.CreateChildPermission(AppPermissions.Pages_Management_Intransit_Invoice_View, L("Pages_Management_Intransit_Invoice_View"), multiTenancySides: MultiTenancySides.Tenant);
-            invoice.CreateChildPermission(AppPermissions.Pages_Management_Intransit_Invoice_Edit, L("Pages_Management_Intransit_Invoice_Edit"), multiTenancySides: MultiTenancySides.Tenant);
-
-            var customsdeclare = intransit.CreateChildPermission(AppPermissions.Pages_Management_Intransit_CustomsDeclare_View, L("Pages_Management_Intransit_CustomsDeclare_View"), multiTenancySides: MultiTenancySides.Tenant);
-            customsdeclare.CreateChildPermission(AppPermissions.Pages_Management_Intransit_CustomsDeclare_Edit, L("Pages_Management_Intransit_CustomsDeclare_Edit"), multiTenancySides: MultiTenancySides.Tenant);
+            var forwarder = general.CreateChildPermission(AppPermissions.Pages_Master_General_Forwarder_View, L("Pages_Master_General_Forwarder_View"));
+            forwarder.CreateChildPermission(AppPermissions.Pages_Master_General_Forwarder_Edit, L("Pages_Master_General_Forwarder_Edit"));
 
 
-            var warehouse = management.CreateChildPermission(AppPermissions.Pages_Management_Warehouse, L("Pages_Management_Warehouse"), multiTenancySides: MultiTenancySides.Tenant);
 
-            var contlist = warehouse.CreateChildPermission(AppPermissions.Pages_Management_Warehouse_ContainerList_View, L("Pages_Management_Warehouse_ContainerList_View"), multiTenancySides: MultiTenancySides.Tenant);
+            var management = pages.CreateChildPermission(AppPermissions.Pages_Management, L("Pages_Management"));
 
-            var contwarehouse = warehouse.CreateChildPermission(AppPermissions.Pages_Management_Warehouse_ContainerWarehouse_View, L("Pages_Management_Warehouse_ContainerWarehouse_View"), multiTenancySides: MultiTenancySides.Tenant);
-            contwarehouse.CreateChildPermission(AppPermissions.Pages_Management_Warehouse_ContainerWarehouse_Edit, L("Pages_Management_Warehouse_ContainerWarehouse_Edit"), multiTenancySides: MultiTenancySides.Tenant);
+            var intransit = management.CreateChildPermission(AppPermissions.Pages_Management_Intransit, L("Pages_Management_Intransit"));
 
-            var stockwarehouse = warehouse.CreateChildPermission(AppPermissions.Pages_Management_Warehouse_StockWarehouse_View, L("Pages_Management_Warehouse_StockWarehouse_View"), multiTenancySides: MultiTenancySides.Tenant);
-            stockwarehouse.CreateChildPermission(AppPermissions.Pages_Management_Warehouse_StockWarehouse_Edit, L("Pages_Management_Warehouse_StockWarehouse_Edit"), multiTenancySides: MultiTenancySides.Tenant);
-            stockwarehouse.CreateChildPermission(AppPermissions.Pages_Management_Warehouse_StockWarehouse_Order, L("Pages_Management_Warehouse_StockWarehouse_Order"), multiTenancySides: MultiTenancySides.Tenant);
+            var orderpart = intransit.CreateChildPermission(AppPermissions.Pages_Management_Intransit_OrderPart_View, L("Pages_Management_Intransit_OrderPart_View"));
+            orderpart.CreateChildPermission(AppPermissions.Pages_Management_Intransit_OrderPart_Edit, L("Pages_Management_Intransit_OrderPart_Edit"));
 
-            var invoiceout = warehouse.CreateChildPermission(AppPermissions.Pages_Management_Warehouse_InvoiceOut_View, L("Pages_Management_Warehouse_InvoiceOut_View"), multiTenancySides: MultiTenancySides.Tenant);
-            
+            var contintransit = intransit.CreateChildPermission(AppPermissions.Pages_Management_Intransit_ContainerIntransit_View, L("Pages_Management_Intransit_ContainerIntransit_View"));
+            contintransit.CreateChildPermission(AppPermissions.Pages_Management_Intransit_ContainerIntransit_Edit, L("Pages_Management_Intransit_ContainerIntransit_Edit"));
+
+            var shipment = intransit.CreateChildPermission(AppPermissions.Pages_Management_Intransit_Shipment_View, L("Pages_Management_Intransit_Shipment_View"));
+            shipment.CreateChildPermission(AppPermissions.Pages_Management_Intransit_Shipment_Edit, L("Pages_Management_Intransit_Shipment_Edit"));
+
+            var bill = intransit.CreateChildPermission(AppPermissions.Pages_Management_Intransit_Bill_View, L("Pages_Management_Intransit_Bill_View"));
+            bill.CreateChildPermission(AppPermissions.Pages_Management_Intransit_Bill_Edit, L("Pages_Management_Intransit_Bill_Edit"));
+
+            var invoice = intransit.CreateChildPermission(AppPermissions.Pages_Management_Intransit_Invoice_View, L("Pages_Management_Intransit_Invoice_View"));
+            invoice.CreateChildPermission(AppPermissions.Pages_Management_Intransit_Invoice_Edit, L("Pages_Management_Intransit_Invoice_Edit"));
+
+            var customsdeclare = intransit.CreateChildPermission(AppPermissions.Pages_Management_Intransit_CustomsDeclare_View, L("Pages_Management_Intransit_CustomsDeclare_View"));
+            customsdeclare.CreateChildPermission(AppPermissions.Pages_Management_Intransit_CustomsDeclare_Edit, L("Pages_Management_Intransit_CustomsDeclare_Edit"));
+
+
+            var warehouse = management.CreateChildPermission(AppPermissions.Pages_Management_Warehouse, L("Pages_Management_Warehouse"));
+
+            var contlist = warehouse.CreateChildPermission(AppPermissions.Pages_Management_Warehouse_ContainerList_View, L("Pages_Management_Warehouse_ContainerList_View"));
+
+            var contwarehouse = warehouse.CreateChildPermission(AppPermissions.Pages_Management_Warehouse_ContainerWarehouse_View, L("Pages_Management_Warehouse_ContainerWarehouse_View"));
+            contwarehouse.CreateChildPermission(AppPermissions.Pages_Management_Warehouse_ContainerWarehouse_Edit, L("Pages_Management_Warehouse_ContainerWarehouse_Edit"));
+
+            var stockwarehouse = warehouse.CreateChildPermission(AppPermissions.Pages_Management_Warehouse_StockWarehouse_View, L("Pages_Management_Warehouse_StockWarehouse_View"));
+            stockwarehouse.CreateChildPermission(AppPermissions.Pages_Management_Warehouse_StockWarehouse_Edit, L("Pages_Management_Warehouse_StockWarehouse_Edit"));
+            stockwarehouse.CreateChildPermission(AppPermissions.Pages_Management_Warehouse_StockWarehouse_Order, L("Pages_Management_Warehouse_StockWarehouse_Order"));
+
+            var invoiceout = warehouse.CreateChildPermission(AppPermissions.Pages_Management_Warehouse_InvoiceOut_View, L("Pages_Management_Warehouse_InvoiceOut_View"));
+            invoiceout.CreateChildPermission(AppPermissions.Pages_Management_Warehouse_InvoiceOut_Edit, L("Pages_Management_Warehouse_InvoiceOut_Edit"));
         }
 
         private static ILocalizableString L(string name)

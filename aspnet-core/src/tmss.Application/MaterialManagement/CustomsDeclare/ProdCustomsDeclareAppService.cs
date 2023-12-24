@@ -1,13 +1,16 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Dapper.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using tmss.Authorization;
 using tmss.Dto;
 using tmss.MaterialManagement.CustomsDeclare.Exporting;
 
 namespace tmss.MaterialManagement.CustomsDeclare
 {
+    [AbpAuthorize(AppPermissions.Pages_Management_Intransit_CustomsDeclare_View)]
     public class ProdCustomsDeclareAppService : tmssAppServiceBase, IProdCustomsDeclareAppService
     {
         private readonly IDapperRepository<ProdCustomsDeclare, long> _dapperRepo;

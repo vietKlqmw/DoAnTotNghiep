@@ -1,13 +1,16 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Dapper.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using tmss.Authorization;
 using tmss.Dto;
 using tmss.MaterialManagement.Invoice.Exporting;
 
 namespace tmss.MaterialManagement.Invoice
 {
+    [AbpAuthorize(AppPermissions.Pages_Management_Intransit_Invoice_View)]
     public class ProdInvoiceAppService : tmssAppServiceBase, IProdInvoiceAppService
     {
         private readonly IDapperRepository<ProdInvoice, long> _dapperRepo;

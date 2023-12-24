@@ -1,13 +1,16 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Dapper.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using tmss.Authorization;
 using tmss.Dto;
 using tmss.Master.StorageLocation.Exporting;
 
 namespace tmss.Master.StorageLocation
 {
+    [AbpAuthorize(AppPermissions.Pages_Master_General_Warehouse_View)]
     public class MasterStorageLocationAppService : tmssAppServiceBase, IMasterStorageLocationAppService
     {
         private readonly IDapperRepository<MasterStorageLocation, long> _dapperRepo;

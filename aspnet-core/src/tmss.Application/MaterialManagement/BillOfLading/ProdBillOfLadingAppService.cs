@@ -1,13 +1,16 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Dapper.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using tmss.Authorization;
 using tmss.Dto;
 using tmss.MaterialManagement.BillOfLading.Exporting;
 
 namespace tmss.MaterialManagement.BillOfLading
 {
+    [AbpAuthorize(AppPermissions.Pages_Management_Intransit_Bill_View)]
     public class ProdBillOfLadingAppService : tmssAppServiceBase, IProdBillOfLadingAppService
     {
         private readonly IDapperRepository<ProdBillOfLading, long> _dapperRepo;

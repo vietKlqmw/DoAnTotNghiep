@@ -1,14 +1,17 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Dapper.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using tmss.Authorization;
 using tmss.Dto;
 using tmss.ManagementOther;
 using tmss.MaterialManagement.InvoiceStock.Exporting;
 
 namespace tmss.MaterialManagement.InvoiceStock
 {
+    [AbpAuthorize(AppPermissions.Pages_Management_Warehouse_InvoiceOut_View)]
     public class ProdInvoiceStockOutAppService : tmssAppServiceBase, IProdInvoiceStockOutAppService
     {
 

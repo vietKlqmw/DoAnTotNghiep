@@ -1,13 +1,16 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Dapper.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using tmss.Authorization;
 using tmss.Dto;
 using tmss.MaterialManagement.Shipment.Exporting;
 
 namespace tmss.MaterialManagement.Shipment
 {
+    [AbpAuthorize(AppPermissions.Pages_Management_Intransit_Shipment_View)]
     public class ProdShipmentAppService : tmssAppServiceBase, IProdShipmentAppService
     {
         private readonly IDapperRepository<ProdShipment, long> _dapperRepo;

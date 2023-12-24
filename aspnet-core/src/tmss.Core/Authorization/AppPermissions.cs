@@ -160,6 +160,7 @@
         public const string Pages_Management_Warehouse_StockWarehouse_Order = "Pages.Management.Warehouse.StockWarehouse.Order";
 
         public const string Pages_Management_Warehouse_InvoiceOut_View = "Pages.Management.Warehouse.InvoiceOut.View";
+        public const string Pages_Management_Warehouse_InvoiceOut_Edit = "Pages.Management.Warehouse.InvoiceOut.Edit";
 
         #endregion
     }

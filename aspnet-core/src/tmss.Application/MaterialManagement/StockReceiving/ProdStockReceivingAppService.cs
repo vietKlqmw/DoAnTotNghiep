@@ -1,14 +1,17 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Dapper.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using tmss.Authorization;
 using tmss.Dto;
 using tmss.ManagementOther;
 using tmss.MaterialManagement.StockReceiving.Exporting;
 
 namespace tmss.MaterialManagement.StockReceiving
 {
+    [AbpAuthorize(AppPermissions.Pages_Management_Warehouse_StockWarehouse_View)]
     public class ProdStockReceivingAppService : tmssAppServiceBase, IProdStockReceivingAppService
     {
         private readonly IDapperRepository<ProdStockReceiving, long> _dapperRepo;
