@@ -2142,9 +2142,9 @@ BEGIN
 
     SELECT @Inventory = SUM(psr.ActualQty - ISNULL(psr.OrderedQty, 0)) 
     FROM ProdStockReceiving psr 
-    WHERE (psr.ActualQty > psr.OrderedQty)
+    WHERE (psr.ActualQty > ISNULL(psr.OrderedQty, 0))
     AND psr.Warehouse = @p_Warehouse
-    GROUP BY psr.Warehouse, psr.PartNo, psr.PartName, psr.Model
+    GROUP BY psr.Warehouse
     
     SELECT ISNULL(@New, 0) NewCont, ISNULL(@OnPort, 0) ContOnPort, @Total TotalAmountInvoice, ISNULL(@Inventory, 0) Inventory
 END
