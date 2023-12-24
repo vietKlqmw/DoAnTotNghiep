@@ -45,6 +45,7 @@ namespace tmss.MaterialManagement.InvoiceStock
             if (listResult.Count > 0)
             {
                 listResult[0].GrandTotalOrderQty = listResult.Sum(e => e.TotalOrderQty);
+                listResult[0].GrandTotalDeliveryQty = listResult.Sum(e => e.TotalDeliveryQty);
                 listResult[0].GrandTotalAmount = listResult.Sum(e => e.TotalAmount);
             }
 

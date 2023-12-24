@@ -28,6 +28,7 @@ namespace tmss.MaterialManagement.InvoiceStock.Exporting
                       ("List Part No"),
                       ("List Part Name"),
                       ("Total Order Qty"),
+                      ("Total Delivery Qty"),
                       ("Total Amount"),
                       ("Warehouse")
                   );
@@ -41,11 +42,12 @@ namespace tmss.MaterialManagement.InvoiceStock.Exporting
                       _ => _.ListPartNo,
                       _ => _.ListPartName,
                       _ => _.TotalOrderQty,
+                      _ => _.TotalDeliveryQty,
                       _ => _.TotalAmount,
                       _ => _.Warehouse
                   );
 
-                  for (var i = 0; i < 9; i++)
+                  for (var i = 0; i < 10; i++)
                   {
                       sheet.AutoSizeColumn(i);
                   }

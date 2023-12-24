@@ -1665,45 +1665,23 @@ FETCH NEXT FROM cursor_value INTO @p_ListOrder
             SET @p_id = SUBSTRING(@p_ListOrder, 1, CHARINDEX('-', @p_ListOrder) - 1);
             SET @p_qty = SUBSTRING(@p_ListOrder, CHARINDEX('-', @p_ListOrder) + 1, LEN(@p_ListOrder) - CHARINDEX('-', @p_ListOrder));
          
-          DECLARE @InvoiceOutNo NVARCHAR(20) = (SELECT InvoiceNoOut FROM ProdStockReceiving WHERE Id = @p_id);
-         IF @InvoiceOutNo IS NULL
-         BEGIN
-             UPDATE ProdStockReceiving
-                SET LastModificationTime = GETDATE(), 
-                    LastModifierUserId = @p_UserId, 
-                    RequestDate = @p_RequestDate,
-                    InvoiceNoOut = @p_InvoiceOut,
-                    OrderQty = @p_qty,
-                    RequestStatus = 'NEW'
-              WHERE Id = @p_id
-    
-             INSERT INTO ProdInvoiceStockOut 
-                    (CreationTime, CreatorUserId, IsDeleted, 
-                    InvoiceNoOut, Status, ListPartNo, ListPartName, ListCfc, ListStockId, TotalOrderQty, TotalAmount)
-             SELECT GETDATE(), @p_UserId, 0, @p_InvoiceOut, 'NEW', a.PartNo, a.PartName, a.Model, a.Id, @p_qty, (@p_qty * mm.StandardPrice + ISNULL(mm.MovingPrice, 0))
-               FROM ProdStockReceiving a
-          LEFT JOIN MasterMaterial mm ON a.MaterialId = mm.Id
-              WHERE a.Id = @p_id
-         END
-         ELSE
-         BEGIN
-             DECLARE @Count INT = (SELECT COUNT(*) FROM ProdInvoiceStockOut WHERE InvoiceNoOut LIKE CONCAT(@InvoiceOutNo, '%'));
-             UPDATE ProdStockReceiving
-                SET LastModificationTime = GETDATE(), 
-                    LastModifierUserId = @p_UserId, 
-                    RequestDate = @p_RequestDate,
-                    OrderQty = @p_qty,
-                    RequestStatus = 'NEW'
-              WHERE Id = @p_id
-    
-             INSERT INTO ProdInvoiceStockOut 
-                    (CreationTime, CreatorUserId, IsDeleted, 
-                    InvoiceNoOut, Status, ListPartNo, ListPartName, ListCfc, ListStockId, TotalOrderQty, TotalAmount)
-             SELECT GETDATE(), @p_UserId, 0, (@InvoiceOutNo + '/' + CONVERT(NVARCHAR, @Count)), 'NEW', a.PartNo, a.PartName, a.Model, a.Id, @p_qty, (@p_qty * mm.StandardPrice + ISNULL(mm.MovingPrice, 0))
-               FROM ProdStockReceiving a
-          LEFT JOIN MasterMaterial mm ON a.MaterialId = mm.Id
-              WHERE a.Id = @p_id
-         END
+         UPDATE ProdStockReceiving
+            SET LastModificationTime = GETDATE(), 
+                LastModifierUserId = @p_UserId, 
+                RequestDate = @p_RequestDate,
+                InvoiceNoOut = @p_InvoiceOut,
+                OrderQty = @p_qty,
+                RequestStatus = 'NEW',
+                DeliveryDate = NULL
+          WHERE Id = @p_id
+
+    INSERT INTO ProdInvoiceStockOut 
+                (CreationTime, CreatorUserId, IsDeleted, 
+                InvoiceNoOut, Status, ListPartNo, ListPartName, ListCfc, ListStockId, TotalOrderQty, TotalAmount)
+         SELECT GETDATE(), @p_UserId, 0, @p_InvoiceOut, 'NEW', a.PartNo, a.PartName, a.Model, a.Id, @p_qty, (@p_qty * mm.StandardPrice + ISNULL(mm.MovingPrice, 0))
+           FROM ProdStockReceiving a
+      LEFT JOIN MasterMaterial mm ON a.MaterialId = mm.Id
+          WHERE a.Id = @p_id
 
 FETCH NEXT FROM cursor_value INTO @p_ListOrder 
             END  
@@ -1832,9 +1810,9 @@ FETCH NEXT FROM cursor_value INTO @p_ListStockId
                 InvoiceDate = @p_InvoiceOutDate,
                 STATUS = 'NOT PAID (REQUESTED)',
                 GoodsDeliveryNoteNo = @p_GdnNo,
-                TotalOrderQty = @p_qty,
+                TotalDeliveryQty = @p_qty,
                 TotalAmount = @Amount
-          WHERE InvoiceNoOut LIKE CONCAT(@InvoiceStockOut, '%') AND ListPartNo = @PartNo AND ListCfc = @Cfc AND InvoiceDate IS NULL
+          WHERE InvoiceNoOut = @InvoiceStockOut AND ListPartNo = @PartNo AND ListCfc = @Cfc AND InvoiceDate IS NULL
 
 FETCH NEXT FROM cursor_value INTO @p_ListStockId 
             END  
@@ -1966,7 +1944,8 @@ BEGIN
     SELECT piso.Id, piso.ListStockId, piso.InvoiceNoOut, piso.InvoiceDate, 
            piso.Status, piso.ListPartNo, piso.ListPartName, piso.ListCfc, 
            piso.ListStockId, piso.TotalOrderQty, piso.TotalAmount, 
-           (psr.Warehouse + '/' + msl.AddressLanguageVn) Warehouse
+           (psr.Warehouse + '/' + msl.AddressLanguageVn) Warehouse,
+           piso.TotalDeliveryQty, piso.GoodsDeliveryNoteNo
       FROM ProdInvoiceStockOut piso
 INNER JOIN ProdStockReceiving psr ON psr.Id = piso.ListStockId
  LEFT JOIN MasterStorageLocation msl ON psr.Warehouse = msl.StorageLocation

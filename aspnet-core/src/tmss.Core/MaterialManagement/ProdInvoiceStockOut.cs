@@ -43,6 +43,8 @@ namespace tmss.MaterialManagement
         [StringLength(MaxStockIdLength)]
         public virtual string ListStockId { get; set; }
 
+        public virtual int? TotalDeliveryQty { get; set; }
+
         public virtual int? TotalOrderQty { get; set; }
 
         public virtual decimal? TotalAmount { get; set; }

@@ -32501,6 +32501,9 @@ export class ProdInvoiceStockOutDto implements IProdInvoiceStockOutDto {
     totalOrderQty!: number | undefined;
     totalAmount!: number | undefined;
     warehouse!: string | undefined;
+    totalDeliveryQty!: number | undefined;
+    goodsDeliveryNoteNo!: string | undefined;
+    grandTotalDeliveryQty!: number | undefined;
     grandTotalOrderQty!: number | undefined;
     grandTotalAmount!: number | undefined;
     id!: number | undefined;
@@ -32526,6 +32529,9 @@ export class ProdInvoiceStockOutDto implements IProdInvoiceStockOutDto {
             this.totalOrderQty = _data["totalOrderQty"];
             this.totalAmount = _data["totalAmount"];
             this.warehouse = _data["warehouse"];
+            this.totalDeliveryQty = _data["totalDeliveryQty"];
+            this.goodsDeliveryNoteNo = _data["goodsDeliveryNoteNo"];
+            this.grandTotalDeliveryQty = _data["grandTotalDeliveryQty"];
             this.grandTotalOrderQty = _data["grandTotalOrderQty"];
             this.grandTotalAmount = _data["grandTotalAmount"];
             this.id = _data["id"];
@@ -32551,6 +32557,9 @@ export class ProdInvoiceStockOutDto implements IProdInvoiceStockOutDto {
         data["totalOrderQty"] = this.totalOrderQty;
         data["totalAmount"] = this.totalAmount;
         data["warehouse"] = this.warehouse;
+        data["totalDeliveryQty"] = this.totalDeliveryQty;
+        data["goodsDeliveryNoteNo"] = this.goodsDeliveryNoteNo;
+        data["grandTotalDeliveryQty"] = this.grandTotalDeliveryQty;
         data["grandTotalOrderQty"] = this.grandTotalOrderQty;
         data["grandTotalAmount"] = this.grandTotalAmount;
         data["id"] = this.id;
@@ -32569,6 +32578,9 @@ export interface IProdInvoiceStockOutDto {
     totalOrderQty: number | undefined;
     totalAmount: number | undefined;
     warehouse: string | undefined;
+    totalDeliveryQty: number | undefined;
+    goodsDeliveryNoteNo: string | undefined;
+    grandTotalDeliveryQty: number | undefined;
     grandTotalOrderQty: number | undefined;
     grandTotalAmount: number | undefined;
     id: number | undefined;

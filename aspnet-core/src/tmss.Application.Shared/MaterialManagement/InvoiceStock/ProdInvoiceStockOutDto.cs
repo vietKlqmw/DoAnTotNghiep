@@ -15,7 +15,10 @@ namespace tmss.MaterialManagement.InvoiceStock
         public virtual int? TotalOrderQty { get; set; }
         public virtual decimal? TotalAmount { get; set; }
         public virtual string Warehouse { get; set; }
+        public virtual int? TotalDeliveryQty { get; set; }
+        public virtual string GoodsDeliveryNoteNo { get; set; }
 
+        public virtual decimal? GrandTotalDeliveryQty { get; set; }
         public virtual int? GrandTotalOrderQty { get; set; }
         public virtual decimal? GrandTotalAmount { get; set; }
     }

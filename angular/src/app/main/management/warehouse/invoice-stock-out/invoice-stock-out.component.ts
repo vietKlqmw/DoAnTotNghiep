@@ -110,10 +110,15 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.totalOrderQty)
             },
             {
+                headerName: this.l('Total Delivery Qty'), headerTooltip: this.l('Total Delivery Qty'), field: 'totalDeliveryQty', flex: 1, type: 'rightAligned', aggFunc: this.calTotal,
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.totalDeliveryQty)
+            },
+            {
                 headerName: this.l('Total Amount'), headerTooltip: this.l('Total Amount'), field: 'totalAmount', flex: 1, type: 'rightAligned', aggFunc: this.calTotal,
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.totalAmount)
             },
-            { headerName: this.l('Warehouse'), headerTooltip: this.l('Warehouse'), field: 'warehouse', flex: 1 }
+            { headerName: this.l('Warehouse'), headerTooltip: this.l('Warehouse'), field: 'warehouse', flex: 1 },
+            //{ headerName: this.l('Goods Delivery Note No'), headerTooltip: this.l('Goods Delivery Note No'), field: 'goodsDeliveryNoteNo', flex: 1 }
         ];
 
         this.frameworkComponents = {
@@ -165,10 +170,12 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
                 this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
                 if (result.totalCount > 0) {
                     var _sumOrderQty = 0;
+                    var _sumDeliveryQty = 0;
                     var _sumOrderAmount = 0;
                     _sumOrderQty = result.items[0].grandTotalOrderQty;
+                    _sumDeliveryQty = result.items[0].grandTotalDeliveryQty;
                     _sumOrderAmount = result.items[0].grandTotalAmount;
-                    var rows = this.createRow(1, _sumOrderQty, _sumOrderAmount);
+                    var rows = this.createRow(1, _sumOrderQty, _sumOrderAmount, _sumDeliveryQty);
                     this.dataParams!.api.setPinnedBottomRowData(rows);
                 } else {
                     this.dataParams!.api.setPinnedBottomRowData(null);
@@ -228,10 +235,12 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
                 this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
                 if (result.totalCount > 0) {
                     var _sumOrderQty = 0;
+                    var _sumDeliveryQty = 0;
                     var _sumOrderAmount = 0;
                     _sumOrderQty = result.items[0].grandTotalOrderQty;
+                    _sumDeliveryQty = result.items[0].grandTotalDeliveryQty;
                     _sumOrderAmount = result.items[0].grandTotalAmount;
-                    var rows = this.createRow(1, _sumOrderQty, _sumOrderAmount);
+                    var rows = this.createRow(1, _sumOrderQty, _sumOrderAmount, _sumDeliveryQty);
                     this.dataParams!.api.setPinnedBottomRowData(rows);
                 } else {
                     this.dataParams!.api.setPinnedBottomRowData(null);
@@ -263,14 +272,15 @@ export class InvoiceStockOutComponent extends AppComponentBase implements OnInit
             });
     }
 
-    createRow(count: number, sumTotalOrderQty: number, sumTotalOrderAmount: number): any[] {
+    createRow(count: number, sumTotalOrderQty: number, sumTotalOrderAmount: number, sumTotalDeliveryQty: number): any[] {
         let result: any[] = [];
 
         for (var i = 0; i < count; i++) {
             result.push({
                 invoiceNoOut: 'Grand Total',
                 totalOrderQty: sumTotalOrderQty,
-                totalAmount: sumTotalOrderAmount
+                totalAmount: sumTotalOrderAmount,
+                totalDeliveryQty: sumTotalDeliveryQty
             });
         }
         return result;
