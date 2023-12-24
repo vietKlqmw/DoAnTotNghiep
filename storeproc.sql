@@ -2175,7 +2175,7 @@ AS
 BEGIN
     SELECT TOP(5) piso.ListCfc, piso.ListPartName, piso.TotalOrderQty, piso.TotalAmount, piso.InvoiceDate 
       FROM ProdInvoiceStockOut piso
-INNER JOIN ProdStockReceiving psr ON psr.InvoiceNoOut LIKE CONCAT(piso.InvoiceNoOut, '%')
+INNER JOIN ProdStockReceiving psr ON piso.ListStockId = psr.Id
      WHERE psr.Warehouse = @p_Warehouse
        AND piso.InvoiceDate IS NOT NULL
   ORDER BY piso.InvoiceDate DESC
@@ -2252,8 +2252,7 @@ BEGIN
     BEGIN
         SELECT SUBSTRING(piso.GoodsDeliveryNoteNo, 1, 2) Warehouse, piso.InvoiceDate, SUM(piso.TotalAmount) AmountOut
           FROM ProdInvoiceStockOut piso
-    INNER JOIN ProdStockReceiving psr 
-            ON psr.InvoiceNoOut LIKE CONCAT(piso.InvoiceNoOut, '%')
+    INNER JOIN ProdStockReceiving psr ON piso.ListStockId = psr.Id
          WHERE piso.InvoiceDate IS NOT NULL 
            AND piso.InvoiceDate >= @p_DateFrom 
            AND piso.InvoiceDate <= @p_DateTo
