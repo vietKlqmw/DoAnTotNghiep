@@ -153,7 +153,6 @@ export class ViewHistoryReceiveModalComponent extends AppComponentBase {
                 .subscribe(blob => {
                     saveAs(blob, "GoodsReceivedNote_" + formatDate(new Date(this._date.toString()), 'yyyyMMdd', 'en-US') + ".xlsx");
                     this.notify.success(this.l('Export Successfully'));
-                    this.close();
                 });
         } else {
             this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNoteHistoryPdf`, input, { responseType: 'blob' })
@@ -161,7 +160,6 @@ export class ViewHistoryReceiveModalComponent extends AppComponentBase {
                 .subscribe(blob => {
                     saveAs(blob, "GoodsReceivedNote_" + formatDate(new Date(this._date.toString()), 'yyyyMMdd', 'en-US') + ".pdf");
                     this.notify.success(this.l('Export Successfully'));
-                    this.close();
                 });
         }
     }

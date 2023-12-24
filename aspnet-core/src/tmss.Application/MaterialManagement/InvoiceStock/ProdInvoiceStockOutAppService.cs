@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using tmss.Dto;
+using tmss.ManagementOther;
 using tmss.MaterialManagement.InvoiceStock.Exporting;
 
 namespace tmss.MaterialManagement.InvoiceStock
@@ -79,6 +80,14 @@ namespace tmss.MaterialManagement.InvoiceStock
                 p_NewStatus = Status,
                 p_UserId = AbpSession.UserId
             });
+        }
+
+        public async Task<List<ProdInvoiceStockHistoryDto>> ViewHistoryDelivery(string invoice)
+        {
+            string _sql = "Exec INV_PROD_HISTORY_DELIVERY @p_Invoice";
+            IEnumerable<ProdInvoiceStockHistoryDto> result = await _dapperRepo.QueryAsync<ProdInvoiceStockHistoryDto>(_sql, new { p_Invoice = invoice });
+
+            return result.ToList();
         }
     }
 }

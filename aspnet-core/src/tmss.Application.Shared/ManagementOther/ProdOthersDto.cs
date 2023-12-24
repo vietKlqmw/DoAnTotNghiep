@@ -34,6 +34,15 @@ namespace tmss.ManagementOther
         public virtual string Warehouse { get; set; }
     }
 
+    public class ListInvoiceStockDto
+    {
+        public virtual string InvoiceNoOut { get; set; }
+        public virtual DateTime? InvoiceDate { get; set; }
+        public virtual string Warehouse { get; set; }
+        public virtual string AddressLanguageVn { get; set; }
+        public virtual string GoodsDeliveryNoteNo { get; set; }
+    }
+
     public class ListPartForOrderToWarehouse
     {
         public virtual string PartNo { get; set; }
@@ -146,6 +155,17 @@ namespace tmss.ManagementOther
         public virtual string ReceiveDate { get; set; }
     }
 
+    public class InvoiceStockHistoryExportInput
+    {
+        public virtual string Invoice { get; set; }
+        public virtual bool IsExcel { get; set; }
+        public virtual string DeliveryDate { get; set; }
+        public virtual string GoodsDeliveryNoteNo { get; set; }
+        public virtual string Warehouse { get; set; }
+        public virtual string Address { get; set; }
+
+    }
+
     public class GoodsDeliveryNoteExportInput
     {
         public virtual string StockId { get; set; }
@@ -208,5 +228,22 @@ namespace tmss.ManagementOther
         public virtual string Invoice { get; set; }
         public virtual decimal? AmountUnit { get; set; }
         public virtual decimal? Cost { get;set; }
+    }
+
+    public class ProdInvoiceStockHistoryDto
+    {
+        public virtual string InvoiceNoOut { get; set; }
+        public virtual DateTime? InvoiceDate { get; set; }
+        public virtual string ListPartNo { get; set; }
+        public virtual string ListPartName { get; set; }
+        public virtual string ListCfc { get; set; }
+        public virtual int? TotalOrderQty { get; set; }
+        public virtual decimal? TotalAmount { get; set; }
+        public virtual string Warehouse { get; set; }
+        public virtual int? TotalDeliveryQty { get; set; }
+        public virtual string GoodsDeliveryNoteNo { get; set; }
+        public virtual string BaseUnitOfMeasure { get; set; }
+        public virtual decimal? StandardPrice { get; set; }
+        public virtual decimal? MovingPrice { get; set; }
     }
 }

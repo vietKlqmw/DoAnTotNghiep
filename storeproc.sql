@@ -1970,6 +1970,37 @@ BEGIN
            Status = @p_NewStatus
      WHERE Id = @p_InvoiceStockId;
 END
+------------------------------------------------GET_LIST_INVOICE:
+CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_STOCK_GET_LIST_INVOICE
+AS
+BEGIN
+    SELECT DISTINCT piso.InvoiceNoOut, piso.InvoiceDate, psr.Warehouse, 
+                    msl.AddressLanguageVn, piso.GoodsDeliveryNoteNo
+               FROM ProdInvoiceStockOut piso
+         INNER JOIN ProdStockReceiving psr ON piso.ListStockId = psr.Id
+          LEFT JOIN MasterStorageLocation msl ON psr.Warehouse = msl.StorageLocation
+              WHERE piso.InvoiceDate IS NOT NULL
+END
+------------------------------------------------HISTORY_DELIVERY:
+CREATE OR ALTER PROCEDURE INV_PROD_HISTORY_DELIVERY
+    @p_Invoice NVARCHAR(20)
+AS
+BEGIN
+    SELECT piso.ListCfc, piso.ListPartNo, piso.ListPartName, piso.TotalOrderQty,
+           piso.TotalDeliveryQty, piso.TotalAmount, mm.StandardPrice, mm.MovingPrice,
+           mm.BaseUnitOfMeasure
+      FROM ProdInvoiceStockOut piso
+INNER JOIN ProdStockReceiving psr ON piso.ListStockId = psr.Id
+ LEFT JOIN MasterMaterial mm ON psr.MaterialId = mm.Id
+     WHERE piso.InvoiceNoOut = @p_Invoice
+
+    SELECT STRING_AGG(CONCAT(x.InvoiceNoOut, ' - ', FORMAT(x.InvoiceDate, 'dd/MM/yyyy')), '; ') InvoiceNoOut
+    FROM 
+        (SELECT DISTINCT piso.InvoiceNoOut, piso.InvoiceDate
+                    FROM ProdInvoiceStockOut piso
+                   WHERE piso.InvoiceNoOut = @p_Invoice
+        ) x
+END
 ------------------------------------------------ORDER_PART------------------------------------------------
 ------------------------------------------------Search
 CREATE OR ALTER PROCEDURE INV_PROD_ORDER_PART_SEARCH

@@ -10,5 +10,7 @@ namespace tmss.ManagementOther
         Task<byte[]> ExportGoodsDeliveryNote(GoodsDeliveryNoteExportInput input);
 
         Task<byte[]> ExportGoodsReceivedNoteHistory(GoodsReceivedNoteHistoryExportInput input);
+
+        Task<byte[]> ExportGoodsDeliveryNoteHistory(InvoiceStockHistoryExportInput input);
     }
 }

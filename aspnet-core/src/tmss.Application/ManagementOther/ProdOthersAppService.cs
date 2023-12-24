@@ -276,6 +276,16 @@ namespace tmss.ManagementOther
             return result.ToList();
         }
 
+        public async Task<List<ListInvoiceStockDto>> GetListInvocieStockOut()
+        {
+            string _sql = "Exec INV_PROD_INVOICE_STOCK_GET_LIST_INVOICE";
+
+            IEnumerable<ListInvoiceStockDto> result = await _dapperRepo.QueryAsync<ListInvoiceStockDto>(_sql);
+
+            return result.ToList();
+        }
+
+
 
         //excel to pdf
         public string ConvertExcelToPdf(string filePathSource, string filePathSave, string nameSave)
