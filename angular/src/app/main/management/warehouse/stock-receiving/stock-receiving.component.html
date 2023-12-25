@@ -96,11 +96,14 @@
                     <div class="col-sm-12 text-right">
                         <button type="button" class="btn btn-view" (click)="viewMaterialById()" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-regular fa-eye"></i> {{"View Material" | localize}}</button>
-                        <button type="button" class="btn btn-primary" (click)="addGoodsDeliveryNote()" [disabled]="!saveSelectedRow.id" *ngIf="btnGDN">
+                        <button type="button" class="btn btn-primary" (click)="addGoodsDeliveryNote()" [disabled]="!saveSelectedRow.id"
+                            *ngIf="btnGDN && isGranted('Pages.Management.Warehouse.StockWarehouse.Edit')">
                             <i class="fa fa-plus"></i> {{"Add Goods Delivery Note" | localize}}</button>
-                        <button type="button" class="btn btn-warning" (click)="addOrder()" [disabled]="isDisable" *ngIf="btnPO">
+                        <button type="button" class="btn btn-warning" (click)="addOrder()" [disabled]="isDisable"
+                            *ngIf="btnPO && isGranted('Pages.Management.Warehouse.StockWarehouse.Order')">
                             <i class="fa fa-plus"></i> {{"Purchase Order" | localize}}</button>
-                        <button type="button" class="btn btn-primary" (click)="editOrderQty()" [disabled]="isEdit" *ngIf="btnPO">
+                        <button type="button" class="btn btn-primary" (click)="editOrderQty()" [disabled]="isEdit"
+                            *ngIf="btnPO && isGranted('Pages.Management.Warehouse.StockWarehouse.Order')">
                             <i class="far fa-edit"></i> {{"Edit Order Qty" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
                             <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>

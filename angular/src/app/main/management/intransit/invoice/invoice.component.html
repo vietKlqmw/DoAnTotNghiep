@@ -115,7 +115,8 @@
                     <div class="col-sm-12 text-right">
                         <button type="button" class="btn btn-view" (click)="editInvoice('View')" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-regular fa-eye"></i> {{"View Invoice" | localize}}</button>
-                        <button type="button" class="btn btn-primary" (click)="editInvoice('Edit')" [disabled]="notDelete">
+                        <button type="button" class="btn btn-primary" (click)="editInvoice('Edit')" [disabled]="notDelete"
+                            *ngIf="isGranted('Pages.Management.Intransit.Invoice.Edit')">
                             <i class="far fa-edit"></i> {{"Edit" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
                             <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>

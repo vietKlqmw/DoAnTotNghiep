@@ -80,9 +80,11 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-sm-12 text-right">
-                        <button type="button" class="btn btn-view" (click)="viewHistoryReceive.show()">
+                        <button type="button" class="btn btn-view" (click)="viewHistoryReceive.show()"
+                            *ngIf="isGranted('Pages.Management.Warehouse.ContainerWarehouse.Edit')">
                             <i class="far fa-regular fa-eye"></i> {{"View History Receive" | localize}}</button>
-                        <button type="button" class="btn btn-primary" (click)="addGoodsReceivedNote()">
+                        <button type="button" class="btn btn-primary" (click)="addGoodsReceivedNote()"
+                            *ngIf="isGranted('Pages.Management.Warehouse.ContainerWarehouse.Edit')">
                             <i class="fa fa-plus"></i> {{"Add Goods Received Note" | localize}}</button>
                         <!-- <button type="button" class="btn btn-primary" (click)="edit('Edit')" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-edit"></i> {{"Edit" | localize}}</button> -->

@@ -21,7 +21,7 @@ export class AppNavigationService {
             new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
 
 //MASTER
-            new AppMenuItem('MASTER', '', 'flaticon-user-settings', '',[],[
+            new AppMenuItem('MASTER', 'Pages.Master', 'flaticon-user-settings', '',[],[
                 new AppMenuItem('COMMON', 'Pages.Master.Common', 'flaticon-user-settings', '',[],[
                     new AppMenuItem('Container Status', '', 'flaticon-car', '/app/main/master/common/container-status'),
                     new AppMenuItem('Customs Status', '', 'flaticon-car', '/app/main/master/common/customs-status'),
@@ -40,20 +40,20 @@ export class AppNavigationService {
                 ]),
             ]),
 //MAIN
-            new AppMenuItem('MANAGEMENT', '', 'flaticon-user-settings', '',[],[
+            new AppMenuItem('MANAGEMENT', 'Pages.Management', 'flaticon-user-settings', '',[],[
                 new AppMenuItem('INTRANSIT', 'Pages.Management.Intransit', 'flaticon-user-settings', '',[],[
-                    new AppMenuItem('Order Part', '', 'flaticon-car', '/app/main/management/intransit/order-part'),
-                    new AppMenuItem('Container Intransit', '', 'flaticon-car', '/app/main/management/intransit/container-intransit'),
-                    new AppMenuItem('Shipment', '', 'flaticon-car', '/app/main/management/intransit/shipment'),
-                    new AppMenuItem('Bill Of Lading', '', 'flaticon-car', '/app/main/management/intransit/billoflading'),
-                    new AppMenuItem('Invoice', '', 'flaticon-car', '/app/main/management/intransit/invoice'),
-                    new AppMenuItem('Customs Declare', '', 'flaticon-car', '/app/main/management/intransit/customs-declare'),
+                    new AppMenuItem('Order Part', 'Pages.Management.Intransit.OrderPart.View', 'flaticon-car', '/app/main/management/intransit/order-part'),
+                    new AppMenuItem('Container Intransit', 'Pages.Management.Intransit.ContainerIntransit.View', 'flaticon-car', '/app/main/management/intransit/container-intransit'),
+                    new AppMenuItem('Shipment', 'Pages.Management.Intransit.Shipment.View', 'flaticon-car', '/app/main/management/intransit/shipment'),
+                    new AppMenuItem('Bill Of Lading', 'Pages.Management.Intransit.Bill.View', 'flaticon-car', '/app/main/management/intransit/billoflading'),
+                    new AppMenuItem('Invoice', 'Pages.Management.Intransit.Invoice.View', 'flaticon-car', '/app/main/management/intransit/invoice'),
+                    new AppMenuItem('Customs Declare', 'Pages.Management.Intransit.CustomsDeclare.View', 'flaticon-car', '/app/main/management/intransit/customs-declare'),
                 ]),
                 new AppMenuItem('WAREHOUSE', 'Pages.Management.Warehouse', 'flaticon-user-settings', '',[],[
-                    new AppMenuItem('Container List', '', 'flaticon-car', '/app/main/management/warehouse/container-list'),
-                    new AppMenuItem('Container At Warehouse', '', 'flaticon-car', '/app/main/management/warehouse/container-warehouse'),
-                    new AppMenuItem('Stock In Warehouse', '', 'flaticon-car', '/app/main/management/warehouse/stock-receiving'),
-                    new AppMenuItem('Invoice Stock Out', '', 'flaticon-car', '/app/main/management/warehouse/invoice-stock-out'),
+                    new AppMenuItem('Container List', 'Pages.Management.Warehouse.ContainerList.View', 'flaticon-car', '/app/main/management/warehouse/container-list'),
+                    new AppMenuItem('Container At Warehouse', 'Pages.Management.Warehouse.ContainerWarehouse.View', 'flaticon-car', '/app/main/management/warehouse/container-warehouse'),
+                    new AppMenuItem('Stock In Warehouse', 'Pages.Management.Warehouse.StockWarehouse.View', 'flaticon-car', '/app/main/management/warehouse/stock-receiving'),
+                    new AppMenuItem('Invoice Stock Out', 'Pages.Management.Warehouse.InvoiceOut.View', 'flaticon-car', '/app/main/management/warehouse/invoice-stock-out'),
                 ]),
             ]),
             // new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),

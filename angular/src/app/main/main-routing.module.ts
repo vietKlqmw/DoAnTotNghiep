@@ -82,58 +82,53 @@ import { DashboardComponent } from './dashboard/dashboard.component';
                     {
                         path: 'management/intransit/shipment',
                         loadChildren: () => import('./management/intransit/shipment/shipment.module').then(m => m.ShipmentModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                        data: { permission: 'Pages.Management.Intransit.Shipment.View' }
                     },
                     {
                         path: 'management/intransit/billoflading',
                         loadChildren: () => import('./management/intransit/billoflading/billoflading.module').then(m => m.BillofladingModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
-                    },
-                    {
-                        path: 'management/intransit/container-invoice',
-                        loadChildren: () => import('./management/intransit/container-invoice/container-invoice.module').then(m => m.ContainerInvoiceModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                        data: { permission: 'Pages.Management.Intransit.Bill.View' }
                     },
                     {
                         path: 'management/intransit/invoice',
                         loadChildren: () => import('./management/intransit/invoice/invoice.module').then(m => m.InvoiceModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                        data: { permission: 'Pages.Management.Intransit.Invoice.View' }
                     },
                     {
                         path: 'management/intransit/customs-declare',
                         loadChildren: () => import('./management/intransit/customs-declare/customs-declare.module').then(m => m.CustomsDeclareModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                        data: { permission: 'Pages.Management.Intransit.CustomsDeclare.View' }
                     },
                     {
                         path: 'management/intransit/container-intransit',
                         loadChildren: () => import('./management/intransit/container-intransit/container-intransit.module').then(m => m.ContainerIntransitModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                        data: { permission: 'Pages.Management.Intransit.ContainerIntransit.View' }
                     },
                     {
                         path: 'management/intransit/order-part',
                         loadChildren: () => import('./management/intransit/order-part/order-part.module').then(m => m.OrderPartModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                        data: { permission: 'Pages.Management.Intransit.OrderPart.View' }
                     },
                     //Warehouse
                     {
                         path: 'management/warehouse/container-list',
                         loadChildren: () => import('./management/warehouse/container-list/container-list.module').then(m => m.ContainerListModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                        data: { permission: 'Pages.Management.Warehouse.ContainerList.View' }
                     },
                     {
                         path: 'management/warehouse/container-warehouse',
                         loadChildren: () => import('./management/warehouse/container-warehouse/container-warehouse.module').then(m => m.ContainerWarehouseModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                        data: { permission: 'Pages.Management.Warehouse.ContainerWarehouse.View' }
                     },
                     {
                         path: 'management/warehouse/stock-receiving',
                         loadChildren: () => import('./management/warehouse/stock-receiving/stock-receiving.module').then(m => m.StockReceivingModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                        data: { permission: 'Pages.Management.Warehouse.StockWarehouse.View' }
                     },
                     {
                         path: 'management/warehouse/invoice-stock-out',
                         loadChildren: () => import('./management/warehouse/invoice-stock-out/invoice-stock-out.module').then(m => m.InvoiceStockOutModule),
-                        //data: { permission: 'Pages.Master.Cmm.VehicleCBU.View' }
+                        data: { permission: 'Pages.Management.Warehouse.InvoiceOut.View' }
                     },
                     { path: '**', redirectTo: 'dashboard' }
                 ]

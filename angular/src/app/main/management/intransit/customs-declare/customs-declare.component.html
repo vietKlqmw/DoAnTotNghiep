@@ -76,9 +76,11 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-sm-12 text-right">
-                        <button type="button" class="btn btn-primary" (click)="editDeclare('Add')">
+                        <button type="button" class="btn btn-primary" (click)="editDeclare('Add')"
+                            *ngIf="isGranted('Pages.Management.Intransit.CustomsDeclare.Edit')">
                             <i class="fa fa-plus"></i> {{"Add" | localize}}</button>
-                        <button type="button" class="btn btn-primary" (click)="editDeclare('Edit')" [disabled]="notDeleted">
+                        <button type="button" class="btn btn-primary" (click)="editDeclare('Edit')" [disabled]="notDeleted"
+                            *ngIf="isGranted('Pages.Management.Intransit.CustomsDeclare.Edit')">
                             <i class="far fa-edit"></i> {{"Edit" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
                             <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>

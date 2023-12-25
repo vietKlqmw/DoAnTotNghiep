@@ -79,11 +79,14 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-sm-12 text-right">
-                        <button type="button" class="btn btn-primary" (click)="editShipment('Add')">
+                        <button type="button" class="btn btn-primary" (click)="editShipment('Add')"
+                            *ngIf="isGranted('Pages.Management.Intransit.Shipment.Edit')">
                             <i class="fa fa-plus"></i> {{"Add" | localize}}</button>
-                        <button type="button" class="btn btn-primary" (click)="editShipment('Edit')" [disabled]="notDelete">
+                        <button type="button" class="btn btn-primary" (click)="editShipment('Edit')" [disabled]="notDelete"
+                            *ngIf="isGranted('Pages.Management.Intransit.Shipment.Edit')">
                             <i class="far fa-edit"></i> {{"Edit" | localize}}</button>
-                        <button type="button" class="btn btn-danger" (click)="deleteShipment()" [disabled]="notDelete">
+                        <button type="button" class="btn btn-danger" (click)="deleteShipment()" [disabled]="notDelete"
+                            *ngIf="isGranted('Pages.Management.Intransit.Shipment.Edit')">
                             <i class="far fa-trash-alt"></i> {{"Delete" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
                             <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>

@@ -54,7 +54,8 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-sm-12 text-right">
-                        <button type="button" class="btn btn-danger" (click)="deleteWH()" [disabled]="!saveSelectedRow.id">
+                        <button type="button" class="btn btn-danger" (click)="deleteWH()" [disabled]="!saveSelectedRow.id"
+                            *ngIf="isGranted('Pages.Master.General.Warehouse.Edit')">
                             <i class="far fa-trash-alt"></i> {{"Delete" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
                             <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>
