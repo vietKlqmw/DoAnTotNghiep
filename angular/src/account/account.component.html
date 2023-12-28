@@ -4,7 +4,7 @@
             flex-column flex-column-fluid
             bgi-position-y-bottom
             position-x-center
-            bgi-no-repeat bgi-size-contain bgi-attachment-fixed" style="background: #F2FAFF;">
+            bgi-no-repeat bgi-size-contain bgi-attachment-fixed" style="background: #F2FAFF; background-image: url('/assets/common/images/anh2.jpg'); background-size: 100% 100%;">
         <div class="d-flex flex-center flex-column flex-column-fluid p-10" [class.pb-lg-20]="!useFullWidthLayout()"
             [class.pb-0]="useFullWidthLayout()">
             <!--begin::Wrapper-->
@@ -29,9 +29,9 @@
         </div>
         <!--end::Content-->
     </div>
-    <div class="login-aside d-flex flex-column flex-row-auto">
-        <div class="d-flex flex-column-auto flex-column pt-lg-40 pt-15">
-            <a (click)="goToHome()" href="" class="d-flex justify-content-center" [class.mb-12]="!useFullWidthLayout()">
+    <!-- <div class="login-aside d-flex flex-column flex-row-auto">
+        <div class="d-flex flex-column-auto flex-column pt-lg-40 pt-15"> -->
+            <!-- <a (click)="goToHome()" href="" class="d-flex justify-content-center" [class.mb-12]="!useFullWidthLayout()">
                 <img *ngIf="!appSession.tenant || !appSession.tenant.id" alt="logo" class="max-h-70px"
                     [src]="appRootUrl() + 'assets/common/images/app-logo-on-light.svg'"
                     [class.mb-20]="useFullWidthLayout()" />
@@ -42,11 +42,11 @@
                         '&tenantId=' +
                         appSession.tenant.id
                     " alt="logo" class="max-h-70px" />
-            </a>
-            <h3 class="font-weight-bolder text-center font-size-h4 font-size-h1-lg" 
+            </a> -->
+            <!-- <h3 class="font-weight-bolder text-center font-size-h4 font-size-h1-lg" 
                 style="color: red;font-weight: 600 !important;">
                 Toyota Motor Viet Nam <br /> Start your impossible.
-            </h3>
-        </div>
-    </div>
+            </h3> -->
+        <!-- </div>
+    </div> -->
 </div>

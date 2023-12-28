@@ -14,7 +14,7 @@ export class ViewBillOfLadingModalComponent extends AppComponentBase {
     rowData: ProdBillOfLadingDto = new ProdBillOfLadingDto();
     saving = false;
     _billDate: any;
-    _consignee = 'CT TNHH Toyota VN';
+    _consignee = 'CT TNHH ';
 
     constructor(
         private injector: Injector,

@@ -562,7 +562,7 @@ body .ag-theme-alpine .ag-header-cell.ag-focus-managed.ag-header-cell-sortable.a
         border-radius: 20px !important; position: relative;}
     .login-account .login_content   .login-header{ display: flex; justify-content: space-between; }
 
-    .login-account .login_content .login-header img { width: 10vw; z-index: 1; }
+    .login-account .login_content .login-header img { width: 5vw; z-index: 1; }
     .login-account .login_content h3, .login-account .login_content .h3 {z-index: 3;color: #52796F !important; text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15);}
     .login-account .login_content .login-form .form-group { min-height: 4rem; display: flex; position: relative;  z-index: 2;}
 
