@@ -65,5 +65,7 @@ namespace tmss.MaterialManagement
 
         public virtual decimal? Cost { get; set; }
 
+        public virtual long? InvoiceId { get; set; }
+
     }
 }
