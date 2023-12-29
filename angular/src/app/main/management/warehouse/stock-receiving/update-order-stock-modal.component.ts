@@ -21,6 +21,7 @@ export class UpdateOrderStockModalComponent extends AppComponentBase {
     _standardPrice;
     _movingPrice;
     _amount;
+    _suborderQty;
 
     constructor(
         private injector: Injector,
@@ -45,15 +46,15 @@ export class UpdateOrderStockModalComponent extends AppComponentBase {
     }
 
     save(): void {
-        if (this._orderQty <= 0) {
+        if (this._suborderQty <= 0) {
             this.notify.warn('Order Qty must be greater than 0!');
             return;
         }
-        if (this._orderQty >= this.rowData.remainQty){
+        if (this._suborderQty >= this.rowData.remainQty){
             this.notify.warn('Remain Qty cannot be less than Order Qty!');
             return;
         }
-        this.rowData.orderQty = this._orderQty;
+        this.rowData.orderQty = this._suborderQty;
         this.saving = true;
         this._service.updateOrderQtyStock(this.rowData.id, this.rowData.orderQty)
             .pipe(finalize(() => { this.saving = false; }))
@@ -66,8 +67,8 @@ export class UpdateOrderStockModalComponent extends AppComponentBase {
 
     changeOrderQty(event) {
             this._orderQty = this._fm.formatMoney(event);
-            this.rowData.orderQty = event.length > 3 ? Number(event.replace(/,/g, '')) : Number(event);
-            this._amount = this._fm.formatMoney(Number(this.rowData.orderQty) * Number(this.rowData.standardPrice) + Number(this.rowData.movingPrice));
+            this._suborderQty = event.length > 3 ? Number(event.replace(/,/g, '')) : Number(event);
+            this._amount = this._fm.formatMoney(Number(this._suborderQty) * Number(this.rowData.standardPrice) + Number(this.rowData.movingPrice));
     }
 
     close(): void {

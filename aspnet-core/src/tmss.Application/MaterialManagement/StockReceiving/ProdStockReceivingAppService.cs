@@ -105,6 +105,17 @@ namespace tmss.MaterialManagement.StockReceiving
             });
         }
 
+        public async Task DeleteOrderWarehouse(string ListStockId)
+        {
+            string _sql = "Exec INV_PROD_STOCK_RECEIVING_CANCEL_ORDER @p_ListId, @p_UserId";
+
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_ListId = ListStockId,
+                p_UserId = AbpSession.UserId
+            });
+        }
+
 
         public async Task AddGdn(GoodsDeliveryNoteExportInput input)
         {

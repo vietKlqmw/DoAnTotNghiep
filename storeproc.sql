@@ -1594,6 +1594,23 @@ BEGIN
            OrderQty = @p_OrderQty
      WHERE Id = @p_StockId;
 END
+------------------------------------------------CANCEL_ORDER:
+CREATE OR ALTER PROCEDURE INV_PROD_STOCK_RECEIVING_CANCEL_ORDER
+    @p_ListId NVARCHAR(MAX),
+    @p_UserId BIGINT
+AS
+BEGIN
+    DELETE ProdInvoiceStockOut WHERE ListStockId IN (SELECT item FROM dbo.fnSplit(@p_ListId, ','))
+
+    UPDATE ProdStockReceiving
+       SET LastModificationTime = GETDATE(),
+           LastModifierUserId = @p_UserId,
+           OrderQty = 0,
+           RequestDate = NULL,
+           RequestStatus = NULL,
+           InvoiceNoOut = NULL
+     WHERE Id IN (SELECT item FROM dbo.fnSplit(@p_ListId, ','))
+END
 ------------------------------------------------GetListForDelivery
 CREATE OR ALTER PROCEDURE INV_PROD_GET_STOCK_FOR_DELIVERY_BY_WAREHOUSE
     @p_Warehouse NVARCHAR(2)

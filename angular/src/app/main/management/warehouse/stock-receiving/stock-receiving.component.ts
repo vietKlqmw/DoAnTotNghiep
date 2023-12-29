@@ -152,7 +152,7 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
             // },
             { headerName: this.l('Invoice Delivery'), headerTooltip: this.l('Invoice Delivery'), field: 'invoiceNoOut', flex: 1 }
             //{ headerName: this.l('Material Id'), headerTooltip: this.l('Material Id'), field: 'materialId', flex: 1 }
-            
+
         ];
 
         this.frameworkComponents = {
@@ -429,6 +429,19 @@ export class StockReceivingComponent extends AppComponentBase implements OnInit 
 
     onChangeWarehouse(){
         this.searchDatas();
+    }
+
+    cancelOrder(){
+        this.message.confirm(this.l('Are you sure Cancel Order?'), 'Cancel Order', (isConfirmed) => {
+            if (isConfirmed) {
+                this._service.deleteOrderWarehouse(this.listPartId).subscribe(() => {
+                    this.callBackDataGrid(this.dataParams!);
+                    this.notify.success(this.l('SuccessfullyDeleted'));
+                }, error => {
+                    this.notify.error(this.l('FailedDeleted'));
+                });
+            }
+        });
     }
 }
 
