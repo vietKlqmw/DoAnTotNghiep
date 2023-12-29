@@ -2012,6 +2012,104 @@ BEGIN
        SET IsDeleted = 1
      WHERE Id = @p_Id
 END
+------------------------------------------------MERGE:
+CREATE OR ALTER PROCEDURE INV_PROD_ORDER_PART_MERGE
+    @Guid VARCHAR(MAX)
+AS
+BEGIN
+    BEGIN TRY 
+	  BEGIN TRANSACTION
+
+	  -- FOR BUG CHECK-
+		INSERT INTO ProcessLog(CATEGORY, PROCESS_NAME, ERROR_MESSAGE, CREATED_BY, CREATED_DATE)
+		VALUES ('INV_PROD_ORDER_PART_MERGE', 'INV_PROD_ORDER_PART_MERGE Import', 'START:', 'SYSTEM', GETDATE());
+
+    UPDATE t1 
+		   SET ErrorDescription = CONCAT(ErrorDescription, N' Part không tồn tại trong bảng MasterPartList!')
+		  FROM ProdOrderPart_T t1
+		 WHERE Guid = @Guid 
+		   AND t1.PartNo IS NOT NULL
+       AND t1.CarfamilyCode IS NOT NULL
+       AND t1.SupplierNo IS NOT NULL
+       AND NOT EXISTS (SELECT 1 FROM MasterPartList t2 
+                        WHERE t1.PartNo = t2.PartNo AND t2.CarfamilyCode = t1.CarfamilyCode 
+                          AND t2.SupplierNo = t1.SupplierNo AND t2.IsDeleted = 0);
+
+		IF NOT EXISTS (SELECT 1 FROM ProdOrderPart_T WHERE Guid = @Guid AND ErrorDescription != '')
+		BEGIN					
+		    MERGE INTO ProdOrderPart AS P
+		    USING (
+        	  SELECT DISTINCT t.PartNo, t.PartName, t.SupplierNo, t.CarfamilyCode,  
+                   t.Remark, t.CreatorUserId, msl.Id SupplierId, mm.Id MaterialId,
+                   t.Qty, t.OrderDate, mm.BaseUnitOfMeasure, 
+                   mm.StandardPrice AmountUnit, (mm.StandardPrice * t.Qty) TotalAmount
+        		  FROM ProdOrderPart_T t
+         LEFT JOIN MasterSupplierList msl ON t.SupplierNo = msl.SupplierNo
+         LEFT JOIN MasterMaterial mm ON SUBSTRING(t.PartNo, 1, 10) = mm.MaterialCode AND t.PartName = mm.Description
+        	   WHERE t.Guid = @Guid
+		    ) AS DT	ON (P.CarfamilyCode = DT.CarfamilyCode AND P.SupplierNo = DT.SupplierNo AND P.PartNo = DT.PartNo AND P.PartName = DT.PartName)				    
+		    WHEN MATCHED THEN
+		        UPDATE SET 
+					      P.SupplierId = DT.SupplierId,
+					      P.MaterialId = DT.MaterialId,
+					      P.Remark = DT.Remark,
+                P.Status = 'NEW',
+                P.Qty = DT.Qty,
+                P.AmountUnit = DT.AmountUnit,
+                P.TotalAmount = DT.TotalAmount,
+                P.OrderDate = DT.OrderDate,
+                P.LastModifierUserId = DT.CreatorUserId,
+					      P.LastModificationTime = GETDATE()
+		    WHEN NOT MATCHED THEN
+		        INSERT (CreationTime, CreatorUserId, IsDeleted, 
+                    PartNo, PartName, SupplierNo, CarfamilyCode, 
+                    Status, Remark, BaseUnitOfMeasure, MaterialId, 
+                    Qty, AmountUnit, TotalAmount, OrderDate)				
+		  	    VALUES (GETDATE(), DT.CreatorUserId, 0, 
+                    DT.PartNo, DT.PartName, DT.SupplierNo, DT.CarfamilyCode, 
+                    'NEW', DT.Remark, DT.BaseUnitOfMeasure, DT.MaterialId,  
+                    DT.Qty, DT.AmountUnit, DT.TotalAmount, DT.OrderDate);
+
+		END
+
+		-- FOR BUG CHECK-
+		INSERT INTO ProcessLog (CATEGORY, PROCESS_NAME, ERROR_MESSAGE, CREATED_BY, CREATED_DATE)
+		VALUES ('INV_PROD_ORDER_PART_MERGE', 'INV_PROD_ORDER_PART_MERGE Import', 'END:', 'SYSTEM', GETDATE());
+
+		COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+		DECLARE @ErrorSeverity INT;
+		DECLARE @ErrorState INT;
+		DECLARE @ErrorMessage NVARCHAR(4000);
+  
+		SELECT @ErrorMessage = ERROR_MESSAGE(),
+			     @ErrorSeverity = ERROR_SEVERITY(), 
+			     @ErrorState = ERROR_STATE();
+
+		ROLLBACK TRANSACTION		
+		INSERT INTO ProCess_Log ([CATEGORY], [PROCESS_NAME], [ERROR_MESSAGE], [CREATED_DATE])
+		VALUES ('INV_PROD_ORDER_PART_MERGE', 'INV_PROD_ORDER_PART_MERGE Import', 'ERROR :' + @ErrorMessage + 
+															'//ERRORSTATE :' +  CAST(@ErrorState AS VARCHAR) + 
+															'//ERRORPROCEDURE :' + ERROR_PROCEDURE() + 
+															'//ERRORSEVERITY :' + CAST(@ErrorSeverity AS VARCHAR) + 
+															'//ERRORNUMBER :' + CAST(ERROR_NUMBER() AS VARCHAR) + 
+															'//ERRORLINE :' + CAST(ERROR_LINE() AS VARCHAR), GETDATE());
+	   
+	  RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+	  END CATCH;
+END
+------------------------------------------------GET_LIST_ERROR_IMPORT:
+CREATE OR ALTER PROCEDURE INV_PROD_ORDER_PART_GET_LIST_ERROR_IMPORT
+    @Guid NVARCHAR(max)
+AS 
+BEGIN
+    SELECT DISTINCT mplt.Guid, mplt.PartNo, mplt.PartName, mplt.SupplierNo, 
+           mplt.CarfamilyCode, mplt.Remark, mplt.OrderDate, mplt.Qty, mplt.ErrorDescription
+      FROM ProdOrderPart_T mplt
+     WHERE mplt.Guid = @Guid AND ISNULL(mplt.ErrorDescription, '') <> '' 
+END
+GO
 ------------------------------------------------DASHBOARD------------------------------------------------
 ------------------------------------------------TOP
 CREATE OR ALTER PROCEDURE INV_PROD_DASHBOARD_TOP 

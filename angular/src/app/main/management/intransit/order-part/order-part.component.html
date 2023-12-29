@@ -80,7 +80,7 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-sm-12 text-right">
-                        <button type="button" class="btn btn-primary" (click)="editOrderPart('Add')" 
+                        <button type="button" class="btn btn-primary" (click)="editOrderPart('Add')"
                             *ngIf="isGranted('Pages.Management.Intransit.OrderPart.Edit')">
                             <i class="fa fa-plus"></i> {{"Order Part" | localize}}</button>
                         <button type="button" class="btn btn-primary" (click)="editOrderPart('Edit')" [disabled]="notDeleted"
@@ -89,6 +89,8 @@
                         <button type="button" class="btn btn-danger" (click)="deleteOrderPart()" [disabled]="notDeleted"
                             *ngIf="isGranted('Pages.Management.Intransit.OrderPart.Edit')">
                             <i class="far fa-trash-alt"></i> {{"Delete" | localize}}</button>
+                        <button type="button" class="btn btn-success" (click)="importExcelModal.show()">
+                            <i class="far fa-file-excel"></i> {{"ImportFromExcel" | localize}}</button>
                         <button type="button" class="btn btn-success" (click)="exportToExcel()">
                             <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>
                     </div>
@@ -98,3 +100,4 @@
     </div>
 </div>
 <editModal #editModal></editModal>
+<importExcelModal #importExcelModal></importExcelModal>

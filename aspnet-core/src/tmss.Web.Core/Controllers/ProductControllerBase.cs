@@ -8,6 +8,7 @@ using tmss.Master.Material;
 using tmss.Master.PartList;
 using tmss.MaterialManagement.ContainerIntransit;
 using tmss.MaterialManagement.ContainerWH;
+using tmss.MaterialManagement.OrderPart;
 
 namespace tmss.Web.Controllers
 {
@@ -17,18 +18,21 @@ namespace tmss.Web.Controllers
         private readonly IProdContainerRentalWHPlanAppService _importContainerWarehouse;
         private readonly IMasterPartListAppService _importMasterPartList;
         private readonly IProdContainerIntransitAppService _importContainerIntransit;
+        private readonly IProdOrderPartAppService _importOrderPart;
 
         protected ProductControllerBase(
             IMasterMaterialAppService importMasterMaterial,
             IProdContainerRentalWHPlanAppService importContainerWarehouse,
             IMasterPartListAppService importMasterPartList,
-            IProdContainerIntransitAppService importContainerIntransit
+            IProdContainerIntransitAppService importContainerIntransit,
+            IProdOrderPartAppService importOrderPart
         )
         {
             _importMasterMaterial = importMasterMaterial;
             _importContainerWarehouse = importContainerWarehouse;
             _importMasterPartList = importMasterPartList;
             _importContainerIntransit = importContainerIntransit;
+            _importOrderPart = importOrderPart;
         }
 
         [HttpPost]
@@ -138,6 +142,35 @@ namespace tmss.Web.Controllers
                     fileBytes = stream.GetAllBytes();
                 }
                 var material = await _importContainerIntransit.ImportProdContainerIntransitFromExcel(fileBytes, file.FileName);
+                return Json(new AjaxResponse(new { material }));
+
+            }
+            catch (UserFriendlyException ex)
+            {
+                return Json(new AjaxResponse(new ErrorInfo(ex.Message)));
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ImportOrderPartFromExcel()
+        {
+            try
+            {
+                var file = Request.Form.Files.First();
+                if (file == null)
+                {
+                    throw new UserFriendlyException(L("File_Empty_Error"));
+                }
+                if (file.Length > 1048576 * 100) //100 MB
+                {
+                    throw new UserFriendlyException(L("File_SizeLimit_Error"));
+                }
+                byte[] fileBytes;
+                using (var stream = file.OpenReadStream())
+                {
+                    fileBytes = stream.GetAllBytes();
+                }
+                var material = await _importOrderPart.ImportProdOrderPartFromExcel(fileBytes, file.FileName);
                 return Json(new AjaxResponse(new { material }));
 
             }

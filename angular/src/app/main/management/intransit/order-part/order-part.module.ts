@@ -3,6 +3,8 @@ import { AppSharedModule } from '@app/shared/app-shared.module';
 import { OrderPartRoutingModule } from './order-part-routing.module';
 import { OrderPartComponent } from './order-part.component';
 import { EditOrderPartModalComponent } from './edit-order-part-modal.component';
+import { ListErrorImportModalComponent } from './list-error-import-order-part-modal.component';
+import { ImportContainerWarehouseComponent } from './import-order-part-modal.component';
 
 @NgModule({
     imports: [
@@ -11,7 +13,9 @@ import { EditOrderPartModalComponent } from './edit-order-part-modal.component';
     ],
     declarations: [
         OrderPartComponent,
-        EditOrderPartModalComponent
+        EditOrderPartModalComponent,
+        ListErrorImportModalComponent,
+        ImportContainerWarehouseComponent
     ]
 })
 export class OrderPartModule { }

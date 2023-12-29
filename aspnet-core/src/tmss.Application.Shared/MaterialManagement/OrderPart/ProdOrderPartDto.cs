@@ -48,4 +48,19 @@ namespace tmss.MaterialManagement.OrderPart
         public virtual DateTime? OrderDateFrom { get; set; }
         public virtual DateTime? OrderDateTo { get; set; }
     }
+
+
+    public class ProdOrderPartImportDto
+    {
+        public virtual string Guid { get; set; }
+        public virtual string PartNo { get; set; }
+        public virtual string PartName { get; set; }
+        public virtual string SupplierNo { get; set; }
+        public virtual string CarfamilyCode { get; set; }
+        public virtual string Remark { get; set; }
+        public virtual int? Qty { get; set; }
+        public virtual DateTime? OrderDate { get; set; }
+        public virtual string ErrorDescription { get; set; }
+        public virtual long? CreatorUserId { get; set; }
+    }
 }

@@ -13891,6 +13891,173 @@ export class ProdOrderPartServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param fileName (optional) 
+     * @param body (optional) 
+     * @return Success
+     */
+    importProdOrderPartFromExcel(fileName: string | null | undefined, body: string | null | undefined): Observable<ProdOrderPartImportDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOrderPart/ImportProdOrderPartFromExcel?";
+        if (fileName !== undefined)
+            url_ += "fileName=" + encodeURIComponent("" + fileName) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processImportProdOrderPartFromExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processImportProdOrderPartFromExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<ProdOrderPartImportDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ProdOrderPartImportDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processImportProdOrderPartFromExcel(response: HttpResponseBase): Observable<ProdOrderPartImportDto[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ProdOrderPartImportDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ProdOrderPartImportDto[]>(<any>null);
+    }
+
+    /**
+     * @param v_Guid (optional) 
+     * @return Success
+     */
+    mergeData(v_Guid: string | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOrderPart/MergeData?";
+        if (v_Guid !== undefined)
+            url_ += "v_Guid=" + encodeURIComponent("" + v_Guid) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMergeData(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMergeData(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processMergeData(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param v_Guid (optional) 
+     * @return Success
+     */
+    getListErrorImport(v_Guid: string | null | undefined): Observable<PagedResultDtoOfProdOrderPartImportDto> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOrderPart/GetListErrorImport?";
+        if (v_Guid !== undefined)
+            url_ += "v_Guid=" + encodeURIComponent("" + v_Guid) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListErrorImport(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListErrorImport(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfProdOrderPartImportDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfProdOrderPartImportDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetListErrorImport(response: HttpResponseBase): Observable<PagedResultDtoOfProdOrderPartImportDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfProdOrderPartImportDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfProdOrderPartImportDto>(<any>null);
+    }
 }
 
 @Injectable()
@@ -33143,6 +33310,126 @@ export class PagedResultDtoOfProdOrderPartDto implements IPagedResultDtoOfProdOr
 export interface IPagedResultDtoOfProdOrderPartDto {
     totalCount: number;
     items: ProdOrderPartDto[] | undefined;
+}
+
+export class ProdOrderPartImportDto implements IProdOrderPartImportDto {
+    guid!: string | undefined;
+    partNo!: string | undefined;
+    partName!: string | undefined;
+    supplierNo!: string | undefined;
+    carfamilyCode!: string | undefined;
+    remark!: string | undefined;
+    qty!: number | undefined;
+    orderDate!: moment.Moment | undefined;
+    errorDescription!: string | undefined;
+    creatorUserId!: number | undefined;
+
+    constructor(data?: IProdOrderPartImportDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.guid = _data["guid"];
+            this.partNo = _data["partNo"];
+            this.partName = _data["partName"];
+            this.supplierNo = _data["supplierNo"];
+            this.carfamilyCode = _data["carfamilyCode"];
+            this.remark = _data["remark"];
+            this.qty = _data["qty"];
+            this.orderDate = _data["orderDate"] ? moment(_data["orderDate"].toString()) : <any>undefined;
+            this.errorDescription = _data["errorDescription"];
+            this.creatorUserId = _data["creatorUserId"];
+        }
+    }
+
+    static fromJS(data: any): ProdOrderPartImportDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProdOrderPartImportDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["guid"] = this.guid;
+        data["partNo"] = this.partNo;
+        data["partName"] = this.partName;
+        data["supplierNo"] = this.supplierNo;
+        data["carfamilyCode"] = this.carfamilyCode;
+        data["remark"] = this.remark;
+        data["qty"] = this.qty;
+        data["orderDate"] = this.orderDate ? this.orderDate.toISOString() : <any>undefined;
+        data["errorDescription"] = this.errorDescription;
+        data["creatorUserId"] = this.creatorUserId;
+        return data; 
+    }
+}
+
+export interface IProdOrderPartImportDto {
+    guid: string | undefined;
+    partNo: string | undefined;
+    partName: string | undefined;
+    supplierNo: string | undefined;
+    carfamilyCode: string | undefined;
+    remark: string | undefined;
+    qty: number | undefined;
+    orderDate: moment.Moment | undefined;
+    errorDescription: string | undefined;
+    creatorUserId: number | undefined;
+}
+
+export class PagedResultDtoOfProdOrderPartImportDto implements IPagedResultDtoOfProdOrderPartImportDto {
+    totalCount!: number;
+    items!: ProdOrderPartImportDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfProdOrderPartImportDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ProdOrderPartImportDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfProdOrderPartImportDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfProdOrderPartImportDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfProdOrderPartImportDto {
+    totalCount: number;
+    items: ProdOrderPartImportDto[] | undefined;
 }
 
 export class ListSupplierDto implements IListSupplierDto {
