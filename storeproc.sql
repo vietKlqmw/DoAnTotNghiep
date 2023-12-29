@@ -349,34 +349,6 @@ BEGIN
          INNER JOIN MasterMaterial mm on mpl.MaterialId = mm.Id
               WHERE mpl.IsDeleted = 0
 END
-------------------------------------------------MaterialGroup------------------------------------------------
-INSERT INTO MasterMaterialGroup 
-(CreationTime, CreatorUserId, IsDeleted, Code, Name)
-VALUES 
-(GETDATE(), 1, 0, N'VEH0001', N'Vehicle'),
-(GETDATE(), 1, 0, N'UNT0001', N'Engine'),
-(GETDATE(), 1, 0, N'UNT0002', N'Transmission'),
-(GETDATE(), 1, 0, N'UNT0003', N'Axles'),
-(GETDATE(), 1, 0, N'UNT0004', N'Propeller Shaft'),
-(GETDATE(), 1, 0, N'PAR0001', N'Part'),
-(GETDATE(), 1, 0, N'DRM0001', N'Direct Material');
-------------------------------------------------MaterialType------------------------------------------------
-INSERT INTO MasterMaterialType 
-(CreationTime, CreatorUserId, IsDeleted, Code, Name)
-VALUES 
-(GETDATE(), 1, 0, N'ZDRM', N'Direct Material'),
-(GETDATE(), 1, 0, N'ZPAR', N'EG,T/M,Axles,Shaft,Part'),
-(GETDATE(), 1, 0, N'ZVEH', N'Vehicle');
-------------------------------------------------ProductType------------------------------------------------
-INSERT INTO MasterProductType 
-(CreationTime, CreatorUserId, IsDeleted, Code, Name)
-VALUES 
-(GETDATE(), 1, 0, N'VEH', N'Vehicle'),
-(GETDATE(), 1, 0, N'UNT', N'Unit ( Engine, T/M, Axles, Propeller Shaft)'),
-(GETDATE(), 1, 0, N'PAR', N'Part'),
-(GETDATE(), 1, 0, N'DRM', N'Direct'),
-(GETDATE(), 1, 0, N'SUP', N'Supplies'),
-(GETDATE(), 1, 0, N'NSM', N'Non-stock Material');
 ------------------------------------------------StorageLocation------------------------------------------------
 INSERT INTO MasterStorageLocation 
 (CreationTime, CreatorUserId, IsDeleted, 
@@ -427,20 +399,6 @@ BEGIN
       FROM MasterStorageLocation msl 
      WHERE msl.IsDeleted = 0
 END
-------------------------------------------------InvoiceStatus------------------------------------------------
-INSERT INTO MasterInvoiceStatus 
-(CreationTime, CreatorUserId, IsDeleted, Code, Description)
-VALUES 
-(GETDATE(), 1, 0, N'IS01', N'NEW'),
-(GETDATE(), 1, 0, N'IS02', N'PRE CUSTOMS'),
-(GETDATE(), 1, 0, N'IS03', N'CUSTOMS DECLARED');
-------------------------------------------------CustomsStatus------------------------------------------------
-INSERT INTO MasterCustomsStatus 
-(CreationTime, CreatorUserId, IsDeleted, Code, Description)
-VALUES 
-(GETDATE(), 1, 0, N'CuS1', N'NEW'),
-(GETDATE(), 1, 0, N'CuS2', N'NOT PAID (REQUESTED)'),
-(GETDATE(), 1, 0, N'CuS3', N'PAID');
 ------------------------------------------------ContainerStatus------------------------------------------------
 INSERT INTO MasterContainerStatus 
 (CreationTime, CreatorUserId, IsDeleted, Code, Description, DescriptionVn)
@@ -535,40 +493,6 @@ BEGIN
       FROM MasterForwarder mf
      WHERE mf.SupplierId = @p_SupplierId;
 END
-------------------------------------------------UnitOfMeasure------------------------------------------------
-INSERT INTO MasterUnitOfMeasure 
-(CreationTime, CreatorUserId, IsDeleted, Code, Name)
-VALUES 
-(GETDATE(), 1, 0, N'PC', N'Pieces'),
-(GETDATE(), 1, 0, N'EA', N'Each'),
-(GETDATE(), 1, 0, N'RM', N'Ream'),
-(GETDATE(), 1, 0, N'CAN', N'Can'),
-(GETDATE(), 1, 0, N'L', N'Liter'),
-(GETDATE(), 1, 0, N'ML', N'Milliliter'),
-(GETDATE(), 1, 0, N'ROL', N'Roll'),
-(GETDATE(), 1, 0, N'BT', N'Bottle'),
-(GETDATE(), 1, 0, N'DR', N'Drum'),
-(GETDATE(), 1, 0, N'GAL', N'Gallon'),
-(GETDATE(), 1, 0, N'TB', N'Tube'),
-(GETDATE(), 1, 0, N'TN', N'Tin'),
-(GETDATE(), 1, 0, N'PAA', N'Pair'),
-(GETDATE(), 1, 0, N'PAL', N'Pallet'),
-(GETDATE(), 1, 0, N'PL', N'Pail'),
-(GETDATE(), 1, 0, N'AU', N'Activ.unit'),
-(GETDATE(), 1, 0, N'BAG', N'Bag'),
-(GETDATE(), 1, 0, N'DZ', N'Dozen'),
-(GETDATE(), 1, 0, N'SH', N'Sheet'),
-(GETDATE(), 1, 0, N'CYL', N'Cylinder'),
-(GETDATE(), 1, 0, N'MON', N'Months'),
-(GETDATE(), 1, 0, N'D', N'Days'),
-(GETDATE(), 1, 0, N'H', N'Hour'),
-(GETDATE(), 1, 0, N'MIN', N'min.'),
-(GETDATE(), 1, 0, N'MON', N'Months'),
-(GETDATE(), 1, 0, N'PDA', N'Consultant Days'),
-(GETDATE(), 1, 0, N'S', N'Second'),
-(GETDATE(), 1, 0, N'UNT', N'Unit'),
-(GETDATE(), 1, 0, N'LOT', N'Lot'),
-(GETDATE(), 1, 0, N'CV', N'Case');
 ------------------------------------------------Carfamily------------------------------------------------
 INSERT INTO MasterCarfamily 
 (CreationTime, CreatorUserId, IsDeleted, Code, Name)
@@ -729,11 +653,14 @@ BEGIN
               FROM ProdShipment 
              WHERE Id = @p_ShipmentId
 
+        DECLARE @InvoiceId INT; 
+        SELECT @InvoiceId = @@identity
+
         INSERT INTO ProdInvoiceDetails 
                     (CreationTime, CreatorUserId, IsDeleted, 
-                     PartNo, ContainerNo, InvoiceNo, SupplierNo, UsageQty, 
+                     PartNo, ContainerNo, InvoiceNo, SupplierNo, UsageQty, InvoiceId,
                      PartName, CarfamilyCode, Currency, Cost, Cif, Insurance, Freight)
-            SELECT GETDATE(), @p_UserId, 0, pop.PartNo, pci.ContainerNo, @InvoiceNo, pci.SupplierNo, pci.UsageQty, 
+            SELECT GETDATE(), @p_UserId, 0, pop.PartNo, pci.ContainerNo, @InvoiceNo, pci.SupplierNo, pci.UsageQty, @InvoiceId, 
                    pop.PartName, pop.CarfamilyCode, 'VND', pop.TotalAmount, pop.TotalAmount, 0, 0
               FROM ProdContainerIntransit pci
         INNER JOIN ProdOrderPart pop ON pci.PartListId = pop.Id
@@ -1099,63 +1026,6 @@ INNER JOIN ProdBillOfLading pbol ON a.BillId = pbol.Id
        AND (@p_Warehouse IS NULL OR a.Warehouse = @p_Warehouse)
        AND a.IsDeleted = 0
   ORDER BY a.RequestDate DESC
-END
-------------------------------------------------edit:
-CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_EDIT
-@p_Id INT, 
-@p_ContainerNo NVARCHAR(20),
-@p_RequestDate DATE, 
-@p_RequestTime TIME, 
-@p_InvoiceNo NVARCHAR(20), 
-@p_BillOfLadingNo NVARCHAR(20), 
-@p_SupplierNo NVARCHAR(10), 
-@p_SealNo NVARCHAR(20), 
-@p_DevanningDate DATETIME2, 
-@p_DevanningTime TIME, 
-@p_ActualDevanningDate DATETIME2, 
-@p_GateInPlanTime DATETIME2, 
-@p_GateInActualDateTime DATETIME2, 
-@p_Transport NVARCHAR(50), 
-@p_Status NVARCHAR(10),
-@p_UserId BIGINT
-AS
-BEGIN
-    IF @p_Id IS NULL
-    BEGIN
-        INSERT INTO ProdContainerRentalWHPlan 
-                    (CreationTime, CreatorUserId, IsDeleted, 
-                     ContainerNo, RequestDate, RequestTime, InvoiceNo, BillofladingNo, 
-                     SupplierNo, SealNo, DevanningDate, 
-                     DevanningTime, ActualDevanningDate, GateInPlanTime, 
-                     GateInActualDateTime, Transport, Status)
-             VALUES (GETDATE(), @p_UserId, 0, 
-                     @p_ContainerNo, @p_RequestDate, @p_RequestTime, @p_InvoiceNo, @p_BillOfLadingNo, 
-                     @p_SupplierNo, @p_SealNo, @p_DevanningDate, 
-                     @p_DevanningTime, @p_ActualDevanningDate, @p_GateInPlanTime, 
-                     @p_GateInActualDateTime, @p_Transport, @p_Status);
-    END
-    ELSE
-    BEGIN
-        UPDATE ProdContainerRentalWHPlan
-           SET ContainerNo = @p_ContainerNo,
-               RequestDate = @p_RequestDate,
-               RequestTime = @p_RequestTime,
-               InvoiceNo = @p_InvoiceNo,
-               BillofladingNo =@p_BillOfLadingNo,
-               SupplierNo = @p_SupplierNo,
-               SealNo = @p_SealNo,
-               DevanningDate = @p_DevanningDate,
-               DevanningTime = @p_DevanningTime,
-               ActualDevanningDate = @p_ActualDevanningDate,
-               GateInPlanTime = @p_GateInPlanTime,
-               GateInActualDateTime = @p_GateInActualDateTime,
-               Transport = @p_Transport,
-               Status = @p_Status,
-               LastModificationTime = GETDATE(),
-               LastModifierUserId = @p_UserId
-         WHERE Id = @p_Id
-    END
-
 END
 ------------------------------------------------GoodsReceivedNote:
 CREATE OR ALTER PROCEDURE INV_PROD_EXPORT_GOODS_RECEIVED_NOTE
@@ -1745,7 +1615,7 @@ BEGIN
        AND r.RequestDate <= GETDATE()
 END
 ------------------------------------------------ExportListForDelivery
-CREATE PROCEDURE INV_PROD_EXPORT_GOODS_DELIVERY_NOTE
+CREATE OR ALTER PROCEDURE INV_PROD_EXPORT_GOODS_DELIVERY_NOTE
     @p_StockId NVARCHAR(MAX)
 AS
 BEGIN

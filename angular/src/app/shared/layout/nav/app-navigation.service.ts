@@ -22,22 +22,12 @@ export class AppNavigationService {
 
 //MASTER
             new AppMenuItem('MASTER', 'Pages.Master', 'flaticon-user-settings', '',[],[
-                new AppMenuItem('COMMON', 'Pages.Master.Common', 'flaticon-user-settings', '',[],[
-                    new AppMenuItem('Container Status', '', 'flaticon-car', '/app/main/master/common/container-status'),
-                    new AppMenuItem('Customs Status', '', 'flaticon-car', '/app/main/master/common/customs-status'),
-                    new AppMenuItem('Invoice Status', '', 'flaticon-car', '/app/main/master/common/invoice-status'),
-                    new AppMenuItem('Material Group', '', 'flaticon-car', '/app/main/master/common/material-group'),
-                    new AppMenuItem('Material Type', '', 'flaticon-car', '/app/main/master/common/material-type'),
-                    new AppMenuItem('Unit Of Measure', '', 'flaticon-car', '/app/main/master/common/uom'),
-                ]),
-                new AppMenuItem('GENERAL', 'Pages.Master.General', 'flaticon-user-settings', '',[],[
-                    new AppMenuItem('Warehouse', 'Pages.Master.General.Warehouse.View', 'flaticon-car', '/app/main/master/common/storage-location'),
-                    new AppMenuItem('Material', 'Pages.Master.General.Material.View', 'flaticon-car', '/app/main/master/common/material'),
-                    new AppMenuItem('Part List', 'Pages.Master.General.PartList.View', 'flaticon-car', '/app/main/master/common/part-list'),
-                    new AppMenuItem('Carfamily', 'Pages.Master.General.Cfc.View', 'flaticon-car', '/app/main/master/common/carfamily'),
-                    new AppMenuItem('Supplier List', 'Pages.Master.General.Supplier.View', 'flaticon-car', '/app/main/master/common/supplier-list'),
-                    new AppMenuItem('Forwarder', 'Pages.Master.General.Forwarder.View', 'flaticon-car', '/app/main/master/common/forwarder'),
-                ]),
+                new AppMenuItem('Warehouse', 'Pages.Master.General.Warehouse.View', 'flaticon-car', '/app/main/master/common/storage-location'),
+                new AppMenuItem('Part List', 'Pages.Master.General.PartList.View', 'flaticon-car', '/app/main/master/common/part-list'),
+                //new AppMenuItem('Carfamily', 'Pages.Master.General.Cfc.View', 'flaticon-car', '/app/main/master/common/carfamily'),
+                new AppMenuItem('Supplier List', 'Pages.Master.General.Supplier.View', 'flaticon-car', '/app/main/master/common/supplier-list'),
+                new AppMenuItem('Forwarder', 'Pages.Master.General.Forwarder.View', 'flaticon-car', '/app/main/master/common/forwarder'),
+                new AppMenuItem('Material', 'Pages.Master.General.Material.View', 'flaticon-car', '/app/main/master/common/material'),
             ]),
 //MAIN
             new AppMenuItem('MANAGEMENT', 'Pages.Management', 'flaticon-user-settings', '',[],[
