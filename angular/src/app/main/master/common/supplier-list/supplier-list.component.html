@@ -40,18 +40,22 @@
                         [defaultColDef]="defaultColDef"
                         (callBackEvent)="callBackDataGrid($event)"
                         (changePaginationParams)="changePage($event)"
+                        (onChangeSelection)="onChangeRowSelection($event)"
                         [frameworkComponents]="frameworkComponents"
-                        [height]="'59vh'"
+                        [height]="'56vh'"
                         >
                     </grid-table>
                 </div>
-                <!-- <hr> -->
-                <!-- <div class="row">
+                <div class="row mt-2">
                     <div class="col-sm-12 text-right">
-                        <button type="button" class="btn btn-success" (click)="exportToExcel()">
-                            <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa fa-plus"></i> {{"Add" | localize}}</button>
+                        <button type="button" class="btn btn-primary">
+                            <i class="far fa-edit"></i> {{"Edit" | localize}}</button>
+                        <button type="button" class="btn btn-danger" (click)="deleteSupplier()" [disabled]="!saveSelectedRow.id">
+                            <i class="far fa-trash-alt"></i> {{"Delete" | localize}}</button>
                     </div>
-                </div> -->
+                </div>
             </div>
         </div>
     </div>

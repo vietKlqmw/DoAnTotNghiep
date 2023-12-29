@@ -29,6 +29,7 @@ export class SupplierListComponent extends AppComponentBase implements OnInit {
         sorting: '',
         totalPage: 1,
     };
+    saveSelectedRow: MasterSupplierListDto = new MasterSupplierListDto();
     selectedRow: MasterSupplierListDto = new MasterSupplierListDto();
     datas: MasterSupplierListDto = new MasterSupplierListDto();
     dataParams: GridParams | undefined;
@@ -147,6 +148,24 @@ export class SupplierListComponent extends AppComponentBase implements OnInit {
                 this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
                 this.isLoading = false;
             });
+    }
+
+    onChangeRowSelection(params: { api: { getSelectedRows: () => MasterSupplierListDto[] } }) {
+        this.saveSelectedRow = params.api.getSelectedRows()[0] ?? new MasterSupplierListDto();
+        this.selectedRow = Object.assign({}, this.saveSelectedRow);
+    }
+
+    deleteSupplier() {
+        this.message.confirm(this.l('Are you sure Delete?'), 'Delete Supplier', (isConfirmed) => {
+            if (isConfirmed) {
+                this._service.deleteSupplier(this.saveSelectedRow.id).subscribe(() => {
+                    this.callBackDataGrid(this.dataParams!);
+                    this.notify.success(this.l('SuccessfullyDeleted'));
+                }, error => {
+                    this.notify.error(this.l('FailedDeleted'));
+                });
+            }
+        });
     }
 }
 

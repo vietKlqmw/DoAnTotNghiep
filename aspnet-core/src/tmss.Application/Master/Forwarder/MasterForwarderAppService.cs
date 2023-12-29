@@ -38,5 +38,14 @@ namespace tmss.Master.Forwarder
 
             return new PagedResultDto<MasterForwarderDto>(totalCount, pagedAndFiltered);
         }
+
+        public async Task DeleteForwarder(int? Id)
+        {
+            string _sql = "DELETE MasterForwarder WHERE Id = @p_Id";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_Id = Id
+            });
+        }
     }
 }

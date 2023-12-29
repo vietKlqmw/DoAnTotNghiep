@@ -28,6 +28,7 @@ export class ForwarderComponent extends AppComponentBase implements OnInit {
         sorting: '',
         totalPage: 1,
     };
+    saveSelectedRow: MasterForwarderDto = new MasterForwarderDto();
     selectedRow: MasterForwarderDto = new MasterForwarderDto();
     datas: MasterForwarderDto = new MasterForwarderDto();
     dataParams: GridParams | undefined;
@@ -146,6 +147,24 @@ export class ForwarderComponent extends AppComponentBase implements OnInit {
                 this.paginationParams.totalPage = ceil(result.totalCount / (this.paginationParams.pageSize ?? 0));
                 this.isLoading = false;
             });
+    }
+
+    onChangeRowSelection(params: { api: { getSelectedRows: () => MasterForwarderDto[] } }) {
+        this.saveSelectedRow = params.api.getSelectedRows()[0] ?? new MasterForwarderDto();
+        this.selectedRow = Object.assign({}, this.saveSelectedRow);
+    }
+
+    deleteForward() {
+        this.message.confirm(this.l('Are you sure Delete?'), 'Delete Forwarder', (isConfirmed) => {
+            if (isConfirmed) {
+                this._service.deleteForwarder(this.saveSelectedRow.id).subscribe(() => {
+                    this.callBackDataGrid(this.dataParams!);
+                    this.notify.success(this.l('SuccessfullyDeleted'));
+                }, error => {
+                    this.notify.error(this.l('FailedDeleted'));
+                });
+            }
+        });
     }
 }
 

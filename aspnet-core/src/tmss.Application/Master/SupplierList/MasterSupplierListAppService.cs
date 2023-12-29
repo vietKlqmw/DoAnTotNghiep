@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Authorization;
+using Abp.Dapper.Repositories;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,13 @@ namespace tmss.Master.SupplierList
     public class MasterSupplierListAppService : tmssAppServiceBase, IMasterSupplierListAppService
     {
         private readonly IRepository<MasterSupplierList, long> _repo;
+        private readonly IDapperRepository<MasterSupplierList, long> _dapperRepo;
 
-        public MasterSupplierListAppService(IRepository<MasterSupplierList, long> repo)
+        public MasterSupplierListAppService(IRepository<MasterSupplierList, long> repo,
+            IDapperRepository<MasterSupplierList, long> dapperRepo)
         {
             _repo = repo;
+            _dapperRepo = dapperRepo;
         }
         public async Task<PagedResultDto<MasterSupplierListDto>> GetSupplierListSearch(GetMasterSupplierListInput input)
         {
@@ -45,6 +49,16 @@ namespace tmss.Master.SupplierList
                 totalCount,
                  await paged.ToListAsync()
             );
+        }
+
+
+        public async Task DeleteSupplier(int? Id)
+        {
+            string _sql = "DELETE MasterSupplierList WHERE Id = @p_Id";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_Id = Id
+            });
         }
     }
 }
