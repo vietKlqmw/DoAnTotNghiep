@@ -98,6 +98,7 @@ export class AddGdnStockModalComponent extends AppComponentBase {
     listActualQty = [];
     listOrderQty = [];
     _address;
+    inventory;
     datasEdit: ProdStockReceivingDto[] = [];
     valueChange: string = '';
     columnChange: string = '';
@@ -260,6 +261,7 @@ export class AddGdnStockModalComponent extends AppComponentBase {
 
         this._selectrow = this.saveSelectedRow.id;
 
+        this.inventory = this.data[0].inventory
         this.contId = '';
         this.listCont = '';
         this.listActualQty = [];
@@ -275,6 +277,7 @@ export class AddGdnStockModalComponent extends AppComponentBase {
                 }
                 this.listActualQty.push(params.api.getSelectedRows()[i].actualDeliveryQty);
                 this.listOrderQty.push(params.api.getSelectedRows()[i].orderQty);
+                this.inventory -= params.api.getSelectedRows()[i].actualDeliveryQty;
             }
         }
     }
@@ -302,6 +305,7 @@ export class AddGdnStockModalComponent extends AppComponentBase {
         });
         
         this.saving = true;
+        this._service.updateWarehouseWhenDelivery(this._warehouse, this.data[0].maxStock, this.inventory).subscribe();
         this._service.addGdn(input).subscribe(result => {
             if (this.isExcel) {
                 this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsDeliveryNoteExcel`, input, { responseType: 'blob' })

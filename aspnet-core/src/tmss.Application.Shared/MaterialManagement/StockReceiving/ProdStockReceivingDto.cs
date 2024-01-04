@@ -50,6 +50,8 @@ namespace tmss.MaterialManagement.StockReceiving
             get { return OrderQty; }
             set { }
         }
+        public virtual int? MaxStock { get; set; }
+        public virtual int? Inventory { get; set; }
     }
 
     public class GetProdStockReceivingInput : PagedAndSortedResultRequestDto

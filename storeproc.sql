@@ -1681,10 +1681,10 @@ BEGIN
            (r.ActualQty - ISNULL(r.OrderedQty, 0)) RemainQty,
            mm.StandardPrice, ISNULL(mm.MovingPrice, 0) MovingPrice, 
            (mm.StandardPrice * r.OrderQty + ISNULL(mm.MovingPrice, 0)) AmountOrder,
-           msl.AddressLanguageVn Location
+           msl.AddressLanguageVn Location, msl.MaxStock, msl.Inventory
       FROM ProdStockReceiving r
- LEFT JOIN MasterStorageLocation msl ON r.Warehouse = msl.StorageLocation
- LEFT JOIN MasterMaterial mm ON r.MaterialId = mm.Id
+INNER JOIN MasterStorageLocation msl ON r.Warehouse = msl.StorageLocation
+INNER JOIN MasterMaterial mm ON r.MaterialId = mm.Id
 	   WHERE r.RequestDate IS NOT NULL 
        AND r.RequestStatus = 'NEW'
        AND r.IsDeleted = 0

@@ -16533,6 +16533,62 @@ export class ProdStockReceivingServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param wh (optional) 
+     * @param maxStock (optional) 
+     * @param inventory (optional) 
+     * @return Success
+     */
+    updateWarehouseWhenDelivery(wh: string | null | undefined, maxStock: number | null | undefined, inventory: number | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ProdStockReceiving/UpdateWarehouseWhenDelivery?";
+        if (wh !== undefined)
+            url_ += "wh=" + encodeURIComponent("" + wh) + "&"; 
+        if (maxStock !== undefined)
+            url_ += "maxStock=" + encodeURIComponent("" + maxStock) + "&"; 
+        if (inventory !== undefined)
+            url_ += "inventory=" + encodeURIComponent("" + inventory) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateWarehouseWhenDelivery(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateWarehouseWhenDelivery(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateWarehouseWhenDelivery(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -34021,6 +34077,8 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
     location!: string | undefined;
     keyRow!: string | undefined;
     actualDeliveryQty!: number | undefined;
+    maxStock!: number | undefined;
+    inventory!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdStockReceivingDto) {
@@ -34067,6 +34125,8 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
             this.location = _data["location"];
             this.keyRow = _data["keyRow"];
             this.actualDeliveryQty = _data["actualDeliveryQty"];
+            this.maxStock = _data["maxStock"];
+            this.inventory = _data["inventory"];
             this.id = _data["id"];
         }
     }
@@ -34113,6 +34173,8 @@ export class ProdStockReceivingDto implements IProdStockReceivingDto {
         data["location"] = this.location;
         data["keyRow"] = this.keyRow;
         data["actualDeliveryQty"] = this.actualDeliveryQty;
+        data["maxStock"] = this.maxStock;
+        data["inventory"] = this.inventory;
         data["id"] = this.id;
         return data; 
     }
@@ -34152,6 +34214,8 @@ export interface IProdStockReceivingDto {
     location: string | undefined;
     keyRow: string | undefined;
     actualDeliveryQty: number | undefined;
+    maxStock: number | undefined;
+    inventory: number | undefined;
     id: number | undefined;
 }
 
