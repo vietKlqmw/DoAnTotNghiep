@@ -264,7 +264,7 @@ export class StorageLocationComponent extends AppComponentBase implements OnInit
         });
     }
 
-    editwh(ev){
+    editwh(ev) {
         this.editModal.show(ev, this.saveSelectedRow);
     }
 }
