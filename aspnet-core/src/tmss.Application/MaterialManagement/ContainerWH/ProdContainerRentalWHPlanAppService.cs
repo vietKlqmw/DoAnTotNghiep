@@ -243,5 +243,27 @@ namespace tmss.MaterialManagement.ContainerWH
 
             return new PagedResultDto<ProdContainerRentalWHPlanImportDto>(totalCount, listResult);
         }
+
+        public async Task UpdateWarehouseWhenReceive(string wh, int? maxStock, int? inventory)
+        {
+            string Status = "";
+            float inv = inventory == null ? 0 : (float)inventory;
+            if (inv == 0) Status = "Empty";
+            else if (inv == maxStock) Status = "Full";
+            else if ((float)(inv / maxStock) < 0.25) Status = "Normal";
+            else if ((float)(inv / maxStock) < 0.5) Status = "Good";
+            else if ((float)(inv / maxStock) < 0.75) Status = "Medium";
+            else if ((float)(inv / maxStock) < 1) Status = "High";
+
+            string _sql = "Exec INV_PROD_CONTAINER_WAREHOUSE_UPDATE_WAREHOUSE @p_Warehouse, @p_MaxStock, @p_Inventory, @p_Status, @p_UserId";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_Warehouse = wh,
+                p_MaxStock = maxStock,
+                p_Inventory = inventory,
+                p_Status = Status,
+                p_UserId = AbpSession.UserId
+            });
+        }
     }
 }

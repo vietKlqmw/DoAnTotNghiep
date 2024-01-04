@@ -430,6 +430,25 @@ BEGIN
                Status = @p_Status
          WHERE Id = @p_WarehouseId
 END
+------------------------------------------------UPDATE_WAREHOUSE:
+CREATE OR ALTER PROCEDURE INV_PROD_CONTAINER_WAREHOUSE_UPDATE_WAREHOUSE
+(
+    @p_Warehouse NVARCHAR(2),
+    @p_MaxStock INT,
+    @p_Inventory INT,
+    @p_Status NVARCHAR(50),
+    @p_UserId BIGINT
+)
+AS
+BEGIN
+    UPDATE MasterStorageLocation
+       SET LastModificationTime = GETDATE(),
+           LastModifierUserId = @p_UserId,
+           MaxStock = @p_MaxStock,
+           Inventory = @p_Inventory,
+           Status = @p_Status
+     WHERE StorageLocation = @p_Warehouse
+END
 ------------------------------------------------ContainerStatus------------------------------------------------
 INSERT INTO MasterContainerStatus 
 (CreationTime, CreatorUserId, IsDeleted, Code, Description, DescriptionVn)

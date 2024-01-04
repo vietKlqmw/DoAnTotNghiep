@@ -367,6 +367,7 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
         });
 
         this.saving = true;
+        this._service.updateWarehouseWhenReceive(this._warehouse, this.data[0].maxStock, this.data[0].inventory).subscribe();
         this._service.addGrn(input).subscribe(result => {
             if (this.isExcel) {
                 this._httpClient.post(`${AppConsts.remoteServiceBaseUrl}/api/ProdFile/ExportGoodsReceivedNoteExcel`, input, { responseType: 'blob' })
