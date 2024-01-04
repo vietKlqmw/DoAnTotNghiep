@@ -87,6 +87,9 @@ export class EditOrderPartModalComponent extends AppComponentBase {
         }
         else this._totalAmount = this._fm.formatMoney(this.rowData.totalAmount);
 
+        this.changePart(this.rowData.partNo);
+        this._cfc = this.rowData.carfamilyCode;
+
         this.modal.show();
 
     }
