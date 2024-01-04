@@ -14897,10 +14897,13 @@ export class ProdOthersServiceProxy {
     }
 
     /**
+     * @param warehouse (optional) 
      * @return Success
      */
-    getListContForWarehouse(): Observable<ProdInvoiceDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetListContForWarehouse";
+    getListContForWarehouse(warehouse: string | null | undefined): Observable<ProdInvoiceDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ProdOthers/GetListContForWarehouse?";
+        if (warehouse !== undefined)
+            url_ += "warehouse=" + encodeURIComponent("" + warehouse) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -32344,6 +32347,8 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
     keyRow!: string | undefined;
     actualQty!: number | undefined;
     realQty!: number | undefined;
+    maxStock!: number | undefined;
+    inventory!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IProdInvoiceDto) {
@@ -32396,6 +32401,8 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
             this.keyRow = _data["keyRow"];
             this.actualQty = _data["actualQty"];
             this.realQty = _data["realQty"];
+            this.maxStock = _data["maxStock"];
+            this.inventory = _data["inventory"];
             this.id = _data["id"];
         }
     }
@@ -32448,6 +32455,8 @@ export class ProdInvoiceDto implements IProdInvoiceDto {
         data["keyRow"] = this.keyRow;
         data["actualQty"] = this.actualQty;
         data["realQty"] = this.realQty;
+        data["maxStock"] = this.maxStock;
+        data["inventory"] = this.inventory;
         data["id"] = this.id;
         return data; 
     }
@@ -32493,6 +32502,8 @@ export interface IProdInvoiceDto {
     keyRow: string | undefined;
     actualQty: number | undefined;
     realQty: number | undefined;
+    maxStock: number | undefined;
+    inventory: number | undefined;
     id: number | undefined;
 }
 

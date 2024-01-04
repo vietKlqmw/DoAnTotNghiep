@@ -30,7 +30,7 @@
                                 </div>
                             </div>
                             <div class="ui-g-12 ui-md-4">
-                                <tmss-combobox [items]="list" name="warehouse" [text]="'Warehouse'"
+                                <tmss-combobox [items]="list" name="warehouse" [text]="'Warehouse'" (ngModelChange)="onChangeWarehouse($event)"
                                     [(ngModel)]="_warehouse"></tmss-combobox>
                             </div>
                             <div class="ui-g-12 ui-md-4" style="display: flex;">

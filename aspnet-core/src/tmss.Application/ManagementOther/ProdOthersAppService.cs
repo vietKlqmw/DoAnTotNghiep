@@ -129,11 +129,11 @@ namespace tmss.ManagementOther
             return result.ToList();
         }
 
-        public async Task<List<ProdInvoiceDto>> GetListContForWarehouse()
+        public async Task<List<ProdInvoiceDto>> GetListContForWarehouse(string warehouse)
         {
-            string _sql = "Exec INV_PROD_GET_LIST_CONTAINER_TO_WAREHOUSE";
+            string _sql = "Exec INV_PROD_GET_LIST_CONTAINER_TO_WAREHOUSE @p_Warehouse";
 
-            IEnumerable<ProdInvoiceDto> result = await _dapperRepo.QueryAsync<ProdInvoiceDto>(_sql);
+            IEnumerable<ProdInvoiceDto> result = await _dapperRepo.QueryAsync<ProdInvoiceDto>(_sql, new { p_Warehouse = warehouse });
 
             return result.ToList();
         }

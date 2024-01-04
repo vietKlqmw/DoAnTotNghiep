@@ -63,6 +63,8 @@ namespace tmss.MaterialManagement.Invoice
         }
 
         public virtual int? RealQty { get; set; }
+        public virtual int? MaxStock { get; set; }
+        public virtual int? Inventory { get; set; }
     }
 
     public class GetProdInvoiceInput : PagedAndSortedResultRequestDto

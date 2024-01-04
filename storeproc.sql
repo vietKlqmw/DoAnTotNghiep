@@ -1477,13 +1477,23 @@ BEGIN
 END
 ------------------------------------------------GetListToWarehouse:
 CREATE OR ALTER PROCEDURE INV_PROD_GET_LIST_CONTAINER_TO_WAREHOUSE
+    @p_Warehouse NVARCHAR(2)
 AS
 BEGIN
+    DECLARE @Inventory INT;
+    DECLARE @MaxStock INT;
+    DECLARE @Status NVARCHAR(50);
+    SELECT @MaxStock = msl.MaxStock, @Inventory = msl.Inventory, @Status = msl.Status 
+      FROM MasterStorageLocation msl 
+     WHERE msl.StorageLocation = @p_Warehouse
+       AND msl.IsDeleted = 0
+
         SELECT pci.Id, pci.ContainerNo, pci.SupplierNo, pci.UsageQty,
                pi.Forwarder, pid.Insurance, pid.Freight, pid.Thc, pid.Cost, 
                pid.Cif, pid.Tax, pid.Vat, pid.Currency, pi.InvoiceNo,
-               pi.InvoiceDate, pid.PartNo, pid.PartName, pid.CarfamilyCode
-          FROM ProdContainerIntransit pci 
+               pi.InvoiceDate, pid.PartNo, pid.PartName, pid.CarfamilyCode,
+               @MaxStock MaxStock, @Inventory Inventory, @Status Status
+          FROM ProdContainerIntransit pci  
     INNER JOIN ProdInvoiceDetails pid ON pci.ContainerNo = pid.ContainerNo
     INNER JOIN ProdInvoice pi ON pid.InvoiceNo = pi.InvoiceNo
          WHERE pci.Status = 'PORT/ARRIVED'

@@ -131,7 +131,7 @@ export class StorageLocationComponent extends AppComponentBase implements OnInit
                     else if (params.data.status === 'High') {
                         return {
                             'background-color': 'Orange',
-                            'color': 'white',
+                            'color': 'black',
                             'border-bottom': '1px Solid #c0c0c0',
                             'border-right': '1px Solid #c0c0c0',
                             'overflow': 'hidden',

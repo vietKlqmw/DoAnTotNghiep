@@ -90,6 +90,7 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
 
     saving = false;
 
+    sumDefault;
     list = [{ value: '', label: '', address: '' }];
     _warehouse;
     _goodsReceived;
@@ -123,9 +124,30 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
                 headerCheckboxSelection: true,
                 headerCheckboxSelectionFilteredOnly: true
             },
+            {
+                headerName: this.l('Max Stock'), headerTooltip: this.l('Max Stock'), field: 'maxStock', width: 100, type: 'rightAligned', pinned: true,
+                cellRenderer: (params) => params.data?.maxStock == null ? null : this._fm.formatMoney_decimal(params.data?.maxStock)
+            },
+            {
+                headerName: this.l('Inventory'), headerTooltip: this.l('Inventory'), field: 'inventory', width: 100, type: 'rightAligned', pinned: true,
+                cellRenderer: (params) => params.data?.inventory == null ? null : this._fm.formatMoney_decimal(params.data?.inventory),
+                cellStyle: function (params: any) {
+                    if (params.data.status === 'Full') {
+                        return {
+                            'background-color': 'Red',
+                            'color': 'black',
+                            'border-bottom': '1px Solid #c0c0c0',
+                            'border-right': '1px Solid #c0c0c0',
+                            'overflow': 'hidden',
+                            'border-top-width': '0',
+                        };
+                    }
+                    return '';
+                }
+            },
             { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'partNo', width: 120, pinned: true },
             {
-                headerName: this.l('Qty'), headerTooltip: this.l('Qty'), field: 'usageQty', width: 100, type: 'rightAligned', pinned: true,
+                headerName: this.l('Order Qty'), headerTooltip: this.l('Qty'), field: 'usageQty', width: 120, type: 'rightAligned',
                 cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.usageQty),
             },
             //cột cần edit
@@ -260,16 +282,17 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
     }
 
     show(): void {
-        this._other.getListContForWarehouse()
-            .subscribe((result) => {
-                this.data = result ?? [];
-            });
         this._warehouse = '';
         this._receiveDate = new Date();
         this._goodsReceived = 'GRN/' + formatDate(new Date(), 'HHmmss', 'en-US');
         this.onChangeToExcel(true);
-        this.modal.show();
+        this._other.getListContForWarehouse(this._warehouse)
+            .subscribe((result) => {
+                this.data = result ?? [];
+                this.sumDefault = this.data[0].inventory;
+            });
 
+        this.modal.show();
     }
 
     callBackDataGrid(params: GridParams) {
@@ -281,7 +304,7 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
         this.selectedRow = Object.assign({}, this.saveSelectedRow);
 
         this._selectrow = this.saveSelectedRow.id;
-
+        var sum = this.data[0].inventory;
         this.contId = '';
         this.listCont = '';
         this.listActualQty = [];
@@ -295,7 +318,22 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
                     this.listCont += params.api.getSelectedRows()[i].id + '-' + params.api.getSelectedRows()[i].actualQty;
                 }
                 this.listActualQty.push(params.api.getSelectedRows()[i].actualQty);
+                sum += params.api.getSelectedRows()[i].usageQty;
+                if(sum > this.data[0].maxStock && this._warehouse != '') {
+                    this.message.warn('Warehouse is full!');
+                    this.dataParams.api.deselectIndex(i);
+                }else{
+                    this.data.forEach(e => {
+                        e.inventory = sum;
+                    })
+                    this.dataParams.api.refreshCells({columns : ["inventory"]});
+                }
             }
+        }else{
+            this.data.forEach(e => {
+                e.inventory = this.sumDefault;
+            })
+            this.dataParams.api.refreshCells({columns : ["inventory"]});
         }
     }
 
@@ -384,6 +422,14 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
         } else {
             this.isPdf = event;
         }
+    }
+
+    onChangeWarehouse(event){
+        this._other.getListContForWarehouse(event)
+            .subscribe((result) => {
+                this.data = result ?? [];
+                this.sumDefault = this.data[0].inventory;
+            });
     }
 
     close(): void {
