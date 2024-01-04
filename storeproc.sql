@@ -888,22 +888,19 @@ CREATE OR ALTER PROCEDURE INV_PROD_INVOICE_SEARCH
     @p_ContainerNo NVARCHAR(20),
     @p_BillDateFrom DATE,
     @p_BillDateTo DATE,
-    @p_SupplierNo NVARCHAR(10)
+    @p_Status NVARCHAR(50)
 )
 AS
 BEGIN 
     SELECT DISTINCT a.Id, a.InvoiceNo, a.BillId, a.InvoiceDate, a.Status,  
-           b.BillofladingNo AS BillNo, c.ShipmentNo, a.Forwarder,
-           e.Description AS Status, b.BillDate
+           b.BillofladingNo AS BillNo, c.ShipmentNo, a.Forwarder, b.BillDate
       FROM ProdInvoice a
- LEFT JOIN ProdBillOfLading b
+INNER JOIN ProdBillOfLading b
         ON a.BillId = b.Id
- LEFT JOIN ProdShipment c
+INNER JOIN ProdShipment c
         ON c.Id = b.ShipmentId
- LEFT JOIN ProdContainerIntransit pci
+INNER JOIN ProdContainerIntransit pci
         ON c.Id = pci.ShipmentId
- LEFT JOIN MasterInvoiceStatus e
-        ON a.Status = e.Code
      WHERE (@p_InvoiceNo IS NULL OR a.InvoiceNo LIKE CONCAT('%', @p_InvoiceNo, '%'))
        AND (@p_InvoiceDateFrom IS NULL OR a.InvoiceDate >= @p_InvoiceDateFrom)
        AND (@p_InvoiceDateTo IS NULL OR a.InvoiceDate <= @p_InvoiceDateTo)
@@ -912,7 +909,7 @@ BEGIN
        AND (@p_ContainerNo IS NULL OR pci.ContainerNo LIKE CONCAT('%', @p_ContainerNo, '%'))
        AND (@p_BillDateFrom IS NULL OR b.BillDate >= @p_BillDateFrom)
        AND (@p_BillDateTo IS NULL OR b.BillDate < DATEADD(DAY, 1, @p_BillDateTo))
-	     AND (@p_SupplierNo IS NULL OR c.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
+	     AND (ISNULL(@p_Status, '') = '' OR a.Status = @p_Status)
        AND a.IsDeleted = 0
   ORDER BY a.InvoiceDate DESC, b.BillDate DESC, a.InvoiceNo, a.Id	
 END

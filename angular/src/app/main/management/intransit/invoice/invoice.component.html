@@ -56,8 +56,8 @@
                             <div class="form-group">
                                 <input [(ngModel)]="shipmentNo" name="shipmentNo" class="form-control m-input"
                                     [placeholder]="l('Shipment No')" type="text" (keyup.enter)="searchDatas()">
-                                <input [(ngModel)]="supplierNo" name="supplierNo" class="form-control m-input"
-                                    [placeholder]="l('Supplier No')" type="text" (keyup.enter)="searchDatas()">
+                                <tmss-combobox [items]="listStatus" name="status"
+                                    [(ngModel)]="supplierNo" (ngModelChange)="searchDatas()"></tmss-combobox>
                             </div>
                         </div>
                         <div class="col-md-customize">

@@ -71,6 +71,12 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
     _selectrow;
     _pageSizeDetails = 500;
     notDelete: boolean = false;
+    listStatus = [
+        { value: '', label: "Status" },
+        { value: 'NEW', label: "NEW" },
+        { value: 'PRE CUSTOMS', label: "PRE CUSTOMS (PAID)" },
+        { value: 'CUSTOMS DECLARED', label: "CUSTOMS DECLARED" }
+    ];
 
     defaultColDef = {
         resizable: true,

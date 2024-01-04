@@ -304,7 +304,7 @@ export class AddGrnContWarehouseModalComponent extends AppComponentBase {
         this.selectedRow = Object.assign({}, this.saveSelectedRow);
 
         this._selectrow = this.saveSelectedRow.id;
-        var sum = this.data[0].inventory;
+        var sum = this.sumDefault;
         this.contId = '';
         this.listCont = '';
         this.listActualQty = [];
