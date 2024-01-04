@@ -126,6 +126,13 @@ export class ViewHistoryReceiveModalComponent extends AppComponentBase {
     }
 
     show(): void {
+        this.list = [{ value: '', label: '', date: undefined, wh: '' }];
+        this._other.getListGRNForViewHistory()
+            .subscribe(result => {
+                result.forEach(e => {
+                    this.list.push({ value: e.goodsReceivedNoteNo, label: e.goodsReceivedNoteNo, date: e.receiveDate, wh: e.warehouse });
+                })
+            })
         this.isDisable = true;
         this.data = [];
         this._warehouse = '';
