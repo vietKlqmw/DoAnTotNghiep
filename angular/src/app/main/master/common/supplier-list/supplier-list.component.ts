@@ -1,6 +1,6 @@
 import { GridApi } from '@ag-grid-enterprise/all-modules';
 import { DatePipe } from '@angular/common';
-import { Component, Injector, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AgCellButtonRendererComponent } from '@app/shared/common/grid/ag-cell-button-renderer/ag-cell-button-renderer.component';
 import { CustomColDef, FrameworkComponent, GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
 import { GridTableService } from '@app/shared/common/services/grid-table.service';
@@ -10,6 +10,7 @@ import { MasterSupplierListDto, MasterSupplierListServiceProxy } from '@shared/s
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
+import { EditSupplierModalComponent } from './edit-supplier-modal.component';
 
 @Component({
     selector: 'app-supplier-list',
@@ -19,6 +20,8 @@ import { finalize } from 'rxjs/operators';
     animations: [appModuleAnimation()]
 })
 export class SupplierListComponent extends AppComponentBase implements OnInit {
+    @ViewChild('editModal', { static: true }) editModal: EditSupplierModalComponent;
+    
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
     paginationParams: PaginationParamsModel = {
@@ -166,6 +169,10 @@ export class SupplierListComponent extends AppComponentBase implements OnInit {
                 });
             }
         });
+    }
+
+    edits(ev) {
+        this.editModal.show(ev, this.saveSelectedRow);
     }
 }
 

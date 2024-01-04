@@ -54,9 +54,9 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-sm-12 text-right">
-                        <button type="button" class="btn btn-primary">
+                        <button type="button" class="btn btn-primary" (click)="editf('Add')">
                             <i class="fa fa-plus"></i> {{"Add" | localize}}</button>
-                        <button type="button" class="btn btn-primary">
+                        <button type="button" class="btn btn-primary" (click)="editf('Edit')">
                             <i class="far fa-edit"></i> {{"Edit" | localize}}</button>
                         <button type="button" class="btn btn-danger" (click)="deleteForward()" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-trash-alt"></i> {{"Delete" | localize}}</button>
@@ -66,3 +66,4 @@
         </div>
     </div>
 </div>
+<editModal #editModal></editModal>

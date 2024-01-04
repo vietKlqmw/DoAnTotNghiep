@@ -1,6 +1,6 @@
 import { GridApi } from '@ag-grid-enterprise/all-modules';
 import { DatePipe } from '@angular/common';
-import { Component, Injector, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AgCellButtonRendererComponent } from '@app/shared/common/grid/ag-cell-button-renderer/ag-cell-button-renderer.component';
 import { CustomColDef, FrameworkComponent, GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
 import { GridTableService } from '@app/shared/common/services/grid-table.service';
@@ -9,6 +9,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { MasterForwarderDto, MasterForwarderServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
+import { EditForwarderModalComponent } from './edit-forwarder-modal.component';
 
 @Component({
     selector: 'app-forwarder',
@@ -18,6 +19,8 @@ import { finalize } from 'rxjs/operators';
     animations: [appModuleAnimation()]
 })
 export class ForwarderComponent extends AppComponentBase implements OnInit {
+    @ViewChild('editModal', { static: true }) editModal: EditForwarderModalComponent;
+    
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
     paginationParams: PaginationParamsModel = {
@@ -165,6 +168,10 @@ export class ForwarderComponent extends AppComponentBase implements OnInit {
                 });
             }
         });
+    }
+
+    editf(ev) {
+        this.editModal.show(ev, this.saveSelectedRow);
     }
 }
 
