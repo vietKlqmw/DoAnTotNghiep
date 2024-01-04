@@ -20,22 +20,24 @@ namespace tmss.Master.StorageLocation.Exporting
                     AddHeader(
                         sheet,
                         ("Warehouse"),
-                        ("Storage Location Name"),
-                        ("Address Language En"),
-                        ("Address Language Vn"),
-                        ("Category")
+                        ("Address"),
+                        ("Category"),
+                        ("Max Stock"),
+                        ("Inventory"),
+                        ("Status")
                     );
 
                     AddObjects(
                         sheet, 1, listdata,
                         _ => _.StorageLocation,
-                        _ => _.StorageLocationName,
-                        _ => _.AddressLanguageEn,
                         _ => _.AddressLanguageVn,
-                        _ => _.Category
+                        _ => _.Category,
+                        _ => _.MaxStock,
+                        _ => _.Inventory,
+                        _ => _.Status
                     );
 
-                    for (var i = 0; i < 9; i++)
+                    for (var i = 0; i < 6; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

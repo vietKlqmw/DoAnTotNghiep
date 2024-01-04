@@ -6,20 +6,14 @@
                     <div class="row">
                         <div class="col-md-customize">
                             <div class="form-group">
-                                <input [(ngModel)]="storageLocationName" name="storageLocationName" class="form-control m-input"
-                                    [placeholder]="l('Storage Location Name')" type="text" (keyup.enter)="searchDatas()">
+                                <input [(ngModel)]="address" name="addressLanguageEn" class="form-control m-input"
+                                    [placeholder]="l('Address')" type="text" (keyup.enter)="searchDatas()">
                             </div>
                         </div>
                         <div class="col-md-customize">
                             <div class="form-group">
-                                <input [(ngModel)]="addressLanguageEn" name="addressLanguageEn" class="form-control m-input"
-                                    [placeholder]="l('Address Language En')" type="text" (keyup.enter)="searchDatas()">
-                            </div>
-                        </div>
-                        <div class="col-md-customize">
-                            <div class="form-group">
-                                <input [(ngModel)]="category" name="category" class="form-control m-input"
-                                    [placeholder]="l('Category')" type="text" (keyup.enter)="searchDatas()">
+                                <tmss-combobox [items]="listStatus" name="status"
+                                    [(ngModel)]="status" (ngModelChange)="searchDatas()"></tmss-combobox>
                             </div>
                         </div>
                         <div class="col-md-customize">
@@ -54,18 +48,19 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-sm-12 text-right">
-                        <button type="button" class="btn btn-primary">
+                        <button type="button" class="btn btn-primary" (click)="editwh('Add')">
                             <i class="fa fa-plus"></i> {{"Add" | localize}}</button>
-                        <button type="button" class="btn btn-primary" [disabled]="!saveSelectedRow.id">
+                        <button type="button" class="btn btn-primary" (click)="editwh('Edit')" [disabled]="!saveSelectedRow.id">
                             <i class="far fa-edit"></i> {{"Edit" | localize}}</button>
                         <button type="button" class="btn btn-danger" (click)="deleteWH()" [disabled]="!saveSelectedRow.id"
                             *ngIf="isGranted('Pages.Master.General.Warehouse.Edit')">
                             <i class="far fa-trash-alt"></i> {{"Delete" | localize}}</button>
-                        <!-- <button type="button" class="btn btn-success" (click)="exportToExcel()">
-                            <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button> -->
+                        <button type="button" class="btn btn-success" (click)="exportToExcel()">
+                            <i class="far fa-file-excel"></i> {{"ExportToExcel" | localize}}</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<editModal #editModal></editModal>

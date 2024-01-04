@@ -9,7 +9,7 @@ namespace tmss.Master
     public class MasterStorageLocation : FullAuditedEntity<long>, IEntity<long>
     {
 
-        public const int MaxStorageLocationLength = 2;
+        public const int MaxStorageLocationLength = 3;
 
         public const int MaxStorageLocationNameLength = 200;
 
@@ -18,6 +18,8 @@ namespace tmss.Master
         public const int MaxAddressLanguageVnLength = 200;
 
         public const int MaxCategoryLength = 50;
+
+        public const int MaxStatusLength = 50;
 
         [StringLength(MaxStorageLocationLength)]
         public virtual string StorageLocation { get; set; }
@@ -33,5 +35,12 @@ namespace tmss.Master
 
         [StringLength(MaxCategoryLength)]
         public virtual string Category { get; set; }
+
+        public virtual int? MaxStock { get; set; }
+
+        public virtual int? Inventory { get; set; }
+
+        [StringLength(MaxStatusLength)]
+        public virtual string Status { get; set; }
     }
 }

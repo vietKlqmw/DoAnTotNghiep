@@ -7612,25 +7612,19 @@ export class MasterStorageLocationServiceProxy {
     }
 
     /**
-     * @param plantName (optional) 
-     * @param storageLocationName (optional) 
-     * @param addressLanguageEn (optional) 
-     * @param category (optional) 
+     * @param addressLanguageVn (optional) 
+     * @param status (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getStorageLocationSearch(plantName: string | null | undefined, storageLocationName: string | null | undefined, addressLanguageEn: string | null | undefined, category: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfMasterStorageLocationDto> {
+    getStorageLocationSearch(addressLanguageVn: string | null | undefined, status: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfMasterStorageLocationDto> {
         let url_ = this.baseUrl + "/api/services/app/MasterStorageLocation/GetStorageLocationSearch?";
-        if (plantName !== undefined)
-            url_ += "PlantName=" + encodeURIComponent("" + plantName) + "&"; 
-        if (storageLocationName !== undefined)
-            url_ += "StorageLocationName=" + encodeURIComponent("" + storageLocationName) + "&"; 
-        if (addressLanguageEn !== undefined)
-            url_ += "AddressLanguageEn=" + encodeURIComponent("" + addressLanguageEn) + "&"; 
-        if (category !== undefined)
-            url_ += "Category=" + encodeURIComponent("" + category) + "&"; 
+        if (addressLanguageVn !== undefined)
+            url_ += "AddressLanguageVn=" + encodeURIComponent("" + addressLanguageVn) + "&"; 
+        if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&"; 
         if (sorting !== undefined)
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         if (skipCount === null)
@@ -7688,22 +7682,16 @@ export class MasterStorageLocationServiceProxy {
     }
 
     /**
-     * @param plantName (optional) 
-     * @param storageLocationName (optional) 
-     * @param addressLanguageEn (optional) 
-     * @param category (optional) 
+     * @param addressLanguageVn (optional) 
+     * @param status (optional) 
      * @return Success
      */
-    getStorageLocationToExcel(plantName: string | null | undefined, storageLocationName: string | null | undefined, addressLanguageEn: string | null | undefined, category: string | null | undefined): Observable<FileDto> {
+    getStorageLocationToExcel(addressLanguageVn: string | null | undefined, status: string | null | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/MasterStorageLocation/GetStorageLocationToExcel?";
-        if (plantName !== undefined)
-            url_ += "PlantName=" + encodeURIComponent("" + plantName) + "&"; 
-        if (storageLocationName !== undefined)
-            url_ += "StorageLocationName=" + encodeURIComponent("" + storageLocationName) + "&"; 
-        if (addressLanguageEn !== undefined)
-            url_ += "AddressLanguageEn=" + encodeURIComponent("" + addressLanguageEn) + "&"; 
-        if (category !== undefined)
-            url_ += "Category=" + encodeURIComponent("" + category) + "&"; 
+        if (addressLanguageVn !== undefined)
+            url_ += "AddressLanguageVn=" + encodeURIComponent("" + addressLanguageVn) + "&"; 
+        if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -7782,6 +7770,58 @@ export class MasterStorageLocationServiceProxy {
     }
 
     protected processDeleteWH(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    editWH(body: MasterStorageLocationDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MasterStorageLocation/EditWH";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEditWH(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEditWH(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processEditWH(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -29164,6 +29204,10 @@ export class MasterStorageLocationDto implements IMasterStorageLocationDto {
     addressLanguageEn!: string | undefined;
     addressLanguageVn!: string | undefined;
     category!: string | undefined;
+    maxStock!: number | undefined;
+    inventory!: number | undefined;
+    status!: string | undefined;
+    type!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: IMasterStorageLocationDto) {
@@ -29184,6 +29228,10 @@ export class MasterStorageLocationDto implements IMasterStorageLocationDto {
             this.addressLanguageEn = _data["addressLanguageEn"];
             this.addressLanguageVn = _data["addressLanguageVn"];
             this.category = _data["category"];
+            this.maxStock = _data["maxStock"];
+            this.inventory = _data["inventory"];
+            this.status = _data["status"];
+            this.type = _data["type"];
             this.id = _data["id"];
         }
     }
@@ -29204,6 +29252,10 @@ export class MasterStorageLocationDto implements IMasterStorageLocationDto {
         data["addressLanguageEn"] = this.addressLanguageEn;
         data["addressLanguageVn"] = this.addressLanguageVn;
         data["category"] = this.category;
+        data["maxStock"] = this.maxStock;
+        data["inventory"] = this.inventory;
+        data["status"] = this.status;
+        data["type"] = this.type;
         data["id"] = this.id;
         return data; 
     }
@@ -29217,6 +29269,10 @@ export interface IMasterStorageLocationDto {
     addressLanguageEn: string | undefined;
     addressLanguageVn: string | undefined;
     category: string | undefined;
+    maxStock: number | undefined;
+    inventory: number | undefined;
+    status: string | undefined;
+    type: string | undefined;
     id: number | undefined;
 }
 

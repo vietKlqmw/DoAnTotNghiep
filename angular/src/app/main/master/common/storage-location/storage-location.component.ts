@@ -1,8 +1,9 @@
 import { GridApi } from '@ag-grid-enterprise/all-modules';
 import { DatePipe } from '@angular/common';
-import { Component, Injector, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AgCellButtonRendererComponent } from '@app/shared/common/grid/ag-cell-button-renderer/ag-cell-button-renderer.component';
 import { CustomColDef, FrameworkComponent, GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
+import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { GridTableService } from '@app/shared/common/services/grid-table.service';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -10,6 +11,7 @@ import { MasterStorageLocationDto, MasterStorageLocationServiceProxy } from '@sh
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { ceil } from 'lodash';
 import { finalize } from 'rxjs/operators';
+import { EditWarehouseModalComponent } from './edit-storage-location-modal.component';
 
 @Component({
     selector: 'app-storage-location',
@@ -19,6 +21,7 @@ import { finalize } from 'rxjs/operators';
     animations: [appModuleAnimation()]
 })
 export class StorageLocationComponent extends AppComponentBase implements OnInit {
+    @ViewChild('editModal', { static: true }) editModal: EditWarehouseModalComponent;
     defaultColDefs: CustomColDef[] = [];
     colDefs: any;
     paginationParams: PaginationParamsModel = {
@@ -43,10 +46,16 @@ export class StorageLocationComponent extends AppComponentBase implements OnInit
     frameworkComponents: FrameworkComponent;
     isLoading: boolean = false;
 
-    plantName: string = '';
-    storageLocationName: string = '';
-    addressLanguageEn: string = '';
-    category: string = '';
+    address: string = '';
+    status: string = '';
+    listStatus = [
+        { label: 'Status', value: '' },
+        { label: 'Normal', value: 'Normal' },
+        { label: 'Good', value: 'Good' },
+        { label: 'Medium', value: 'Medium' },
+        { label: 'High', value: 'High' },
+        { label: 'Full', value: 'Full' }
+    ];
 
     defaultColDef = {
         resizable: true,
@@ -66,17 +75,91 @@ export class StorageLocationComponent extends AppComponentBase implements OnInit
         injector: Injector,
         private _service: MasterStorageLocationServiceProxy,
         private gridTableService: GridTableService,
-        private _fileDownloadService: FileDownloadService
+        private _fileDownloadService: FileDownloadService,
+        private _fm: DataFormatService
     ) {
         super(injector);
 
         this.colDefs = [
             { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParams.pageSize * (this.paginationParams.pageNum - 1), cellClass: ['text-center'], width: 80 },
             { headerName: this.l('Warehouse'), headerTooltip: this.l('Storage Location'), field: 'storageLocation', width: 130 },
-            { headerName: this.l('Storage Location Name'), headerTooltip: this.l('Storage Location Name'), field: 'storageLocationName', width: 180 },
-            { headerName: this.l('Address Language En'), headerTooltip: this.l('Address Language En'), field: 'addressLanguageEn', flex: 1 },
-            { headerName: this.l('Address Language Vn'), headerTooltip: this.l('Address Language Vn'), field: 'addressLanguageVn', flex: 1 },
-            { headerName: this.l('Category'), headerTooltip: this.l('Category'), field: 'category', width: 130 }
+            //{ headerName: this.l('Storage Location Name'), headerTooltip: this.l('Storage Location Name'), field: 'storageLocationName', width: 180 },
+            //{ headerName: this.l('Address Language En'), headerTooltip: this.l('Address Language En'), field: 'addressLanguageEn', flex: 1 },
+            { headerName: this.l('Address'), headerTooltip: this.l('Address Language Vn'), field: 'addressLanguageVn', flex: 1 },
+            { headerName: this.l('Category'), headerTooltip: this.l('Category'), field: 'category', width: 130 },
+            {
+                headerName: this.l('Max Stock'), headerTooltip: this.l('Max Stock'), field: 'maxStock', width: 110, type: 'rightAligned',
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.maxStock)
+            },
+            {
+                headerName: this.l('Inventory'), headerTooltip: this.l('Inventory'), field: 'inventory', width: 110, type: 'rightAligned',
+                cellRenderer: (params) => this._fm.formatMoney_decimal(params.data?.inventory)
+            },
+            {
+                headerName: this.l('Status'), headerTooltip: this.l('Status'), field: 'status', width: 150,
+                cellStyle: function (params: any) {
+                    if (params.data.status === 'Normal') {
+                        return {
+                            'background-color': 'Green',
+                            'color': 'white',
+                            'border-bottom': '1px Solid #c0c0c0',
+                            'border-right': '1px Solid #c0c0c0',
+                            'overflow': 'hidden',
+                            'border-top-width': '0',
+                        };
+                    }
+                    else if (params.data.status === 'Good') {
+                        return {
+                            'background-color': 'GreenYellow',
+                            'color': 'black',
+                            'border-bottom': '1px Solid #c0c0c0',
+                            'border-right': '1px Solid #c0c0c0',
+                            'overflow': 'hidden',
+                            'border-top-width': '0',
+                        };
+                    }
+                    else if (params.data.status === 'Medium') {
+                        return {
+                            'background-color': 'Yellow',
+                            'color': 'black',
+                            'border-bottom': '1px Solid #c0c0c0',
+                            'border-right': '1px Solid #c0c0c0',
+                            'overflow': 'hidden',
+                            'border-top-width': '0',
+                        };
+                    }
+                    else if (params.data.status === 'High') {
+                        return {
+                            'background-color': 'Orange',
+                            'color': 'white',
+                            'border-bottom': '1px Solid #c0c0c0',
+                            'border-right': '1px Solid #c0c0c0',
+                            'overflow': 'hidden',
+                            'border-top-width': '0',
+                        };
+                    }
+                    else if (params.data.status === 'Full') {
+                        return {
+                            'background-color': 'Red',
+                            'color': 'white',
+                            'border-bottom': '1px Solid #c0c0c0',
+                            'border-right': '1px Solid #c0c0c0',
+                            'overflow': 'hidden',
+                            'border-top-width': '0',
+                        };
+                    }
+                    else if (params.data.status === 'Empty') {
+                        return {
+                            'background-color': 'Whitesmoke',
+                            'color': 'black',
+                            'border-bottom': '1px Solid #c0c0c0',
+                            'border-right': '1px Solid #c0c0c0',
+                            'overflow': 'hidden',
+                            'border-top-width': '0',
+                        };
+                    }
+                }
+            },
         ];
 
         this.frameworkComponents = {
@@ -91,10 +174,8 @@ export class StorageLocationComponent extends AppComponentBase implements OnInit
     searchDatas(): void {
         this.isLoading = true;
         this._service.getStorageLocationSearch(
-            this.plantName,
-            this.storageLocationName,
-            this.addressLanguageEn,
-            this.category,
+            this.address,
+            this.status,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -109,19 +190,15 @@ export class StorageLocationComponent extends AppComponentBase implements OnInit
     }
 
     clearTextSearch() {
-        this.plantName = '';
-        this.storageLocationName = '';
-        this.addressLanguageEn = '';
-        this.category = '';
+        this.address = '';
+        this.status = '';
         this.searchDatas();
     }
 
     getDatas(paginationParams?: PaginationParamsModel) {
         return this._service.getStorageLocationSearch(
-            this.plantName,
-            this.storageLocationName,
-            this.addressLanguageEn,
-            this.category,
+            this.address,
+            this.status,
             '',
             this.paginationParams.skipCount,
             this.paginationParams.pageSize
@@ -165,10 +242,8 @@ export class StorageLocationComponent extends AppComponentBase implements OnInit
     exportToExcel(): void {
         this.isLoading = true;
         this._service.getStorageLocationToExcel(
-            this.plantName,
-            this.storageLocationName,
-            this.addressLanguageEn,
-            this.category)
+            this.address,
+            this.status)
             .pipe(finalize(() => this.isLoading = false))
             .subscribe(result => {
                 this._fileDownloadService.downloadTempFile(result);
@@ -187,6 +262,10 @@ export class StorageLocationComponent extends AppComponentBase implements OnInit
                 });
             }
         });
+    }
+
+    editwh(ev){
+        this.editModal.show(ev, this.saveSelectedRow);
     }
 }
 

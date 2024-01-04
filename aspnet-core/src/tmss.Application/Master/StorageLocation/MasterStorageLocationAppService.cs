@@ -26,14 +26,12 @@ namespace tmss.Master.StorageLocation
         }
         public async Task<PagedResultDto<MasterStorageLocationDto>> GetStorageLocationSearch(GetMasterStorageLocationInput input)
         {
-            string _sql = "Exec INV_MASTER_STORAGE_LOCATION_SEARCH @p_PlantName, @p_StorageLocationName, @p_AddressLanguageEn, @p_Category";
+            string _sql = "Exec INV_MASTER_STORAGE_LOCATION_SEARCH @p_AddressLanguageEn, @p_Status";
 
             IEnumerable<MasterStorageLocationDto> result = await _dapperRepo.QueryAsync<MasterStorageLocationDto>(_sql, new
             {
-                p_PlantName = input.PlantName,
-                p_StorageLocationName = input.StorageLocationName,
-                p_AddressLanguageEn = input.AddressLanguageEn,
-                p_Category = input.Category
+                p_AddressLanguageEn = input.AddressLanguageVn,
+                p_Status = input.Status
             });
 
             var listResult = result.ToList();
@@ -49,14 +47,12 @@ namespace tmss.Master.StorageLocation
 
         public async Task<FileDto> GetStorageLocationToExcel(GetMasterStorageLocationExportInput input)
         {
-            string _sql = "Exec INV_MASTER_STORAGE_LOCATION_SEARCH @p_PlantName, @p_StorageLocationName, @p_AddressLanguageEn, @p_Category";
+            string _sql = "Exec INV_MASTER_STORAGE_LOCATION_SEARCH @p_AddressLanguageEn, @p_Status";
 
             IEnumerable<MasterStorageLocationDto> result = await _dapperRepo.QueryAsync<MasterStorageLocationDto>(_sql, new
             {
-                p_PlantName = input.PlantName,
-                p_StorageLocationName = input.StorageLocationName,
-                p_AddressLanguageEn = input.AddressLanguageEn,
-                p_Category = input.Category
+                p_AddressLanguageEn = input.AddressLanguageVn,
+                p_Status = input.Status
             });
 
             var exportToExcel = result.ToList();
@@ -70,6 +66,29 @@ namespace tmss.Master.StorageLocation
             await _dapperRepo.ExecuteAsync(_sql, new
             {
                 p_WHId = WHId
+            });
+        }
+
+        public async Task EditWH(MasterStorageLocationDto input)
+        {
+            float inv = input.Inventory == null ? 0 : (float)input.Inventory;
+            if (inv == 0) input.Status = "Empty";
+            else if (inv == input.MaxStock) input.Status = "Full";
+            else if ((float)(inv / input.MaxStock) < 0.25) input.Status = "Normal";
+            else if ((float)(inv / input.MaxStock) < 0.5) input.Status = "Good";
+            else if ((float)(inv / input.MaxStock) < 0.75) input.Status = "Medium";
+            else if ((float)(inv / input.MaxStock) < 1) input.Status = "High";
+
+            string _sql = "Exec INV_PROD_MASTER_WAREHOUSE_EDIT @p_WarehouseId, @p_AddressVn, @p_Category, @p_MaxStock, @p_Status, @p_Type, @p_UserId";
+            await _dapperRepo.ExecuteAsync(_sql, new
+            {
+                p_WarehouseId = input.Id,
+                p_AddressVn = input.AddressLanguageVn,
+                p_Category = input.Category,
+                p_MaxStock = input.MaxStock,
+                p_Status = input.Status,
+                p_Type = input.Type,
+                p_UserId = AbpSession.UserId
             });
         }
     }

@@ -352,43 +352,36 @@ END
 ------------------------------------------------StorageLocation------------------------------------------------
 INSERT INTO MasterStorageLocation 
 (CreationTime, CreatorUserId, IsDeleted, 
-StorageLocation, StorageLocationName, Category,
-AddressLanguageEn, AddressLanguageVn)
+StorageLocation, Category, MaxStock,
+AddressLanguageVn)
 VALUES 
 (GETDATE(), 1, 0, 
-'A1', 'GWH (CKD part)', 'Raw Material',
-'Tran Thanh Ngo Ward - Hai Phong City - Viet Nam', 
+'A1', 'Raw Material', 500,
 N'Phường Trần Thành Ngọ - Thành phố Hải Phòng - Việt Nam'),
 (GETDATE(), 1, 0, 
-'A2', 'GWH (CKD part)', 'Raw Material',
-'Phuc Thang Ward - Phuc Yen City - Vinh Phuc Province - Viet Nam', 
+'A2', 'Raw Material', 450,
 N'Phường Phúc Thắng - Thành phố Phúc Yên - Tỉnh Vĩnh Phúc - Việt Nam'),
 (GETDATE(), 1, 0, 
-'B1', 'GWH (CKD part)', 'Raw Material',
-'An Hai Bac Ward - Da Nang City - Viet Nam', 
+'B1', 'Raw Material', 350,
 N'Phường An Hải Bắc - Thành phố Đà Nẵng - Việt Nam'),
 (GETDATE(), 1, 0, 
-'C1', 'GWH (CKD part)', 'Raw Material',
-'Thanh My Loi Ward - HCM City - Viet Nam', 
+'C1', 'Raw Material', 550,
 N'Phường Thạnh Mỹ Lợi - Thành phố HCM - Việt Nam'),
 (GETDATE(), 1, 0, 
-'C2', 'GWH (CKD part)', 'Raw Material',
-'Thu Duc District - Thu Duc City - Viet Nam', 
+'C2', 'Raw Material', 600,
 N'Quận Thủ Đức - Thành phố Thủ Đức - Việt Nam');
 --Search
 CREATE OR ALTER PROCEDURE INV_MASTER_STORAGE_LOCATION_SEARCH
-    @p_PlantName NVARCHAR(30),
-    @p_StorageLocationName NVARCHAR(MAX),
     @p_AddressLanguageEn NVARCHAR(MAX),
-    @p_Category NVARCHAR(50)
+    @p_Status NVARCHAR(50)
 AS 
 BEGIN
     SELECT msl.Id, msl.StorageLocation, msl.StorageLocationName, 
-           msl.AddressLanguageEn, msl.AddressLanguageVn, msl.Category
+           msl.AddressLanguageEn, msl.AddressLanguageVn, msl.Category,
+           msl.MaxStock, msl.Inventory, msl.Status
       FROM MasterStorageLocation msl
-     WHERE (@p_StorageLocationName IS NULL OR msl.StorageLocationName LIKE CONCAT('%', @p_StorageLocationName, '%'))
-       AND (@p_AddressLanguageEn IS NULL OR msl.AddressLanguageEn LIKE CONCAT('%', @p_AddressLanguageEn, '%'))
-       AND (@p_Category IS NULL OR msl.Category LIKE CONCAT('%', @p_Category, '%'))
+     WHERE (@p_AddressLanguageEn IS NULL OR msl.AddressLanguageVn LIKE CONCAT('%', @p_AddressLanguageEn, '%'))
+       AND (@p_Status IS NULL OR msl.Status = @p_Status)
        AND msl.IsDeleted = 0
 END
 ------------------------------------------------GetList:
@@ -398,6 +391,44 @@ BEGIN
     SELECT msl.StorageLocation, msl.AddressLanguageVn 
       FROM MasterStorageLocation msl 
      WHERE msl.IsDeleted = 0
+END
+------------------------------------------------Edit:
+CREATE OR ALTER PROCEDURE INV_PROD_MASTER_WAREHOUSE_EDIT
+(
+    @p_WarehouseId INT,
+    @p_AddressVn NVARCHAR(200),
+    @p_Category NVARCHAR(MAX),
+    @p_MaxStock INT,
+    @p_Status NVARCHAR(50),
+    @p_Type NVARCHAR(20),
+    @p_UserId BIGINT
+)
+AS
+BEGIN
+    DECLARE @StorageLocation NVARCHAR(3);
+    DECLARE @count1 INT = (SELECT COUNT(*) FROM MasterStorageLocation WHERE StorageLocation LIKE 'A%') + 1;
+    DECLARE @count2 INT = (SELECT COUNT(*) FROM MasterStorageLocation WHERE StorageLocation LIKE 'B%') + 1;
+    DECLARE @count3 INT = (SELECT COUNT(*) FROM MasterStorageLocation WHERE StorageLocation LIKE 'C%') + 1;
+    SET @StorageLocation = (CASE 
+    	  WHEN @p_Type = N'Miền Bắc' THEN 'A' + CONVERT(NVARCHAR, @count1)
+    	  WHEN @p_Type = N'Miền Trung' THEN 'B' + CONVERT(NVARCHAR, @count2)
+    	  ELSE 'C' + CONVERT(NVARCHAR, @count3)
+    END)
+    IF @p_WarehouseId IS NULL 
+        INSERT INTO MasterStorageLocation 
+                    (CreationTime, CreatorUserId, IsDeleted, 
+                    StorageLocation, AddressLanguageVn, Category, MaxStock, Status)
+             VALUES (GETDATE(), @p_UserId, 0, 
+                    @StorageLocation, @p_AddressVn, @p_Category, @p_MaxStock, 'Empty');
+    ELSE
+        UPDATE MasterStorageLocation
+           SET LastModificationTime = GETDATE(),
+               LastModifierUserId = @p_UserId,
+               AddressLanguageVn = @p_AddressVn,
+               Category = @p_Category,
+               MaxStock = @p_MaxStock,
+               Status = @p_Status
+         WHERE Id = @p_WarehouseId
 END
 ------------------------------------------------ContainerStatus------------------------------------------------
 INSERT INTO MasterContainerStatus 
