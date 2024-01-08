@@ -121,7 +121,6 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
         this.colDefsDetails = [
             { headerName: this.l('STT'), headerTooltip: this.l('STT'), cellRenderer: (params) => params.rowIndex + 1 + this.paginationParamsDetails.pageSize * (this.paginationParamsDetails.pageNum - 1), cellClass: ['text-center'], width: 60, pinned: true },
             { headerName: this.l('Container No'), headerTooltip: this.l('Container No'), field: 'containerNo', flex: 1, pinned: true },
-            { headerName: this.l('Cfc'), headerTooltip: this.l('Carfamily Code'), field: 'carfamilyCode', flex: 1, pinned: true },
             { headerName: this.l('Part No'), headerTooltip: this.l('Part No'), field: 'partNo', pinned: true },
             {
                 headerName: this.l('Qty'), headerTooltip: this.l('Qty'), field: 'usageQty', flex: 1, type: 'rightAligned',
@@ -171,6 +170,7 @@ export class InvoiceComponent extends AppComponentBase implements OnInit {
             //     headerName: this.l('Gross Weight'), headerTooltip: this.l('Gross Weight'), field: 'grossWeight', flex: 1, type: 'rightAligned',
             //     valueGetter: (params) => this._fm.formatMoney_decimal(params.data?.grossWeight, 4)
             // },
+            { headerName: this.l('Cfc'), headerTooltip: this.l('Carfamily Code'), field: 'carfamilyCode', flex: 1 },
             { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', flex: 1 }
         ];
 

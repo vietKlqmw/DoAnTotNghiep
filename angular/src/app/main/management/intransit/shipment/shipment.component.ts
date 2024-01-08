@@ -99,14 +99,14 @@ export class ShipmentComponent extends AppComponentBase implements OnInit {
                 headerName: this.l('Shipment Date'), headerTooltip: this.l('Shipment Date'), field: 'shipmentDate', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.shipmentDate, 'dd/MM/yyyy')
             },
-            {
-                headerName: this.l('ETD'), headerTooltip: this.l('Etd'), field: 'etd', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.etd, 'dd/MM/yyyy')
-            },
-            {
-                headerName: this.l('ETA'), headerTooltip: this.l('Eta'), field: 'eta', flex: 1,
-                valueGetter: (params) => this.pipe.transform(params.data?.eta, 'dd/MM/yyyy')
-            },
+            // {
+            //     headerName: this.l('ETD'), headerTooltip: this.l('Etd'), field: 'etd', flex: 1,
+            //     valueGetter: (params) => this.pipe.transform(params.data?.etd, 'dd/MM/yyyy')
+            // },
+            // {
+            //     headerName: this.l('ETA'), headerTooltip: this.l('Eta'), field: 'eta', flex: 1,
+            //     valueGetter: (params) => this.pipe.transform(params.data?.eta, 'dd/MM/yyyy')
+            // },
             { headerName: this.l('Oceanvessel Name'), headerTooltip: this.l('Oceanvessel Name'), field: 'oceanVesselName', flex: 1 },
             {
                 headerName: this.l('ATD'), headerTooltip: this.l('Atd'), field: 'atd', flex: 1,

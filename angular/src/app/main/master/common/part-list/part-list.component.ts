@@ -85,11 +85,11 @@ export class PartListComponent extends AppComponentBase implements OnInit {
             { headerName: this.l('Carfamily Code'), headerTooltip: this.l('Carfamily Code'), field: 'carfamilyCode', flex: 1 },
             { headerName: this.l('Base Unit Of Measure'), headerTooltip: this.l('Base Unit Of Measure'), field: 'baseUnitOfMeasure', flex: 1 },
             {
-                headerName: this.l('Standard Price'), headerTooltip: this.l('Standard Price'), field: 'standardPrice', flex: 1, type: 'rightAligned',
+                headerName: this.l('Standard Price (VND)'), headerTooltip: this.l('Standard Price'), field: 'standardPrice', flex: 1, type: 'rightAligned',
                 cellRenderer: (params) => (params.data?.standardPrice != null ? this._fm.formatMoney_decimal(params.data?.standardPrice) : 0)
             },
             {
-                headerName: this.l('Moving Price'), headerTooltip: this.l('Moving Price'), field: 'movingPrice', flex: 1, type: 'rightAligned',
+                headerName: this.l('Moving Price (VND)'), headerTooltip: this.l('Moving Price'), field: 'movingPrice', flex: 1, type: 'rightAligned',
                 cellRenderer: (params) => (params.data?.movingPrice != null ? this._fm.formatMoney_decimal(params.data?.movingPrice) : 0)
             },
             {
