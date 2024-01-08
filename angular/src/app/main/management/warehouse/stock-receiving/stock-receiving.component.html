@@ -94,8 +94,8 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-sm-12 text-right">
-                        <button type="button" class="btn btn-view" (click)="viewMaterialById()" [disabled]="!saveSelectedRow.id">
-                            <i class="far fa-regular fa-eye"></i> {{"View Material" | localize}}</button>
+                        <!-- <button type="button" class="btn btn-view" (click)="viewMaterialById()" [disabled]="!saveSelectedRow.id">
+                            <i class="far fa-regular fa-eye"></i> {{"View Material" | localize}}</button> -->
                         <button type="button" class="btn btn-primary" (click)="addGoodsDeliveryNote()" [disabled]="!saveSelectedRow.id"
                             *ngIf="btnGDN && isGranted('Pages.Management.Warehouse.StockWarehouse.Edit')">
                             <i class="fa fa-plus"></i> {{"Add Goods Delivery Note" | localize}}</button>

@@ -25,6 +25,9 @@ namespace tmss.Master.PartList.Exporting
                         ("Part Name"),
                         ("Supplier No"),
                         ("Carfamily Code"),
+                        ("Base Unit Of Measure"),
+                        ("Standard Price"),
+                        ("Moving Price"),
                         ("Start Production Month"),
                         ("End Production Month"),
                         ("Remark")
@@ -36,12 +39,15 @@ namespace tmss.Master.PartList.Exporting
                         _ => _.PartName,
                         _ => _.SupplierNo,
                         _ => _.CarfamilyCode,
+                        _ => _.BaseUnitOfMeasure,
+                        _ => _.StandardPrice,
+                        _ => _.MovingPrice,
                         _ => _.StartProductionMonth,
                         _ => _.EndProductionMonth,
                         _ => _.Remark
                     );
 
-                    for (var i = 0; i < 7; i++)
+                    for (var i = 0; i < 10; i++)
                     {
                         sheet.AutoSizeColumn(i);
                     }

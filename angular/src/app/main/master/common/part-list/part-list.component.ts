@@ -13,6 +13,7 @@ import { finalize } from 'rxjs/operators';
 import { ViewMaterialComponent } from '../../other/view-material/view-material.component';
 import { EditPartListModalComponent } from './edit-part-list-modal.component';
 import { ImportPartListComponent } from './import-part-list-modal.component';
+import { DataFormatService } from '@app/shared/common/services/data-format.service';
 
 @Component({
     selector: 'app-part-list',
@@ -71,7 +72,8 @@ export class PartListComponent extends AppComponentBase implements OnInit {
         injector: Injector,
         private _service: MasterPartListServiceProxy,
         private gridTableService: GridTableService,
-        private _fileDownloadService: FileDownloadService
+        private _fileDownloadService: FileDownloadService,
+        private _fm: DataFormatService
     ) {
         super(injector);
 
@@ -81,6 +83,15 @@ export class PartListComponent extends AppComponentBase implements OnInit {
             { headerName: this.l('Part Name'), headerTooltip: this.l('Part Name'), field: 'partName', flex: 1 },
             { headerName: this.l('Supplier No'), headerTooltip: this.l('Supplier No'), field: 'supplierNo', flex: 1 },
             { headerName: this.l('Carfamily Code'), headerTooltip: this.l('Carfamily Code'), field: 'carfamilyCode', flex: 1 },
+            { headerName: this.l('Base Unit Of Measure'), headerTooltip: this.l('Base Unit Of Measure'), field: 'baseUnitOfMeasure', flex: 1 },
+            {
+                headerName: this.l('Standard Price'), headerTooltip: this.l('Standard Price'), field: 'standardPrice', flex: 1, type: 'rightAligned',
+                cellRenderer: (params) => (params.data?.standardPrice != null ? this._fm.formatMoney_decimal(params.data?.standardPrice) : 0)
+            },
+            {
+                headerName: this.l('Moving Price'), headerTooltip: this.l('Moving Price'), field: 'movingPrice', flex: 1, type: 'rightAligned',
+                cellRenderer: (params) => (params.data?.movingPrice != null ? this._fm.formatMoney_decimal(params.data?.movingPrice) : 0)
+            },
             {
                 headerName: this.l('Start Production Month'), headerTooltip: this.l('Start Production Month'), field: 'startProductionMonth', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.startProductionMonth, 'dd/MM/yyyy')
@@ -89,8 +100,8 @@ export class PartListComponent extends AppComponentBase implements OnInit {
                 headerName: this.l('End Production Month'), headerTooltip: this.l('End Production Month'), field: 'endProductionMonth', flex: 1,
                 valueGetter: (params) => this.pipe.transform(params.data?.endProductionMonth, 'dd/MM/yyyy')
             },
-            { headerName: this.l('Remark'), headerTooltip: this.l('Remark'), field: 'remark', flex: 1 },
-            { headerName: this.l('Material Id'), headerTooltip: this.l('Material Id'), field: 'materialId', flex: 1 }
+            { headerName: this.l('Remark'), headerTooltip: this.l('Remark'), field: 'remark', flex: 1 }
+            // { headerName: this.l('Material Id'), headerTooltip: this.l('Material Id'), field: 'materialId', flex: 1 }
         ];
 
         this.frameworkComponents = {
@@ -217,7 +228,7 @@ export class PartListComponent extends AppComponentBase implements OnInit {
                 this._service.deletePartList(this._selectrow).subscribe(() => {
                     this.callBackDataGrid(this.dataParams!);
                     this.notify.success(this.l('SuccessfullyDeleted'));
-                },error =>{
+                }, error => {
                     this.notify.error(this.l('FailedDeleted'));
                 });
             }
@@ -233,7 +244,7 @@ export class PartListComponent extends AppComponentBase implements OnInit {
         else this.editPartListModal.show(e);
     }
 
-    importFromExcel(){
+    importFromExcel() {
         this.importExcelModal.show();
     }
 }

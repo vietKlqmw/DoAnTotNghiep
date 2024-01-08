@@ -28989,6 +28989,9 @@ export class MasterPartListDto implements IMasterPartListDto {
     startProductionMonth!: moment.Moment | undefined;
     endProductionMonth!: moment.Moment | undefined;
     remark!: string | undefined;
+    baseUnitOfMeasure!: string | undefined;
+    standardPrice!: number | undefined;
+    movingPrice!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IMasterPartListDto) {
@@ -29011,6 +29014,9 @@ export class MasterPartListDto implements IMasterPartListDto {
             this.startProductionMonth = _data["startProductionMonth"] ? moment(_data["startProductionMonth"].toString()) : <any>undefined;
             this.endProductionMonth = _data["endProductionMonth"] ? moment(_data["endProductionMonth"].toString()) : <any>undefined;
             this.remark = _data["remark"];
+            this.baseUnitOfMeasure = _data["baseUnitOfMeasure"];
+            this.standardPrice = _data["standardPrice"];
+            this.movingPrice = _data["movingPrice"];
             this.id = _data["id"];
         }
     }
@@ -29033,6 +29039,9 @@ export class MasterPartListDto implements IMasterPartListDto {
         data["startProductionMonth"] = this.startProductionMonth ? this.startProductionMonth.toISOString() : <any>undefined;
         data["endProductionMonth"] = this.endProductionMonth ? this.endProductionMonth.toISOString() : <any>undefined;
         data["remark"] = this.remark;
+        data["baseUnitOfMeasure"] = this.baseUnitOfMeasure;
+        data["standardPrice"] = this.standardPrice;
+        data["movingPrice"] = this.movingPrice;
         data["id"] = this.id;
         return data; 
     }
@@ -29048,6 +29057,9 @@ export interface IMasterPartListDto {
     startProductionMonth: moment.Moment | undefined;
     endProductionMonth: moment.Moment | undefined;
     remark: string | undefined;
+    baseUnitOfMeasure: string | undefined;
+    standardPrice: number | undefined;
+    movingPrice: number | undefined;
     id: number | undefined;
 }
 

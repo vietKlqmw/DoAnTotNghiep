@@ -22,6 +22,10 @@ namespace tmss.Master.PartList
         public virtual DateTime? EndProductionMonth { get; set; }
 
         public virtual string Remark { get; set; }
+
+        public virtual string BaseUnitOfMeasure { get; set; }
+        public virtual decimal? StandardPrice { get; set; }
+        public virtual decimal? MovingPrice { get; set; }
     }
 
     public class GetMasterPartListInput : PagedAndSortedResultRequestDto

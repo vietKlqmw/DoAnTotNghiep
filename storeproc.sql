@@ -184,8 +184,10 @@ CREATE OR ALTER PROCEDURE INV_MASTER_PART_LIST_SEARCH
 AS
 BEGIN
     SELECT mpl.Id, mpl.PartNo, mpl.PartName, mpl.SupplierNo, mpl.SupplierId, mpl.MaterialId, 
-           mpl.CarfamilyCode, mpl.StartProductionMonth, mpl.EndProductionMonth, mpl.Remark
+           mpl.CarfamilyCode, mpl.StartProductionMonth, mpl.EndProductionMonth, mpl.Remark,
+           mm.BaseUnitOfMeasure, mm.StandardPrice, mm.MovingPrice
       FROM MasterPartList mpl
+INNER JOIN MasterMaterial mm ON mpl.MaterialId = mm.Id
      WHERE (@p_PartNo IS NULL OR mpl.PartNo LIKE CONCAT('%', @p_PartNo, '%'))
        AND (@p_SupplierNo IS NULL OR mpl.SupplierNo LIKE CONCAT('%', @p_SupplierNo, '%'))
        AND (@p_Cfc IS NULL OR mpl.CarfamilyCode LIKE CONCAT('%', @p_Cfc, '%'))

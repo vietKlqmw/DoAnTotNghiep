@@ -27,7 +27,7 @@ export class AppNavigationService {
                 //new AppMenuItem('Carfamily', 'Pages.Master.General.Cfc.View', 'flaticon-car', '/app/main/master/common/carfamily'),
                 new AppMenuItem('Supplier List', 'Pages.Master.General.Supplier.View', 'flaticon-car', '/app/main/master/common/supplier-list'),
                 new AppMenuItem('Forwarder', 'Pages.Master.General.Forwarder.View', 'flaticon-car', '/app/main/master/common/forwarder'),
-                new AppMenuItem('Material', 'Pages.Master.General.Material.View', 'flaticon-car', '/app/main/master/common/material'),
+                //new AppMenuItem('Material', 'Pages.Master.General.Material.View', 'flaticon-car', '/app/main/master/common/material'),
             ]),
 //MAIN
             new AppMenuItem('MANAGEMENT', 'Pages.Management', 'flaticon-user-settings', '',[],[
